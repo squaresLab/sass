@@ -6,18 +6,31 @@ import org.jgap.gp.impl.GPConfiguration;
 public class AddServerL2 extends Actions {
 
 	final int serverCost = 20;
+	final int responseChange = -5;
+	final double failureRate = 0.1;
+	final GPConfiguration gpConf;
 
-	SystemState ss;
-
-	public AddServerL2(SystemState ss, GPConfiguration gpConf)
+	public AddServerL2(GPConfiguration gpConf)
 			throws InvalidConfigurationException {
 		super(gpConf);
+		this.gpConf = gpConf;
 		this.timeToPeformAction = 600;
-		this.ss = ss;
+	}
+
+	@Override
+	public Object clone() {
+		try {
+			return new AddServerL2(gpConf);
+		} catch (InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public boolean arePreconditionsSatisfied(CostRewardObject cr) {
-		if (ss.validL2Servers.length == ss.getUsedServersL2().size()) {
+		if (cr.getSystemState().validL2Servers.length == cr.getSystemState()
+				.getUsedServersL2().size()) {
 			return false;
 		}
 		if (cr.systemResponseTime < 6) {
@@ -27,16 +40,17 @@ public class AddServerL2 extends Actions {
 	}
 
 	public void results(CostRewardObject cr) {
-		ArrayList<Integer> usedServers = ss.getUsedServersL2();
-		for (int i = 0; i < ss.validL2Servers.length; i++) {
-			if (!(usedServers.contains(new Integer(ss.validL2Servers[i])))) {
-				ss.addUsedServerL2(new Integer(ss.validL2Servers[i]));
+		ArrayList<Integer> usedServers = cr.getSystemState().getUsedServersL2();
+		for (int i = 0; i < cr.getSystemState().validL2Servers.length; i++) {
+			if (!(usedServers.contains(new Integer(
+					cr.getSystemState().validL2Servers[i])))) {
+				cr.getSystemState().addUsedServerL2(
+						new Integer(cr.getSystemState().validL2Servers[i]));
 				break;
 			}
 		}
-		cr.serverCount = cr.serverCount + 1;
-		cr.cost = cr.cost + serverCost;
-		cr.systemResponseTime = cr.systemResponseTime - 5;
+		cr.setCost(cr.getCost() + serverCost);
+		cr.setSystemResponseTime(cr.getSystemResponseTime() + responseChange);
 	}
 
 	@Override
@@ -50,14 +64,26 @@ public class AddServerL2 extends Actions {
 	}
 
 	@Override
-	public void setSystemState(SystemState ss) {
-		this.ss = ss;
-
+	public String getPrismSucessString() {
+		String result = "(clockTime'=clockTime+"
+				+ String.valueOf(timeToPeformAction) + ")"
+				+ "&(responseTime'= responseTime-" + Math.abs(responseChange) + ")"
+				+ "&(cost'=cost+" + String.valueOf(serverCost) + ")"
+				+ "&(serverCount'= serverCount+1)"
+				+ "&(contentQuality'=contentQuality)";
+		return result;
 	}
 
 	@Override
-	public SystemState getSystemState() {
-		return this.ss;
+	public String getPrismFailureString() {
+		String result = "(clockTime'=clockTime+"
+				+ String.valueOf(timeToPeformAction) + ")";
+		return result;
+	}
+
+	@Override
+	public double getFailureRate() {
+		return failureRate;
 	}
 
 }

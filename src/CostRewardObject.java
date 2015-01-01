@@ -1,21 +1,22 @@
 public class CostRewardObject {
 
 	int systemResponseTime;
-	int serverCount;
+	// int serverCount;
 	int cost;
-	boolean highTextResolution;
+	// boolean highTextResolution;
+	SystemState ss = new SystemState();
 
-	public CostRewardObject(int systemResponseTime, int serverCount, int cost,
-			boolean highTextResolution) {
+	public CostRewardObject(int systemResponseTime, int cost) {
 		this.systemResponseTime = systemResponseTime;
-		this.serverCount = serverCount;
 		this.cost = cost;
-		this.highTextResolution = highTextResolution;
-
 	}
 
 	public int getSystemResponseTime() {
 		return systemResponseTime;
+	}
+
+	public SystemState getSystemState() {
+		return ss;
 	}
 
 	public void setSystemResponseTime(int systemResponseTime) {
@@ -23,11 +24,7 @@ public class CostRewardObject {
 	}
 
 	public int getServerCount() {
-		return serverCount;
-	}
-
-	public void setServerCount(int serverCount) {
-		this.serverCount = serverCount;
+		return ss.currentServerCount();
 	}
 
 	public int getCost() {
@@ -39,11 +36,11 @@ public class CostRewardObject {
 	}
 
 	public boolean getUsingHighTextResolution() {
-		return highTextResolution;
+		return ss.getUsingHighTextResolution();
 	}
 
-	public void setUsingHighTextResolution(boolean newTextResolution) {
-		highTextResolution = newTextResolution;
+	public void toggleHighTextResolution() {
+		ss.toogleUsingHighTextResolution();
 	}
 
 }

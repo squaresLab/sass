@@ -6,7 +6,6 @@ public class SystemState {
 	final int[] validL2Servers = { 1, 2, 3, 4 };
 	ArrayList<Integer> l1ServersInUse = new ArrayList<Integer>();
 	ArrayList<Integer> l2ServersInUse = new ArrayList<Integer>();
-	int currentReponseRate = 0;
 	boolean usingHighTextResolution = true;
 	final int maxDatabaseThreads = 5;
 	int currentDatabaseAThreads = 1;
@@ -25,6 +24,14 @@ public class SystemState {
 
 	public int[] getValidL2Servers() {
 		return validL2Servers;
+	}
+
+	public int getMaxServerCount() {
+		return validL1Servers.length + validL2Servers.length;
+	}
+
+	public int currentServerCount() {
+		return l1ServersInUse.size() + l2ServersInUse.size();
 	}
 
 	public void addUsedServerL1(int serverNumber) {

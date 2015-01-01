@@ -36,6 +36,7 @@ public class RunGA {
 		gpConf.setNewChromsPercent(0.3f);
 		gpConf.setStrictProgramCreation(true);
 		gpConf.setUseProgramCache(true);
+		gpConf.setNoCommandGeneCloning(false);
 		try {
 			gpConf.setFitnessFunction((GPFitnessFunction) prismEvaluationFunction);
 		} catch (InvalidConfigurationException e) {
@@ -121,13 +122,14 @@ public class RunGA {
 				// CommandGene.VoidClass, // nonclassic
 				// CommandGene.VoidClass, CommandGene.VoidClass,
 				// CommandGene.VoidClass }),
-				new AddServerL1(ss, gpConf), new AddServerL2(ss, gpConf),
-				new DeleteServerL1(ss, gpConf),
-				new DeleteServerL2(ss, gpConf), // nonclassic
-				new IncreaseDatabaseAThreads(ss, gpConf),
-				new IncreaseDatabaseBThreads(ss, gpConf), // nonclassic
-				new IncreaseTextResolution(ss, gpConf), // nonclassic
-				new ReduceTextResolution(ss, gpConf), // nonclassic
+				new IfSuccessElse(gpConf), new AddServerL1(gpConf),
+				new AddServerL2(gpConf),
+				new DeleteServerL1(gpConf),
+				new DeleteServerL2(gpConf), // nonclassic
+				new IncreaseDatabaseAThreads(gpConf),
+				new IncreaseDatabaseBThreads(gpConf), // nonclassic
+				new IncreaseTextResolution(gpConf), // nonclassic
+				new ReduceTextResolution(gpConf), // nonclassic
 		} };
 		// Create genotype with initial population.
 		// ----------------------------------------

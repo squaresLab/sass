@@ -1,14 +1,29 @@
+import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.impl.GPConfiguration;
 
 public class IncreaseDatabaseBThreads extends Actions {
 
-	SystemState ss;
+	final int responseChange = -1;
+	final int threadChange = 2;
+	final double failureRate = 0.2;
+	final GPConfiguration gpConf;
 
-	public IncreaseDatabaseBThreads(SystemState ss, GPConfiguration gpConf)
-			throws Exception {
+	public IncreaseDatabaseBThreads(GPConfiguration gpConf)
+			throws InvalidConfigurationException {
 		super(gpConf);
-		this.ss = ss;
 		this.timeToPeformAction = 180;
+		this.gpConf = gpConf;
+	}
+
+	@Override
+	public Object clone() {
+		try {
+			return new IncreaseDatabaseBThreads(gpConf);
+		} catch (InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -16,13 +31,15 @@ public class IncreaseDatabaseBThreads extends Actions {
 		if (cr.systemResponseTime < 2) {
 			return false;
 		}
-		return !(ss.getDatabaseBThreadCount() > ss.maxDatabaseThreads - 2);
+		return !(cr.getSystemState().getDatabaseBThreadCount() > cr
+				.getSystemState().maxDatabaseThreads - 2);
 	}
 
 	@Override
 	public void results(CostRewardObject cr) {
-		ss.setDatabaseAThreadCount(ss.getDatabaseAThreadCount() + 2);
-		cr.systemResponseTime = cr.systemResponseTime - 1;
+		cr.getSystemState().setDatabaseAThreadCount(
+				cr.getSystemState().getDatabaseAThreadCount() + threadChange);
+		cr.systemResponseTime = cr.systemResponseTime + responseChange;
 
 	}
 
@@ -37,14 +54,24 @@ public class IncreaseDatabaseBThreads extends Actions {
 	}
 
 	@Override
-	public void setSystemState(SystemState ss) {
-		this.ss = ss;
-
+	public String getPrismSucessString() {
+		String result = "(clockTime'=clockTime+"
+				+ String.valueOf(timeToPeformAction) + ")"
+				+ "&(responseTime'= responseTime-" + Math.abs(responseChange) + ")"
+				+ "&(cost'=cost)" + "&(serverCount'= serverCount)"
+				+ "&(contentQuality'=contentQuality)";
+		return result;
 	}
 
 	@Override
-	public SystemState getSystemState() {
-		return this.ss;
+	public String getPrismFailureString() {
+		String result = "(clockTime'=clockTime+"
+				+ String.valueOf(timeToPeformAction) + ")";
+		return result;
 	}
 
+	@Override
+	public double getFailureRate() {
+		return failureRate;
+	}
 }

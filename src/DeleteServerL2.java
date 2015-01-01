@@ -5,20 +5,32 @@ import org.jgap.gp.impl.GPConfiguration;
 
 public class DeleteServerL2 extends Actions {
 
-	SystemState ss;
 	final int serverCost = 20;
 	final int responseChange = 5;
+	final double failureRate = 0.1;
+	final GPConfiguration gpConf;
 
-	public DeleteServerL2(SystemState ss, GPConfiguration gpConf)
+	public DeleteServerL2(GPConfiguration gpConf)
 			throws InvalidConfigurationException {
 		super(gpConf);
+		this.gpConf = gpConf;
 		this.timeToPeformAction = 120;
-		this.ss = ss;
+	}
+
+	@Override
+	public Object clone() {
+		try {
+			return new DeleteServerL2(gpConf);
+		} catch (InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public boolean arePreconditionsSatisfied(CostRewardObject cr) {
-		if (ss.getUsedServersL2().size() > 2) {
+		if (cr.getSystemState().getUsedServersL2().size() > 1) {
 			return true;
 		} else {
 			return false;
@@ -27,15 +39,17 @@ public class DeleteServerL2 extends Actions {
 
 	@Override
 	public void results(CostRewardObject cr) {
-		ArrayList<Integer> usedServers = ss.getUsedServersL2();
-		for (int i = ss.validL2Servers.length - 1; i > -1; i--) {
-			if (usedServers.contains(new Integer(ss.validL2Servers[i]))) {
-				ss.removeUsedServerL2(ss.validL2Servers[i]);
+		ArrayList<Integer> usedServers = cr.getSystemState().getUsedServersL2();
+		for (int i = cr.getSystemState().validL2Servers.length - 1; i > -1; i--) {
+			if (usedServers.contains(new Integer(
+					cr.getSystemState().validL2Servers[i]))) {
+				cr.getSystemState().removeUsedServerL2(
+						cr.getSystemState().validL2Servers[i]);
+				break;
 			}
 		}
-		cr.serverCount = cr.serverCount - 1;
-		cr.cost = cr.cost - serverCost;
-		cr.systemResponseTime = cr.systemResponseTime + 5;
+		cr.setCost(cr.getCost() - serverCost);
+		cr.setSystemResponseTime(cr.getSystemResponseTime() + responseChange);
 
 	}
 
@@ -50,14 +64,25 @@ public class DeleteServerL2 extends Actions {
 	}
 
 	@Override
-	public void setSystemState(SystemState ss) {
-		this.ss = ss;
-
+	public String getPrismSucessString() {
+		String result = "(clockTime'=clockTime+"
+				+ String.valueOf(timeToPeformAction) + ")"
+				+ "&(responseTime'= responseTime+" + responseChange + ")"
+				+ "&(cost'=cost-" + String.valueOf(serverCost) + ")"
+				+ "&(serverCount'= serverCount-1)"
+				+ "&(contentQuality'=contentQuality)";
+		return result;
 	}
 
 	@Override
-	public SystemState getSystemState() {
-		return this.ss;
+	public String getPrismFailureString() {
+		String result = "(clockTime'=clockTime+"
+				+ String.valueOf(timeToPeformAction) + ")";
+		return result;
 	}
 
+	@Override
+	public double getFailureRate() {
+		return failureRate;
+	}
 }
