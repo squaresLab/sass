@@ -12,13 +12,13 @@ import org.jgap.gp.IGPFitnessEvaluator;
 import org.jgap.gp.IGPProgram;
 import org.jgap.gp.impl.ProgramChromosome;
 
-import actions.Actions;
-import actions.CostRewardObject;
-import actions.SystemState;
 import plan.IfNode;
 import plan.Plan;
 import plan.PlanNode;
 import plan.SingleActionNode;
+import actions.Actions;
+import actions.CostRewardObject;
+import actions.SystemState;
 
 public class EvaluateFitness extends GPFitnessFunction implements
 		IGPFitnessEvaluator {
@@ -410,151 +410,9 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		printPrismNode(writer, actionStringCount, generatedPlan.getStartNode(), 2);
 
-		/*
-		 * ArrayList<CommandGene> commandsThatMayFail = new
-		 * ArrayList<CommandGene>(); ArrayList<ActionPosition> actionPositionArray =
-		 * new ArrayList<ActionPosition>();
-		 * ArrayList<LastActionInIfAndFirstTwoOfBranches> testAndBranchArray = new
-		 * ArrayList<LastActionInIfAndFirstTwoOfBranches>(); for (int i = 0; i <
-		 * size; i++) { //
-		 * System.out.println(currentPlan.getChromosome(0).getGene(i)); CommandGene
-		 * cg = currentPlan.getChromosome(0).getGene(i); if
-		 * (cg.toString().contains("if-success")) { // what if I first got all the
-		 * genes in the 0 part of the if statement // then I generated the possible
-		 * plans from them, and then I get all // of the final genes. Then if a
-		 * final gene is found, // implement that it might fail.
-		 * 
-		 * ArrayList<CommandGene> genesInTestOfIf = new ArrayList<CommandGene>();
-		 * 
-		 * int headGeneOfIfTestSectionIndex = currentPlan.getChromosome(0)
-		 * .getChild(cg, 0); getGenesInIf(genesInTestOfIf,
-		 * headGeneOfIfTestSectionIndex, currentPlan.getChromosome(0)); int
-		 * ifTestSize = genesInTestOfIf.size(); int branchCount = 0; // counting
-		 * number of successes in the if statement test for (int j = 0; j <
-		 * ifTestSize; j++) { if
-		 * (genesInTestOfIf.get(j).toString().contains("if-success")) {
-		 * branchCount++; } } // adding the action or actions at the end of the test
-		 * statement for // the if execution int[][] branchChoices = null;
-		 * ArrayList<Actions> actionsThatMayFail = new ArrayList<Actions>(); if
-		 * (branchCount > 0) { // take this if if there are branching statements
-		 * inside the if test branchChoices = generateBranchChoices(branchCount);
-		 * for (int j = 0; j < branchChoices.length; j++) { ArrayList<CommandGene>
-		 * currentTestBranch = new ArrayList<CommandGene>();
-		 * addNodeToPlan(currentPlan.getChromosome(0), headGeneOfIfTestSectionIndex,
-		 * currentTestBranch, branchChoices[j], 0); // need to add the ending action
-		 * of all possible branches of the if // test statement
-		 * commandsThatMayFail.add(currentTestBranch.get(currentTestBranch .size() -
-		 * 1)); actionsThatMayFail.add((Actions) (currentTestBranch
-		 * .get(currentTestBranch.size() - 1))); } } else { // only the last action
-		 * can fail if there is no branching commandsThatMayFail
-		 * .add(genesInTestOfIf.get(genesInTestOfIf.size() - 1));
-		 * actionsThatMayFail.add((Actions) (genesInTestOfIf.get(genesInTestOfIf
-		 * .size() - 1))); }
-		 * 
-		 * testAndBranchArray.add(new LastActionInIfAndFirstTwoOfBranches(
-		 * actionsThatMayFail, nextAction(currentPlan.getChromosome(0), cg, 1),
-		 * nextAction( currentPlan.getChromosome(0), cg, 2))); } else {
-		 * System.out.println("CommandGene String: " + cg.toString());
-		 * System.out.println("ActionStringCount contains command string: " +
-		 * actionStringCount.containsKey(cg.toString())); if
-		 * (actionStringCount.containsKey(cg.toString())) { Actions action = null;
-		 * if (!(cg instanceof Actions)) { System.out
-		 * .println("this shouldn't happen because command gene matches " +
-		 * "an action but is not an action."); } else { action = (Actions) cg; }
-		 * actionPositionArray.add(new ActionPosition(action, position));
-		 * position++; stateCount++; // break; } } }
-		 * 
-		 * // now creating file when we know where the actions are
-		 * System.out.println("action position array: " +
-		 * actionPositionArray.size()); for (int i = 0; i <
-		 * actionPositionArray.size(); i++) { ActionPosition actionPosition =
-		 * actionPositionArray.get(i); Actions action = actionPosition.getAction();
-		 * System.out.println("action printing: " + action.toString()); String
-		 * nextStateString = null; if (i == actionPositionArray.size() - 1) {
-		 * nextStateString = "0"; } else { nextStateString = "currentState+1"; }
-		 * CommandGene cg = (CommandGene) action;
-		 * actionStringCount.put(action.toString(),
-		 * actionStringCount.get(action.toString()) + 1);
-		 * 
-		 * // added for debugging System.out.println("current gene: " +
-		 * cg.toString()); System.out.print("commands that may fail: "); for
-		 * (CommandGene tempGene : commandsThatMayFail) {
-		 * System.out.print(tempGene.toString() + ", "); } System.out.print("\n");
-		 * // can't just use the contains method. CommandGene has a weird //
-		 * override of equals that makes contains always return true. boolean
-		 * containsCG = false; for (CommandGene commandGeneToCheckForMatch :
-		 * commandsThatMayFail) { if (commandGeneToCheckForMatch == cg) { containsCG
-		 * = true; break; } } if (containsCG) {
-		 * System.out.println("matching command index: " +
-		 * commandsThatMayFail.indexOf(cg)); CommandGene weirdMatchingGene =
-		 * commandsThatMayFail .get(commandsThatMayFail.indexOf(cg));
-		 * System.out.println(weirdMatchingGene.toString());
-		 * System.out.println("match matches the current gene: " +
-		 * cg.equals(weirdMatchingGene)); System.out.println("Command may fail");
-		 * LastActionInIfAndFirstTwoOfBranches lastAndBranch = null; for (int j = 0;
-		 * j < testAndBranchArray.size(); j++) { lastAndBranch =
-		 * testAndBranchArray.get(j); ArrayList<Actions> lastActions =
-		 * lastAndBranch.getLastActionsInIf(); boolean found = false; for (Actions a
-		 * : lastActions) { if (a == action) {
-		 * System.out.println("Matching failing action: 1)" + a.toString() + " 2)" +
-		 * action.toString()); found = true; break; } } if (found) { break; } }
-		 * 
-		 * Actions firstSuccessAction = lastAndBranch
-		 * .getFirstStatementInSuccessBranch();
-		 * System.out.println("first success action: " +
-		 * firstSuccessAction.toString()); int firstSuccessActionPosition = -1; for
-		 * (ActionPosition tempActionPosition : actionPositionArray) { // actions
-		 * .equals doesn't work how I want it to, using == instead if
-		 * (tempActionPosition.getAction() == firstSuccessAction) {
-		 * System.out.println("matching first success action: 1) " +
-		 * tempActionPosition.getAction().toString() + " 2)" + firstSuccessAction);
-		 * firstSuccessActionPosition = tempActionPosition.getPosition(); break; } }
-		 * if (firstSuccessActionPosition == -1) {
-		 * System.out.println("Didn't find first success action"); System.exit(1); }
-		 * Actions firstFailAction = lastAndBranch
-		 * .getFirstStatementInFailureBranch(); int firstFailActionPosition = -1;
-		 * for (ActionPosition tempActionPosition : actionPositionArray) { // Action
-		 * equals does work like i need it to. Using == instead; if
-		 * (tempActionPosition.getAction() == firstFailAction) {
-		 * firstFailActionPosition = tempActionPosition.getPosition();
-		 * System.out.println("matching first success action: 1) " +
-		 * tempActionPosition.getAction().toString() + " 2)" + firstFailAction);
-		 * break; } } if (firstFailActionPosition == -1) {
-		 * System.out.println("Didn't find first success action"); System.exit(1); }
-		 * 
-		 * writer.println("[" + action.toString() +
-		 * String.valueOf(actionStringCount.get(action.toString())) +
-		 * "] currentState = " + String.valueOf(actionPosition.getPosition()) +
-		 * "-> " + String.valueOf((1 - action.getFailureRate())) +
-		 * ":(currentState' = " + String.valueOf(firstSuccessActionPosition) + ")&"
-		 * + action.getPrismSucessString() + "+ " +
-		 * String.valueOf(action.getFailureRate()) + ":(currentState' = " +
-		 * String.valueOf(firstFailActionPosition) + ")&" +
-		 * action.getPrismFailureString() + ";");
-		 * 
-		 * // added for debugging // System.exit(1); } else { // later I need to
-		 * update this to handle System.out.println("Command cannot fail");
-		 * writer.println("[" + action.toString() +
-		 * String.valueOf(actionStringCount.get(action.toString())) +
-		 * "] currentState = " + String.valueOf(actionPosition.getPosition()) +
-		 * "-> " + "(currentState' = " + nextStateString + ")&" +
-		 * action.getPrismSucessString() + ";"); } }
-		 */
-
-		// added for debugging
-		/*
-		 * if (stateCount > 1) { System.out .println("!!!!!" +
-		 * currentPlan.getChromosome(0).toStringNorm(0)); }
-		 */
-
 		writer.println("\nendmodule");
 
-		// System.out.println("End of Prism plan check");
-		// currentPlan.getChromosome(0).getFunctions()[1].getArity(a_indvividual)
 		writer.close();
-
-		// currently using it for debugging
-		// System.exit(1);
 
 		PrintWriter propertyCheckWriter = null;
 		try {
@@ -610,8 +468,11 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			writer.println("[" + action.toString()
 					+ String.valueOf(actionStringCount.get(action.toString()))
 					+ "] currentState = " + String.valueOf(currentCommandCount) + "-> "
-					+ "(currentState' = " + nextStateString + ")&"
-					+ action.getPrismSucessString() + ";");
+					+ String.valueOf((1 - action.getFailureRate()))
+					+ ":(currentState' = " + nextStateString + ")&"
+					+ action.getPrismSucessString() + "+ "
+					+ String.valueOf(action.getFailureRate()) + ":(currentState' = "
+					+ nextStateString + ")&" + action.getPrismFailureString() + ";");
 			if (((SingleActionNode) pn).getNextNode() != null) {
 				printPrismNode(writer, actionStringCount,
 						((SingleActionNode) pn).getNextNode(), currentCommandCount + 1);
@@ -675,44 +536,6 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			return firstBranch;
 
 		} else if (currentGene.toString().contains("if-success")) {
-			// end of the test expression needs to connect to
-			// the first actions of the success branch and
-			// the fail branch
-
-			/*
-			 * if (printCount < 5) { System.out.println("Printed plan: " +
-			 * chromosome.toStringNorm(0));
-			 * System.out.println("Children index of node: " +
-			 * chromosome.getChild(currentGeneIndex, 0) + " " +
-			 * chromosome.getChild(currentGeneIndex, 1) + " " +
-			 * chromosome.getChild(currentGeneIndex, 2)); IGPProgram ind =
-			 * chromosome.getIndividual(); System.out.println("test statement: " +
-			 * chromosome.getGene(chromosome.getChild(currentGeneIndex, 0))
-			 * .toString()); System.out.print("test children"); CommandGene tempGene =
-			 * chromosome.getGene(chromosome.getChild( currentGeneIndex, 0)); if
-			 * (tempGene.getArity(ind) != 0) { for (int i = 0; i <
-			 * tempGene.getArity(ind); i++) { int childGeneIndex =
-			 * chromosome.getChild(currentGeneIndex, i);
-			 * System.out.print(childGeneIndex + ", "); } } System.out.print("\n");
-			 * System.out.println("success statement: " +
-			 * chromosome.getGene(chromosome.getChild(currentGeneIndex, 1))
-			 * .toString()); System.out.print("success children"); tempGene =
-			 * chromosome.getGene(chromosome.getChild(currentGeneIndex, 1)); if
-			 * (tempGene.getArity(ind) != 0) { for (int i = 0; i <
-			 * tempGene.getArity(ind); i++) { int childGeneIndex =
-			 * chromosome.getChild(tempGene, i); System.out.print(childGeneIndex +
-			 * ", "); } } System.out.print("\n");
-			 * System.out.println("fail statement: " +
-			 * chromosome.getGene(chromosome.getChild(currentGeneIndex, 2))
-			 * .toString()); System.out.print("fail children"); tempGene =
-			 * chromosome.getGene(chromosome.getChild(currentGeneIndex, 2)); if
-			 * (tempGene.getArity(ind) != 0) { for (int i = 0; i <
-			 * tempGene.getArity(ind); i++) { int childGeneIndex =
-			 * chromosome.getChild(tempGene, i); System.out.print(childGeneIndex +
-			 * ", "); } } System.out.print("\n"); printCount++;
-			 * 
-			 * }
-			 */
 			PlanNode testBranch = makeSubPlan(chromosome,
 					chromosome.getChild(currentGeneIndex, 0));
 			PlanNode successBranch = makeSubPlan(chromosome,
@@ -752,63 +575,6 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		} else {
 			return new SingleActionNode(currentGene);
 		}
-	}
-
-	private Actions nextAction(ProgramChromosome chromosome, CommandGene cg,
-			int childIndex) {
-		CommandGene nextGene = chromosome.getGene(chromosome.getChild(cg,
-				childIndex));
-		if (nextGene instanceof Actions) {
-			return ((Actions) nextGene);
-		} else {
-			return nextAction(chromosome, nextGene, 0);// childIndex 0
-		}
-
-	}
-
-	private void getGenesInIf(ArrayList<CommandGene> genesInTestOfIf,
-			int geneIndex, ProgramChromosome chromosome) {
-		CommandGene cg = chromosome.getGene(geneIndex);
-		genesInTestOfIf.add(cg);
-		IGPProgram ind = chromosome.getIndividual();
-		if (cg.getArity(ind) != 0) {
-			for (int i = 0; i < cg.getArity(ind); i++) {
-				int childGeneIndex = chromosome.getChild(geneIndex, i);
-				getGenesInIf(genesInTestOfIf, childGeneIndex, chromosome);
-			}
-		}
-
-	}
-
-	private double calculateTransitionCost(CostRewardObject cr, Actions a) {
-		int contentQuailtyImportance = 20;
-		if (!cr.getUsingHighTextResolution()) {
-			contentQuailtyImportance = contentQuailtyImportance / 2;
-		}
-		int time = a.getTime();
-		time = time / 100;
-		// double cost = -50 * cr.getSystemResponseTime() *
-		// cr.getSystemResponseTime()
-		// + -0.2 * cr.getCost() + 0.1 * contentQuailtyImportance - 0.003 * time
-		// * time;
-		double cost = -5 * cr.getSystemResponseTime() + -0.2 * cr.getCost() + 0.1
-				* contentQuailtyImportance - 0.3 * time;
-
-		// System.out.println("response time: " + cr.getSystemResponseTime());
-		// System.out.println("cost: " + cr.getCost());
-		// System.out.println("quality: " + contentQuailtyImportance);
-		// System.out.println("time: " + a.getTime());
-		// System.out.println("total: " + cost);
-
-		// System.out.println("Reponse Penalty: "
-		// + (-0.4 * cr.getSystemResponseTime()));
-		// System.out.println("Cost Penalty: " + (-0.2 * cr.getCost()));
-		// System.out.println("Quailty Bonus: " + (0.1 * contentQuailtyImportance));
-		// System.out.println("Time Penalty: " + (-0.3 * a.getTime()));
-		// System.out.println("Total with Feasible Bonus: "
-		// + (cost + feasibilityReward));
-
-		return cost;
 	}
 
 	@Override

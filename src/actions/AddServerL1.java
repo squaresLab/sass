@@ -1,10 +1,13 @@
 package actions;
+
 import java.util.ArrayList;
 
 import org.jgap.InvalidConfigurationException;
+import org.jgap.gp.CommandGene;
+import org.jgap.gp.IMutateable;
 import org.jgap.gp.impl.GPConfiguration;
 
-public class AddServerL1 extends Actions {
+public class AddServerL1 extends Actions implements IMutateable {
 
 	final int serverCost = 15;
 	final int responseChange = -5;
@@ -87,6 +90,17 @@ public class AddServerL1 extends Actions {
 	@Override
 	public double getFailureRate() {
 		return failureRate;
+	}
+
+	// this is a test
+	@Override
+	public CommandGene applyMutation(int arg0, double arg1)
+			throws InvalidConfigurationException {
+		double val = Math.random();
+		if (val < arg1) {
+			return new AddServerL2(gpConf);
+		}
+		return this;
 	}
 
 }
