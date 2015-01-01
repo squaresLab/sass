@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import actions.Actions;
+
 public class LastActionInIfAndFirstTwoOfBranches {
 
 	ArrayList<Actions> lastActionsInIf;

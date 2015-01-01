@@ -12,6 +12,9 @@ import org.jgap.gp.IGPFitnessEvaluator;
 import org.jgap.gp.IGPProgram;
 import org.jgap.gp.impl.ProgramChromosome;
 
+import actions.Actions;
+import actions.CostRewardObject;
+import actions.SystemState;
 import plan.IfNode;
 import plan.Plan;
 import plan.PlanNode;

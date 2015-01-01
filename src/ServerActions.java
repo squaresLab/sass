@@ -2,6 +2,8 @@ import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
 import org.jgap.gp.impl.GPConfiguration;
 
+import actions.CostRewardObject;
+
 public abstract class ServerActions extends CommandGene {
 
 	public ServerActions(final GPConfiguration a_conf)

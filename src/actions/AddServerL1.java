@@ -1,26 +1,29 @@
+package actions;
 import java.util.ArrayList;
 
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.impl.GPConfiguration;
 
-public class DeleteServerL2 extends Actions {
+public class AddServerL1 extends Actions {
 
-	final int serverCost = 20;
-	final int responseChange = 5;
+	final int serverCost = 15;
+	final int responseChange = -5;
 	final double failureRate = 0.1;
 	final GPConfiguration gpConf;
 
-	public DeleteServerL2(GPConfiguration gpConf)
+	// final int timeToAddServer = 600;
+
+	public AddServerL1(GPConfiguration gpConf)
 			throws InvalidConfigurationException {
 		super(gpConf);
 		this.gpConf = gpConf;
-		this.timeToPeformAction = 120;
+		this.timeToPeformAction = 600;
 	}
 
 	@Override
 	public Object clone() {
 		try {
-			return new DeleteServerL2(gpConf);
+			return new AddServerL1(gpConf);
 		} catch (InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -28,48 +31,48 @@ public class DeleteServerL2 extends Actions {
 		}
 	}
 
-	@Override
 	public boolean arePreconditionsSatisfied(CostRewardObject cr) {
-		if (cr.getSystemState().getUsedServersL2().size() > 1) {
-			return true;
-		} else {
+		if (cr.getSystemState().validL1Servers.length == cr.getSystemState()
+				.getUsedServersL1().size()) {
 			return false;
 		}
+		if (cr.systemResponseTime < 6) {
+			return false;
+		}
+		return true;
 	}
 
-	@Override
 	public void results(CostRewardObject cr) {
-		ArrayList<Integer> usedServers = cr.getSystemState().getUsedServersL2();
-		for (int i = cr.getSystemState().validL2Servers.length - 1; i > -1; i--) {
-			if (usedServers.contains(new Integer(
-					cr.getSystemState().validL2Servers[i]))) {
-				cr.getSystemState().removeUsedServerL2(
-						cr.getSystemState().validL2Servers[i]);
+		ArrayList<Integer> usedServers = cr.getSystemState().getUsedServersL1();
+		for (int i = 0; i < cr.getSystemState().validL1Servers.length; i++) {
+			if (!(usedServers.contains(new Integer(
+					cr.getSystemState().validL1Servers[i])))) {
+				cr.getSystemState().addUsedServerL1(
+						new Integer(cr.getSystemState().validL1Servers[i]));
 				break;
 			}
 		}
-		cr.setCost(cr.getCost() - serverCost);
+		cr.setCost(cr.getCost() + serverCost);
 		cr.setSystemResponseTime(cr.getSystemResponseTime() + responseChange);
-
 	}
 
 	@Override
 	public String toString() {
-		return "deleteL2Server";
+		return "addL1Server";
 	}
 
 	@Override
 	public int getTime() {
-		return this.timeToPeformAction;
+		return timeToPeformAction;
 	}
 
 	@Override
 	public String getPrismSucessString() {
 		String result = "(clockTime'=clockTime+"
 				+ String.valueOf(timeToPeformAction) + ")"
-				+ "&(responseTime'= responseTime+" + responseChange + ")"
-				+ "&(cost'=cost-" + String.valueOf(serverCost) + ")"
-				+ "&(serverCount'= serverCount-1)"
+				+ "&(responseTime'= responseTime-" + Math.abs(responseChange) + ")"
+				+ "&(cost'=cost+" + String.valueOf(serverCost) + ")"
+				+ "&(serverCount'= serverCount+1)"
 				+ "&(contentQuality'=contentQuality)";
 		return result;
 	}
@@ -85,4 +88,5 @@ public class DeleteServerL2 extends Actions {
 	public double getFailureRate() {
 		return failureRate;
 	}
+
 }

@@ -1,21 +1,25 @@
+package actions;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.impl.GPConfiguration;
 
-public class ReduceTextResolution extends Actions {
+public class IncreaseDatabaseBThreads extends Actions {
 
-	final double failureRate = 0.3;
+	final int responseChange = -1;
+	final int threadChange = 2;
+	final double failureRate = 0.2;
 	final GPConfiguration gpConf;
 
-	public ReduceTextResolution(GPConfiguration gpConf) throws Exception {
+	public IncreaseDatabaseBThreads(GPConfiguration gpConf)
+			throws InvalidConfigurationException {
 		super(gpConf);
+		this.timeToPeformAction = 180;
 		this.gpConf = gpConf;
-		this.timeToPeformAction = 60;
 	}
 
 	@Override
 	public Object clone() {
 		try {
-			return new IncreaseTextResolution(gpConf);
+			return new IncreaseDatabaseBThreads(gpConf);
 		} catch (InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -25,21 +29,24 @@ public class ReduceTextResolution extends Actions {
 
 	@Override
 	public boolean arePreconditionsSatisfied(CostRewardObject cr) {
-		if (cr.systemResponseTime <= 2 * cr.getServerCount()) {
+		if (cr.systemResponseTime < 2) {
 			return false;
 		}
-		return cr.getSystemState().getUsingHighTextResolution();
+		return !(cr.getSystemState().getDatabaseBThreadCount() > cr
+				.getSystemState().maxDatabaseThreads - 2);
 	}
 
 	@Override
 	public void results(CostRewardObject cr) {
-		cr.getSystemState().toogleUsingHighTextResolution();
-		cr.systemResponseTime = cr.systemResponseTime - 2 * cr.getServerCount();
+		cr.getSystemState().setDatabaseAThreadCount(
+				cr.getSystemState().getDatabaseAThreadCount() + threadChange);
+		cr.systemResponseTime = cr.systemResponseTime + responseChange;
+
 	}
 
 	@Override
 	public String toString() {
-		return "reduceTextResolution";
+		return "increaseDatabaseBThreads";
 	}
 
 	@Override
@@ -51,8 +58,9 @@ public class ReduceTextResolution extends Actions {
 	public String getPrismSucessString() {
 		String result = "(clockTime'=clockTime+"
 				+ String.valueOf(timeToPeformAction) + ")"
-				+ "&(responseTime'= responseTime-(serverCount*2))" + "&(cost'=cost)"
-				+ "&(serverCount'= serverCount)" + "&(contentQuality'=1)";
+				+ "&(responseTime'= responseTime-" + Math.abs(responseChange) + ")"
+				+ "&(cost'=cost)" + "&(serverCount'= serverCount)"
+				+ "&(contentQuality'=contentQuality)";
 		return result;
 	}
 
@@ -67,5 +75,4 @@ public class ReduceTextResolution extends Actions {
 	public double getFailureRate() {
 		return failureRate;
 	}
-
 }

@@ -1,3 +1,4 @@
+package actions;
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.impl.GPConfiguration;
 

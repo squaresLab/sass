@@ -8,6 +8,16 @@ import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.GPGenotype;
 import org.jgap.util.NumberKit;
 
+import actions.AddServerL1;
+import actions.AddServerL2;
+import actions.DeleteServerL1;
+import actions.DeleteServerL2;
+import actions.IncreaseDatabaseAThreads;
+import actions.IncreaseDatabaseBThreads;
+import actions.IncreaseTextResolution;
+import actions.ReduceTextResolution;
+import actions.SystemState;
+
 public class RunGA {
 
 	public static void main(String args[]) {

@@ -1,3 +1,5 @@
+import actions.Actions;
+
 public class ActionPosition {
 
 	Actions action;

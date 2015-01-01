@@ -1,3 +1,5 @@
+package actions;
+
 public class CostRewardObject {
 
 	int systemResponseTime;
