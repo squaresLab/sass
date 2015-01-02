@@ -1,3 +1,4 @@
+package main;
 import actions.Actions;
 
 public class ActionPosition {
