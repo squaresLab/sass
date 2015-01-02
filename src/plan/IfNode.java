@@ -45,11 +45,11 @@ public class IfNode extends PlanNode {
 	}
 
 	public PlanNode getBranch(int branchNumber) {
-		if (branchNumber == 1) {
+		if (branchNumber == 0) {
 			return testNode;
-		} else if (branchNumber == 2) {
+		} else if (branchNumber == 1) {
 			return successNode;
-		} else if (branchNumber == 3) {
+		} else if (branchNumber == 2) {
 			return failureNode;
 		} else {
 			System.err.println("Invalid branchNumber");

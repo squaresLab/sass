@@ -1,4 +1,5 @@
 package main;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -310,8 +311,19 @@ public class EvaluateFitness extends GPFitnessFunction implements
 	}
 
 	private void makePrismFiles(IGPProgram currentPlan) { // first need to get
-		// what is in the current plan to tailor the prism file to it.
 		int planSize = currentPlan.size();
+		if (planSize > 1) { // not sure how to handle this case, I'll handle it if
+			// it comes up
+			(new Exception()).printStackTrace();
+			System.exit(1);
+		}
+		makePrismFileFromChromosome(currentPlan.getChromosome(0));
+
+	}
+
+	public void makePrismFileFromChromosome(ProgramChromosome chromosome) {
+		// what is in the current plan to tailor the prism file to it.
+
 		boolean[] containsAction = { false, false, false, false, false, false,
 				false, false };
 		int[] actionCount = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -323,21 +335,14 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		for (int i = 0; i < actionStrings.length; i++) {
 			actionStringCount.put(actionStrings[i], new Integer(0));
 		}
-		if (planSize > 1) { // not sure how to handle this case, I'll handle it if
-												// it comes up
-			(new Exception()).printStackTrace();
+		if (actionStrings.length != containsAction.length) {
+			System.out
+					.println("action strings and string check lengths are not equal.  \nTerminating the program.");
 			System.exit(1);
-		} else {
-			if (actionStrings.length != containsAction.length) {
-				System.out
-						.println("action strings and string check lengths are not equal.  \nTerminating the program.");
-				System.exit(1);
-			}
-			for (int i = 0; i < actionStrings.length; i++) {
-				if (currentPlan.getChromosome(0).toStringNorm(0)
-						.contains(actionStrings[i])) {
-					containsAction[i] = true;
-				}
+		}
+		for (int i = 0; i < actionStrings.length; i++) {
+			if (chromosome.toStringNorm(0).contains(actionStrings[i])) {
+				containsAction[i] = true;
 			}
 		}
 
@@ -349,8 +354,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		}
 		if (trueCount == 0) {
 			System.out.println("Error.  Chromosome contained none of the actions.");
-			System.out.println("Chromosome: "
-					+ currentPlan.getChromosome(0).toStringNorm(0));
+			System.out.println("Chromosome: " + chromosome.toStringNorm(0));
 			System.exit(1);
 		}
 
@@ -366,15 +370,14 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		writer.println("dtmc\n");
 
-		writer.println("//generated plan: "
-				+ currentPlan.getChromosome(0).toStringNorm(0));
+		writer.println("//generated plan: " + chromosome.toStringNorm(0));
 
-		Plan generatedPlan = createPlan(currentPlan.getChromosome(0), 0);
+		Plan generatedPlan = createPlan(chromosome, 0);
 		writer.println("//my plan: " + generatedPlan.planString());
 
 		writer.println("rewards\n");
-		IGPProgram prog = currentPlan.getChromosome(0).getIndividual();
-		int size = currentPlan.getChromosome(0).size();
+		IGPProgram prog = chromosome.getIndividual();
+		int size = chromosome.size();
 
 		writer
 				.println("[metric] true: -5 * responseTime + -0.2 * cost + contentQuality - 0.3 * clockTime;\n");
@@ -427,8 +430,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		int maxStateCount = 0;
 
 		for (int i = 0; i < size; i++) {
-			if (!(currentPlan.getChromosome(0).getGene(i).toString()
-					.startsWith("sub["))) {
+			if (!(chromosome.getGene(i).toString().startsWith("sub["))) {
 				maxStateCount++;
 			}
 		}
@@ -506,8 +508,99 @@ public class EvaluateFitness extends GPFitnessFunction implements
 	public Plan createPlan(ProgramChromosome chromosome, int commandGeneIndex) {
 		// added for debugging
 		printCount = 0;
-		return new Plan(makeSubPlan(chromosome, commandGeneIndex));
+		// return new Plan(makeSubPlan(chromosome, commandGeneIndex));
+		return new Plan(makeSubPlanDebug(chromosome, commandGeneIndex, 0));
 
+	}
+
+	private PlanNode makeSubPlanDebug(ProgramChromosome chromosome,
+			int currentGeneIndex, int nesting) {
+		CommandGene currentGene = chromosome.getGene(currentGeneIndex);
+		if (currentGene.toString().contains("sub")) {
+			// last actions of first sub need to connect to the first action of the
+			// next sub
+			PlanNode firstBranch = makeSubPlanDebug(chromosome,
+					chromosome.getChild(currentGeneIndex, 0), nesting + 1);
+			// iterating over all the nodes in the sub plan to
+			// find the ending nodes
+			PlanNode secondBranch = makeSubPlanDebug(chromosome,
+					chromosome.getChild(currentGeneIndex, 1), nesting + 1);
+			// now connect the first part of the second branch to the
+			// ends of the first branch
+			Iterator<PlanNode> planIter = firstBranch.iterator();
+			while (planIter.hasNext()) {
+				PlanNode tempNode = planIter.next();
+				if (tempNode instanceof SingleActionNode) {
+					if (((SingleActionNode) tempNode).getNextNode() == null) {
+						((SingleActionNode) tempNode).setNextNode(secondBranch);
+						secondBranch.setPreviousNode(tempNode);
+					}
+				}
+			}
+			return firstBranch;
+
+		} else if (currentGene.toString().contains("if-success")) {
+			PlanNode testBranch = makeSubPlanDebug(chromosome,
+					chromosome.getChild(currentGeneIndex, 0), nesting + 1);
+			PlanNode successBranch = makeSubPlanDebug(chromosome,
+					chromosome.getChild(currentGeneIndex, 1), nesting + 1);
+			PlanNode failureBranch = makeSubPlanDebug(chromosome,
+					chromosome.getChild(currentGeneIndex, 2), nesting + 1);
+			Iterator<PlanNode> planIter = testBranch.iterator();
+			// add if node to all test branches
+
+			int count = 0;
+			IfNode lastINode = null;
+			while (planIter.hasNext()) {
+				count++;
+				PlanNode tempNode = planIter.next();
+				if (tempNode instanceof SingleActionNode) {
+					if (((SingleActionNode) tempNode).getNextNode() == null) {
+						IfNode iNode = new IfNode(currentGene);
+						iNode.setSuccessNode(successBranch);
+						successBranch.setPreviousNode(iNode);
+						iNode.setFailureNode(failureBranch);
+						failureBranch.setPreviousNode(iNode);
+						// taking the last node of the test branches
+						// placing them inside an if statement,
+						// and removing the old copy from the plan
+						iNode.setTestNode(tempNode);
+						lastINode = iNode;
+						if (tempNode.getPreviousNode() != null) {
+							if (tempNode.getPreviousNode() instanceof SingleActionNode) {
+								((SingleActionNode) tempNode.getPreviousNode())
+										.setNextNode(iNode);
+							} else {
+								IfNode previousINode = (IfNode) tempNode.getPreviousNode();
+								PlanNode testSuccessNode = previousINode.getSuccessNode();
+								if (tempNode == testSuccessNode
+										&& testSuccessNode instanceof SingleActionNode
+										&& ((SingleActionNode) tempNode).getNextNode() == null) {
+									previousINode.setSuccessNode(iNode);
+								} else {
+									PlanNode testFailureNode = previousINode.getFailureNode();
+									if (tempNode == testFailureNode
+											&& testFailureNode instanceof SingleActionNode
+											&& ((SingleActionNode) tempNode).getNextNode() == null) {
+										previousINode.setFailureNode(iNode);
+									}
+								}
+							}
+
+						}
+					}
+				}
+			}
+			System.out.println("!!!!!!!!!!!!!finished a test branch");
+			System.out.println("count: " + count);
+			if (count == 1) {
+				return lastINode;
+			} else {
+				return testBranch; // return the fully built if node
+			}
+		} else {
+			return new SingleActionNode(currentGene);
+		}
 	}
 
 	private PlanNode makeSubPlan(ProgramChromosome chromosome,
@@ -537,6 +630,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			return firstBranch;
 
 		} else if (currentGene.toString().contains("if-success")) {
+			System.out.println("in if success");
 			PlanNode testBranch = makeSubPlan(chromosome,
 					chromosome.getChild(currentGeneIndex, 0));
 			PlanNode successBranch = makeSubPlan(chromosome,
@@ -545,19 +639,29 @@ public class EvaluateFitness extends GPFitnessFunction implements
 					chromosome.getChild(currentGeneIndex, 2));
 			Iterator<PlanNode> planIter = testBranch.iterator();
 			// add if node to all test branches
+			int count = 0;
+			IfNode lastINode = null;
 			while (planIter.hasNext()) {
+				count++;
 				PlanNode tempNode = planIter.next();
+				System.out.println("temp node: " + tempNode.getPlanGene().toString());
 				if (tempNode instanceof SingleActionNode) {
+					System.out.println(1);
 					if (((SingleActionNode) tempNode).getNextNode() == null) {
+						System.out.println(2);
+						IfNode iNode = new IfNode(currentGene);
+						iNode.setSuccessNode(successBranch);
+						iNode.setFailureNode(failureBranch);
+						// taking the last node of the test branches
+						// placing them inside an if statement,
+						// and removing the old copy from the plan
+						iNode.setTestNode(tempNode);
+						lastINode = iNode;
 						if (tempNode.getPreviousNode() != null) {
+							System.out.println(3);
 							if (tempNode.getPreviousNode() instanceof SingleActionNode) {
-								IfNode iNode = new IfNode(currentGene);
-								iNode.setSuccessNode(successBranch);
-								iNode.setFailureNode(failureBranch);
-								// taking the last node of the test branches
-								// placing them inside an if statement,
-								// and removing the old copy from the plan
-								iNode.setTestNode(tempNode);
+								System.out.println(4);
+
 								((SingleActionNode) tempNode.getPreviousNode())
 										.setNextNode(iNode);
 
@@ -571,8 +675,13 @@ public class EvaluateFitness extends GPFitnessFunction implements
 					}
 				}
 			}
-
-			return testBranch; // return the fully built if node
+			System.out.println("!!!!!!!!!!!!!finished a test branch");
+			System.out.println("count: " + count);
+			if (count == 1) {
+				return lastINode;
+			} else {
+				return testBranch; // return the fully built if node
+			}
 		} else {
 			return new SingleActionNode(currentGene);
 		}
