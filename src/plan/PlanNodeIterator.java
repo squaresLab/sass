@@ -58,7 +58,7 @@ public class PlanNodeIterator implements Iterator<PlanNode> {
 		} else {
 			NodeIntPair nIP = ifNodes.peek();
 			if (nIP.getBranchNumber() < 3) {
-				System.out.println("branch number: " + nIP.getBranchNumber());
+				// System.out.println("branch number: " + nIP.getBranchNumber());
 				PlanNode node = nIP.getIfNode().getBranch(nIP.getBranchNumber());
 				nIP.setBranchNumber(nIP.getBranchNumber() + 1);
 				return node;
@@ -72,20 +72,20 @@ public class PlanNodeIterator implements Iterator<PlanNode> {
 	@Override
 	public PlanNode next() {
 		PlanNode result = currentIteratingNode;
-		System.out.println("Current node action: "
-				+ result.getPlanGene().toString() + " current class:"
-				+ currentIteratingNode.getClass().toString());
+		// System.out.println("Current node action: "
+		// + result.getPlanGene().toString() + " current class:"
+		// + currentIteratingNode.getClass().toString());
 		// move currentIteratingNode to the next action
 		if (currentIteratingNode instanceof SingleActionNode) {
 			if (((SingleActionNode) currentIteratingNode).getNextNode() == null) {
-				System.out.println("does not have next node");
+				// System.out.println("does not have next node");
 				if (ifNodes.empty()) {
 					currentIteratingNode = null;
 				} else { // has an untaken branch
 					currentIteratingNode = getNextIfBranch();
 				}
 			} else {
-				System.out.println("has next node");
+				// System.out.println("has next node");
 				currentIteratingNode = ((SingleActionNode) currentIteratingNode)
 						.getNextNode();
 			}

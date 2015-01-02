@@ -144,7 +144,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 	// this method steps through a plan to makes sure it is feasible, currently,=
 	// it does not handle branching.
-	private boolean checkPlanFeasibility(ArrayList<CommandGene> currentPlan) {
+	public boolean checkPlanFeasibility(ArrayList<CommandGene> currentPlan) {
 		CostRewardObject cr = createCostRewardObject();
 		int serverNumber = 3; // need to not hard code it and instead have the plan
 													// generate the number.
@@ -186,7 +186,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		return true;
 	}
 
-	private ArrayList<ArrayList<CommandGene>> generatePossiblePlanExecutions(
+	public ArrayList<ArrayList<CommandGene>> generatePossiblePlanExecutions(
 			ProgramChromosome chromosome) {
 
 		ArrayList<ArrayList<CommandGene>> planList = new ArrayList<ArrayList<CommandGene>>();
@@ -324,8 +324,6 @@ public class EvaluateFitness extends GPFitnessFunction implements
 	public void makePrismFileFromChromosome(ProgramChromosome chromosome) {
 		// what is in the current plan to tailor the prism file to it.
 
-		boolean[] containsAction = { false, false, false, false, false, false,
-				false, false };
 		int[] actionCount = { 0, 0, 0, 0, 0, 0, 0, 0 };
 		HashMap<String, Integer> actionStringCount = new HashMap<String, Integer>();
 		String[] actionStrings = { "addL1Server", "addL2Server", "deleteL1Server",
@@ -334,28 +332,6 @@ public class EvaluateFitness extends GPFitnessFunction implements
 				"reduceTextResolution" };
 		for (int i = 0; i < actionStrings.length; i++) {
 			actionStringCount.put(actionStrings[i], new Integer(0));
-		}
-		if (actionStrings.length != containsAction.length) {
-			System.out
-					.println("action strings and string check lengths are not equal.  \nTerminating the program.");
-			System.exit(1);
-		}
-		for (int i = 0; i < actionStrings.length; i++) {
-			if (chromosome.toStringNorm(0).contains(actionStrings[i])) {
-				containsAction[i] = true;
-			}
-		}
-
-		int trueCount = 0;
-		for (int i = 0; i < containsAction.length; i++) {
-			if (containsAction[i] == true) {
-				trueCount++;
-			}
-		}
-		if (trueCount == 0) {
-			System.out.println("Error.  Chromosome contained none of the actions.");
-			System.out.println("Chromosome: " + chromosome.toStringNorm(0));
-			System.exit(1);
 		}
 
 		PrintWriter writer = null;
@@ -465,7 +441,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 				nextStateString = "currentState+1";
 			}
 			Actions action = (Actions) pn.getPlanGene();
-			actionStringCount.put(actionStringCount.toString(),
+			actionStringCount.put(action.toString(),
 					(actionStringCount.get(action.toString()) + 1));
 			// System.out.println("Command cannot fail");
 			writer.println("[" + action.toString()
@@ -591,8 +567,8 @@ public class EvaluateFitness extends GPFitnessFunction implements
 					}
 				}
 			}
-			System.out.println("!!!!!!!!!!!!!finished a test branch");
-			System.out.println("count: " + count);
+			// System.out.println("!!!!!!!!!!!!!finished a test branch");
+			// System.out.println("count: " + count);
 			if (count == 1) {
 				return lastINode;
 			} else {

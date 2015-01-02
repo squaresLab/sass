@@ -1,6 +1,7 @@
 package test;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import main.EvaluateFitness;
 
@@ -95,6 +96,31 @@ public class ComplicatedPlan {
 			System.out.println("Our plan: " + generatedPlan.planString());
 			ef.makePrismFileFromChromosome(chromosome);
 			System.out.println("finished generating files");
+
+			ArrayList<ArrayList<CommandGene>> planList = ef
+					.generatePossiblePlanExecutions(chromosome);
+
+			// System.out.println("plan list size: " + planList.size());
+			for (int i = 0; i < planList.size(); i++) {
+				boolean isPlanFeasible = ef.checkPlanFeasibility(planList.get(i));
+				/*
+				 * if (sub) {
+				 * System.out.println("sub is true after checking for feasibility"); }
+				 */
+				ArrayList<CommandGene> testPlan = planList.get(i);
+				System.out.print("A plan: ");
+				for (int j = 0; j < testPlan.size(); j++) {
+					System.out.print(testPlan.get(j).toString() + ", ");
+				}
+				System.out.print("\n");
+
+				if (!isPlanFeasible) {
+
+					System.out.println("Plan failed");
+					System.exit(1);
+				}
+			}
+			System.out.println("All plans succeeded");
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
