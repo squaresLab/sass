@@ -126,9 +126,11 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			System.exit(1); // being lazy again
 		} else {
 			double result = Double.parseDouble(prismResult);
-			result = result * -1 + feasibilityReward; // multiplied by negative 1
-																								// because it was made positive
-																								// for prism
+			// result = result * -1 + feasibilityReward; // multiplied by negative 1
+			// because it was made positive
+			// for prism
+			result = result + feasibilityReward;
+
 			/*
 			 * if (sub) { System.out.println("sub fitness value:" +
 			 * String.valueOf(result)); } else { System.out.println("sub is false"); }
@@ -359,7 +361,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		int size = chromosome.size();
 
 		writer
-				.println("[metric] true: -5 * responseTime + -0.2 * cost + contentQuality - 0.3 * clockTime;\n");
+				.println("[metric] true: -200 * responseTime + -4 * cost + 20 * contentQuality - 0.02 * clockTime;\n");
 
 		SystemState ss = new SystemState();
 		writer.println("\nendrewards\n\nmodule AutomaticEvalutation\n\n");
