@@ -8,6 +8,15 @@ public abstract class PlanNode implements Iterable<PlanNode> {
 
 	CommandGene planGene;
 	PlanNode previousNode = null;
+	boolean inTestStatement = false;
+
+	public boolean isInTestStatement() {
+		return inTestStatement;
+	}
+
+	public void setInTestStatement(boolean inTestStatement) {
+		this.inTestStatement = inTestStatement;
+	}
 
 	public CommandGene getPlanGene() {
 		return planGene;

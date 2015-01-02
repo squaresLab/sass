@@ -66,10 +66,13 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			}
 		}
 
+		System.out.println("Checked all feasible plans");
+
 		/*
 		 * if (sub) { System.out.println("sub is true before making prism file"); }
 		 */
 		makePrismFiles(currentPlan);
+		System.out.println("made prism file");
 		// if (uniqueStateCount == 0) {
 		// return 0;
 		// }
@@ -501,18 +504,32 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			// find the ending nodes
 			PlanNode secondBranch = makeSubPlanDebug(chromosome,
 					chromosome.getChild(currentGeneIndex, 1), nesting + 1);
+
 			// now connect the first part of the second branch to the
 			// ends of the first branch
+
+			// need to first find all nodes that end first branch
+			// and not append the second branch as the nodes are found
+			// because it could grow by
+			// appending the second branch to it if two branches end
+			// up converging to the same point in the plan
 			Iterator<PlanNode> planIter = firstBranch.iterator();
+			ArrayList<SingleActionNode> nodesWhichEndFirstBranch = new ArrayList<SingleActionNode>();
 			while (planIter.hasNext()) {
 				PlanNode tempNode = planIter.next();
 				if (tempNode instanceof SingleActionNode) {
-					if (((SingleActionNode) tempNode).getNextNode() == null) {
-						((SingleActionNode) tempNode).setNextNode(secondBranch);
-						secondBranch.setPreviousNode(tempNode);
+					if (((SingleActionNode) tempNode).getNextNode() == null
+							&& !(tempNode.isInTestStatement())) {
+						nodesWhichEndFirstBranch.add((SingleActionNode) tempNode);
 					}
 				}
 			}
+			for (int i = 0; i < nodesWhichEndFirstBranch.size(); i++) {
+				SingleActionNode saNode = nodesWhichEndFirstBranch.get(i);
+				saNode.setNextNode(secondBranch);
+				secondBranch.setPreviousNode(saNode);
+			}
+
 			return firstBranch;
 
 		} else if (currentGene.toString().contains("if-success")) {
@@ -537,6 +554,9 @@ public class EvaluateFitness extends GPFitnessFunction implements
 						successBranch.setPreviousNode(iNode);
 						iNode.setFailureNode(failureBranch);
 						failureBranch.setPreviousNode(iNode);
+						// marking that the node is used in a test statement so
+						// sub doesn't append to it
+						tempNode.setInTestStatement(true);
 						// taking the last node of the test branches
 						// placing them inside an if statement,
 						// and removing the old copy from the plan
@@ -544,9 +564,11 @@ public class EvaluateFitness extends GPFitnessFunction implements
 						lastINode = iNode;
 						if (tempNode.getPreviousNode() != null) {
 							if (tempNode.getPreviousNode() instanceof SingleActionNode) {
+								// node is a single action and only has one child
 								((SingleActionNode) tempNode.getPreviousNode())
 										.setNextNode(iNode);
 							} else {
+								// node is an if statement and has 3 children
 								IfNode previousINode = (IfNode) tempNode.getPreviousNode();
 								PlanNode testSuccessNode = previousINode.getSuccessNode();
 								if (tempNode == testSuccessNode
@@ -576,6 +598,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			}
 		} else {
 			return new SingleActionNode(currentGene);
+
 		}
 	}
 

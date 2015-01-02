@@ -59,6 +59,15 @@ public class IfNode extends PlanNode {
 
 	@Override
 	public String planString() {
+		if (testNode == this) {
+			System.out.println("test node is the same as this node");
+		}
+		if (successNode == this) {
+			System.out.println("success node is the same as this node");
+		}
+		if (failureNode == this) {
+			System.out.println("failure node is the same as this node");
+		}
 		String result = "if (" + testNode.planString() + ") do("
 				+ successNode.planString() + ") else (" + failureNode.planString()
 				+ ")";
