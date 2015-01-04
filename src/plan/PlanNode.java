@@ -41,4 +41,6 @@ public abstract class PlanNode implements Iterable<PlanNode> {
 		return new PlanNodeIterator(this);
 	}
 
+	public abstract PlanNode deepCopy();
+
 }

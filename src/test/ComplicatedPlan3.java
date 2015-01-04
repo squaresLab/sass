@@ -15,16 +15,20 @@ import org.jgap.gp.impl.ProgramChromosome;
 
 import plan.Plan;
 import actions.AddServerL1;
+import actions.AddServerL2;
 import actions.DeleteServerL1;
 import actions.DeleteServerL2;
 import actions.IfSuccessElse;
 import actions.IncreaseDatabaseAThreads;
 import actions.IncreaseDatabaseBThreads;
 
-public class ComplicatedPlan {
+public class ComplicatedPlan3 {
+
+	static int size = 15;
+
 	public static void main(String[] args) {
-		CommandGene[] commands = new CommandGene[12];
-		int[] depths = new int[12];
+		CommandGene[] commands = new CommandGene[size];
+		int[] depths = new int[size];
 
 		GPConfiguration gpConf = null;
 		try {
@@ -58,45 +62,48 @@ public class ComplicatedPlan {
 
 		try {
 			commands[0] = new IfSuccessElse(gpConf);
-
 			depths[0] = 0;
 			commands[1] = new IfSuccessElse(gpConf);
 			depths[1] = 1;
-			commands[2] = new DeleteServerL2(gpConf);
+			commands[2] = new IfSuccessElse(gpConf);
 			depths[2] = 2;
-			commands[3] = new IncreaseDatabaseBThreads(gpConf);
-			depths[3] = 2;
-			commands[4] = new AddServerL1(gpConf);
-			depths[4] = 2;
-			commands[5] = new SubProgram(gpConf, new Class[] { CommandGene.VoidClass,
-					CommandGene.VoidClass }, true);
-			depths[5] = 1;
-			commands[6] = new IncreaseDatabaseBThreads(gpConf);
+			commands[3] = new AddServerL2(gpConf);
+			depths[3] = 3;
+			commands[4] = new IncreaseDatabaseBThreads(gpConf);
+			depths[4] = 3;
+			commands[5] = new DeleteServerL2(gpConf);
+			depths[5] = 3;
+			commands[6] = new AddServerL1(gpConf);
 			depths[6] = 2;
-			commands[7] = new IncreaseDatabaseBThreads(gpConf);
+			commands[7] = new IncreaseDatabaseAThreads(gpConf);
 			depths[7] = 2;
-			commands[8] = new IfSuccessElse(gpConf);
+			commands[8] = new SubProgram(gpConf, new Class[] { CommandGene.VoidClass,
+					CommandGene.VoidClass }, true);
 			depths[8] = 1;
-			commands[9] = new DeleteServerL1(gpConf);
+			commands[9] = new IncreaseDatabaseAThreads(gpConf);
 			depths[9] = 2;
-			commands[10] = new IncreaseDatabaseAThreads(gpConf);
+			commands[10] = new AddServerL1(gpConf);
 			depths[10] = 2;
-			commands[11] = new IncreaseDatabaseBThreads(gpConf);
-			depths[11] = 2;
+			commands[11] = new IfSuccessElse(gpConf);
+			depths[11] = 1;
+			commands[12] = new AddServerL1(gpConf);
+			depths[12] = 2;
+			commands[13] = new IncreaseDatabaseBThreads(gpConf);
+			depths[13] = 2;
+			commands[14] = new DeleteServerL2(gpConf);
+			depths[14] = 2;
 
-			ProgramChromosome chromosome = new ProgramChromosome(gpConf, 12);
+			ProgramChromosome chromosome = new ProgramChromosome(gpConf, size);
 			chromosome.setFunctions(commands);
 
 			Field depthArray = chromosome.getClass().getDeclaredField("m_depth");
 			depthArray.setAccessible(true);
 			depthArray.set(chromosome, depths);
 			System.out.println("Created plan: " + chromosome.toStringNorm(0));
+			Thread.sleep(500);
 			EvaluateFitness ef = new EvaluateFitness();
 			Plan generatedPlan = ef.createPlan(chromosome, 0);
-			System.out.println("Our plan: " + generatedPlan.planString());
-			System.out.println("Copy: "
-					+ generatedPlan.getStartNode().deepCopy().planString());
-
+			System.out.println("Our plan: " + generatedPlan.planString() + "\n");
 			ef.makePrismFileFromChromosome(chromosome);
 			System.out.println("finished generating files");
 
@@ -130,4 +137,5 @@ public class ComplicatedPlan {
 			e.printStackTrace();
 		}
 	}
+
 }

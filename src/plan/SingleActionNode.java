@@ -33,4 +33,18 @@ public class SingleActionNode extends PlanNode {
 		this.nextNode = nextNode;
 	}
 
+	@Override
+	public PlanNode deepCopy() {
+		SingleActionNode result = new SingleActionNode(planGene);
+		PlanNode next;
+		if (nextNode == null) {
+			next = null;
+		} else {
+			next = nextNode.deepCopy();
+			next.setPreviousNode(result);
+		}
+		result.setNextNode(next);
+		return result;
+	}
+
 }

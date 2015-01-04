@@ -15,6 +15,11 @@ public class IfNode extends PlanNode {
 	public IfNode(CommandGene planGene, PlanNode testNode, PlanNode successNode,
 			PlanNode failureNode) {
 		this.planGene = planGene;
+		// shouldn't happen with current assumptions
+		if (testNode instanceof IfNode) {
+			new Exception().printStackTrace();
+			System.exit(1);
+		}
 		this.testNode = testNode;
 		this.successNode = successNode;
 		this.failureNode = failureNode;
@@ -25,6 +30,11 @@ public class IfNode extends PlanNode {
 	}
 
 	public void setTestNode(PlanNode testNode) {
+		// shouldn't happen with current assumptions
+		if (testNode instanceof IfNode) {
+			new Exception().printStackTrace();
+			System.exit(1);
+		}
 		this.testNode = testNode;
 	}
 
@@ -72,6 +82,21 @@ public class IfNode extends PlanNode {
 				+ successNode.planString() + ") else (" + failureNode.planString()
 				+ ")";
 		return result;
+	}
+
+	@Override
+	public PlanNode deepCopy() {
+		IfNode iNode = new IfNode(planGene);
+		PlanNode testBranch = testNode.deepCopy();
+		iNode.setTestNode(testBranch);
+		testBranch.setPreviousNode(iNode);
+		PlanNode successBranch = successNode.deepCopy();
+		iNode.setSuccessNode(successBranch);
+		successBranch.setPreviousNode(iNode);
+		PlanNode failureBranch = failureNode.deepCopy();
+		iNode.setFailureNode(failureBranch);
+		failureBranch.setPreviousNode(iNode);
+		return iNode;
 	}
 
 }
