@@ -534,9 +534,10 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			// System.out.println("finshed iterating through first branch");
 			// }
 			for (int i = 0; i < nodesWhichEndFirstBranch.size(); i++) {
+				PlanNode secondBranchCopy = secondBranch.deepCopy();
 				SingleActionNode saNode = nodesWhichEndFirstBranch.get(i);
-				saNode.setNextNode(secondBranch);
-				secondBranch.setPreviousNode(saNode);
+				saNode.setNextNode(secondBranchCopy);
+				secondBranchCopy.setPreviousNode(saNode);
 			}
 
 			// System.out.println("finished sub node");
@@ -574,16 +575,16 @@ public class EvaluateFitness extends GPFitnessFunction implements
 				IfNode iNode = new IfNode(currentGene);
 				iNode.setPreviousNode(endNode.getPreviousNode());
 				PlanNode successBranchCopy = successBranch.deepCopy();
+				// this next line used to have an error - it overrode the previous
+				// setting for the first endnode if the second endNode was
+				// different from the first - fixed by the success branch copy
 				iNode.setSuccessNode(successBranchCopy);
-				// this next line is an error - it overrides the previous setting
-				// for the first endnode if the second endNode is different from
-				// the first
-				successBranchCopy.setPreviousNode(iNode);
 				PlanNode failureBranchCopy = failureBranch.deepCopy();
 				iNode.setFailureNode(failureBranchCopy);
-				// this next line is an error - it overrides the previous setting
-				// for the first endnode if the second endNode is different from
-				// the first
+				// this next line used to have an error - it overrode the previous
+				// setting
+				// for the first endnode if the second endNode was different from
+				// the first - fixed by failure branch copy
 				failureBranchCopy.setPreviousNode(iNode);
 				// marking that the node is used in a test statement so
 				// sub doesn't append to it
