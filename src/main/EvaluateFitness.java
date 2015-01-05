@@ -537,10 +537,6 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			Iterator<PlanNode> planIter = testBranch.iterator();
 			// add if node to all test branches
 
-			if (nesting == 0) {
-				System.out.println("Stopping here for debugging");
-			}
-
 			int count = 0;
 			int debugCount = 0;
 			IfNode lastINode = null;
