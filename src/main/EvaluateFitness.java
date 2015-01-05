@@ -28,6 +28,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 	int feasibilityReward = 99999;
 	boolean sub = false; // used for debugging
 	// int uniqueStateCount;
+	HashMap<String, Double> planCache = new HashMap<String, Double>();
 
 	/**
 	 * 
@@ -41,107 +42,97 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		System.out.println("A plan: "
 				+ currentPlan.getChromosome(0).toStringNorm(0));
-
 		ArrayList<ArrayList<CommandGene>> planList = generatePossiblePlanExecutions(currentPlan
 				.getChromosome(0));
-
 		// System.out.println("plan list size: " + planList.size());
 		for (int i = 0; i < planList.size(); i++) {
 			boolean isPlanFeasible = checkPlanFeasibility(planList.get(i));
-			/*
-			 * if (sub) {
-			 * System.out.println("sub is true after checking for feasibility"); }
-			 */
 			if (!isPlanFeasible) {
-				// return -1 * infeasibilityPenalty; // some large negative number to
-				// always
-				// lose the
-				/*
-				 * if (sub) { System.out.println("sub is invalid plan"); }
-				 */
-
 				return 0;
-				// fitness
-				// comparisons later
 			}
 		}
+		checkPlanSize(currentPlan);
+		Plan generatedPlan = createPlan(currentPlan.getChromosome(0), 0);
+		if (planCache.containsKey(generatedPlan.planString())) {
+			double result = planCache.get(generatedPlan.planString());
+			System.out.println("cached plan cost: " + result);
+			return result;
+		} else {
+			makePrismFileFromPlan(generatedPlan, currentPlan.getChromosome(0));
 
-		/*
-		 * if (sub) { System.out.println("sub is true before making prism file"); }
-		 */
-		makePrismFiles(currentPlan);
-		// if (uniqueStateCount == 0) {
-		// return 0;
-		// }
-		// end attempt to print plan
-		BufferedReader reader = null;
-		try {
-			Process p = Runtime
-					.getRuntime()
-					.exec(
-							"/home/zack/Documents/SoftwareModels/Project/prism-4.2.beta1-linux64/bin/prism /home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm /home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl -dtmc -sim -simsamples 100000");
+			BufferedReader reader = null;
 			try {
-				p.waitFor();
-			} catch (InterruptedException e) {
+				Process p = Runtime
+						.getRuntime()
+						.exec(
+								"/home/zack/Documents/SoftwareModels/Project/prism-4.2.beta1-linux64/bin/prism /home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm /home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl -dtmc -sim -simsamples 100000");
+				try {
+					p.waitFor();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.exit(1); // lazy error handling
+				}
+				reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.exit(1); // lazy error handling
+				System.exit(1); // being lazy
 			}
-			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(1); // being lazy
-		}
 
-		// parsing result from command
-		String line = null;
-		try {
-			line = reader.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String prismResult = null;
-		// System.out.println("\nResults from Prism:");
-		while (line != null) {
-			// System.out.println(line);
-			if (line.contains("Result:")) {
-				prismResult = line.substring("Result:".length());
-				prismResult = prismResult.trim();
-				break;
-			}
+			// parsing result from command
+			String line = null;
 			try {
 				line = reader.readLine();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		if (prismResult == null) {
-			new Exception().printStackTrace();
-			System.exit(1); // being lazy again
-		} else {
-			double result = Double.parseDouble(prismResult);
-			// result = result * -1 + feasibilityReward; // multiplied by negative 1
-			// because it was made positive
-			// for prism
-			result = result + feasibilityReward;
-
-			/*
-			 * if (sub) { System.out.println("sub fitness value:" +
-			 * String.valueOf(result)); } else { System.out.println("sub is false"); }
-			 */
-			if ((new Double(result)).intValue() == feasibilityReward) {
-				System.out.println("No cost for plan.");
-				System.out.println("Plan: "
-						+ currentPlan.getChromosome(0).toStringNorm(0));
-				System.exit(1);
+			String prismResult = null;
+			// System.out.println("\nResults from Prism:");
+			while (line != null) {
+				// System.out.println(line);
+				if (line.contains("Result:")) {
+					prismResult = line.substring("Result:".length());
+					prismResult = prismResult.trim();
+					break;
+				}
+				try {
+					line = reader.readLine();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			System.out.println("Cost of plan:" + result);
-			return result;
+			if (prismResult == null) {
+				new Exception().printStackTrace();
+				System.exit(1); // being lazy again
+			} else {
+				double result = Double.parseDouble(prismResult);
+				// result = result * -1 + feasibilityReward; // multiplied by negative 1
+				// because it was made positive
+				// for prism
+				result = result + feasibilityReward;
+
+				/*
+				 * if (sub) { System.out.println("sub fitness value:" +
+				 * String.valueOf(result)); } else { System.out.println("sub is false");
+				 * }
+				 */
+				if ((new Double(result)).intValue() == feasibilityReward) {
+					System.out.println("No cost for plan.");
+					System.out.println("Plan: "
+							+ currentPlan.getChromosome(0).toStringNorm(0));
+					System.exit(1);
+				}
+				System.out.println("Cost of plan:" + result);
+				planCache.put(generatedPlan.planString(), new Double(result));
+				return result;
+			}
+			new Exception().printStackTrace();
+			System.exit(1);
+			return new Double(0); // shouldn't be reachable but needed for compiler
 		}
-		return new Double(0); // shouldn't be reachable but needed for compiler
 	}
 
 	// this method steps through a plan to makes sure it is feasible, currently,=
@@ -231,7 +222,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			}
 			int currentColumn = numberOfBranches - i - 1;
 			int branchChoice = 1; // 1 means going left, 2 means going right. 0 is
-														// always taken for if-success
+														// only taken for going left in if-success
 			for (int l = 0; l < (numberOfCombinations / amountBeforeSwitching); l++) {
 				for (int j = 0; j < amountBeforeSwitching; j++) {
 					branchCombinations[j + l * amountBeforeSwitching][currentColumn] = branchChoice;
@@ -280,9 +271,13 @@ public class EvaluateFitness extends GPFitnessFunction implements
 						branchChoices, ifsTaken);
 				int secondGeneIndex;
 				if (branchChoices[ifsTaken] == 1) {
+					// get success branch node
 					secondGeneIndex = chromosome.getChild(currentGeneIndex,
 							branchChoices[ifsTaken]);
 				} else {
+					// remove last action from the plan because it failed
+					currentPlan.remove(currentPlan.size() - 1);
+					// get failure branch node
 					secondGeneIndex = chromosome.getChild(currentGeneIndex,
 							branchChoices[ifsTaken]);
 				}
@@ -312,18 +307,17 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		return (new CostRewardObject(20, 30));
 	}
 
-	private void makePrismFiles(IGPProgram currentPlan) { // first need to get
+	private void checkPlanSize(IGPProgram currentPlan) { // first need to get
 		int planSize = currentPlan.size();
 		if (planSize > 1) { // not sure how to handle this case, I'll handle it if
 			// it comes up
 			(new Exception()).printStackTrace();
 			System.exit(1);
 		}
-		makePrismFileFromChromosome(currentPlan.getChromosome(0));
-
 	}
 
-	public void makePrismFileFromChromosome(ProgramChromosome chromosome) {
+	public void makePrismFileFromPlan(Plan generatedPlan,
+			ProgramChromosome chromosome) {
 		// what is in the current plan to tailor the prism file to it.
 
 		int[] actionCount = { 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -350,12 +344,9 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		writer.println("//generated plan: " + chromosome.toStringNorm(0));
 
-		Plan generatedPlan = createPlan(chromosome, 0);
 		writer.println("//my plan: " + generatedPlan.planString());
 
 		writer.println("rewards\n");
-		IGPProgram prog = chromosome.getIndividual();
-		int size = chromosome.size();
 
 		writer
 				.println("[metric] true: -200 * responseTime + -4 * cost + 20 * contentQuality - 0.02 * clockTime;\n");
@@ -403,14 +394,6 @@ public class EvaluateFitness extends GPFitnessFunction implements
 					"UTF-8");
 		} catch (Exception e) { // TODO Auto-generated
 			e.printStackTrace();
-		}
-
-		int maxStateCount = 0;
-
-		for (int i = 0; i < size; i++) {
-			if (!(chromosome.getGene(i).toString().startsWith("sub["))) {
-				maxStateCount++;
-			}
 		}
 
 		propertyCheckWriter.write("R=? [ F currentState=1 ]");
@@ -554,6 +537,10 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			Iterator<PlanNode> planIter = testBranch.iterator();
 			// add if node to all test branches
 
+			if (nesting == 0) {
+				System.out.println("Stopping here for debugging");
+			}
+
 			int count = 0;
 			int debugCount = 0;
 			IfNode lastINode = null;
@@ -575,12 +562,14 @@ public class EvaluateFitness extends GPFitnessFunction implements
 				IfNode iNode = new IfNode(currentGene);
 				iNode.setPreviousNode(endNode.getPreviousNode());
 				PlanNode successBranchCopy = successBranch.deepCopy();
+				successBranchCopy.setPreviousNode(iNode);
 				// this next line used to have an error - it overrode the previous
 				// setting for the first endnode if the second endNode was
 				// different from the first - fixed by the success branch copy
 				iNode.setSuccessNode(successBranchCopy);
 				PlanNode failureBranchCopy = failureBranch.deepCopy();
 				iNode.setFailureNode(failureBranchCopy);
+
 				// this next line used to have an error - it overrode the previous
 				// setting
 				// for the first endnode if the second endNode was different from
@@ -617,6 +606,8 @@ public class EvaluateFitness extends GPFitnessFunction implements
 					}
 
 				}
+				// set the previous node once the old one has been changed.
+				endNode.setPreviousNode(iNode);
 			}
 			// if only the last action was in the test branch, then the
 			// first node of the plan has to be an ifnode, otherwise

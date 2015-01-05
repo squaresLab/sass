@@ -68,7 +68,8 @@ public class AnAnswer {
 			depthArray.setAccessible(true);
 			depthArray.set(chromosome, depths);
 			EvaluateFitness ef = new EvaluateFitness();
-			ef.makePrismFileFromChromosome(chromosome);
+			Plan generatedPlan = ef.createPlan(chromosome, 0);
+			ef.makePrismFileFromPlan(generatedPlan, chromosome);
 
 			BufferedReader reader = null;
 			try {
@@ -120,10 +121,10 @@ public class AnAnswer {
 				System.exit(1); // being lazy again
 			} else {
 				double result = Double.parseDouble(prismResult);
-				result = result * -1 + feasibilityReward; // multiplied by negative 1
-																									// because it was made
-																									// positive
-																									// for prism
+				result = result + feasibilityReward; // multiplied by negative 1
+																							// because it was made
+																							// positive
+																							// for prism
 				System.out.println("result: " + result);
 			}
 

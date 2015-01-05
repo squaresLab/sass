@@ -104,7 +104,7 @@ public class ComplicatedPlan3 {
 			EvaluateFitness ef = new EvaluateFitness();
 			Plan generatedPlan = ef.createPlan(chromosome, 0);
 			System.out.println("Our plan: " + generatedPlan.planString() + "\n");
-			ef.makePrismFileFromChromosome(chromosome);
+			ef.makePrismFileFromPlan(generatedPlan, chromosome);
 			System.out.println("finished generating files");
 
 			ArrayList<ArrayList<CommandGene>> planList = ef

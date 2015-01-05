@@ -97,7 +97,7 @@ public class ComplicatedPlan {
 			System.out.println("Copy: "
 					+ generatedPlan.getStartNode().deepCopy().planString());
 
-			ef.makePrismFileFromChromosome(chromosome);
+			ef.makePrismFileFromPlan(generatedPlan, chromosome);
 			System.out.println("finished generating files");
 
 			ArrayList<ArrayList<CommandGene>> planList = ef
