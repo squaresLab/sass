@@ -1,5 +1,13 @@
 package actions;
 
+/**
+ * The object used to represent the state when checking if a plan is feasible.
+ * This object hold the system state object, which also contains information
+ * about the state.
+ * 
+ * @author Zack
+ * 
+ */
 public class CostRewardObject {
 
 	int systemResponseTime;
