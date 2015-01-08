@@ -1,4 +1,7 @@
 package main;
+
+import java.lang.reflect.Field;
+
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
 import org.jgap.gp.GPFitnessFunction;
@@ -7,6 +10,8 @@ import org.jgap.gp.IGPProgram;
 import org.jgap.gp.function.SubProgram;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.gp.impl.GPGenotype;
+import org.jgap.gp.impl.GPProgram;
+import org.jgap.gp.impl.ProgramChromosome;
 import org.jgap.util.NumberKit;
 
 import actions.AddServerL1;
@@ -21,6 +26,17 @@ import actions.ReduceTextResolution;
 import actions.SystemState;
 
 public class RunGA {
+
+	static boolean hasInitialPlan = true;
+
+	static Class[] types = { CommandGene.VoidClass };
+	static Class[][] argTypes = { {} };
+	static int[] minDepths = new int[] { 1 };
+	static int[] maxDepths = new int[] { 2 };
+	public static CommandGene[][] nodeSets; // initialized in create. Thus create
+																					// must
+	// occur before setInitialPlan.
+	static int maxNodes = 1000;
 
 	public static void main(String args[]) {
 		// Configuration conf = new DefaultConfiguration();
@@ -62,28 +78,11 @@ public class RunGA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// final Thread t = new Thread(gp);
 
-		// I think this is the way to find the fittest individual in each generation
-		/*
-		 * gpConf.getEventManager().addEventListener(
-		 * GeneticEvent.GPGENOTYPE_EVOLVED_EVENT, new GeneticEventListener() {
-		 * public void geneticEventFired(GeneticEvent a_firedEvent) { GPGenotype
-		 * genotype = (GPGenotype) a_firedEvent.getSource(); int evno =
-		 * genotype.getGPConfiguration().getGenerationNr(); double freeMem =
-		 * SystemKit.getFreeMemoryMB(); if (evno % 100 == 0) { double bestFitness =
-		 * genotype.getFittestProgram() .getFitnessValue();
-		 * System.out.println("Evolving generation " + evno + ", best fitness: " +
-		 * bestFitness + ", memory free: " + freeMem + " MB"); } if (evno > 500000)
-		 * { t.stop(); } else { try { // Collect garbage if memory low. //
-		 * ------------------------------ if (freeMem < 50) { System.gc(); (new
-		 * Thread()).sleep(500); } else { // Avoid 100% CPU load. //
-		 * -------------------- (new Thread()).sleep(30); } } catch
-		 * (InterruptedException iex) { iex.printStackTrace(); System.exit(1); } } }
-		 * }); GeneticEventListener myGeneticEventListener = new EventListener(this,
-		 * t); gpConf.getEventManager().addEventListener(
-		 * GeneticEvent.GPGENOTYPE_NEW_BEST_SOLUTION, myGeneticEventListener);
-		 */
+		if (hasInitialPlan) {
+			setInitialPlan(gp, gpConf);
+		}
+
 		gp.setVerboseOutput(true);
 		int generationCount = 0;
 		try {
@@ -109,6 +108,66 @@ public class RunGA {
 		System.out.println("Total Execution Time: " + (endTime - startTime));
 	}
 
+	public static void setInitialPlan(GPGenotype gp, GPConfiguration gpConf) {
+
+		try {
+			int size = 12;
+
+			CommandGene[] commands = new CommandGene[size];
+			int[] depths = new int[size];
+			commands[0] = new IfSuccessElse(gpConf);
+
+			depths[0] = 0;
+			commands[1] = new IfSuccessElse(gpConf);
+			depths[1] = 1;
+			commands[2] = new DeleteServerL2(gpConf);
+			depths[2] = 2;
+			commands[3] = new IncreaseDatabaseBThreads(gpConf);
+			depths[3] = 2;
+			commands[4] = new AddServerL1(gpConf);
+			depths[4] = 2;
+			commands[5] = new SubProgram(gpConf, new Class[] { CommandGene.VoidClass,
+					CommandGene.VoidClass }, true);
+			depths[5] = 1;
+			commands[6] = new IncreaseDatabaseBThreads(gpConf);
+			depths[6] = 2;
+			commands[7] = new IncreaseDatabaseBThreads(gpConf);
+			depths[7] = 2;
+			commands[8] = new IfSuccessElse(gpConf);
+			depths[8] = 1;
+			commands[9] = new DeleteServerL1(gpConf);
+			depths[9] = 2;
+			commands[10] = new IncreaseDatabaseAThreads(gpConf);
+			depths[10] = 2;
+			commands[11] = new IncreaseDatabaseBThreads(gpConf);
+			depths[11] = 2;
+
+			ProgramChromosome chromosome = new ProgramChromosome(gpConf, 12);
+			chromosome.setFunctions(commands);
+
+			Field depthArray = chromosome.getClass().getDeclaredField("m_depth");
+			depthArray.setAccessible(true);
+			depthArray.set(chromosome, depths);
+			GPProgram prog;
+
+			prog = new GPProgram(gpConf, types, argTypes, nodeSets, minDepths,
+					maxDepths, maxNodes);
+
+			prog.setChromosome(0, chromosome);
+			EvaluateFitness ef = new EvaluateFitness();
+			System.out.println("Evaluating default plan");
+			ef.evaluate(prog);
+			System.out.println("Finished Evaluating default plan");
+
+			gp.addFittestProgram(prog);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.err.println("unable to set initial plan");
+			System.exit(1);
+		}
+	}
+
 	/**
 	 * Sets up the functions to use and other parameters. Then creates the initial
 	 * genotype.
@@ -119,12 +178,7 @@ public class RunGA {
 	 * @since 3.0
 	 */
 	public static GPGenotype create(GPConfiguration gpConf) throws Exception {
-		Class[] types = { CommandGene.VoidClass };
-		Class[][] argTypes = { {} };
-		int[] minDepths = new int[] { 1 };
-		int[] maxDepths = new int[] { 2 };
-		SystemState ss = new SystemState();
-		CommandGene[][] nodeSets = { {
+		CommandGene[][] nodeSetsInit = { {
 				// new SubProgram(gpConf, new Class[] { CommandGene.VoidClass,
 				// CommandGene.VoidClass, CommandGene.VoidClass }, true),
 				new SubProgram(gpConf, new Class[] { CommandGene.VoidClass,
@@ -143,44 +197,12 @@ public class RunGA {
 				new IncreaseTextResolution(gpConf), // nonclassic
 				new ReduceTextResolution(gpConf), // nonclassic
 		} };
+		nodeSets = nodeSetsInit;
 		// Create genotype with initial population.
 		// ----------------------------------------
 		return GPGenotype.randomInitialGenotype(gpConf, types, argTypes, nodeSets,
-				minDepths, maxDepths, 1000, new boolean[] { true }, true);
+				minDepths, maxDepths, maxNodes, new boolean[] { true }, true);
 	}
-
-	/*
-	 * class EventListener implements GeneticEventListener {
-	 * 
-	 * private AntTrailProblem problem; private Thread m_t;
-	 * 
-	 * public EventListener(AntTrailProblem a_problem, Thread a_t) { problem =
-	 * a_problem; m_t = a_t; }
-	 * 
-	 * /** New best solution found.
-	 * 
-	 * @param a_firedEvent GeneticEvent
-	 */
-	/*
-	 * public void geneticEventFired(GeneticEvent a_firedEvent) { GPGenotype
-	 * genotype = (GPGenotype) a_firedEvent.getSource(); int evno =
-	 * genotype.getGPConfiguration().getGenerationNr(); String indexString = "" +
-	 * evno; while (indexString.length() < 5) { indexString = "0" + indexString; }
-	 * String filename = "anttrail_best" + indexString + ".png"; IGPProgram best =
-	 * genotype.getAllTimeBest(); try { // Create graphical tree of GPProgram. //
-	 * ----------------------------------- TreeBranchRenderer antBranchRenderer =
-	 * new AntTreeBranchRenderer(); TreeNodeRenderer antNodeRenderer = new
-	 * AntTreeNodeRenderer(); problem.showTree(best, filename, antBranchRenderer,
-	 * antNodeRenderer); // Display solution's trail. // -------------------------
-	 * AntMap antmap = (AntMap) best.getApplicationData();
-	 * problem.displaySolution(antmap.getMovements());
-	 * System.out.println(" Number of moves: " + antmap.getMoveCount());
-	 * System.out.println(" Food taken: " + antmap.getFoodTaken()); } catch
-	 * (InvalidConfigurationException iex) { iex.printStackTrace(); } double
-	 * bestFitness = genotype.getFittestProgram().getFitnessValue(); if
-	 * (bestFitness < 0.001) { genotype.outputSolution(best); m_t.stop();
-	 * System.exit(0); } } }
-	 */
 
 	public static void printSolution(IGPProgram a_best) {
 		if (a_best == null) {

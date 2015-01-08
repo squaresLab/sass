@@ -1,4 +1,9 @@
 package actions;
+
+import java.util.Random;
+
+import main.RunGA;
+
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
 import org.jgap.gp.IMutateable;
@@ -14,25 +19,21 @@ public class IfSuccessElse extends CommandGene implements IMutateable {
 	}
 
 	@Override
-	public CommandGene applyMutation(int arg0, double percentage) {
-		org.jgap.RandomGenerator randomGen = getGPConfiguration()
-				.getRandomGenerator();
-		double random = randomGen.nextDouble();
-		if (random < percentage) {
-			return applyMutation();
-		}
-		return this;
-	}
-
-	public CommandGene applyMutation() {
-		// I eventually want to switch what happens for failure and
-		// success
-		return this;
+	public String toString() {
+		return "if-success (&1) do (&2) else (&3)";
 	}
 
 	@Override
-	public String toString() {
-		return "if-success (&1) do (&2) else (&3)";
+	public CommandGene applyMutation(int arg0, double arg1)
+			throws InvalidConfigurationException {
+		double val = Math.random();
+		if (val < arg1) {
+			CommandGene[][] possibleCommands = RunGA.nodeSets;
+			Random rand = new Random();
+			int choice = rand.nextInt(possibleCommands[0].length);
+			return possibleCommands[0][choice];
+		}
+		return this;
 	}
 
 }

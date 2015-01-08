@@ -1,11 +1,17 @@
 package actions;
 
+import java.util.Random;
+
+import main.RunGA;
+
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
+import org.jgap.gp.IMutateable;
 import org.jgap.gp.impl.GPConfiguration;
 import org.jgap.util.ICloneable;
 
-public abstract class Actions extends CommandGene implements ICloneable {
+public abstract class Actions extends CommandGene implements ICloneable,
+		IMutateable {
 
 	public Actions(final GPConfiguration a_conf)
 			throws InvalidConfigurationException {
@@ -33,4 +39,17 @@ public abstract class Actions extends CommandGene implements ICloneable {
 	public abstract Object clone();
 
 	// need to come up with a way to determine what changed.
+
+	@Override
+	public CommandGene applyMutation(int arg0, double arg1)
+			throws InvalidConfigurationException {
+		double val = Math.random();
+		if (val < arg1) {
+			CommandGene[][] possibleCommands = RunGA.nodeSets;
+			Random rand = new Random();
+			int choice = rand.nextInt(possibleCommands[0].length);
+			return possibleCommands[0][choice];
+		}
+		return this;
+	}
 }
