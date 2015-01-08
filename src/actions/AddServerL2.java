@@ -1,4 +1,5 @@
 package actions;
+
 import java.util.ArrayList;
 
 import org.jgap.InvalidConfigurationException;
@@ -78,7 +79,9 @@ public class AddServerL2 extends Actions {
 	@Override
 	public String getPrismFailureString() {
 		String result = "(clockTime'=clockTime+"
-				+ String.valueOf(timeToPeformAction) + ")";
+				+ String.valueOf(timeToPeformAction) + ")"
+				+ "&(responseTime'= responseTime)" + "&(cost'=cost)"
+				+ "&(serverCount'= serverCount)" + "&(contentQuality'=contentQuality)";
 		return result;
 	}
 

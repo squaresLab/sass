@@ -1,4 +1,5 @@
 package actions;
+
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.impl.GPConfiguration;
 
@@ -67,7 +68,9 @@ public class IncreaseDatabaseBThreads extends Actions {
 	@Override
 	public String getPrismFailureString() {
 		String result = "(clockTime'=clockTime+"
-				+ String.valueOf(timeToPeformAction) + ")";
+				+ String.valueOf(timeToPeformAction) + ")"
+				+ "&(responseTime'= responseTime)" + "&(cost'=cost)"
+				+ "&(serverCount'= serverCount)" + "&(contentQuality'=contentQuality)";
 		return result;
 	}
 

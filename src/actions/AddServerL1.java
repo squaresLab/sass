@@ -86,7 +86,9 @@ public class AddServerL1 extends Actions {
 	@Override
 	public String getPrismFailureString() {
 		String result = "(clockTime'=clockTime+"
-				+ String.valueOf(timeToPeformAction) + ")";
+				+ String.valueOf(timeToPeformAction) + ")"
+				+ "&(responseTime'= responseTime)" + "&(cost'=cost)"
+				+ "&(serverCount'= serverCount)" + "&(contentQuality'=contentQuality)";
 		return result;
 	}
 
