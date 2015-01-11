@@ -26,22 +26,24 @@ import actions.ReduceTextResolution;
 import actions.SystemState;
 
 public class RunGA {
-
 	static boolean hasInitialPlan = true;
 
 	static Class[] types = { CommandGene.VoidClass };
 	static Class[][] argTypes = { {} };
 	static int[] minDepths = new int[] { 1 };
-	static int[] maxDepths = new int[] { 2 };
+	static int[] maxDepths = new int[] { 5 };
 	public static CommandGene[][] nodeSets; // initialized in create. Thus create
 																					// must
 	// occur before setInitialPlan.
 	static int maxNodes = 1000;
 
 	public static void main(String args[]) {
-		// Configuration conf = new DefaultConfiguration();
+		// used to keep track how long a plan generation takes
 		long startTime = System.currentTimeMillis();
 
+		// the genetic program configuration object
+		// Then all of the aspects of the configuration
+		// object are set
 		GPConfiguration gpConf = null;
 		try {
 			gpConf = new GPConfiguration();
@@ -50,9 +52,10 @@ public class RunGA {
 			e.printStackTrace();
 			System.exit(1); // lazy error handling
 		}
+		// uses prism to evaluate fitness
 		IGPFitnessEvaluator prismEvaluationFunction = new EvaluateFitness();
 		gpConf.setGPFitnessEvaluator(prismEvaluationFunction);
-		gpConf.setMaxInitDepth(2);
+		gpConf.setMaxInitDepth(5);
 		try {
 			gpConf.setPopulationSize(50);
 		} catch (InvalidConfigurationException e) {
@@ -86,7 +89,7 @@ public class RunGA {
 		gp.setVerboseOutput(true);
 		int generationCount = 0;
 		try {
-			while (generationCount < 10) {
+			while (generationCount < 12) {
 				System.out.println("Starting to evolve generation");
 				gp.evolve();
 				System.out.println("Finished a generation");

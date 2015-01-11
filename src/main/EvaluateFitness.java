@@ -42,8 +42,13 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		System.out.println("A plan: "
 				+ currentPlan.getChromosome(0).toStringNorm(0));
-		ArrayList<ArrayList<CommandGene>> planList = generatePossiblePlanExecutions(currentPlan
-				.getChromosome(0));
+		ArrayList<ArrayList<CommandGene>> planList = null;
+		try {
+			planList = generatePossiblePlanExecutions(currentPlan.getChromosome(0));
+		} catch (TooManyBranchesException e) {
+			System.out.println("Too many branches: " + e.getNumberOfBranches());
+			return 0;
+		}
 		// System.out.println("plan list size: " + planList.size());
 		for (int i = 0; i < planList.size(); i++) {
 			boolean isPlanFeasible = checkPlanFeasibility(planList.get(i));
@@ -180,7 +185,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 	}
 
 	public ArrayList<ArrayList<CommandGene>> generatePossiblePlanExecutions(
-			ProgramChromosome chromosome) {
+			ProgramChromosome chromosome) throws TooManyBranchesException {
 
 		ArrayList<ArrayList<CommandGene>> planList = new ArrayList<ArrayList<CommandGene>>();
 		ArrayList<CommandGene> plan = new ArrayList<CommandGene>();
@@ -209,11 +214,16 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 	}
 
-	private int[][] generateBranchChoices(int numberOfBranches) {
+	private int[][] generateBranchChoices(int numberOfBranches)
+			throws TooManyBranchesException {
 		int numberOfCombinations = 1;
+		if (numberOfBranches > 20) {
+			throw new TooManyBranchesException(numberOfBranches);
+		}
 		for (int i = 0; i < numberOfBranches; i++) {
 			numberOfCombinations *= 2;
 		}
+		System.out.println("number of combinations: " + numberOfCombinations);
 		int[][] branchCombinations = new int[numberOfCombinations][numberOfBranches];
 		for (int i = numberOfBranches - 1; i > -1; i--) {
 			int amountBeforeSwitching = 1;
@@ -223,6 +233,18 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			int currentColumn = numberOfBranches - i - 1;
 			int branchChoice = 1; // 1 means going left, 2 means going right. 0 is
 														// only taken for going left in if-success
+			// added for debugging
+			if (amountBeforeSwitching == 0) {
+				System.out.println("number of branches: " + numberOfBranches);
+				System.out.println("i value: " + i);
+				amountBeforeSwitching = 1;
+				System.out.print(i + ", ");
+				for (int k = 0; k < i; k++) {
+					amountBeforeSwitching *= 2;
+					System.out.print(amountBeforeSwitching + ", ");
+				}
+				System.out.print("\n");
+			}
 			for (int l = 0; l < (numberOfCombinations / amountBeforeSwitching); l++) {
 				for (int j = 0; j < amountBeforeSwitching; j++) {
 					branchCombinations[j + l * amountBeforeSwitching][currentColumn] = branchChoice;
