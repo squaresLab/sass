@@ -113,7 +113,7 @@ public abstract class Actions extends CommandGene implements IMutateable {
 			CommandGene[][] possibleCommands = RunGA.nodeSets;
 			Random rand;
 			CommandGene result = null;
-			while (!!(result instanceof Actions)) {
+			while (!(result instanceof Actions)) {
 				rand = new Random();
 				int choice = rand.nextInt(possibleCommands[0].length);
 				result = possibleCommands[0][choice];
