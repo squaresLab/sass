@@ -9,6 +9,7 @@ import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
 import org.jgap.gp.IMutateable;
 import org.jgap.gp.impl.GPConfiguration;
+import org.jgap.gp.impl.ProgramChromosome;
 
 /**
  * This class represents the action of adding a server at location 1

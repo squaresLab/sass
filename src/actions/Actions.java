@@ -6,8 +6,10 @@ import main.RunGA;
 
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.CommandGene;
+import org.jgap.gp.IGPProgram;
 import org.jgap.gp.IMutateable;
 import org.jgap.gp.impl.GPConfiguration;
+import org.jgap.gp.impl.ProgramChromosome;
 import org.jgap.util.ICloneable;
 
 /**
@@ -99,6 +101,9 @@ public abstract class Actions extends CommandGene implements IMutateable {
 	 *          percentage to see if the gene should be updated
 	 * @return either the original gene or a gene that is the result of mutating
 	 *         the original gene
+	 * 
+	 *         *NOTE - I think there is an error if the arity of a gene changes;
+	 *         need to look into this later
 	 */
 	@Override
 	public CommandGene applyMutation(int arg0, double arg1)
@@ -106,9 +111,14 @@ public abstract class Actions extends CommandGene implements IMutateable {
 		double val = Math.random();
 		if (val < arg1) {
 			CommandGene[][] possibleCommands = RunGA.nodeSets;
-			Random rand = new Random();
-			int choice = rand.nextInt(possibleCommands[0].length);
-			return possibleCommands[0][choice];
+			Random rand;
+			CommandGene result = null;
+			while (!!(result instanceof Actions)) {
+				rand = new Random();
+				int choice = rand.nextInt(possibleCommands[0].length);
+				result = possibleCommands[0][choice];
+			}
+			return result;
 		}
 		return this;
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.impl.GPConfiguration;
+import org.jgap.gp.impl.ProgramChromosome;
 
 /**
  * the action used to represent adding a server at location 2

@@ -8,7 +8,8 @@ public class ReduceTextResolution extends Actions {
 	final double failureRate = 0.3;
 	final GPConfiguration gpConf;
 
-	public ReduceTextResolution(GPConfiguration gpConf) throws Exception {
+	public ReduceTextResolution(GPConfiguration gpConf)
+			throws InvalidConfigurationException {
 		super(gpConf);
 		this.gpConf = gpConf;
 		this.timeToPeformAction = 60;

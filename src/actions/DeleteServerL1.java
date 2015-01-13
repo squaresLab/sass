@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.jgap.InvalidConfigurationException;
 import org.jgap.gp.impl.GPConfiguration;
+import org.jgap.gp.impl.ProgramChromosome;
 
 public class DeleteServerL1 extends Actions {
 
