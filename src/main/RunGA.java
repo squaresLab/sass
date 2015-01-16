@@ -57,7 +57,7 @@ public class RunGA {
 		gpConf.setGPFitnessEvaluator(prismEvaluationFunction);
 		gpConf.setMaxInitDepth(5);
 		try {
-			gpConf.setPopulationSize(50);
+			gpConf.setPopulationSize(200);
 		} catch (InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,7 +89,7 @@ public class RunGA {
 		gp.setVerboseOutput(true);
 		int generationCount = 0;
 		try {
-			while (generationCount < 12) {
+			while (generationCount < 100) {
 				System.out.println("Starting to evolve generation");
 				gp.evolve();
 				System.out.println("Finished a generation");

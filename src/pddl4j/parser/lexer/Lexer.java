@@ -81,12 +81,12 @@ public class Lexer implements LexerConstants {
 				}
 			}
 			message = e.getMessage().split(".  ")[1];
-			// e.printStackTrace();
+			e.printStackTrace();
 			this.mgr.logLexicalError(message, this.file, l, c);
 		} else if (e.getClass().equals(ParseException.class)) {
 			ParseException pe = (ParseException) e;
 			message = generateErrorMesssage(pe);
-			// e.printStackTrace();
+			e.printStackTrace();
 			this.mgr.logLexicalError(message, this.file, pe.currentToken.beginLine,
 					pe.currentToken.beginColumn);
 		}
