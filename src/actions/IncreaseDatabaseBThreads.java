@@ -39,8 +39,8 @@ public class IncreaseDatabaseBThreads extends Actions {
 
 	@Override
 	public void results(CostRewardObject cr) {
-		cr.getSystemState().setDatabaseAThreadCount(
-				cr.getSystemState().getDatabaseAThreadCount() + threadChange);
+		cr.getSystemState().setDatabaseBThreadCount(
+				cr.getSystemState().getDatabaseBThreadCount() + threadChange);
 		cr.systemResponseTime = cr.systemResponseTime + responseChange;
 
 	}
