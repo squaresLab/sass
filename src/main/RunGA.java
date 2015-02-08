@@ -1,5 +1,8 @@
 package main;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 
 import org.jgap.InvalidConfigurationException;
@@ -23,7 +26,6 @@ import actions.IncreaseDatabaseAThreads;
 import actions.IncreaseDatabaseBThreads;
 import actions.IncreaseTextResolution;
 import actions.ReduceTextResolution;
-import actions.SystemState;
 
 public class RunGA {
 	static boolean hasInitialPlan = true;
@@ -40,6 +42,19 @@ public class RunGA {
 	public static void main(String args[]) {
 		// used to keep track how long a plan generation takes
 		long startTime = System.currentTimeMillis();
+
+		int numberOfRuns = 5;
+		boolean usingOutputFile = true;
+		File outputFile = new File("/Users/zfc/Desktop/AutoGAResults.txt");
+		PrintWriter writer = null;
+		if (usingOutputFile) {
+			try {
+				writer = new PrintWriter(outputFile);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		// the genetic program configuration object
 		// Then all of the aspects of the configuration
@@ -74,46 +89,62 @@ public class RunGA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		GPGenotype gp = null;
-		try {
-			gp = create(gpConf);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if (hasInitialPlan) {
-			setInitialPlan(gp, gpConf);
-		}
-
-		gp.setVerboseOutput(true);
-		int generationCount = 0;
-		try {
-			while (generationCount < 100) {
-				System.out.println("Starting to evolve generation");
-				gp.evolve();
-				System.out.println("Finished a generation");
-				gp.calcFitness();
-				// Do G.C. for cleanup and to avoid 100% CPU load.
-				// -----------------------------------------------
-				System.out.println("Finished a calculating fitness");
-				printSolution(gp.getGPPopulation().determineFittestProgram());
-				System.gc();
-				System.out.println("Finished garbage collection");
-				generationCount++;
+		for (int i = 0; i < numberOfRuns; i++) {
+			if (usingOutputFile) {
+				writer.println("------------------------");
+				writer.println("Run: " + (i + 1));
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.exit(1);
+			GPGenotype gp = null;
+			try {
+				gp = create(gpConf);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if (hasInitialPlan) {
+				setInitialPlan(gp, gpConf);
+			}
+
+			gp.setVerboseOutput(true);
+			int generationCount = 0;
+			try {
+				int maxGenerations = 100;
+				while (generationCount < maxGenerations) {
+					System.out.println("Starting to evolve generation");
+					gp.evolve();
+					System.out.println("Finished a generation");
+					gp.calcFitness();
+					// Do G.C. for cleanup and to avoid 100% CPU load.
+					// -----------------------------------------------
+					System.out.println("Finished a calculating fitness");
+					printSolution(gp.getGPPopulation().determineFittestProgram(), writer,
+							(generationCount == (maxGenerations - 1)));
+					System.gc();
+					System.out.println("Finished garbage collection");
+					generationCount++;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				System.exit(1);
+			}
+			System.out.println("Finished Running program!!");
+			long endTime = System.currentTimeMillis();
+			System.out.println("Total Execution Time: " + (endTime - startTime));
+			if (usingOutputFile) {
+				writer.println("Total Execution Time: " + (endTime - startTime));
+			}
 		}
-		System.out.println("Finished Running program!!");
-		long endTime = System.currentTimeMillis();
-		System.out.println("Total Execution Time: " + (endTime - startTime));
+		if (usingOutputFile) {
+			writer.flush();
+			writer.close();
+		}
 	}
 
 	public static void setInitialPlan(GPGenotype gp, GPConfiguration gpConf) {
 
 		try {
+
 			int size = 12;
 
 			CommandGene[] commands = new CommandGene[size];
@@ -145,7 +176,32 @@ public class RunGA {
 			commands[11] = new IncreaseDatabaseBThreads(gpConf);
 			depths[11] = 2;
 
-			ProgramChromosome chromosome = new ProgramChromosome(gpConf, 12);
+			/*
+			 * int size = 13;
+			 * 
+			 * CommandGene[] commands = new CommandGene[size]; int[] depths = new
+			 * int[size]; commands[0] = new SubProgram(gpConf, new Class[] {
+			 * CommandGene.VoidClass, CommandGene.VoidClass }, true);
+			 * 
+			 * depths[0] = 0; commands[1] = new IncreaseDatabaseAThreads(gpConf);
+			 * depths[1] = 1; commands[2] = new SubProgram(gpConf, new Class[] {
+			 * CommandGene.VoidClass, CommandGene.VoidClass }, true); depths[2] = 1;
+			 * commands[3] = new ReduceTextResolution(gpConf); depths[3] = 2;
+			 * commands[4] = new SubProgram(gpConf, new Class[] {
+			 * CommandGene.VoidClass, CommandGene.VoidClass }, true); depths[4] = 2;
+			 * commands[5] = new IncreaseDatabaseAThreads(gpConf); depths[5] = 3;
+			 * commands[6] = new SubProgram(gpConf, new Class[] {
+			 * CommandGene.VoidClass, CommandGene.VoidClass }, true); depths[6] = 3;
+			 * commands[7] = new IncreaseDatabaseAThreads(gpConf); depths[7] = 4;
+			 * commands[8] = new SubProgram(gpConf, new Class[] {
+			 * CommandGene.VoidClass, CommandGene.VoidClass }, true); depths[8] = 4;
+			 * commands[9] = new IncreaseDatabaseAThreads(gpConf); depths[9] = 5;
+			 * commands[10] = new SubProgram(gpConf, new Class[] {
+			 * CommandGene.VoidClass, CommandGene.VoidClass }, true); depths[10] = 5;
+			 * commands[11] = new DeleteServerL1(gpConf); depths[11] = 6; commands[12]
+			 * = new DeleteServerL2(gpConf); depths[12] = 6;
+			 */
+			ProgramChromosome chromosome = new ProgramChromosome(gpConf, size);
 			chromosome.setFunctions(commands);
 
 			Field depthArray = chromosome.getClass().getDeclaredField("m_depth");
@@ -207,14 +263,21 @@ public class RunGA {
 				minDepths, maxDepths, maxNodes, new boolean[] { true }, true);
 	}
 
-	public static void printSolution(IGPProgram a_best) {
+	public static void printSolution(IGPProgram a_best, PrintWriter writer,
+			boolean lastGeneration) {
 		if (a_best == null) {
 			System.out.println("No best solution (null)");
+			if (writer != null) {
+				writer.println("No best solution (null)");
+			}
 			return;
 		}
 		double bestValue = a_best.getFitnessValue();
 		if (Double.isInfinite(bestValue)) {
 			System.out.println("No best solution (infinite)");
+			if (writer != null) {
+				writer.println("No best solution (infinite)");
+			}
 			return;
 		}
 		System.out.println("Best solution fitness: "
@@ -232,6 +295,16 @@ public class RunGA {
 			System.out.println("Depth of chrom: " + depths);
 		} else {
 			System.out.println("Depths of chroms: " + depths);
+		}
+		if (writer != null && lastGeneration) {
+			writer.println("Best solution fitness: "
+					+ NumberKit.niceDecimalNumber(bestValue, 2));
+			writer.println("Best solution: " + a_best.toStringNorm(0));
+			if (size == 1) {
+				writer.println("Depth of chrom: " + depths);
+			} else {
+				writer.println("Depths of chroms: " + depths);
+			}
 		}
 	}
 }
