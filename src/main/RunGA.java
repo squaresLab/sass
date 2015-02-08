@@ -67,6 +67,7 @@ public class RunGA {
 		gpConf.setNewChromsPercent(0.3f);
 		gpConf.setStrictProgramCreation(true);
 		gpConf.setUseProgramCache(true);
+		gpConf.setCrossoverMethod(new TreeCrossOverExtension(gpConf));
 		gpConf.setNoCommandGeneCloning(false);
 		try {
 			gpConf.setFitnessFunction((GPFitnessFunction) prismEvaluationFunction);
