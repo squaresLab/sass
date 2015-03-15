@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ public class EvaluateFitness extends GPFitnessFunction implements
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	protected double evaluate(IGPProgram currentPlan) {
 		// System.out.println("Starting to evaluate a plan!");
 		// attempting to print plan
@@ -67,10 +69,18 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 			BufferedReader reader = null;
 			try {
-				Process p = Runtime
-						.getRuntime()
-						.exec(
-								"/home/zack/Documents/SoftwareModels/Project/prism-4.2.beta1-linux64/bin/prism /home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm /home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl -dtmc -sim -simsamples 100000");
+				/*String projectDir = Paths.get(".").toAbsolutePath().normalize()
+						.toString();
+				final String prismFile = projectDir
+						+ "/GeneratedFiles/generatedPrismFile.pm";
+				final String pctlFile = projectDir
+						+ "/GeneratedFiles/generatedPropertyFile.pctl";*/
+                final String prismFile = "/home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm";
+                final String pctlFile = "/home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl";
+				
+				Process p = Runtime.getRuntime().exec(
+						"/home/zack/Documents/SoftwareModels/Project/prism-4.2.1-src/bin/prism " + prismFile
+								+ " " + pctlFile + " -dtmc -sim -simsamples 100000");
 				try {
 					p.waitFor();
 				} catch (InterruptedException e) {
@@ -354,10 +364,15 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		PrintWriter writer = null;
 		try {
-			writer = new PrintWriter(
-					"/home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm"
+			//String projectDir = Paths.get(".").toAbsolutePath().normalize()
+			//		.toString();
+			//final String prismFile = projectDir
+			//		+ "/GeneratedFiles/generatedPrismFile.pm";
+					final String prismFile  = "/home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm";
 
-					, "UTF-8");
+			writer = new PrintWriter(prismFile
+
+			, "UTF-8");
 		} catch (Exception e) { // TODO Auto-generated
 			e.printStackTrace();
 		}
@@ -371,7 +386,9 @@ public class EvaluateFitness extends GPFitnessFunction implements
 		writer.println("rewards\n");
 
 		writer
-				.println("[metric] true: -200 * responseTime + -4 * cost + 20 * contentQuality - 0.02 * clockTime;\n");
+				.println("[metric] true: -20 * responseTime + -20 * cost + 20 * contentQuality - 0.02 * clockTime;\n");
+		// old metric: -200 * responseTime + -4 * cost + 20 * contentQuality - 0.02
+		// * clockTime;
 
 		SystemState ss = new SystemState();
 		writer.println("\nendrewards\n\nmodule AutomaticEvalutation\n\n");
@@ -411,9 +428,13 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		PrintWriter propertyCheckWriter = null;
 		try {
-			propertyCheckWriter = new PrintWriter(
-					"/home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl",
-					"UTF-8");
+			/*String projectDir = Paths.get(".").toAbsolutePath().normalize()
+					.toString();
+			final String pctlFile = projectDir
+					+ "/GeneratedFiles/generatedPropertyFile.pctl";*/
+			final String pctlFile = "/home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl";
+
+			propertyCheckWriter = new PrintWriter(pctlFile, "UTF-8");
 		} catch (Exception e) { // TODO Auto-generated
 			e.printStackTrace();
 		}
@@ -611,13 +632,13 @@ public class EvaluateFitness extends GPFitnessFunction implements
 						PlanNode testSuccessNode = previousINode.getSuccessNode();
 						if (endNode == testSuccessNode
 								&& testSuccessNode instanceof SingleActionNode
-								&& ((SingleActionNode) endNode).getNextNode() == null) {
+								&& endNode.getNextNode() == null) {
 							previousINode.setSuccessNode(iNode);
 						} else {
 							PlanNode testFailureNode = previousINode.getFailureNode();
 							if (endNode == testFailureNode
 									&& testFailureNode instanceof SingleActionNode
-									&& ((SingleActionNode) endNode).getNextNode() == null) {
+									&& endNode.getNextNode() == null) {
 								previousINode.setFailureNode(iNode);
 							}
 						}
