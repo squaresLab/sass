@@ -26,10 +26,11 @@ import actions.SystemState;
 public class EvaluateFitness extends GPFitnessFunction implements
 		IGPFitnessEvaluator {
 
-	int feasibilityReward = 99999;
+	public int feasibilityReward = 9999999;
 	boolean sub = false; // used for debugging
 	// int uniqueStateCount;
 	HashMap<String, Double> planCache = new HashMap<String, Double>();
+	String metricString = "(-20 * responseTime + -20 * cost + 20 * contentQuality - 0.02 * clockTime)";
 
 	/**
 	 * 
@@ -69,18 +70,20 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 			BufferedReader reader = null;
 			try {
-				/*String projectDir = Paths.get(".").toAbsolutePath().normalize()
-						.toString();
-				final String prismFile = projectDir
-						+ "/GeneratedFiles/generatedPrismFile.pm";
-				final String pctlFile = projectDir
-						+ "/GeneratedFiles/generatedPropertyFile.pctl";*/
-                final String prismFile = "/home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm";
-                final String pctlFile = "/home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl";
-				
-				Process p = Runtime.getRuntime().exec(
-						"/home/zack/Documents/SoftwareModels/Project/prism-4.2.1-src/bin/prism " + prismFile
-								+ " " + pctlFile + " -dtmc -sim -simsamples 100000");
+				/*
+				 * String projectDir = Paths.get(".").toAbsolutePath().normalize()
+				 * .toString(); final String prismFile = projectDir +
+				 * "/GeneratedFiles/generatedPrismFile.pm"; final String pctlFile =
+				 * projectDir + "/GeneratedFiles/generatedPropertyFile.pctl";
+				 */
+				final String prismFile = "/home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm";
+				final String pctlFile = "/home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl";
+
+				Process p = Runtime.getRuntime()
+						.exec(
+								"/home/zack/Documents/SoftwareModels/Project/prism-4.2.1-src/bin/prism "
+										+ prismFile + " " + pctlFile
+										+ " -dtmc -sim -simsamples 100000");
 				try {
 					p.waitFor();
 				} catch (InterruptedException e) {
@@ -354,9 +357,14 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		int[] actionCount = { 0, 0, 0, 0, 0, 0, 0, 0 };
 		HashMap<String, Integer> actionStringCount = new HashMap<String, Integer>();
-		String[] actionStrings = { "addL1Server", "addL2Server", "deleteL1Server",
-				"deleteL2Server", "increaseDatabaseAThreads",
+		String[] actionStrings = { "addL1Server", "addL2Server", "addL3Server",
+				"addL4Server", "addL5Server", "addL6Server", "addL7Server",
+				"addL8Server", "addL9Server", "addL10Server", "deleteL1Server",
+				"deleteL2Server", "deleteL3Server", "deleteL4Server", "deleteL5Server",
+				"deleteL6Server", "deleteL7Server", "deleteL8Server", "deleteL9Server",
+				"deleteL10Server", "increaseDatabaseAThreads",
 				"increaseDatabaseBThreads", "increaseTextResolution",
+				"decreaseDatabaseAThreads", "decreaseDatabaseBThreads",
 				"reduceTextResolution" };
 		for (int i = 0; i < actionStrings.length; i++) {
 			actionStringCount.put(actionStrings[i], new Integer(0));
@@ -364,11 +372,11 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		PrintWriter writer = null;
 		try {
-			//String projectDir = Paths.get(".").toAbsolutePath().normalize()
-			//		.toString();
-			//final String prismFile = projectDir
-			//		+ "/GeneratedFiles/generatedPrismFile.pm";
-					final String prismFile  = "/home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm";
+			// String projectDir = Paths.get(".").toAbsolutePath().normalize()
+			// .toString();
+			// final String prismFile = projectDir
+			// + "/GeneratedFiles/generatedPrismFile.pm";
+			final String prismFile = "/home/zack/Documents/SoftwareModels/Project/generatedPrismFile.pm";
 
 			writer = new PrintWriter(prismFile
 
@@ -381,14 +389,16 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		writer.println("//generated plan: " + chromosome.toStringNorm(0));
 
-		writer.println("//my plan: " + generatedPlan.planString());
+		writer.println("//my plan: " + generatedPlan.planString() + "\n");
 
+		writer.println("const int evalTime = 200;\n");
 		writer.println("rewards\n");
 
-		writer
-				.println("[metric] true: -20 * responseTime + -20 * cost + 20 * contentQuality - 0.02 * clockTime;\n");
+		writer.println("[metric] true: evalTime * " + metricString + ";");
 		// old metric: -200 * responseTime + -4 * cost + 20 * contentQuality - 0.02
 		// * clockTime;
+
+		printNodeReward(writer, actionStringCount, generatedPlan.getStartNode());
 
 		SystemState ss = new SystemState();
 		writer.println("\nendrewards\n\nmodule AutomaticEvalutation\n\n");
@@ -420,6 +430,9 @@ public class EvaluateFitness extends GPFitnessFunction implements
 				.println("[metric] currentState= 0 -> (currentState'=currentState+1);");
 		writer.println("[final] currentState = 1 -> true;");
 
+		for (int i = 0; i < actionStrings.length; i++) {
+			actionStringCount.put(actionStrings[i], new Integer(0));
+		}
 		printPrismNode(writer, actionStringCount, generatedPlan.getStartNode(), 2);
 
 		writer.println("\nendmodule");
@@ -428,10 +441,11 @@ public class EvaluateFitness extends GPFitnessFunction implements
 
 		PrintWriter propertyCheckWriter = null;
 		try {
-			/*String projectDir = Paths.get(".").toAbsolutePath().normalize()
-					.toString();
-			final String pctlFile = projectDir
-					+ "/GeneratedFiles/generatedPropertyFile.pctl";*/
+			/*
+			 * String projectDir = Paths.get(".").toAbsolutePath().normalize()
+			 * .toString(); final String pctlFile = projectDir +
+			 * "/GeneratedFiles/generatedPropertyFile.pctl";
+			 */
 			final String pctlFile = "/home/zack/Documents/SoftwareModels/Project/generatedPropertyFile.pctl";
 
 			propertyCheckWriter = new PrintWriter(pctlFile, "UTF-8");
@@ -456,6 +470,41 @@ public class EvaluateFitness extends GPFitnessFunction implements
 			}
 		}
 		return count;
+	}
+
+	public void printNodeReward(PrintWriter writer,
+			HashMap<String, Integer> actionStringCount, PlanNode pn) {
+		if (pn instanceof SingleActionNode) {
+
+			Actions action = (Actions) pn.getPlanGene();
+			if (action == null) {
+				System.out.println("action equals null");
+			}
+			if (action.toString() == null) {
+				System.out.println("action string equals null");
+			}
+			if (actionStringCount == null) {
+				System.out.println("action string count is null");
+			}
+			actionStringCount.put(action.toString(),
+					(actionStringCount.get(action.toString()) + 1));
+			// System.out.println("Command cannot fail");
+			writer.println("[" + action.toString()
+					+ String.valueOf(actionStringCount.get(action.toString()))
+					+ "] true: " + String.valueOf(action.getTime()) + " * "
+					+ metricString + ";");
+			if (((SingleActionNode) pn).getNextNode() != null) {
+				printNodeReward(writer, actionStringCount,
+						((SingleActionNode) pn).getNextNode());
+			}
+			// added for debugging
+			// System.exit(1);
+
+		} else {
+			IfNode iNode = (IfNode) pn;
+			printNodeReward(writer, actionStringCount, iNode.getSuccessNode());
+			printNodeReward(writer, actionStringCount, iNode.getFailureNode());
+		}
 	}
 
 	public void printPrismNode(PrintWriter writer,

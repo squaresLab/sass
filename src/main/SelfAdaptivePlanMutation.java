@@ -98,6 +98,9 @@ public class SelfAdaptivePlanMutation {
 			CommandGene[] arrayToInsert) {
 		int newArraySize = originalArray.length + arrayToInsert.length - 1;
 		CommandGene[] resultArray = new CommandGene[newArraySize];
+		System.out.println("original array size: "+originalArray.length);
+		System.out.println("result array size: "+resultArray.length);
+		System.out.println("array to insert length: "+arrayToInsert.length);
 		for (int i = 0; i < positionToInsert; i++) {
 			resultArray[i] = originalArray[i];
 		}

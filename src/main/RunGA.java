@@ -18,9 +18,27 @@ import org.jgap.gp.impl.ProgramChromosome;
 import org.jgap.util.NumberKit;
 
 import actions.AddServerL1;
+import actions.AddServerL10;
 import actions.AddServerL2;
+import actions.AddServerL3;
+import actions.AddServerL4;
+import actions.AddServerL5;
+import actions.AddServerL6;
+import actions.AddServerL7;
+import actions.AddServerL8;
+import actions.AddServerL9;
+import actions.DecreaseDatabaseAThreads;
+import actions.DecreaseDatabaseBThreads;
 import actions.DeleteServerL1;
+import actions.DeleteServerL10;
 import actions.DeleteServerL2;
+import actions.DeleteServerL3;
+import actions.DeleteServerL4;
+import actions.DeleteServerL5;
+import actions.DeleteServerL6;
+import actions.DeleteServerL7;
+import actions.DeleteServerL8;
+import actions.DeleteServerL9;
 import actions.IfSuccessElse;
 import actions.IncreaseDatabaseAThreads;
 import actions.IncreaseDatabaseBThreads;
@@ -72,7 +90,7 @@ public class RunGA {
 		gpConf.setGPFitnessEvaluator(prismEvaluationFunction);
 		gpConf.setMaxInitDepth(5);
 		try {
-			gpConf.setPopulationSize(10);
+			gpConf.setPopulationSize(30);
 		} catch (InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,7 +128,7 @@ public class RunGA {
 			gp.setVerboseOutput(true);
 			int generationCount = 0;
 			try {
-				int maxGenerations = 2;
+				int maxGenerations = 30;
 				while (generationCount < maxGenerations) {
 					System.out.println("Starting to evolve generation");
 					gp.evolve();
@@ -145,13 +163,10 @@ public class RunGA {
 	public static void setInitialPlan(GPGenotype gp, GPConfiguration gpConf) {
 
 		try {
-
 			int size = 12;
-
 			CommandGene[] commands = new CommandGene[size];
 			int[] depths = new int[size];
 			commands[0] = new IfSuccessElse(gpConf);
-
 			depths[0] = 0;
 			commands[1] = new IfSuccessElse(gpConf);
 			depths[1] = 1;
@@ -248,12 +263,29 @@ public class RunGA {
 				// CommandGene.VoidClass, // nonclassic
 				// CommandGene.VoidClass, CommandGene.VoidClass,
 				// CommandGene.VoidClass }),
-				new IfSuccessElse(gpConf), new AddServerL1(gpConf),
+				new IfSuccessElse(gpConf),
+				new AddServerL1(gpConf),
 				new AddServerL2(gpConf),
+				new AddServerL3(gpConf),
+				new AddServerL4(gpConf),
+				new AddServerL5(gpConf),
+				new AddServerL6(gpConf),
+				new AddServerL7(gpConf),
+				new AddServerL8(gpConf),
+				new AddServerL9(gpConf),
+				new AddServerL10(gpConf),
 				new DeleteServerL1(gpConf),
 				new DeleteServerL2(gpConf), // nonclassic
+				new DeleteServerL3(gpConf), new DeleteServerL4(gpConf),
+				new DeleteServerL5(gpConf), new DeleteServerL6(gpConf),
+				new DeleteServerL7(gpConf),
+				new DeleteServerL8(gpConf),
+				new DeleteServerL9(gpConf),
+				new DeleteServerL10(gpConf),
 				new IncreaseDatabaseAThreads(gpConf),
 				new IncreaseDatabaseBThreads(gpConf), // nonclassic
+				new DecreaseDatabaseAThreads(gpConf),
+				new DecreaseDatabaseBThreads(gpConf),
 				new IncreaseTextResolution(gpConf), // nonclassic
 				new ReduceTextResolution(gpConf), // nonclassic
 		} };
