@@ -1,0 +1,3 @@
+go to the directory  - /home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem
+then run the command - java -cp "/home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem/bin/:/home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem/:/home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem/ecj.23.jar" ec.Evolve -file selfadaptivesystem.params
+
