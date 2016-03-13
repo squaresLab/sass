@@ -23,16 +23,24 @@ public class SequenceOperator extends GPNode {
 	{
 		//double result;
 		StateData sd = ((StateData)(input));
+		//no need to evaluate any more if an invalid state has been reached
+    	if(sd.getReachedInvalidState()){
+    		return;
+    	}
 
 		//System.out.println("beginning: "+sd.toString()+"\n");
 		children[0].eval(state,thread,input,stack,individual,problem);
+		//no need to evaluate any more if an invalid state has been reached
+    	if(sd.getReachedInvalidState()){
+    		return;
+    	}
 
 		//System.out.println("middle: "+sd.toString()+"\n");
 		children[1].eval(state,thread,input,stack,individual,problem);
 		//System.out.println("after: "+sd.toString()+"\n");
 		//the result information should now be held in input
 		//TODO: Delete this next line later
-		int j=sd.getDatabaseAThreadsCount();
+		//int j=sd.getDatabaseAThreadsCount();
 		
 	}
 }

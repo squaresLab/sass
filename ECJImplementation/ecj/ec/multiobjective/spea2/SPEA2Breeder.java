@@ -31,9 +31,10 @@ public class SPEA2Breeder extends SimpleBreeder
         {
         super.setup(state, base);
 
+        /*Uncommented by Zack Coker - for some reason this is being called before the state's population is initialized, even the provided example.
         for (int i = 0; i < state.population.subpops.length; i++)
             if (reduceBy[i] != 0)
-                state.output.fatal("SPEA2Breeder does not support population reduction.", base.push(P_REDUCE_BY).push(""+i), null);
+                state.output.fatal("SPEA2Breeder does not support population reduction.", base.push(P_REDUCE_BY).push(""+i), null); */
                         
         if (sequentialBreeding) // uh oh, haven't tested with this
             state.output.fatal("SPEA2Breeder does not support sequential evaluation.",

@@ -1,0 +1,8 @@
+open up gnuplot; then run the commands below in the gnuplot terminal
+
+TITLE="Pareto Front for GP"
+set title TITLE
+set ylabel "cost"
+set xlabel "response time"
+set zlabel "clock time"
+splot 'front.stat' u 1:2:4

@@ -41,14 +41,19 @@ public abstract class ActionTemplate extends GPNode{
     	
     }
 
+    @Override
     public void eval(final EvolutionState state,
     		      final int thread,
     		      final GPData input,
     		      final ADFStack stack,
     		      final GPIndividual individual,
     		      final Problem problem){
+    	
     	StateData sd = (StateData)input;
-    	//removing failure rate for testing
+    	//no need to evaluate any more if an invalid state has been reached
+    	if(sd.getReachedInvalidState()){
+    		return;
+    	}
     	if(state.random[0].nextDouble() > component.getFailureWeight()){
     	   succeeded=true;
     	   sd.setTime(sd.getTime()+component.getClockTime());
@@ -79,6 +84,8 @@ public abstract class ActionTemplate extends GPNode{
         if(invalidChangeAtLocation(sd)){
         	sd.setReachedInvalidState(true);
         }
+        //revaluating for debugging
+        //invalidChangeAtLocation(sd);
     }
 
     abstract protected boolean invalidChangeAtLocation(StateData sd);

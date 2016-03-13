@@ -32,6 +32,9 @@ public class StateData extends GPData {
 	}
 	
 	public void setReachedInvalidState(boolean reachedInvalidState) {
+		/*if(reachedInvalidState){
+			System.out.println("Stopping here for debugging");
+		}*/
 		this.reachedInvalidState = reachedInvalidState;
 	}
 	
@@ -171,7 +174,9 @@ public class StateData extends GPData {
 		((StateData)gpd).setMaxL2ServerCount(maxL2ServerCount);
 		((StateData)gpd).setMaxDatabaseAThreadsCount(maxDatabaseAThreadsCount);
 		((StateData)gpd).setMaxDatabaseBThreadsCount(maxDatabaseBThreadsCount);
+		((StateData)gpd).setReachedInvalidState(reachedInvalidState);
 	}
+	
 	
 	//TODO: figure out the return ranges later
 	public double calculateStateScore(){
@@ -189,6 +194,8 @@ public class StateData extends GPData {
 			//ECJ does not accept negative numbers; this means negative is
 			//and positive is bad
 			//TODO: adjust this equation - the parameters are very imbalanced - better but they still need work
+		    //eventually make the exponential instead of linear - I think that makes more sense - small increase
+			//in cost is not a big deal but a large increase is very bad
 			return 17000 * getResponseTime() + 2 * cost + -1200 * contentQualityInt 
 					+ 10 * time;
 		}

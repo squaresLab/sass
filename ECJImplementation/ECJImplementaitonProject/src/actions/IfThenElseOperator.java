@@ -24,7 +24,12 @@ public class IfThenElseOperator extends GPNode {
 	{
 		//double result;
 		StateData sd = ((StateData)(input));
+		//no need to evaluate any more if an invalid state has been reached
+    	if(sd.getReachedInvalidState()){
+    		return;
+    	}
 
+		
 		if(!(children[0] instanceof ActionTemplate)){
 			((StateData)input).setReachedInvalidState(true);
 		}

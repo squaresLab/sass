@@ -8,8 +8,11 @@ import actions.DecreaseDatabaseBThreads;
 import actions.DecreaseQuality;
 import actions.DeleteServerL1;
 import actions.DeleteServerL2;
+import actions.ForOperator;
+import actions.IfThenElseOperator;
 import actions.IncreaseDatabaseAThreads;
 import actions.IncreaseDatabaseBThreads;
+import actions.IncreaseQuality;
 import actions.SequenceOperator;
 import ec.EvolutionState;
 import ec.Evolve;
@@ -19,7 +22,8 @@ import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
 import ec.util.ParameterDatabase;
-import main.MultiValueRegression;
+import main.MultiObjectiveProblem;
+import main.SingleObjectiveProblem;
 import main.StateData;
 
 public class TestTrees {
@@ -51,11 +55,11 @@ public class TestTrees {
 		GPNode[] childs2  = {new DecreaseDatabaseBThreads(), new DecreaseQuality()};
 		secondSequenceOperator.children=childs2;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("Final Result: "+sd.calculateStateScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
@@ -81,11 +85,11 @@ public class TestTrees {
 		GPNode[] childs2  = {new DecreaseDatabaseBThreads(), new DecreaseDatabaseBThreads()};
 		secondSequenceOperator.children=childs2;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("Final Result: "+sd.calculateStateScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
@@ -108,11 +112,11 @@ public class TestTrees {
 		root.children = childs;
 		ind.trees[0].child = root;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("Final Result: "+sd.calculateStateScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
@@ -135,11 +139,11 @@ public class TestTrees {
 		root.children = childs;
 		ind.trees[0].child = root;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("Score Test Result: "+sd.calculateStateScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
@@ -162,11 +166,11 @@ public class TestTrees {
 		root.children = childs;
 		ind.trees[0].child = root;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("Increase Decrease Result: "+sd.calculateStateScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
@@ -213,11 +217,11 @@ public class TestTrees {
 		ninthSequenceOperator.children=childs9;
 		
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("10 Increase Result: "+sd.calculateStateScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
@@ -235,11 +239,11 @@ public class TestTrees {
 		GPNode root = new IncreaseDatabaseAThreads();
 		ind.trees[0].child = root;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		double increaseAResult = sd.calculateStateScore();
 		
 		
@@ -250,7 +254,7 @@ public class TestTrees {
 		GPNode root2 = new IncreaseDatabaseBThreads();
 		ind2.trees[0].child = root2;
 		((GPIndividual)ind2).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind2), new MultiValueRegression());
+				((GPIndividual)ind2), new SingleObjectiveProblem());
 		double increaseBresult = sd.calculateStateScore();
 		
 		
@@ -272,11 +276,11 @@ public class TestTrees {
 		GPNode root = new DecreaseQuality();
 		ind.trees[0].child = root;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("Initial: "+initialScore+", After Decrease Quality:"+sd.calculateStateScore());
 	}
 	
@@ -311,11 +315,11 @@ public class TestTrees {
 		GPNode[] childs6  = {new IncreaseDatabaseAThreads(), new IncreaseDatabaseAThreads()};
 		sixthSequenceOperator.children=childs6;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		double allIncreaseThreadA = sd.calculateStateScore();
 		
 		sd.initializeData();
@@ -345,7 +349,7 @@ public class TestTrees {
 		sixthSequenceOperatorB.children=childs6B;
 		
 		((GPIndividual)indB).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)indB), new MultiValueRegression());
+				((GPIndividual)indB), new SingleObjectiveProblem());
 		double mixedThreads = sd.calculateStateScore();
 		System.out.println("All inrease A Threads: "+allIncreaseThreadA+
 				", mixedThreadIncrease:"+mixedThreads);
@@ -380,11 +384,11 @@ public class TestTrees {
 		GPNode[] childs6  = {new IncreaseDatabaseAThreads(), new DecreaseQuality()};
 		sixthSequenceOperator.children=childs6;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		double seeminglyInvalidSequnceScore = sd.calculateStateScore();
 		System.out.println("database a thread count: "+sd.getDatabaseAThreadsCount());
 		System.out.println("database a max thread count: "+sd.getMaxDatabaseAThreadsCount());
@@ -420,11 +424,11 @@ public class TestTrees {
 		GPNode[] childs6  = {new IncreaseDatabaseBThreads(), new IncreaseDatabaseBThreads()};
 		sixthSequenceOperator.children=childs6;
 		Evolve ev = new Evolve();
-		String[] inputFile = {"-file","selfadaptivesystem.params"};
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
 		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new MultiValueRegression());
+				((GPIndividual)ind), new SingleObjectiveProblem());
 		double scoreWithoutAddServer = sd.calculateStateScore();
 		System.out.println("state without add server: "+sd.toString());
 
@@ -475,7 +479,7 @@ public class TestTrees {
 		seventhSequenceOperatorB.children=childs7B;
         indB.printTrees(state, 0);
 		((GPIndividual)indB).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)indB), new MultiValueRegression());
+				((GPIndividual)indB), new SingleObjectiveProblem());
 		double scoreWithAddServer = sd.calculateStateScore();
 		System.out.println("state with add server: "+sd.toString());
 		
@@ -483,6 +487,142 @@ public class TestTrees {
 				+", score without add server: "+scoreWithoutAddServer);
 		
 	}
-}
+	
+	@Test
+	public void incorrectFailingIfThenElse(){
+		StateData sd = new StateData();
+		sd.initializeData();
+		GPIndividual ind = new GPIndividual();
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		GPNode root = new IfThenElseOperator();
+		//TODO - set up the tree correctly and then check if the eval
+		//method works correctly
+		GPNode secondSequenceOperator = new SequenceOperator();
+		GPNode[] childs = {new DecreaseQuality(), new IncreaseDatabaseAThreads(), new IncreaseQuality()};
+		root.children = childs;
+		ind.trees[0].child = root;
+		Evolve ev = new Evolve();
+		String[] inputFile = {"-file","selfadaptivesystemmultiobjective.params"};
+		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+		EvolutionState state = ev.initialize(params,0);
+		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
+				((GPIndividual)ind), new SingleObjectiveProblem());
+		System.out.println("check the failing if then else "+sd.calculateStateScore());
+		//TODO:Go back and make the test pass for different combinations of successes and failures
+		//At the moment I'm assuming all the actions succeed.  If any fail than the test
+		//will fail
+		assert(!(sd.getReachedInvalidState()));
+	}
+	
+	@Test
+	public void incorrectFailingDecreaseA(){
+		StateData sd = new StateData();
+		sd.initializeData();
+		GPIndividual ind = new GPIndividual();
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		GPNode root = new DecreaseDatabaseAThreads();
+		//TODO - set up the tree correctly and then check if the eval
+		//method works correctly
 
+		ind.trees[0].child = root;
+		Evolve ev = new Evolve();
+		String[] inputFile = {"-file","selfadaptivesystemmultiobjective.params"};
+		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+		EvolutionState state = ev.initialize(params,0);
+		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
+				((GPIndividual)ind), new SingleObjectiveProblem());
+		System.out.println("check the failing decrease database A: "+sd.calculateStateScore());
+		//TODO:Go back and make the test pass for different combinations of successes and failures
+		//At the moment I'm assuming all the actions succeed.  If any fail than the test
+		//will fail
+		assert(!(sd.getReachedInvalidState()));
+	}
+	
+	@Test
+	public void correctEvaluationOfSameSubTrees(){
+		StateData sd = new StateData();
+		sd.initializeData();
+		GPIndividual ind = new GPIndividual();
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		GPNode root = new IfThenElseOperator();
+		//TODO - set up the tree correctly and then check if the eval
+		//method works correctly
+		GPNode secondSequenceOperator = new SequenceOperator();
+		GPNode[] childs = {new DecreaseQuality(), new IncreaseDatabaseAThreads(), new IncreaseDatabaseAThreads()};
+		root.children = childs;
+		ind.trees[0].child = root;
+		Evolve ev = new Evolve();
+		String[] inputFile = {"-file","selfadaptivesystemmultiobjective.params"};
+		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+		EvolutionState state = ev.initialize(params,0);
+
+		//TODO:Go back and make the test pass for different combinations of successes and failures
+		//At the moment I'm assuming all the actions succeed.  If any fail than the test
+		//will fail
+		assert(MultiObjectiveProblem.ifsWithSameChildren(treeInit[0])==1);
+	}
+	
+	@Test
+	public void testForLoop(){
+		StateData sd = new StateData();
+		sd.initializeData();
+		GPIndividual ind = new GPIndividual();
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		ForOperator forNode = new ForOperator();
+		forNode.setForCount(3);
+		GPNode root = forNode;
+		
+		//TODO - set up the tree correctly and then check if the eval
+		//method works correctly
+		GPNode[] childs = {new AddServerL1()};
+		root.children = childs;
+		ind.trees[0].child = root;
+		Evolve ev = new Evolve();
+		String[] inputFile = {"-file","selfadaptivesystemmultiobjective.params"};
+		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+		EvolutionState state = ev.initialize(params,0);
+		int originalServerCount = sd.getL1ServerCount();
+		System.out.println("Server count at start of experiment : "+sd.getL1ServerCount());
+		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
+				((GPIndividual)ind), new SingleObjectiveProblem());
+		System.out.println("Server count after 3 add servers in for loop: "+sd.getL1ServerCount());
+		assert(sd.getL1ServerCount()==3+originalServerCount);
+		assert(!sd.getReachedInvalidState());
+	}
+	
+	@Test
+	public void testInvalidForLoop(){
+		StateData sd = new StateData();
+		sd.initializeData();
+		GPIndividual ind = new GPIndividual();
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		ForOperator forNode = new ForOperator();
+		forNode.setForCount(10);
+		GPNode root = forNode;
+		
+		//TODO - set up the tree correctly and then check if the eval
+		//method works correctly
+		GPNode[] childs = {new AddServerL1()};
+		root.children = childs;
+		ind.trees[0].child = root;
+		String[] inputFile = {"-file","selfadaptivesystemmultiobjective.params"};
+		ParameterDatabase params = Evolve.loadParameterDatabase(inputFile);
+		EvolutionState state = Evolve.initialize(params,0);
+		int originalServerCount = sd.getL1ServerCount();
+		System.out.println("Invalid Server count at start of experiment : "+sd.getL1ServerCount());
+		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
+				((GPIndividual)ind), new SingleObjectiveProblem());
+		System.out.println("Invalid Server count after 3 add servers in for loop: "+sd.getL1ServerCount());
+		System.out.println("originalServerCount: "+originalServerCount);
+		System.out.println("are they equal?: "+(sd.getL1ServerCount()==3+originalServerCount));
+		assert(false);
+		assert(sd.getL1ServerCount()==3+originalServerCount);
+		assert(!sd.getReachedInvalidState());
+	}
+}
 

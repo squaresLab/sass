@@ -1,0 +1,32 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+#
+# Simple default parameters for multiobjective fitness
+#
+
+# how many objectives should we have by default?
+# you can also assign this on a per-subpopulation basis
+multi.fitness.num-objectives 	= 6
+
+# max and min values of all each objective function
+multi.fitness.max 		= 100000000
+multi.fitness.min 		= 0
+
+# override specific max and min values, e.g
+multi.fitness.max.2		= 1
+
+# minimize 3 objectives
+pop.subpop.0.species.fitness.maximize.0 = false
+pop.subpop.0.species.fitness.maximize.1 = false
+pop.subpop.0.species.fitness.maximize.2 = true
+pop.subpop.0.species.fitness.maximize.3 = false
+pop.subpop.0.species.fitness.maximize.4 = false
+pop.subpop.0.species.fitness.maximize.5 = false
+
+# Use a statistics object which dumps the front
+stat =                                          ec.multiobjective.MultiObjectiveStatistics
+stat.front =                                    $front.stat
+
+

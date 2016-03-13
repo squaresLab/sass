@@ -36,7 +36,7 @@ gp.fs.0.func.10.nc = nc2
 gp.fs.0.func.11 = actions.IfThenElseOperator
 gp.fs.0.func.11.nc = nc3
 
-eval.problem = main.MultiValueRegression
+eval.problem = main.SingleObjectiveProblem
 eval.problem.data = main.StateData
 generations = 5000
 

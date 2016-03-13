@@ -13,7 +13,7 @@ import ec.gp.koza.KozaFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 
-public class MultiValueRegression extends GPProblem implements SimpleProblemForm {
+public class SingleObjectiveProblem extends GPProblem implements SimpleProblemForm {
 
 	public void setup(final EvolutionState state, final Parameter base){
 		super.setup(state, base);

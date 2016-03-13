@@ -1,0 +1,250 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+#uncomment the desired multiobjective algorithm
+parent.0 = spea2.params
+#parent.0 = nsga2.params
+parent.1 = koza.params
+
+eval.problem = main.MultiObjectiveProblem
+
+#
+# optionally your type could be: zdt1, zdt2, zdt3, zdt4, zdt6, sphere
+#
+# Different problems has different default settings, so we suggest 
+# using the appropriate params file for each benchmark.
+
+pop.subpop.0.species = ec.vector.FloatVectorSpecies
+pop.subpop.0.species.ind = ec.vector.DoubleVectorIndividual
+seed.0 = time
+
+
+# Uncomment this if you'd like to force reevaluation of all archive
+# members each generation.
+#
+# breed.reevaluate-elites.0 = true
+
+
+
+eval.problem.stack = ec.gp.ADFStack
+eval.problem.stack.context = ec.gp.ADFContext
+eval.problem.data = main.StateData
+
+# We have one function set, of class GPFunctionSet
+gp.fs.size = 1
+gp.fs.0 = ec.gp.GPFunctionSet
+# We'll call the function set "f0".
+gp.fs.0.name = f0
+
+# We have these functions in the function set.  They are:
+gp.fs.0.size = 13
+gp.fs.0.func.0 = actions.AddServerL1
+gp.fs.0.func.0.nc = nc0
+gp.fs.0.func.1 = actions.AddServerL2
+gp.fs.0.func.1.nc = nc0
+gp.fs.0.func.2 = actions.DeleteServerL1
+gp.fs.0.func.2.nc = nc0
+gp.fs.0.func.3 = actions.DeleteServerL2
+gp.fs.0.func.3.nc = nc0
+gp.fs.0.func.4 = actions.IncreaseDatabaseAThreads
+gp.fs.0.func.4.nc = nc0
+gp.fs.0.func.5 = actions.IncreaseDatabaseBThreads
+gp.fs.0.func.5.nc = nc0
+gp.fs.0.func.6 = actions.DecreaseDatabaseAThreads
+gp.fs.0.func.6.nc = nc0
+gp.fs.0.func.7 = actions.DecreaseDatabaseBThreads
+gp.fs.0.func.7.nc = nc0
+gp.fs.0.func.8 = actions.IncreaseQuality
+gp.fs.0.func.8.nc = nc0
+gp.fs.0.func.9 = actions.DecreaseQuality
+gp.fs.0.func.9.nc = nc0
+gp.fs.0.func.10 = actions.SequenceOperator
+gp.fs.0.func.10.nc = nc2
+gp.fs.0.func.11 = actions.IfThenElseOperator
+gp.fs.0.func.11.nc = nc3
+gp.fs.0.func.12 = actions.ForOperator
+gp.fs.0.func.12.nc = nc1
+
+#copied from koza.params
+
+pop.subpop.0.species = ec.gp.GPSpecies
+pop.subpop.0.species.ind = ec.gp.GPIndividual
+pop.subpop.0.species.ind.numtrees = 1
+pop.subpop.0.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.0.species.ind.tree.0.tc = tc0
+init = ec.gp.GPInitializer
+gp.type.a.size = 1
+gp.type.a.0.name = nil
+gp.type.s.size = 0
+gp.tc.size = 1
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+gp.tc.0.fset = f0
+gp.tc.0.returns = nil
+gp.tc.0.init = ec.gp.koza.HalfBuilder
+# We set the default for HalfBuilder to be a ramp of 2--6,
+# with a grow probability of 0.5
+gp.koza.half.min-depth = 2
+gp.koza.half.max-depth = 6
+gp.koza.half.growp = 0.5
+
+gp.nc.size = 7
+
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = nc0
+gp.nc.0.returns = nil
+gp.nc.0.size = 0
+
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = nc1
+gp.nc.1.returns = nil
+gp.nc.1.size = 1
+gp.nc.1.child.0 = nil
+
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = nc2
+gp.nc.2.returns = nil
+gp.nc.2.size = 2
+gp.nc.2.child.0 = nil
+gp.nc.2.child.1 = nil
+
+gp.nc.3 = ec.gp.GPNodeConstraints
+gp.nc.3.name = nc3
+gp.nc.3.returns = nil
+gp.nc.3.size = 3
+gp.nc.3.child.0 = nil
+gp.nc.3.child.1 = nil
+gp.nc.3.child.2 = nil
+
+gp.nc.4 = ec.gp.GPNodeConstraints
+gp.nc.4.name = nc4
+gp.nc.4.returns = nil
+gp.nc.4.size = 4
+gp.nc.4.child.0 = nil
+gp.nc.4.child.1 = nil
+gp.nc.4.child.2 = nil
+gp.nc.4.child.3 = nil
+
+gp.nc.5 = ec.gp.GPNodeConstraints
+gp.nc.5.name = nc5
+gp.nc.5.returns = nil
+gp.nc.5.size = 5
+gp.nc.5.child.0 = nil
+gp.nc.5.child.1 = nil
+gp.nc.5.child.2 = nil
+gp.nc.5.child.3 = nil
+gp.nc.5.child.4 = nil
+
+gp.nc.6 = ec.gp.GPNodeConstraints
+gp.nc.6.name = nc6
+gp.nc.6.returns = nil
+gp.nc.6.size = 6
+gp.nc.6.child.0 = nil
+gp.nc.6.child.1 = nil
+gp.nc.6.child.2 = nil
+gp.nc.6.child.3 = nil
+gp.nc.6.child.4 = nil
+gp.nc.6.child.5 = nil
+
+pop.subpop.0.species.pipe = ec.breed.MultiBreedingPipeline
+# Koza's decision here was odd...
+pop.subpop.0.species.pipe.generate-max = false
+# Subsidiary pipelines:
+pop.subpop.0.species.pipe.num-sources = 2
+pop.subpop.0.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.prob = 0.9
+pop.subpop.0.species.pipe.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.0.species.pipe.source.1.prob = 0.1
+
+# Reproduction will use Tournament Selection 
+breed.reproduce.source.0 = ec.select.TournamentSelection
+
+# Crossover will use Tournament Selection, try only 1
+# time, have a max depth of 17, and use KozaNodeSelector
+gp.koza.xover.source.0 = ec.select.TournamentSelection
+gp.koza.xover.source.1 = same
+gp.koza.xover.ns.0 = ec.gp.koza.KozaNodeSelector
+gp.koza.xover.ns.1 = same
+gp.koza.xover.maxdepth = 17
+# This is the default for Koza and lil-gp, though it's
+# a little wimpy; on the other hand, a higher number can
+# make things really slow
+gp.koza.xover.tries = 1
+
+# Point Mutation will use Tournament Selection, try only 1
+# time, have a max depth of 17, and use KozaNodeSelector
+# and GROW for building.  Also, Point Mutation uses a GrowBuilder
+# by default, with a default of min-depth=max-depth=5
+# as shown a ways below
+gp.koza.mutate.source.0 = ec.select.TournamentSelection
+gp.koza.mutate.ns.0 = ec.gp.koza.KozaNodeSelector
+gp.koza.mutate.build.0 = ec.gp.koza.GrowBuilder
+gp.koza.mutate.maxdepth = 17
+# This is the default for Koza and lil-gp, though it's
+# a little wimpy; on the other hand, a higher number can
+# make things really slow
+gp.koza.mutate.tries = 1
+
+
+
+
+#
+# The default tournament size for TournamentSelection is 7
+#
+
+select.tournament.size = 7
+
+
+
+
+# Since GROW is only used for subtree mutation, ECJ uses
+# the Koza-standard subtree mutation GROW values for the
+# default for GROW as a whole.  This default is
+# min-depth=max-depth=5, which I don't like very much,
+# but hey, that's the standard.  
+# This means that if someone decided to use GROW to generate
+# new individual trees, it's also use the defaults below
+# unless he overrided them locally.
+gp.koza.grow.min-depth = 5
+gp.koza.grow.max-depth = 5
+
+
+generations = 100
+
+
+#objective string - put the letters in the order you want the objectives evaluated
+#then make sure the num-objectives below match the number of parameters listed
+#and the fitness min and max values below also match the ranges for the 
+#objective in that postition
+#objectives codes 
+#r - response time
+#c - cost
+#q - quality 
+#t - clocktime
+#s - penalizing same trees on both sides of an if then (meaning if the action succeeds or fails still do the same thing)
+#l - minimize plan length
+#example objective string: rql - evaluate based on response time, quality, and plan length 
+ 
+objectives=rcqtsl
+
+
+# you can also assign this on a per-subpopulation basis
+multi.fitness.num-objectives 	= 6
+
+# max and min values of all each objective function
+multi.fitness.max 		= 100000000
+multi.fitness.min 		= 0
+
+# override specific max and min values, e.g
+#multi.fitness.max.2		= 1
+
+# minimize 3 objectives
+pop.subpop.0.species.fitness.maximize.0 = false
+pop.subpop.0.species.fitness.maximize.1 = false
+pop.subpop.0.species.fitness.maximize.2 = true
+pop.subpop.0.species.fitness.maximize.3 = false
+pop.subpop.0.species.fitness.maximize.4 = false
+pop.subpop.0.species.fitness.maximize.5 = false
+
+print-params = false
