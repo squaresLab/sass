@@ -1,3 +1,4 @@
 go to the directory  - /home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem
 then run the command - java -cp "/home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem/bin/:/home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem/:/home/zack/eclipse/java-mars/eclipse/workspace/ECJSelfAdaptiveSystem/ecj.23.jar" ec.Evolve -file selfadaptivesystem.params
 
+Updated example for new computer set up - java -cp "/home/zack/git/AdaptiveSystemsPlanWithGeneticAlrogithm/ECJImplementation/ECJImplementaitonProject/bin/:/home/zack/git/AdaptiveSystemsPlanWithGeneticAlrogithm/ECJImplementation/ECJImplementaitonProject/:/home/zack/git/AdaptiveSystemsPlanWithGeneticAlrogithm/ECJImplementation/ECJImplementaitonProject/ecj.jar" ec.Evolve -file selfadaptivesystemmultiobjective.param
