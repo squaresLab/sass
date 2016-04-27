@@ -1,4 +1,4 @@
-package actions;
+package actions.tactics;
 
 import components.DatabaseAThread;
 import ec.EvolutionState;
@@ -23,7 +23,7 @@ public class DecreaseDatabaseAThreads extends DecreaseDatabaseThreads {
 	}
 
 	@Override
-	protected boolean invalidChangeAtLocation(StateData sd) {
+	protected boolean isInvalidChange(StateData sd) {
 		sd.setDatabaseAThreadsCount(sd.getDatabaseAThreadsCount()-1);
 		return sd.getDatabaseAThreadsCount() < 1; 
 	}

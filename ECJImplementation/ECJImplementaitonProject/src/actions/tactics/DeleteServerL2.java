@@ -1,4 +1,4 @@
-package actions;
+package actions.tactics;
 
 import components.L2Server;
 import main.StateData;
@@ -17,7 +17,7 @@ public class DeleteServerL2 extends DeleteServer {
     }
     
 	@Override
-	protected boolean invalidChangeAtLocation(StateData sd) {
+	protected boolean isInvalidChange(StateData sd) {
 		sd.setL2ServerCount(sd.getL2ServerCount()-1);
 		return sd.getL2ServerCount() < 0 || sd.getServerCount() < 1;
 	}

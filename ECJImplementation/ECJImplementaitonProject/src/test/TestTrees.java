@@ -1,19 +1,22 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
-import actions.AddServerL1;
-import actions.DecreaseDatabaseAThreads;
-import actions.DecreaseDatabaseBThreads;
-import actions.DecreaseQuality;
-import actions.DeleteServerL1;
-import actions.DeleteServerL2;
-import actions.ForOperator;
-import actions.IfThenElseOperator;
-import actions.IncreaseDatabaseAThreads;
-import actions.IncreaseDatabaseBThreads;
-import actions.IncreaseQuality;
-import actions.SequenceOperator;
+import actions.operators.ForOperator;
+import actions.operators.IfThenElseOperator;
+import actions.operators.SequenceOperator;
+import actions.tactics.AddServerL1;
+import actions.tactics.DecreaseDatabaseAThreads;
+import actions.tactics.DecreaseDatabaseBThreads;
+import actions.tactics.DecreaseQuality;
+import actions.tactics.DeleteServerL1;
+import actions.tactics.DeleteServerL2;
+import actions.tactics.IncreaseDatabaseAThreads;
+import actions.tactics.IncreaseDatabaseBThreads;
+import actions.tactics.IncreaseQuality;
 import ec.EvolutionState;
 import ec.Evolve;
 import ec.gp.ADFStack;
@@ -94,7 +97,7 @@ public class TestTrees {
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assert(sd.calculateStateScore()==Long.MAX_VALUE);
+		assertEquals(sd.calculateStateScore(),Long.MAX_VALUE, 0.01);
 	}
 	
 	@Test
@@ -121,7 +124,7 @@ public class TestTrees {
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assert(sd.calculateStateScore()!=Long.MAX_VALUE);
+		assertTrue(sd.calculateStateScore()!=Long.MAX_VALUE);
 	}
 	
 	@Test
@@ -356,7 +359,7 @@ public class TestTrees {
 	}
 	
 	@Test
-	public void seemlyInvalidCombination(){
+	public void tooManyDatabaseAThreadsTest(){
 		StateData sd = new StateData();
 		sd.initializeData();
 		GPIndividual ind = new GPIndividual();
@@ -393,6 +396,8 @@ public class TestTrees {
 		System.out.println("database a thread count: "+sd.getDatabaseAThreadsCount());
 		System.out.println("database a max thread count: "+sd.getMaxDatabaseAThreadsCount());
 		System.out.println("Seemingly invalid Sequence Score: "+seeminglyInvalidSequnceScore);
+		System.out.println("Reached invalid state: "+sd.getReachedInvalidState());
+		assertTrue(sd.getReachedInvalidState());
 	}
 	
 	@Test
@@ -485,7 +490,7 @@ public class TestTrees {
 		
 		System.out.println("Score with add server: "+scoreWithAddServer
 				+", score without add server: "+scoreWithoutAddServer);
-		
+		assertTrue(scoreWithAddServer<scoreWithoutAddServer);
 	}
 	
 	@Test
@@ -512,7 +517,7 @@ public class TestTrees {
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assert(!(sd.getReachedInvalidState()));
+		assertEquals(sd.getReachedInvalidState(),false);
 	}
 	
 	@Test
@@ -537,7 +542,7 @@ public class TestTrees {
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assert(!(sd.getReachedInvalidState()));
+		assertEquals(sd.getReachedInvalidState(),false);
 	}
 	
 	@Test
@@ -551,7 +556,13 @@ public class TestTrees {
 		//TODO - set up the tree correctly and then check if the eval
 		//method works correctly
 		GPNode secondSequenceOperator = new SequenceOperator();
-		GPNode[] childs = {new DecreaseQuality(), new IncreaseDatabaseAThreads(), new IncreaseDatabaseAThreads()};
+		GPNode decreaseQualityNode = new DecreaseQuality();
+		decreaseQualityNode.children = new GPNode[0];
+		GPNode increaseDatabaseAThreadsNode1 = new IncreaseDatabaseAThreads();
+		increaseDatabaseAThreadsNode1.children = new GPNode[0];
+		GPNode increaseDatabaseAThreadsNode2 = new IncreaseDatabaseAThreads();
+		increaseDatabaseAThreadsNode2.children = new GPNode[0];
+		GPNode[] childs = {decreaseQualityNode, increaseDatabaseAThreadsNode1, increaseDatabaseAThreadsNode2};
 		root.children = childs;
 		ind.trees[0].child = root;
 		Evolve ev = new Evolve();
@@ -562,7 +573,7 @@ public class TestTrees {
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assert(MultiObjectiveProblem.ifsWithSameChildren(treeInit[0])==1);
+		assertEquals(MultiObjectiveProblem.ifsWithSameChildren(treeInit[0]),1);
 	}
 	
 	@Test
@@ -588,10 +599,11 @@ public class TestTrees {
 		int originalServerCount = sd.getL1ServerCount();
 		System.out.println("Server count at start of experiment : "+sd.getL1ServerCount());
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new SingleObjectiveProblem());
+				((GPIndividual)ind), new MultiObjectiveProblem());
 		System.out.println("Server count after 3 add servers in for loop: "+sd.getL1ServerCount());
-		assert(sd.getL1ServerCount()==3+originalServerCount);
-		assert(!sd.getReachedInvalidState());
+		assertEquals(sd.getL1ServerCount(),3+originalServerCount);
+		assertEquals(sd.getReachedInvalidState(),false);
+		
 	}
 	
 	@Test
@@ -602,7 +614,7 @@ public class TestTrees {
 		GPTree[] treeInit = {new GPTree()};
 		ind.trees = treeInit;
 		ForOperator forNode = new ForOperator();
-		forNode.setForCount(10);
+		forNode.setForCount(3);
 		GPNode root = forNode;
 		
 		//TODO - set up the tree correctly and then check if the eval
@@ -616,13 +628,40 @@ public class TestTrees {
 		int originalServerCount = sd.getL1ServerCount();
 		System.out.println("Invalid Server count at start of experiment : "+sd.getL1ServerCount());
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
-				((GPIndividual)ind), new SingleObjectiveProblem());
+				((GPIndividual)ind), new MultiObjectiveProblem());
 		System.out.println("Invalid Server count after 3 add servers in for loop: "+sd.getL1ServerCount());
 		System.out.println("originalServerCount: "+originalServerCount);
 		System.out.println("are they equal?: "+(sd.getL1ServerCount()==3+originalServerCount));
-		assert(false);
-		assert(sd.getL1ServerCount()==3+originalServerCount);
-		assert(!sd.getReachedInvalidState());
+		assertEquals(sd.getL1ServerCount(),3+originalServerCount);
+		assertEquals(sd.getReachedInvalidState(),false);
+	}
+	
+	@Test
+	public void testForLoopSize(){
+		StateData sd = new StateData();
+		sd.initializeData();
+		GPIndividual ind = new GPIndividual();
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		ForOperator forNode = new ForOperator();
+		forNode.setForCount(3);
+		GPNode root = forNode;
+		
+		//TODO - set up the tree correctly and then check if the eval
+		//method works correctly
+		GPNode addServerNode = new AddServerL1();
+		addServerNode.children = new GPNode[0];
+		GPNode[] childs = {addServerNode};
+		root.children = childs;
+		ind.trees[0].child = root;
+		Evolve ev = new Evolve();
+		String[] inputFile = {"-file","selfadaptivesystemmultiobjective.params"};
+		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+		EvolutionState state = ev.initialize(params,0);
+		int originalServerCount = sd.getL1ServerCount();
+		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
+				((GPIndividual)ind), new MultiObjectiveProblem());
+		assertEquals(MultiObjectiveProblem.calculatePlanLength(((GPIndividual)ind).trees[0]),4);
 	}
 }
 

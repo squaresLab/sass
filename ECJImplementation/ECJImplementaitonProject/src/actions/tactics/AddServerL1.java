@@ -1,4 +1,4 @@
-package actions;
+package actions.tactics;
 
 import components.L1Server;
 import main.StateData;
@@ -16,7 +16,7 @@ public class AddServerL1 extends AddServer {
     }
 
 	@Override
-	protected boolean invalidChangeAtLocation(StateData sd) {
+	protected boolean isInvalidChange(StateData sd) {
 		sd.setL1ServerCount(sd.getL1ServerCount()+1);
 		return sd.getL1ServerCount()>sd.getMaxL1ServerCount();
 	}

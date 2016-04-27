@@ -1,6 +1,6 @@
 package main;
 
-import actions.AddServerL1;
+import actions.tactics.AddServerL1;
 import components.DatabaseAThread;
 import components.DatabaseBThread;
 import components.L1Server;
@@ -8,6 +8,9 @@ import components.L2Server;
 import ec.gp.GPData;
 
 public class StateData extends GPData {
+	
+	//remember to update the copyTo function when you add new variables
+	
 	//TODO: go through the files and decide if you are going to use time or clockTime 
 	//because you keep switching at the moment and you should be consistent
 	double time;
@@ -18,6 +21,8 @@ public class StateData extends GPData {
 	int maxL1ServerCount;
 	int l2ServerCount;
 	int maxL2ServerCount;
+	int l3ServerCount;
+	int maxL3ServerCount;
 	int databaseAThreadsCount;
 	int maxDatabaseAThreadsCount;
 	int databaseBThreadsCount;
@@ -25,7 +30,26 @@ public class StateData extends GPData {
 	boolean highQuality;
 	double security;
 	double computingPower;
-	//remember to update the copyTo function when you add new variables
+	
+	public int getL3ServerCount() {
+		return l3ServerCount;
+	}
+
+	public void setL3ServerCount(int l3ServerCount) {
+		this.l3ServerCount = l3ServerCount;
+	}
+
+	public int getMaxL3ServerCount() {
+		return maxL3ServerCount;
+	}
+
+	public void setMaxL3ServerCount(int maxL3ServerCount) {
+		this.maxL3ServerCount = maxL3ServerCount;
+	}
+
+
+	
+
 	
 	public boolean getReachedInvalidState() {
 		return reachedInvalidState;
@@ -170,8 +194,10 @@ public class StateData extends GPData {
 		((StateData)gpd).setDatabaseBThreadsCount(databaseBThreadsCount);
 		((StateData)gpd).setL1ServerCount(l1ServerCount);
 		((StateData)gpd).setL2ServerCount(l2ServerCount);
+		((StateData)gpd).setL3ServerCount(l3ServerCount);
 		((StateData)gpd).setMaxL1ServerCount(maxL1ServerCount);
 		((StateData)gpd).setMaxL2ServerCount(maxL2ServerCount);
+		((StateData)gpd).setMaxL3ServerCount(maxL3ServerCount);
 		((StateData)gpd).setMaxDatabaseAThreadsCount(maxDatabaseAThreadsCount);
 		((StateData)gpd).setMaxDatabaseBThreadsCount(maxDatabaseBThreadsCount);
 		((StateData)gpd).setReachedInvalidState(reachedInvalidState);

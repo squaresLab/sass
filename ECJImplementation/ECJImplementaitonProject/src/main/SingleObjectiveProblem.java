@@ -1,8 +1,8 @@
 package main;
 
-import actions.AddServer;
-import actions.IfThenElseOperator;
-import actions.IncreaseDatabaseAThreads;
+import actions.operators.IfThenElseOperator;
+import actions.tactics.AddServer;
+import actions.tactics.IncreaseDatabaseAThreads;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.gp.GPIndividual;

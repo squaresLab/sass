@@ -1,5 +1,6 @@
-package actions;
+package actions.operators;
 
+import actions.tactics.ActionTemplate;
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;

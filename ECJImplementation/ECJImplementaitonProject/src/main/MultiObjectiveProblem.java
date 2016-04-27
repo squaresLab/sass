@@ -1,9 +1,9 @@
 package main;
 
 import java.util.HashMap;
-import java.util.function.Function;
 
-import actions.IfThenElseOperator;
+import actions.operators.ForOperator;
+import actions.operators.IfThenElseOperator;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.gp.GPIndividual;
@@ -29,8 +29,7 @@ public class MultiObjectiveProblem extends GPProblem implements SimpleProblemFor
 		}*/
 	
 	
-	/*This is the method to evaluate the fitness of a plan
-	 * TODO - check this is in the correct final form*/
+	/*This is the method to evaluate the fitness of a plan */
 	@Override
 	public void evaluate(EvolutionState state, Individual ind, int subpopulation, int threadnum) {
 		// TODO Auto-generated method stub
@@ -139,9 +138,18 @@ public class MultiObjectiveProblem extends GPProblem implements SimpleProblemFor
 	
 	private static int recursivelyCalculateTreeLength(GPNode node){
 		int result = 1;
-		for(int i = 0; i < node.children.length; i++){
-			result += recursivelyCalculateTreeLength(node.children[i]);
-		}
+		//TODO: decide if this is the correct way to handle for loops
+		//currently I am counting only the number of nodes in the plan
+		//and not the actual number of steps; this creates an advantage
+		//to use for loops in the plan instead of repeating nodes.
+
+		//if(node instanceof ForOperator){
+		//	result += recursivelyCalculateTreeLength(node.children[0]) * ((ForOperator)node).getForCount();
+		//} else {
+		  for(int i = 0; i < node.children.length; i++){
+		  	result += recursivelyCalculateTreeLength(node.children[i]);
+		  }
+		//}
 		return result;
 	}
 

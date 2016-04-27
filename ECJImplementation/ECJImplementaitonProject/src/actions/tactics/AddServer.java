@@ -1,4 +1,4 @@
-package actions;
+package actions.tactics;
 
 import components.Server;
 import ec.EvolutionState;
@@ -19,7 +19,7 @@ public abstract class AddServer extends ActionTemplate{
 		return true;
 	}
     
-    abstract protected boolean invalidChangeAtLocation(StateData sd);
+    abstract protected boolean isInvalidChange(StateData sd);
     
     public String toString(){
     	return "AddServer";

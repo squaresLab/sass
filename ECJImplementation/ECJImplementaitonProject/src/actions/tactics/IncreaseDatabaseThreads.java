@@ -1,4 +1,4 @@
-package actions;
+package actions.tactics;
 
 import main.StateData;
 

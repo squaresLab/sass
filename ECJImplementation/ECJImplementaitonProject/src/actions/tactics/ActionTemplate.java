@@ -1,4 +1,4 @@
-package actions;
+package actions.tactics;
 
 import components.Component;
 import ec.EvolutionState;
@@ -16,7 +16,7 @@ public abstract class ActionTemplate extends GPNode{
 	Component component;
 	boolean succeeded = true; //default assume it succeeds
     
-	boolean hasSucceeded(){
+	public boolean hasSucceeded(){
 		return succeeded;
 	}
 
@@ -81,14 +81,14 @@ public abstract class ActionTemplate extends GPNode{
     
     public void uniqueSuccessChanges(StateData sd){
     	
-        if(invalidChangeAtLocation(sd)){
+        if(isInvalidChange(sd)){
         	sd.setReachedInvalidState(true);
         }
         //revaluating for debugging
         //invalidChangeAtLocation(sd);
     }
 
-    abstract protected boolean invalidChangeAtLocation(StateData sd);
+    abstract protected boolean isInvalidChange(StateData sd);
     
     abstract boolean areAddingItem();
 	

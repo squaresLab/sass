@@ -1,4 +1,4 @@
-package actions;
+package actions.tactics;
 
 import components.DatabaseBThread;
 import main.StateData;
@@ -16,7 +16,7 @@ public class IncreaseDatabaseBThreads extends IncreaseDatabaseThreads {
 	}
 
 	@Override
-	protected boolean invalidChangeAtLocation(StateData sd) {
+	protected boolean isInvalidChange(StateData sd) {
 		sd.setDatabaseBThreadsCount(sd.getDatabaseBThreadsCount()+1);
 		return sd.getDatabaseBThreadsCount() > sd.getMaxDatabaseBThreadsCount(); 
 	}

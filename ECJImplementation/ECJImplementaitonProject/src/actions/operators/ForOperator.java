@@ -1,4 +1,4 @@
-package actions;
+package actions.operators;
 
 import ec.EvolutionState;
 import ec.Problem;
