@@ -8,6 +8,7 @@ import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.util.MersenneTwister;
 import ec.util.MersenneTwisterFast;
+import main.OmnetStateData;
 import main.StateData;
 
 public class ForOperator extends GPNode {
@@ -37,20 +38,17 @@ public class ForOperator extends GPNode {
 			final GPIndividual individual,
 			final Problem problem)
 	{
-		//double result;
-		StateData sd = ((StateData)(input));
-		//no need to evaluate any more if an invalid state has been reached
-    	if(sd.getReachedInvalidState()){
-    		return;
-    	}
-
+		OmnetStateData o = (OmnetStateData)input;
+		if(!o.areAllStatesValid()){
+			return;
+		}
 		for(int i = 0; i < forCount; i++){
 			//System.out.println("beginning: "+sd.toString()+"\n");
 			children[0].eval(state,thread,input,stack,individual,problem);
-			//no need to evaluate any more if an invalid state has been reached
-	    	if(sd.getReachedInvalidState()){
-	    		return;
-	    	}
+			if(!o.areAllStatesValid()){
+				return;
+			}
+
 		}
 
 	}

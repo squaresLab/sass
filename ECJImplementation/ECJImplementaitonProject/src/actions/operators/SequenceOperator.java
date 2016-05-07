@@ -6,6 +6,7 @@ import ec.gp.ADFStack;
 import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
+import main.OmnetStateData;
 import main.StateData;
 
 public class SequenceOperator extends GPNode {
@@ -22,18 +23,20 @@ public class SequenceOperator extends GPNode {
             final Problem problem)
 	{
 		//double result;
-		StateData sd = ((StateData)(input));
+		
+		//now handling with a runtime exception
+		OmnetStateData o = (OmnetStateData)input;
 		//no need to evaluate any more if an invalid state has been reached
-    	if(sd.getReachedInvalidState()){
-    		return;
-    	}
+		if(!o.areAllStatesValid()){
+			return;
+		}
 
 		//System.out.println("beginning: "+sd.toString()+"\n");
 		children[0].eval(state,thread,input,stack,individual,problem);
 		//no need to evaluate any more if an invalid state has been reached
-    	if(sd.getReachedInvalidState()){
-    		return;
-    	}
+		if(!o.areAllStatesValid()){
+			return;
+		}
 
 		//System.out.println("middle: "+sd.toString()+"\n");
 		children[1].eval(state,thread,input,stack,individual,problem);

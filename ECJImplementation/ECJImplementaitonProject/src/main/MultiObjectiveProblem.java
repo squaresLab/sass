@@ -1,8 +1,5 @@
 package main;
 
-import java.util.HashMap;
-
-import actions.operators.ForOperator;
 import actions.operators.IfThenElseOperator;
 import ec.EvolutionState;
 import ec.Individual;
@@ -10,10 +7,9 @@ import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPProblem;
 import ec.gp.GPTree;
-import ec.gp.koza.KozaFitness;
+import ec.multiobjective.MultiObjectiveFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
-import ec.multiobjective.MultiObjectiveFitness;
 
 public class MultiObjectiveProblem extends GPProblem implements SimpleProblemForm{
 
@@ -48,36 +44,32 @@ public class MultiObjectiveProblem extends GPProblem implements SimpleProblemFor
 
 			double[] objectives = ((MultiObjectiveFitness)ind.fitness).getObjectives();
 			int timesToRun=50000;
-			double responseTimeTotal=0;
+			int timeTotal=0;
+			int serverCount = 0;
 			double costTotal=0;
-			double highQualityTotal=0;
-			double clockTimeTotal=0;
+			double requestsHandledPerSecondTotal=0;
+			double grossIncomeTotal = 0;
+			double profitTotal = 0;
 			boolean allPathsFeasible=true;
 			//((GPIndividual)ind).printTrees(state, 0);
 			for(int i = 0; i < timesToRun; i++){
 				//not sure why I need this but some times the statedata is not reset
-				((StateData)input).initializeData();
+				((OmnetStateData)input).initializeState();
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 						((GPIndividual)ind), this);
 				//TODO: determine if you need to adjust the returned range
-				responseTimeTotal+=((StateData)input).getResponseTime();
-				costTotal+=((StateData)input).getCost();
-				boolean highQuality=((StateData)input).isHighQuality();
-				if(highQuality){
-					highQualityTotal+=1;
-				}
-				clockTimeTotal+=((StateData)input).getTime();
-
-				if(((StateData)input).getReachedInvalidState()){
+				timeTotal+=((OmnetStateData)input).getTotalTime();
+				costTotal+=((OmnetStateData)input).totalServerCostPerSecond();
+	            requestsHandledPerSecondTotal+=((OmnetStateData)input).requestsHandledPerSecond();;
+	            grossIncomeTotal+=((OmnetStateData)input).currentGrossIncome();
+	            if(!((OmnetStateData)input).areAllStatesValid()){
+	            	
 					feasible=false;
-					//next two lines are for debugging purposes
-					/*((StateData)input).initializeData();
-					((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
-							((GPIndividual)ind), this);*/
 					break;
 				}
 				//((StateData)input).initializeData();
 			}
+			profitTotal = grossIncomeTotal-costTotal;
 			if(feasible){
 				//this isn't clean but I can't think of a better way to do this in java at the moment
 				//maybe ask claire if there is a way to do this functionally
@@ -86,14 +78,18 @@ public class MultiObjectiveProblem extends GPProblem implements SimpleProblemFor
 				while(stringIndex != paramValue.length()){
 					String param = paramValue.substring(stringIndex, stringIndex+1);
 					stringIndex++;
-					if(param.equals("r")){
-						objectives[paramCount]=responseTimeTotal/timesToRun;
-					} else if (param.equals("c")){
+					if(param.equals("t")){
+						objectives[paramCount]=((double)timeTotal)/timesToRun;
+					} else if (param.equals("n")){
+						objectives[paramCount]=((double)serverCount)/timesToRun;
+					} else if (param.equals("c"))  {
 						objectives[paramCount]=costTotal/timesToRun;
-					} else if (param.equals("q"))  {
-						objectives[paramCount]=highQualityTotal/timesToRun;
-					} else if (param.equals("t")) {
-						objectives[paramCount]=clockTimeTotal/timesToRun;
+					} else if (param.equals("r")) {
+						objectives[paramCount]=requestsHandledPerSecondTotal/timesToRun;
+					} else if (param.equals("i")) {
+						objectives[paramCount]=grossIncomeTotal/timesToRun;
+					} else if (param.equals("p")){
+						objectives[paramCount]=profitTotal/timesToRun;
 					} else if (param.equals("s")){
 						objectives[paramCount]=ifsWithSameChildren(((GPIndividual)ind).trees[0]);
 					} else if (param.equals("l")){

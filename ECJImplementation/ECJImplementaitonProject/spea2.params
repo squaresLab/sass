@@ -19,9 +19,9 @@ parent.0 = ./spea2Orig.params
 # Comparison of Multiobjective Evolutionary Algorithms: Empirical Results,
 # Evolutionary Computation, Vol. 8, No. 2, pp173-195."
 #
-pop.subpop.0.size =                     150
+#pop.subpop.0.size =                     150
 breed.elite.0 =				50
-generations =                           250
+#generations =                           250
 
 # SPEA2's pipeline:
 pop.subpop.0.species.pipe                   	= ec.vector.breed.VectorMutationPipeline

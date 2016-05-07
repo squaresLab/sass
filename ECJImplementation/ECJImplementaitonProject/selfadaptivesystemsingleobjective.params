@@ -10,47 +10,76 @@ gp.fs.0 = ec.gp.GPFunctionSet
 gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 12
-gp.fs.0.func.0 = actions.AddServerL1
-gp.fs.0.func.0.nc = nc0
-gp.fs.0.func.1 = actions.AddServerL2
-gp.fs.0.func.1.nc = nc0
-gp.fs.0.func.2 = actions.DeleteServerL1
-gp.fs.0.func.2.nc = nc0
-gp.fs.0.func.3 = actions.DeleteServerL2
+# We have these functions in the function set.  They are:
+gp.fs.0.size = 20
+gp.fs.0.func.0 = actions.operators.SequenceOperator
+gp.fs.0.func.0.nc = nc2
+gp.fs.0.func.1 = actions.operators.IfThenElseOperator
+gp.fs.0.func.1.nc = nc3
+gp.fs.0.func.2 = actions.operators.ForOperator
+gp.fs.0.func.2.nc = nc1
+gp.fs.0.func.3 = omnet.tactics.StartNewServerA
 gp.fs.0.func.3.nc = nc0
-gp.fs.0.func.4 = actions.IncreaseDatabaseAThreads
+gp.fs.0.func.4 = omnet.tactics.StartNewServerB
 gp.fs.0.func.4.nc = nc0
-gp.fs.0.func.5 = actions.IncreaseDatabaseBThreads
+gp.fs.0.func.5 = omnet.tactics.StartNewServerC
 gp.fs.0.func.5.nc = nc0
-gp.fs.0.func.6 = actions.DecreaseDatabaseAThreads
+gp.fs.0.func.6 = omnet.tactics.StartNewServerD
 gp.fs.0.func.6.nc = nc0
-gp.fs.0.func.7 = actions.DecreaseDatabaseBThreads
+gp.fs.0.func.7 = omnet.tactics.ShutdownServerA
 gp.fs.0.func.7.nc = nc0
-gp.fs.0.func.8 = actions.IncreaseQuality
+gp.fs.0.func.8 = omnet.tactics.ShutdownServerB
 gp.fs.0.func.8.nc = nc0
-gp.fs.0.func.9 = actions.DecreaseQuality
+gp.fs.0.func.9 = omnet.tactics.ShutdownServerC
 gp.fs.0.func.9.nc = nc0
-gp.fs.0.func.10 = actions.SequenceOperator
-gp.fs.0.func.10.nc = nc2
-gp.fs.0.func.11 = actions.IfThenElseOperator
-gp.fs.0.func.11.nc = nc3
+gp.fs.0.func.10 = omnet.tactics.ShutdownServerD
+gp.fs.0.func.10.nc = nc0
+gp.fs.0.func.11 = omnet.tactics.DecreaseDimmerLevelA
+gp.fs.0.func.11.nc = nc0
+gp.fs.0.func.12 = omnet.tactics.DecreaseDimmerLevelB
+gp.fs.0.func.12.nc = nc0
+gp.fs.0.func.13 = omnet.tactics.DecreaseDimmerLevelC
+gp.fs.0.func.13.nc = nc0
+gp.fs.0.func.14 = omnet.tactics.DecreaseDimmerLevelD
+gp.fs.0.func.14.nc = nc0
+gp.fs.0.func.15 = omnet.tactics.IncreaseDimmerLevelA
+gp.fs.0.func.15.nc = nc0
+gp.fs.0.func.16 = omnet.tactics.IncreaseDimmerLevelB
+gp.fs.0.func.16.nc = nc0
+gp.fs.0.func.17 = omnet.tactics.IncreaseDimmerLevelC
+gp.fs.0.func.17.nc = nc0
+gp.fs.0.func.18 = omnet.tactics.IncreaseDimmerLevelD
+gp.fs.0.func.18.nc = nc0
+gp.fs.0.func.19 = omnet.tactics.DecreaseTrafficLevelA
+gp.fs.0.func.19.nc = nc0
+gp.fs.0.func.20 = omnet.tactics.DecreaseTrafficLevelB
+gp.fs.0.func.20.nc = nc0
+gp.fs.0.func.21 = omnet.tactics.DecreaseTrafficLevelC
+gp.fs.0.func.21.nc = nc0
+gp.fs.0.func.22 = omnet.tactics.DecreaseTrafficLevelD
+gp.fs.0.func.22.nc = nc0
+gp.fs.0.func.23 = omnet.tactics.IncreaseTrafficLevelA
+gp.fs.0.func.23.nc = nc0
+gp.fs.0.func.24 = omnet.tactics.IncreaseTrafficLevelB
+gp.fs.0.func.24.nc = nc0
+gp.fs.0.func.25 = omnet.tactics.IncreaseTrafficLevelC
+gp.fs.0.func.25.nc = nc0
+gp.fs.0.func.26 = omnet.tactics.IncreaseTrafficLevelD
+gp.fs.0.func.26.nc = nc0
 
-eval.problem = main.SingleObjectiveProblem
-eval.problem.data = main.StateData
-generations = 5000
+
+
+
+eval.problem = main.SingleObjectiveProblemOmnet
+eval.problem.data = main.OmnetStateData
+generations = 100
+pop.subpop.0.size =	500
 
 #allow ECJ to figure out the number of cores
 breedthreads = auto
 evalthreads = auto
 
-#using multi-objective optimization instead of koza gp
-#pop.subpop.0.species.fitness = ec.multiobjective.MultiObjectiveFitness
-#pop.subpop.0.species.fitness.num-objectives = 3
-#pop.subpop.0.species.fitness.maximize.0 = false
-#pop.subpop.0.species.fitness.maximize.1 = false
-#pop.subpop.0.species.fitness.maximize.2 = false
+#print-params = true
 
-#pop.subpop.0.species.fitness.min = 0.0
-#pop.subpop.0.species.fitness.max = 10000000000000000
+stat =	main.AverageFitnessStatistics
 

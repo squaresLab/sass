@@ -1,8 +1,7 @@
 package main;
 
+import actions.AddServer;
 import actions.operators.IfThenElseOperator;
-import actions.tactics.AddServer;
-import actions.tactics.IncreaseDatabaseAThreads;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.gp.GPIndividual;
@@ -12,6 +11,7 @@ import ec.gp.GPTree;
 import ec.gp.koza.KozaFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
+import znn.tactics.IncreaseDatabaseAThreads;
 
 public class SingleObjectiveProblem extends GPProblem implements SimpleProblemForm {
 
@@ -60,13 +60,13 @@ public class SingleObjectiveProblem extends GPProblem implements SimpleProblemFo
 			    ((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 					((GPIndividual)ind), this);
 			  //TODO: determine if you need to adjust the returned range
-			    double result = ((StateData)input).calculateStateScore();
+			    double result = ((OmnetStateData)input).singleObjectiveScore();
 			    if(result==Long.MAX_VALUE){
 				    feasible=false;
 				    break;
 			    }
 			    fitnessTotal += result; 
-			    ((StateData)input).initializeData();
+			    ((OmnetStateData)input).initializeState();
 			  }
 			} else {
 				feasible=false;

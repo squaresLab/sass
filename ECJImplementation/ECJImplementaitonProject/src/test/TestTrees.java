@@ -8,15 +8,6 @@ import org.junit.Test;
 import actions.operators.ForOperator;
 import actions.operators.IfThenElseOperator;
 import actions.operators.SequenceOperator;
-import actions.tactics.AddServerL1;
-import actions.tactics.DecreaseDatabaseAThreads;
-import actions.tactics.DecreaseDatabaseBThreads;
-import actions.tactics.DecreaseQuality;
-import actions.tactics.DeleteServerL1;
-import actions.tactics.DeleteServerL2;
-import actions.tactics.IncreaseDatabaseAThreads;
-import actions.tactics.IncreaseDatabaseBThreads;
-import actions.tactics.IncreaseQuality;
 import ec.EvolutionState;
 import ec.Evolve;
 import ec.gp.ADFStack;
@@ -28,6 +19,15 @@ import ec.util.ParameterDatabase;
 import main.MultiObjectiveProblem;
 import main.SingleObjectiveProblem;
 import main.StateData;
+import znn.tactics.AddServerL1;
+import znn.tactics.DecreaseDatabaseAThreads;
+import znn.tactics.DecreaseDatabaseBThreads;
+import znn.tactics.DecreaseQuality;
+import znn.tactics.DeleteServerL1;
+import znn.tactics.DeleteServerL2;
+import znn.tactics.IncreaseDatabaseAThreads;
+import znn.tactics.IncreaseDatabaseBThreads;
+import znn.tactics.IncreaseQuality;
 
 public class TestTrees {
   

@@ -1,11 +1,11 @@
 package main;
 
-import actions.tactics.AddServerL1;
-import components.DatabaseAThread;
-import components.DatabaseBThread;
-import components.L1Server;
-import components.L2Server;
 import ec.gp.GPData;
+import znn.components.DatabaseAThread;
+import znn.components.DatabaseBThread;
+import znn.components.L1Server;
+import znn.components.L2Server;
+import znn.tactics.AddServerL1;
 
 public class StateData extends GPData {
 	

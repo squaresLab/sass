@@ -29,7 +29,7 @@ seed.0 = time
 
 eval.problem.stack = ec.gp.ADFStack
 eval.problem.stack.context = ec.gp.ADFContext
-eval.problem.data = main.StateData
+eval.problem.data = main.OmnetStateData
 
 #copied from koza.params
 
@@ -182,20 +182,24 @@ generations = 100
 #then make sure the num-objectives below match the number of parameters listed
 #and the fitness min and max values below also match the ranges for the 
 #objective in that postition
-#objectives codes 
-#r - response time
-#c - cost
-#q - quality 
-#t - clocktime
-#s - penalizing same trees on both sides of an if then (meaning if the action succeeds or fails still do the same thing)
+#objectives codes: 
+#t - time to complete plan
+#n - number of servers active at the end of the plan
+#c - cost per second at the end of the plan
+#r - responses handled by the system per second at the end of the plan
+#i - gross income of the system configuration at the end of the plan
+#p - profit
+#s - penalizing same trees on both sides of an if then (meaning if 
+ 	the action succeeds or fails still do the same thing) this is 
+ 	the number that occur
 #l - minimize plan length
 #example objective string: rql - evaluate based on response time, quality, and plan length 
  
-objectives=rcqtsl
+objectives=tncripsl
 
 
 # you can also assign this on a per-subpopulation basis
-multi.fitness.num-objectives 	= 6
+multi.fitness.num-objectives 	= 8
 
 # max and min values of all each objective function
 multi.fitness.max 		= 100000000
@@ -207,10 +211,12 @@ multi.fitness.min 		= 0
 # minimize 3 objectives
 pop.subpop.0.species.fitness.maximize.0 = false
 pop.subpop.0.species.fitness.maximize.1 = false
-pop.subpop.0.species.fitness.maximize.2 = true
-pop.subpop.0.species.fitness.maximize.3 = false
-pop.subpop.0.species.fitness.maximize.4 = false
-pop.subpop.0.species.fitness.maximize.5 = false
+pop.subpop.0.species.fitness.maximize.2 = false
+pop.subpop.0.species.fitness.maximize.3 = true
+pop.subpop.0.species.fitness.maximize.4 = true
+pop.subpop.0.species.fitness.maximize.5 = true
+pop.subpop.0.species.fitness.maximize.6 = false
+pop.subpop.0.species.fitness.maximize.7 = false
 
 print-params = false
 
@@ -222,34 +228,59 @@ gp.fs.0 = ec.gp.GPFunctionSet
 gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 13
-gp.fs.0.func.0 = actions.AddServerL1
-gp.fs.0.func.0.nc = nc0
-gp.fs.0.func.1 = actions.AddServerL2
-gp.fs.0.func.1.nc = nc0
-gp.fs.0.func.2 = actions.DeleteServerL1
-gp.fs.0.func.2.nc = nc0
-gp.fs.0.func.3 = actions.DeleteServerL2
+gp.fs.0.size = 27
+gp.fs.0.func.0 = actions.operators.SequenceOperator
+gp.fs.0.func.0.nc = nc2
+gp.fs.0.func.1 = actions.operators.IfThenElseOperator
+gp.fs.0.func.1.nc = nc3
+gp.fs.0.func.2 = actions.operators.ForOperator
+gp.fs.0.func.2.nc = nc1
+gp.fs.0.func.3 = omnet.tactics.StartNewServerA
 gp.fs.0.func.3.nc = nc0
-gp.fs.0.func.4 = actions.IncreaseDatabaseAThreads
+gp.fs.0.func.4 = omnet.tactics.StartNewServerB
 gp.fs.0.func.4.nc = nc0
-gp.fs.0.func.5 = actions.IncreaseDatabaseBThreads
+gp.fs.0.func.5 = omnet.tactics.StartNewServerC
 gp.fs.0.func.5.nc = nc0
-gp.fs.0.func.6 = actions.DecreaseDatabaseAThreads
+gp.fs.0.func.6 = omnet.tactics.StartNewServerD
 gp.fs.0.func.6.nc = nc0
-gp.fs.0.func.7 = actions.DecreaseDatabaseBThreads
+gp.fs.0.func.7 = omnet.tactics.ShutdownServerA
 gp.fs.0.func.7.nc = nc0
-gp.fs.0.func.8 = actions.IncreaseQuality
+gp.fs.0.func.8 = omnet.tactics.ShutdownServerB
 gp.fs.0.func.8.nc = nc0
-gp.fs.0.func.9 = actions.DecreaseQuality
+gp.fs.0.func.9 = omnet.tactics.ShutdownServerC
 gp.fs.0.func.9.nc = nc0
-gp.fs.0.func.10 = actions.SequenceOperator
-gp.fs.0.func.10.nc = nc2
-gp.fs.0.func.11 = actions.IfThenElseOperator
-gp.fs.0.func.11.nc = nc3
-gp.fs.0.func.12 = actions.ForOperator
-gp.fs.0.func.12.nc = nc1
-gp.fs.0.func.13 = actions.AddServerL3
+gp.fs.0.func.10 = omnet.tactics.ShutdownServerD
+gp.fs.0.func.10.nc = nc0
+gp.fs.0.func.11 = omnet.tactics.DecreaseDimmerLevelA
+gp.fs.0.func.11.nc = nc0
+gp.fs.0.func.12 = omnet.tactics.DecreaseDimmerLevelB
+gp.fs.0.func.12.nc = nc0
+gp.fs.0.func.13 = omnet.tactics.DecreaseDimmerLevelC
 gp.fs.0.func.13.nc = nc0
-gp.fs.0.func.14 = actions.DeleteServerL3
+gp.fs.0.func.14 = omnet.tactics.DecreaseDimmerLevelD
 gp.fs.0.func.14.nc = nc0
+gp.fs.0.func.15 = omnet.tactics.IncreaseDimmerLevelA
+gp.fs.0.func.15.nc = nc0
+gp.fs.0.func.16 = omnet.tactics.IncreaseDimmerLevelB
+gp.fs.0.func.16.nc = nc0
+gp.fs.0.func.17 = omnet.tactics.IncreaseDimmerLevelC
+gp.fs.0.func.17.nc = nc0
+gp.fs.0.func.18 = omnet.tactics.IncreaseDimmerLevelD
+gp.fs.0.func.18.nc = nc0
+gp.fs.0.func.19 = omnet.tactics.DecreaseTrafficLevelA
+gp.fs.0.func.19.nc = nc0
+gp.fs.0.func.20 = omnet.tactics.DecreaseTrafficLevelB
+gp.fs.0.func.20.nc = nc0
+gp.fs.0.func.21 = omnet.tactics.DecreaseTrafficLevelC
+gp.fs.0.func.21.nc = nc0
+gp.fs.0.func.22 = omnet.tactics.DecreaseTrafficLevelD
+gp.fs.0.func.22.nc = nc0
+gp.fs.0.func.23 = omnet.tactics.IncreaseTrafficLevelA
+gp.fs.0.func.23.nc = nc0
+gp.fs.0.func.24 = omnet.tactics.IncreaseTrafficLevelB
+gp.fs.0.func.24.nc = nc0
+gp.fs.0.func.25 = omnet.tactics.IncreaseTrafficLevelC
+gp.fs.0.func.25.nc = nc0
+gp.fs.0.func.26 = omnet.tactics.IncreaseTrafficLevelD
+gp.fs.0.func.26.nc = nc0
+
