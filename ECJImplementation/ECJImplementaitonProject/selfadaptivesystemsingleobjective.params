@@ -72,7 +72,7 @@ gp.fs.0.func.26.nc = nc0
 
 eval.problem = main.java.main.SingleObjectiveProblemOmnet
 eval.problem.data = main.java.main.OmnetStateData
-generations = 1000
+generations = 10000
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
