@@ -22,7 +22,7 @@ public class ShutdownServerE extends ShutdownServer {
 	
 	@Override
 	public String toString(){
-	 	return "DeleteServerE";
+	 	return "ShutdownServerE";
 	}
 
 	@Override

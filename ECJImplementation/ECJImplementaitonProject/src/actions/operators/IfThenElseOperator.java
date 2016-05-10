@@ -43,16 +43,39 @@ public class IfThenElseOperator extends GPNode {
 		}
 		else {
 		  //System.out.println("beginning: "+sd.toString()+"\n");
+		 
+		  //evaluate both paths - copy o and then set the path weights for each finally, 
+		  //bring the values back together
+		  
+		  //o.copy twice
+		  //multiply inputCopy1 path probability times 1-failureWeight
+		  boolean possiblyPartOfPlanEndPath=o.isPossiblePlanEnd();
+		  OmnetStateData inputCopy=o.deepCopy();
+		  o.setPathProbability(o.getPathProbability()*
+				  (1-((FailableTactic)children[0]).getFailureWeight()));
+		  if(possiblyPartOfPlanEndPath){
+			  o.setPossiblePlanEnd(false);
+		  }
 		  children[0].eval(state,thread,input,stack,individual,problem);
 		  if(!o.areAllStatesValid()){
 			  return;
 		  }
-		  if(((FailableTactic)children[0]).hasActionSucceeded()){
-			  children[1].eval(state,thread,input,stack,individual,problem); 
-		  } else  {
-			  children[2].eval(state,thread,input,stack,individual,problem);
+		  if(possiblyPartOfPlanEndPath){
+			  o.setPossiblePlanEnd(true);
 		  }
-
+		  children[1].eval(state,thread,input,stack,individual,problem); 
+	
+		  inputCopy.setPathProbability(inputCopy.getPathProbability()
+				  *((FailableTactic)children[0]).getFailureWeight());
+		  //multiply inputCopy2 path probability times failureWeight
+		  children[2].eval(state,thread,inputCopy,stack,individual,problem);
+		  if(!inputCopy.areAllStatesValid()){
+			  o.setAllStatesValid(false, inputCopy.getReasonForAllStatesValidSetting());
+			  return;
+		  }
+		  
+		  o.setTotalScore(o.getTotalScore()+
+				  inputCopy.getPathScore()*inputCopy.getPathProbability());
 		  //System.out.println("middle: "+sd.toString()+"\n");
 		  
 		  //System.out.println("after: "+sd.toString()+"\n");

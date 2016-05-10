@@ -1,8 +1,10 @@
 package omnet.components;
 
+import java.io.Serializable;
+
 import main.OmnetStateData;
 
-public abstract class OmnetComponent implements Cloneable{
+public abstract class OmnetComponent implements Cloneable, Serializable{
 	
 	// how much does the change cost per second
 	// if the cost is part of an equation, then

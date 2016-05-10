@@ -1,9 +1,12 @@
 package main;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.print.attribute.standard.Severity;
 
 import ec.gp.GPData;
 import omnet.components.OmnetComponent;
@@ -11,9 +14,6 @@ import omnet.components.ServerA;
 import omnet.components.ServerB;
 import omnet.components.ServerC;
 import omnet.components.ServerD;
-import omnet.components.ServerE;
-import omnet.components.ServerF;
-import omnet.components.ServerG;
 import omnet.tactics.DecreaseDimmerLevel;
 import omnet.tactics.DecreaseTrafficLevel;
 import omnet.tactics.IncreaseDimmerLevel;
@@ -21,7 +21,7 @@ import omnet.tactics.IncreaseTrafficLevel;
 import omnet.tactics.ShutdownServer;
 import omnet.tactics.StartNewServer;
 
-public class OmnetStateData extends GPData{
+public class OmnetStateData extends GPData {
 	static final int MaxServerCount=5;
 	ArrayList<ServerA> Aservers;
 	ArrayList<ServerB> Bservers;
@@ -38,6 +38,13 @@ public class OmnetStateData extends GPData{
 	boolean allStatesValid=true;
 	String reasonForAllStatesValidSetting="all states are assumed to be initially true";
 	public static final int SYSTEM_DEMAND=1000;
+	//variable that holds if the current path could include the end of the plan
+	boolean possiblePlanEnd=true;
+	double pathProbability=1;
+	//total score is the sum of all path scores times the path probability
+	double totalScore=0;
+	//path score is the score of the current evaluation path
+	double pathScore=0;
 
 	public OmnetStateData(){
 		this.initializeState();
@@ -77,6 +84,7 @@ public class OmnetStateData extends GPData{
 		totalTime=0;
 		allStatesValid=true;
 		reasonForAllStatesValidSetting="all states are assumed to be initially true";
+		pathProbability=1;
 	}
 
 	public int getTotalTime(){
@@ -112,6 +120,38 @@ public class OmnetStateData extends GPData{
 			}
 		}
 		return totalCost;
+	}
+	
+	public boolean isPossiblePlanEnd(){
+		return possiblePlanEnd;
+	}
+	
+	public void setPossiblePlanEnd(boolean possiblePlanEnd){
+		this.possiblePlanEnd = possiblePlanEnd;
+	}
+	
+	public double getPathProbability(){
+		return pathProbability;
+	}
+	
+	public void setPathProbability(double pathProbability){
+		this.pathProbability=pathProbability;
+	}
+	
+	public double getTotalScore(){
+		return totalScore;
+	}
+	
+	public void setTotalScore(double totalScore){
+		this.totalScore=totalScore;
+	}
+	
+	public double getPathScore(){
+		return pathScore;
+	}
+	
+	public void setPathScore(double pathScore){
+		this.pathScore=pathScore;
 	}
 
 	public double requestsHandledPerSecond(){
@@ -243,6 +283,9 @@ public class OmnetStateData extends GPData{
 				}
 				serverList.add(item);
 				totalTime+=s.getLatency();
+				if(possiblePlanEnd){
+					setEndOfPathScore();
+				}
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -267,6 +310,9 @@ public class OmnetStateData extends GPData{
 		} else {
 			serverList.remove(serverList.size()-1);
 			totalTime+=s.getLatency();
+			if(possiblePlanEnd){
+				setEndOfPathScore();
+			}
 		}
 
 	}
@@ -285,6 +331,9 @@ public class OmnetStateData extends GPData{
 				server.setDimmerLevel(server.getDimmerLevel()+1, this);
 			}
 			totalTime+=d.getLatency();
+			if(possiblePlanEnd){
+				setEndOfPathScore();
+			}
 		}
 	}
 
@@ -302,6 +351,9 @@ public class OmnetStateData extends GPData{
 				server.setDimmerLevel(server.getDimmerLevel()-1, this);
 			}
 			totalTime+=d.getLatency();
+			if(possiblePlanEnd){
+				setEndOfPathScore();
+			}
 		}
 	}
 
@@ -322,6 +374,9 @@ public class OmnetStateData extends GPData{
 				}
 			}
 		totalTime+=t.getLatency();
+		if(possiblePlanEnd){
+			setEndOfPathScore();
+		}
 	}
 
 	public <T extends OmnetComponent> void performTactic(DecreaseTrafficLevel t, Class<T> c){
@@ -339,6 +394,48 @@ public class OmnetStateData extends GPData{
 			}
 		}
 		totalTime+=t.getLatency();
+		if(possiblePlanEnd){
+			setEndOfPathScore();
+		}
+	}
+	
+	/*
+	 * Will later need to change this to also handle multi-objective functions
+	 */
+	private void setEndOfPathScore(){
+		pathScore = singleObjectiveScore()*pathProbability;
+	}
+	
+	/*Check the speed of this function later if you have optimization issues
+	 * 
+	 */
+	public OmnetStateData deepCopy(){
+		OmnetStateData copy=null;
+	        try {
+	            // Write the object out to a byte array
+	            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	            ObjectOutputStream out = new ObjectOutputStream(bos);
+	            out.writeObject(this);
+	            out.flush();
+	            out.close();
+
+	            // Make an input stream from the byte array and read
+	            // a copy of the object back in.
+	            ObjectInputStream in = new ObjectInputStream(
+	                new ByteArrayInputStream(bos.toByteArray()));
+	            copy = (OmnetStateData) in.readObject();
+	        }
+	        catch(IOException e) {
+	            e.printStackTrace();
+	            //ending the execution on an error for debugging
+	            System.exit(1);
+	        }
+	        catch(ClassNotFoundException cnfe) {
+	            cnfe.printStackTrace();
+	            //ending the executon on an error for debugging
+	            System.exit(1);
+	        }
+	        return copy;
 	}
 
 }

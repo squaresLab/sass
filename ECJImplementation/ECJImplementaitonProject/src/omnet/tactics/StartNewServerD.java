@@ -23,7 +23,7 @@ public class StartNewServerD extends StartNewServer {
 	
 	@Override
 	public String toString(){
-	 	return "AddServerD";
+	 	return "StartNewServerD";
 	}
 
 	@Override

@@ -72,8 +72,8 @@ gp.fs.0.func.26.nc = nc0
 
 eval.problem = main.SingleObjectiveProblemOmnet
 eval.problem.data = main.OmnetStateData
-generations = 100
-pop.subpop.0.size =	500
+generations = 1000
+pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
 breedthreads = auto

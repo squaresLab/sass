@@ -15,6 +15,8 @@ import znn.tactics.IncreaseDatabaseAThreads;
 
 public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProblemForm {
 
+	public static final double INVALID_PLAN_SCORE=500000;
+
 	public void setup(final EvolutionState state, final Parameter base){
 		super.setup(state, base);
 		if (!(input instanceof OmnetStateData)){
@@ -22,14 +24,14 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 					+" instead given "+ input.getClass().toString(), base.push("data"),null);
 		}
 		else{
-		  //set up the initial state
-		  OmnetStateData sd = (OmnetStateData)(input);
-		  sd.initializeState();
-		  //TODO set up the initial server setting in each location
-		  
+			//set up the initial state
+			OmnetStateData sd = (OmnetStateData)(input);
+			sd.initializeState();
+			//TODO set up the initial server setting in each location
+
 		}
 	}
-	
+
 	/*This is the method to evaluate the fitness of a plan
 	 * TODO - check this is in the correct final form*/
 	@Override
@@ -38,7 +40,7 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 		boolean feasible=true;
 		if(!ind.evaluated) //don't reevaluate it again
 		{
-			
+
 			/*if(countIncreaseDatabaseAThreads(((GPIndividual)ind).trees[0])>3){
 				System.out.println("Stopping for debugging");
 				System.out.println("current individual:");
@@ -46,36 +48,27 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			}*/
 			//System.out.println(ind.genotypeToStringForHumans());
 			//TODO figure out the log parameter later
-			
+
 			//evaluate the fitness later
 			KozaFitness f = ((KozaFitness)ind.fitness);
 			//currently there is only ever one tree in trees
 			//long fitnessValue = Math.abs(countAddServer(((GPIndividual)ind).trees[0])-5);
-			int timesToRun=50000;
-			double fitnessTotal=0;
+			double fitnessScore=0;
 			//boolean allPathsFeasible= allPathsFeasible(state,ind,threadnum);
-			boolean allPathsFeasible=true;
-			if(allPathsFeasible){
-			  for(int i = 0; i < timesToRun; i++){
-			    ((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
+			((OmnetStateData)input).initializeState();
+			((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 					((GPIndividual)ind), this);
-			  //TODO: determine if you need to adjust the returned range
-			    double result = ((OmnetStateData)input).singleObjectiveScore();
-			    if(result==Long.MAX_VALUE){
-				    feasible=false;
-				    break;
-			    }
-			    fitnessTotal += result; 
-			    ((OmnetStateData)input).initializeState();
-			  }
-			} else {
+			//TODO: determine if you need to adjust the returned range
+			double result = ((OmnetStateData)input).getTotalScore();
+			if(result==Long.MAX_VALUE){
 				feasible=false;
 			}
+			fitnessScore = result; 
 			double fitnessValue;
 			if(feasible){
-			  fitnessValue=50000-fitnessTotal/timesToRun;
+				fitnessValue=INVALID_PLAN_SCORE-fitnessScore;
 			} else{
-			  fitnessValue=50000;
+				fitnessValue=INVALID_PLAN_SCORE;
 			}
 			/*if(fitnessValue<6500){
 				System.out.println("current individual:");
@@ -97,20 +90,20 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			//System.out.println("");
 			f.setStandardizedFitness(state, fitnessValue);
 			f.hits = 5;
-		  	ind.evaluated=true;
-		  	
-		  	/*((GPIndividual)ind).trees[0].child.eval(
+			ind.evaluated=true;
+
+			/*((GPIndividual)ind).trees[0].child.eval(
                     state,threadnum,input,stack,((GPIndividual)ind),this);
 
              result = Math.abs(expectedResult - input.x);*/
 		}
 	} 
-	
+
 	private int countAddServer(GPTree tree){
 		GPNode rootNode = tree.child;
 		return checkChildForAddServer(rootNode);
 	}
-	
+
 	private int checkChildForAddServer(GPNode node){
 		int result=0;
 		if(node instanceof AddServer){
@@ -121,12 +114,12 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 		}
 		return result;
 	}
-	
+
 	private int countIncreaseDatabaseAThreads(GPTree tree){
 		GPNode rootNode = tree.child;
 		return checkChildForIncreaseDatabaseAThreads(rootNode);
 	}
-	
+
 	private int checkChildForIncreaseDatabaseAThreads(GPNode node){
 		int result=0;
 		if(node instanceof IncreaseDatabaseAThreads){
@@ -137,12 +130,12 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 		}
 		return result;
 	}
-	
+
 	private int countIfThenElseOperators(GPTree tree){
 		GPNode rootNode = tree.child;
 		return checkChildForIfThenElseOperators(rootNode);
 	}
-	
+
 	private int checkChildForIfThenElseOperators(GPNode node){
 		int result=0;
 		if(node instanceof IfThenElseOperator){
@@ -153,9 +146,9 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 		}
 		return result;
 	}
-	
+
 	private boolean allPathsFeasible(EvolutionState state, Individual ind, int threadnum) {
-	   /*int ifTheElseCount = countIfThenElseOperators(((GPIndividual)ind).trees[0]);
+		/*int ifTheElseCount = countIfThenElseOperators(((GPIndividual)ind).trees[0]);
 	   try{
 	     int[][] branchChoices = generateBranchChoices(ifTheElseCount);
 	     //need to fill the rest in later - use the EvaluateFitness method from your old code
@@ -164,9 +157,9 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 		   return false;
 	   }*/
 		return true;
-	   
+
 	}
-	
+
 	//For some reason this really slows down the code - try to profile why later
 	private int[][] generateBranchChoices(int numberOfBranches)
 			throws TooManyBranchesException {
@@ -186,7 +179,7 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			}
 			int currentColumn = numberOfBranches - i - 1;
 			int branchChoice = 1; // 1 means going left, 2 means going right. 0 is
-														// only taken for going left in if-success
+			// only taken for going left in if-success
 			// added for debugging
 			if (amountBeforeSwitching == 0) {
 				//System.out.println("number of branches: " + numberOfBranches);

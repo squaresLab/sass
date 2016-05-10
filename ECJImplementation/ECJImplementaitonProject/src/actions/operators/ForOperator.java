@@ -14,7 +14,7 @@ import main.StateData;
 public class ForOperator extends GPNode {
 
 	int forCount;
-	int maxLoops=10;
+	int maxLoops=5;
 
 
 
@@ -42,8 +42,13 @@ public class ForOperator extends GPNode {
 		if(!o.areAllStatesValid()){
 			return;
 		}
+		boolean onPossiblePlanEndPath = o.isPossiblePlanEnd();
+		o.setPossiblePlanEnd(false);
 		for(int i = 0; i < forCount; i++){
 			//System.out.println("beginning: "+sd.toString()+"\n");
+			if(onPossiblePlanEndPath && i==forCount-1){
+				o.setPossiblePlanEnd(true);
+			}
 			children[0].eval(state,thread,input,stack,individual,problem);
 			if(!o.areAllStatesValid()){
 				return;

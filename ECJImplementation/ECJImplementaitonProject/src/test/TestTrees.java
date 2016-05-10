@@ -16,6 +16,7 @@ import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
 import ec.util.ParameterDatabase;
+import junit.framework.TestCase;
 import main.MultiObjectiveProblem;
 import main.SingleObjectiveProblem;
 import main.StateData;
@@ -29,7 +30,7 @@ import znn.tactics.IncreaseDatabaseAThreads;
 import znn.tactics.IncreaseDatabaseBThreads;
 import znn.tactics.IncreaseQuality;
 
-public class TestTrees {
+public class TestTrees extends TestCase {
   
 	@Test
 	public void checkInitialScore()
