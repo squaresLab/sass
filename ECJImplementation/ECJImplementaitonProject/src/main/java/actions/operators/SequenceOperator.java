@@ -27,16 +27,10 @@ public class SequenceOperator extends GPNode {
 		OmnetStateData o = (OmnetStateData)input;
 		boolean onPossiblePlanEndPath = o.isPossiblePlanEnd();
 		//no need to evaluate any more if an invalid state has been reached
-		if(!o.areAllStatesValid()){
-			return;
-		}
 		o.setPossiblePlanEnd(false);
 		//System.out.println("beginning: "+sd.toString()+"\n");
 		children[0].eval(state,thread,input,stack,individual,problem);
 		//no need to evaluate any more if an invalid state has been reached
-		if(!o.areAllStatesValid()){
-			return;
-		}
 		if(onPossiblePlanEndPath){
 		  o.setPossiblePlanEnd(true);
 		}

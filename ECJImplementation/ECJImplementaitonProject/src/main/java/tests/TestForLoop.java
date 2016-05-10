@@ -16,14 +16,22 @@ import main.java.main.OmnetStateData;
 import main.java.main.SingleObjectiveProblem;
 import main.java.omnet.tactics.DecreaseDimmerLevelA;
 import main.java.omnet.tactics.DecreaseDimmerLevelB;
+import main.java.omnet.tactics.DecreaseDimmerLevelC;
 import main.java.omnet.tactics.DecreaseDimmerLevelD;
 import main.java.omnet.tactics.DecreaseTrafficLevelA;
+import main.java.omnet.tactics.DecreaseTrafficLevelB;
+import main.java.omnet.tactics.DecreaseTrafficLevelC;
+import main.java.omnet.tactics.DecreaseTrafficLevelD;
 import main.java.omnet.tactics.IncreaseDimmerLevelA;
 import main.java.omnet.tactics.IncreaseDimmerLevelB;
 import main.java.omnet.tactics.IncreaseDimmerLevelC;
 import main.java.omnet.tactics.IncreaseDimmerLevelD;
+import main.java.omnet.tactics.IncreaseTrafficLevelA;
+import main.java.omnet.tactics.IncreaseTrafficLevelB;
+import main.java.omnet.tactics.IncreaseTrafficLevelC;
 import main.java.omnet.tactics.ShutdownServerA;
 import main.java.omnet.tactics.ShutdownServerB;
+import main.java.omnet.tactics.ShutdownServerC;
 import main.java.omnet.tactics.ShutdownServerD;
 import main.java.omnet.tactics.StartNewServerA;
 import main.java.omnet.tactics.StartNewServerB;
@@ -55,7 +63,7 @@ public class TestForLoop extends TestCase  {
 			//TODO:Go back and make the test pass for different combinations of successes and failures
 			//At the moment I'm assuming all the actions succeed.  If any fail than the test
 			//will fail
-			assertTrue(sd.singleObjectiveScore()==0);
+			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 	}
 	
 	
@@ -86,7 +94,7 @@ public class TestForLoop extends TestCase  {
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assertTrue(sd.singleObjectiveScore()==0);
+		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 	}
 	
 	public void testSequenceOperatorInIf(){
@@ -115,7 +123,7 @@ public class TestForLoop extends TestCase  {
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assertTrue(sd.singleObjectiveScore()==0);
+		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 	}
 	
 	public void testTripleForLoop(){
@@ -263,7 +271,7 @@ public class TestForLoop extends TestCase  {
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 		((GPIndividual)ind), new SingleObjectiveProblem());
 		System.out.println("Final Result for longer plan: "+sd.singleObjectiveScore());
-		assertTrue(sd.singleObjectiveScore()==0);
+		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 
 	}
 	
@@ -366,7 +374,7 @@ public class TestForLoop extends TestCase  {
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
 			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertTrue(sd.singleObjectiveScore()==0);
+			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 
 		}
 		
@@ -388,7 +396,7 @@ public class TestForLoop extends TestCase  {
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
 			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertFalse(sd.singleObjectiveScore()==0);
+			assertFalse(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 		}
 	
 		public void testLastPassingPlan(){
@@ -449,7 +457,7 @@ public class TestForLoop extends TestCase  {
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
 			System.out.println("Final Result last: "+sd.singleObjectiveScore());
-			assertTrue(sd.singleObjectiveScore()==0);
+			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 		}
 		
 		public void anotherShouldPassPlan(){
@@ -482,8 +490,205 @@ public class TestForLoop extends TestCase  {
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
 			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertFalse(sd.singleObjectiveScore()==0);
+			assertFalse(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 
 		}
+		
+		public void testInvalidIfThen() {
+		OmnetStateData sd = new OmnetStateData();
+		sd.initializeState();
+		GPIndividual ind = new GPIndividual();
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		GPNode node1 = new IfThenElseOperator();
+		GPNode node2 = new IfThenElseOperator();
+		GPNode[] node2Children = {new DecreaseDimmerLevelC(), new ShutdownServerC(), new ShutdownServerD()};
+		node2.children=node2Children;
+		GPNode node3 = new ForOperator();
+		((ForOperator)node3).setForCount(5);
+		GPNode[] node3Children = {new IncreaseDimmerLevelC()};
+		node3.children=node3Children;
+		GPNode node4 = new ForOperator();
+		((ForOperator)node4).setForCount(4);
+		GPNode[] node4Children = {new IncreaseTrafficLevelA()};
+		node4.children=node4Children;
+		GPNode[] childrenOfNode1 = new GPNode[3];
+		childrenOfNode1[0]=node2;
+		childrenOfNode1[1]=node3;
+		childrenOfNode1[2]=node4;
+		node1.children=childrenOfNode1;
+		ind.trees[0].child=node1;
+
+		Evolve ev = new Evolve();
+		String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+		ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+		EvolutionState state = ev.initialize(params,0);
+		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+		((GPIndividual)ind), new SingleObjectiveProblem());
+		System.out.println("Final Result: "+sd.singleObjectiveScore());
+		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+		}
+		
+		public void testSimplePlan() {
+			//(Loop for 5 times ShutdownServerB)
+
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			GPIndividual ind = new GPIndividual();
+			GPTree[] treeInit = {new GPTree()};
+			ind.trees = treeInit;
+			GPNode node1 = new ForOperator();
+			((ForOperator)node1).setForCount(5);
+			GPNode[] node1Children = {new ShutdownServerB()};
+			node1.children=node1Children;
+			ind.trees[0].child=node1;
+
+			Evolve ev = new Evolve();
+			String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+			ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+			EvolutionState state = ev.initialize(params,0);
+			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind), new SingleObjectiveProblem());
+			System.out.println("Final Result: "+sd.singleObjectiveScore());
+			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+		}
+		
+		public void testShouldNotBePerfectPlan(){
+			//Original Plan: (Loop for 5 times (Loop for 4 times (if then: (if then: (if then: IncreaseDimmerLevelD ShutdownServerC IncreaseTrafficLevelB) (; (if then: DecreaseTrafficLevelD IncreaseDimmerLevelA IncreaseDimmerLevelB) (if then: StartNewServerC IncreaseDimmerLevelD StartNewServerD)) (Loop for 4 times IncreaseDimmerLevelD)) (Loop for 3 times (Loop for 4 times (Loop for 4 times (if then: (if then: (; DecreaseDimmerLevelC DecreaseTrafficLevelB) (if then: ShutdownServerC ShutdownServerB IncreaseDimmerLevelC) (Loop for 3 times StartNewServerD)) (; (if then: DecreaseTrafficLevelA ShutdownServerC StartNewServerC) (Loop for 5 times IncreaseDimmerLevelB))(; (if then: DecreaseTrafficLevelC IncreaseDimmerLevelB ShutdownServerA) (Loop for 2 times IncreaseTrafficLevelA)))))) (if then: (if then: IncreaseTrafficLevelA StartNewServerD ShutdownServerB) (Loop for 1 times IncreaseDimmerLevelC) (; ShutdownServerB IncreaseTrafficLevelC)))))
+
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			GPIndividual ind = new GPIndividual();
+			GPTree[] treeInit = {new GPTree()};
+			ind.trees = treeInit;
+			GPNode node1 = new ForOperator();
+			((ForOperator)node1).setForCount(5);
+			GPNode node2 = new ForOperator();
+			((ForOperator)node2).setForCount(4);
+			GPNode node3 = new IfThenElseOperator();
+			GPNode node4 = new IfThenElseOperator();
+			GPNode node5 = new IfThenElseOperator();
+			GPNode[] node5Children = {new IncreaseDimmerLevelD(), new ShutdownServerC(), new IncreaseTrafficLevelB()};
+			node5.children=node5Children;
+			GPNode node6 = new SequenceOperator();
+			GPNode node7 = new IfThenElseOperator();
+			GPNode[] node7Children = {new DecreaseTrafficLevelD(), new IncreaseDimmerLevelA(), new IncreaseDimmerLevelB()};
+			node7.children=node7Children;
+			GPNode node8 = new IfThenElseOperator();
+			GPNode[] node8Children = {new StartNewServerC(), new IncreaseDimmerLevelD(), new StartNewServerD()};
+			node8.children=node8Children;
+			GPNode[] childrenOfNode6 = new GPNode[2];
+			childrenOfNode6[0]=node7;
+			childrenOfNode6[1]=node8;
+			node6.children=childrenOfNode6;
+			GPNode node9 = new ForOperator();
+			((ForOperator)node9).setForCount(4);
+			GPNode[] node9Children = {new IncreaseDimmerLevelD()};
+			node9.children=node9Children;
+			GPNode[] childrenOfNode4 = new GPNode[3];
+			childrenOfNode4[0]=node5;
+			childrenOfNode4[1]=node6;
+			childrenOfNode4[2]=node9;
+			node4.children=childrenOfNode4;
+			GPNode node10 = new ForOperator();
+			((ForOperator)node10).setForCount(3);
+			GPNode node11 = new ForOperator();
+			((ForOperator)node11).setForCount(4);
+			GPNode node12 = new ForOperator();
+			((ForOperator)node12).setForCount(4);
+			GPNode node13 = new IfThenElseOperator();
+			GPNode node14 = new IfThenElseOperator();
+			GPNode node15 = new SequenceOperator();
+			GPNode[] node15Children = {new DecreaseDimmerLevelC(), new DecreaseTrafficLevelB()};
+			node15.children=node15Children;
+			GPNode node16 = new IfThenElseOperator();
+			GPNode[] node16Children = {new ShutdownServerC(), new ShutdownServerB(), new IncreaseDimmerLevelC()};
+			node16.children=node16Children;
+			GPNode node17 = new ForOperator();
+			((ForOperator)node17).setForCount(3);
+			GPNode[] node17Children = {new StartNewServerD()};
+			node17.children=node17Children;
+			GPNode[] childrenOfNode14 = new GPNode[3];
+			childrenOfNode14[0]=node15;
+			childrenOfNode14[1]=node16;
+			childrenOfNode14[2]=node17;
+			node14.children=childrenOfNode14;
+			GPNode node18 = new SequenceOperator();
+			GPNode node19 = new IfThenElseOperator();
+			GPNode[] node19Children = {new DecreaseTrafficLevelA(), new ShutdownServerC(), new StartNewServerC()};
+			node19.children=node19Children;
+			GPNode node20 = new ForOperator();
+			((ForOperator)node20).setForCount(5);
+			GPNode[] node20Children = {new IncreaseDimmerLevelB()};
+			node20.children=node20Children;
+			GPNode[] childrenOfNode18 = new GPNode[2];
+			childrenOfNode18[0]=node19;
+			childrenOfNode18[1]=node20;
+			node18.children=childrenOfNode18;
+			GPNode node21 = new SequenceOperator();
+			GPNode node22 = new IfThenElseOperator();
+			GPNode[] node22Children = {new DecreaseTrafficLevelC(), new IncreaseDimmerLevelB(), new ShutdownServerA()};
+			node22.children=node22Children;
+			GPNode node23 = new ForOperator();
+			((ForOperator)node23).setForCount(2);
+			GPNode[] node23Children = {new IncreaseTrafficLevelA()};
+			node23.children=node23Children;
+			GPNode[] childrenOfNode21 = new GPNode[2];
+			childrenOfNode21[0]=node22;
+			childrenOfNode21[1]=node23;
+			node21.children=childrenOfNode21;
+			GPNode[] childrenOfNode13 = new GPNode[3];
+			childrenOfNode13[0]=node14;
+			childrenOfNode13[1]=node18;
+			childrenOfNode13[2]=node21;
+			node13.children=childrenOfNode13;
+			GPNode[] childrenOfNode12 = new GPNode[1];
+			childrenOfNode12[0]=node13;
+			node12.children=childrenOfNode12;
+			GPNode[] childrenOfNode11 = new GPNode[1];
+			childrenOfNode11[0]=node12;
+			node11.children=childrenOfNode11;
+			GPNode[] childrenOfNode10 = new GPNode[1];
+			childrenOfNode10[0]=node11;
+			node10.children=childrenOfNode10;
+			GPNode node24 = new IfThenElseOperator();
+			GPNode node25 = new IfThenElseOperator();
+			GPNode[] node25Children = {new IncreaseTrafficLevelA(), new StartNewServerD(), new ShutdownServerB()};
+			node25.children=node25Children;
+			GPNode node26 = new ForOperator();
+			((ForOperator)node26).setForCount(1);
+			GPNode[] node26Children = {new IncreaseDimmerLevelC()};
+			node26.children=node26Children;
+			GPNode node27 = new SequenceOperator();
+			GPNode[] node27Children = {new ShutdownServerB(), new IncreaseTrafficLevelC()};
+			node27.children=node27Children;
+			GPNode[] childrenOfNode24 = new GPNode[3];
+			childrenOfNode24[0]=node25;
+			childrenOfNode24[1]=node26;
+			childrenOfNode24[2]=node27;
+			node24.children=childrenOfNode24;
+			GPNode[] childrenOfNode3 = new GPNode[3];
+			childrenOfNode3[0]=node4;
+			childrenOfNode3[1]=node10;
+			childrenOfNode3[2]=node24;
+			node3.children=childrenOfNode3;
+			GPNode[] childrenOfNode2 = new GPNode[1];
+			childrenOfNode2[0]=node3;
+			node2.children=childrenOfNode2;
+			GPNode[] childrenOfNode1 = new GPNode[1];
+			childrenOfNode1[0]=node2;
+			node1.children=childrenOfNode1;
+			ind.trees[0].child=node1;
+
+			Evolve ev = new Evolve();
+			String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+			ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+			EvolutionState state = ev.initialize(params,0);
+			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind), new SingleObjectiveProblem());
+			System.out.println("Final Result: "+sd.singleObjectiveScore());
+			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+		}
+		
 		
 }

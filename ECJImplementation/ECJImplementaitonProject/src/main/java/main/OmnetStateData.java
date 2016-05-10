@@ -45,6 +45,10 @@ public class OmnetStateData extends GPData {
 	double totalScore=0;
 	//path score is the score of the current evaluation path
 	double pathScore=0;
+	int invalidActionCount=0;
+	public static final double INVALID_PLAN_SCORE=550000;
+	public static final double INVALID_ACTION_PENALTY=100;
+	public int timesUpdatedScore=0;
 
 	public OmnetStateData(){
 		this.initializeState();
@@ -85,6 +89,12 @@ public class OmnetStateData extends GPData {
 		allStatesValid=true;
 		reasonForAllStatesValidSetting="all states are assumed to be initially true";
 		pathProbability=1;
+		possiblePlanEnd=true;
+		pathProbability=1;
+		totalScore=0;
+		pathScore=0;
+		invalidActionCount=0;
+		timesUpdatedScore =0;
 	}
 
 	public int getTotalTime(){
@@ -153,6 +163,14 @@ public class OmnetStateData extends GPData {
 	public void setPathScore(double pathScore){
 		this.pathScore=pathScore;
 	}
+	
+	public int getInvalidActionCount(){
+		return invalidActionCount;
+	}
+	
+	public void setInvalidActionCount(int invalidActionCount){
+		this.invalidActionCount=invalidActionCount;
+	}
 
 	public double requestsHandledPerSecond(){
 		int totalTrafficLevel = 0;
@@ -217,6 +235,7 @@ public class OmnetStateData extends GPData {
 		return totalGrossIncome;
 	}
 
+	//lower is better - goal is to get as close to zero as possible
 	public double singleObjectiveScore(){
 		if(areAllStatesValid()){
 			double totalProfit=0;
@@ -253,10 +272,10 @@ public class OmnetStateData extends GPData {
 					totalProfit -= singleLocList.get(0).getCostPerSecond() * singleLocList.size();
 				}
 			}
-			return totalProfit;
+			return INVALID_PLAN_SCORE-totalProfit;
 		}
 		else {
-			return 0;
+			return INVALID_PLAN_SCORE+INVALID_ACTION_PENALTY*invalidActionCount;
 		}
 	}
 
@@ -267,6 +286,7 @@ public class OmnetStateData extends GPData {
 			setAllStatesValid(false, "unable to start up "+c.toString()
 			+" there are already the max amount of servers"
 			+ "at that location");
+			invalidActionCount++;
 		} else{
 			try {
 				T item;
@@ -282,10 +302,7 @@ public class OmnetStateData extends GPData {
 					item=c.newInstance();
 				}
 				serverList.add(item);
-				totalTime+=s.getLatency();
-				if(possiblePlanEnd){
-					setEndOfPathScore();
-				}
+				
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -293,6 +310,10 @@ public class OmnetStateData extends GPData {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		totalTime+=s.getLatency();
+		if(possiblePlanEnd){
+			setEndOfPathScore();
 		}
 	}
 
@@ -302,18 +323,20 @@ public class OmnetStateData extends GPData {
 			setAllStatesValid(false,"unable to shutdown "
 					+c.toString()+ ".  There are no "
 					+ "active servers of type "+c.toString());
+			invalidActionCount++;
 		}	else if(getTotalServerCount()==1){
 			setAllStatesValid(false, "unable to shutdown"
 					+ c.toString()+ ".  The"
 					+ "system would become unoperationable due"
 					+ "to no servers being active.");
+			invalidActionCount++;
 		} else {
 			serverList.remove(serverList.size()-1);
+		}
 			totalTime+=s.getLatency();
 			if(possiblePlanEnd){
 				setEndOfPathScore();
 			}
-		}
 
 	}
 
@@ -322,19 +345,21 @@ public class OmnetStateData extends GPData {
 		if(serverList.size()==0){
 			setAllStatesValid(false, "unable to increase dimmer level for"
 					+c.toString()+". There are no active servers of that type.");
+			invalidActionCount++;
 		}else if(serverList.get(0).getDimmerLevel()==serverList.get(0).getMaxDimmerLevel()){
 			setAllStatesValid(false, "unable to increase dimmer level for"
 					+c.toString()+". The dimmer level is already the highest possible"+
 					" in the state.");
+			invalidActionCount++;
 		} else{
 			for(T server : serverList){
 				server.setDimmerLevel(server.getDimmerLevel()+1, this);
 			}
+		}
 			totalTime+=d.getLatency();
 			if(possiblePlanEnd){
 				setEndOfPathScore();
 			}
-		}
 	}
 
 	public <T extends OmnetComponent> void performTactic(DecreaseDimmerLevel d, Class<T> c){
@@ -342,19 +367,21 @@ public class OmnetStateData extends GPData {
 		if(serverList.size()==0){
 			setAllStatesValid(false, "unable to decrease dimmer level for"
 					+c.toString()+". There are no active servers of that type.");
+			invalidActionCount++;
 		}else if(serverList.get(0).getDimmerLevel()==0){
 			setAllStatesValid(false, "unable to decrease dimmer level for"
 					+c.toString()+". The dimmer level is already the lowest possible"+
 					" in the state.");
+			invalidActionCount++;
 		} else{
 			for(T server : serverList){
 				server.setDimmerLevel(server.getDimmerLevel()-1, this);
 			}
+		}
 			totalTime+=d.getLatency();
 			if(possiblePlanEnd){
 				setEndOfPathScore();
 			}
-		}
 	}
 
 
@@ -363,16 +390,19 @@ public class OmnetStateData extends GPData {
 		if(serverList.size()==0){
 			setAllStatesValid(false, "unable to increase traffic level for"
 					+c.toString()+". There are no active servers of that type.");
-		}else
+			invalidActionCount++;
+		}else{
 			if(serverList.get(0).getTrafficLevel()==serverList.get(0).getMaxTrafficLevel()){
 				setAllStatesValid(false,"unable to increase traffic level for"
 						+c.toString()+". The traffic level is already the highest possible"+
 						" in the state.");
+				invalidActionCount++;
 			} else{
 				for(T server : serverList){
 					server.setTrafficLevel(server.getTrafficLevel()+1, this);
 				}
 			}
+		}
 		totalTime+=t.getLatency();
 		if(possiblePlanEnd){
 			setEndOfPathScore();
@@ -384,10 +414,12 @@ public class OmnetStateData extends GPData {
 		if(serverList.size()==0){
 			setAllStatesValid(false, "unable to decrease traffic level for"
 					+c.toString()+". There are no active servers of that type.");
+			invalidActionCount++;
 		}else if(serverList.get(0).getTrafficLevel()==0){
 			setAllStatesValid(false, "unable to decrease traffic level for"
 					+c.toString()+". The traffic level is already the lowest possible"+
 					" in the state.");
+			invalidActionCount++;
 		} else{
 			for(T server : serverList){
 				server.setTrafficLevel(server.getTrafficLevel()-1, this);
@@ -404,6 +436,8 @@ public class OmnetStateData extends GPData {
 	 */
 	private void setEndOfPathScore(){
 		pathScore = singleObjectiveScore()*pathProbability;
+		timesUpdatedScore++;
+		totalScore+=pathScore;
 	}
 	
 	/*Check the speed of this function later if you have optimization issues

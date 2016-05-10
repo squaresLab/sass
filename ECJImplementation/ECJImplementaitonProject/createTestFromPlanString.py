@@ -99,7 +99,7 @@ def printAfterPlanString():
 \t((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 \t((GPIndividual)ind), new SingleObjectiveProblem());
 \tSystem.out.println("Final Result: "+sd.singleObjectiveScore());
-\tassertTrue(sd.singleObjectiveScore()==0);''')
+\tassertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);''')
 
 def buildNodeFromToken(token):
     p=PlanNode()
@@ -170,11 +170,15 @@ def printPlan(plan):
     printNodeInPlan(plan,1)
     print("\tind.trees[0].child=node1;")
 
+def printOriginalStringAsComment(originalString):
+    print("\t//Original Plan: %s" % (originalString))
+
 def main(argv):
     if len(argv) != 2:
         print("Incorrect use of script")
         print("Please specify the plan string")
     else:
+        printOriginalStringAsComment(argv[1])
         printBeforePlanString()
         plan = planFromString(argv[1])
         printPlan(plan)

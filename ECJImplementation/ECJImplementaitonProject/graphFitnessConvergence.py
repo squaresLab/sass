@@ -34,8 +34,8 @@ def main(argv):
                     bestFitness=lineItems[0]
                     g=Generation(generationNumber,averageFitness,bestFitness)
                     generationList.append(g)
-        avgFitList=[500000-float(g.avgFitness) for g in generationList]
-        bestFitList=[500000-float(g.bestFitness) for g in generationList]
+        avgFitList=[550000-float(g.avgFitness) for g in generationList]
+        bestFitList=[550000-float(g.bestFitness) for g in generationList]
         line1,=matplotlib.pyplot.plot(avgFitList, color='r',label="Average Fitness")
         line2,=matplotlib.pyplot.plot(bestFitList, color='b',label="Best Fitness")
         matplotlib.pyplot.ylabel("FitnessScore")

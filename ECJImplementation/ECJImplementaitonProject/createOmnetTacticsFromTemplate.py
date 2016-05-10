@@ -46,7 +46,7 @@ def createParamsString(startingTacticNumber, tacticTemplateStringList, expressio
     for tactic in tacticTemplateStringList:
         for expression in expressionList:
             singleTactic=re.sub(replaceExpression,expression,tactic)
-            resultStringList.append("gp.fs.0.func.%d = omnet.tactics.%s" % (startingTacticNumber,singleTactic))
+            resultStringList.append("gp.fs.0.func.%d = main.java.omnet.tactics.%s" % (startingTacticNumber,singleTactic))
             resultStringList.append("gp.fs.0.func.%d.nc = nc0" % (startingTacticNumber))
             startingTacticNumber = startingTacticNumber + 1
     return resultStringList
@@ -62,7 +62,7 @@ def main(argv):
     tacticTemplateList.append('IncreaseDimmerLevel@@')
     tacticTemplateList.append('DecreaseTrafficLevel@@')
     tacticTemplateList.append('IncreaseTrafficLevel@@')
-    resultParamsString=createParamsString(3,tacticTemplateList,expressionList)
+    resultParamsString=createParamsString(2,tacticTemplateList,expressionList)
     for line in resultParamsString:
         print line
     #createNewFileTypeFromTemplate(os.getcwd(), 'StartNewServerTemplate.txt',expressionList,'StartNewServer@@.java')

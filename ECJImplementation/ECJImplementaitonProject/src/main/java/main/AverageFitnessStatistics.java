@@ -25,9 +25,12 @@ public class AverageFitnessStatistics extends SimpleStatistics {
         Individual[] best_i = new Individual[state.population.subpops.length];  // quiets compiler complaints
         double fitnessSum=0;
         int individualCount=0;
+        int addedCount=0;
         for(int x=0;x<state.population.subpops.length;x++){
             best_i[x] = state.population.subpops[x].individuals[0];
+            assert ((KozaFitness)best_i[x].fitness).standardizedFitness()<OmnetStateData.INVALID_PLAN_SCORE*2: "valid fitness greatere than invalid fitness 1";
             fitnessSum+=((KozaFitness)best_i[x].fitness).standardizedFitness();
+            addedCount++;
             individualCount+=state.population.subpops[x].individuals.length;
             for(int y=1;y<state.population.subpops[x].individuals.length;y++)
                 {
@@ -39,11 +42,16 @@ public class AverageFitnessStatistics extends SimpleStatistics {
                         warned = true;  // we do this rather than relying on warnOnce because it is much faster in a tight loop
                         }
                     //add the same score as an invalid plan to the fitness sum
-                     fitnessSum+=SingleObjectiveProblemOmnet.INVALID_PLAN_SCORE;
+                    //times 2 to penalize more than plans that are just slightly bad
+                     fitnessSum+=2*OmnetStateData.INVALID_PLAN_SCORE;
+                     addedCount++;
                      
                 }
                 else {
+                	assert ((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness()<OmnetStateData.INVALID_PLAN_SCORE*2
+                	: "valid fitness greater than invalid fitness 2";
                 	fitnessSum+=((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness();
+                	addedCount++;
                 	if (best_i[x] == null || state.population.subpops[x].individuals[y].fitness.betterThan(best_i[x].fitness)){
                 
                         best_i[x] = state.population.subpops[x].individuals[y];
@@ -65,6 +73,9 @@ public class AverageFitnessStatistics extends SimpleStatistics {
             if (best_of_run[x]==null || best_i[x].fitness.betterThan(best_of_run[x].fitness))
                 best_of_run[x] = (Individual)(best_i[x].clone());
             }
+        System.out.println("added count: "+addedCount);
+        assert addedCount==individualCount : "fitnessSum incremened more than number of individuals in population";
+        assert fitnessSum/OmnetStateData.INVALID_PLAN_SCORE < 3*individualCount: "fitnessSum has too high score to be valid - average over possible values";
         double averageFitness = fitnessSum/individualCount;
         // print the best-of-generation individual
         System.out.println("do generation: "+doGeneration);

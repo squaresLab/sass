@@ -15,7 +15,7 @@ import main.java.znn.tactics.IncreaseDatabaseAThreads;
 
 public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProblemForm {
 
-	public static final double INVALID_PLAN_SCORE=500000;
+	
 
 	public void setup(final EvolutionState state, final Parameter base){
 		super.setup(state, base);
@@ -53,22 +53,21 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			KozaFitness f = ((KozaFitness)ind.fitness);
 			//currently there is only ever one tree in trees
 			//long fitnessValue = Math.abs(countAddServer(((GPIndividual)ind).trees[0])-5);
-			double fitnessScore=0;
 			//boolean allPathsFeasible= allPathsFeasible(state,ind,threadnum);
 			((OmnetStateData)input).initializeState();
 			((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 					((GPIndividual)ind), this);
 			//TODO: determine if you need to adjust the returned range
-			double result = ((OmnetStateData)input).getTotalScore();
-			if(result==Long.MAX_VALUE){
-				feasible=false;
-			}
-			fitnessScore = result; 
-			double fitnessValue;
-			if(feasible){
-				fitnessValue=INVALID_PLAN_SCORE-fitnessScore;
-			} else{
-				fitnessValue=INVALID_PLAN_SCORE;
+			double fitnessValue = ((OmnetStateData)input).getTotalScore();
+			if(fitnessValue==0){
+				System.out.println("debugging");
+				System.out.println("current individual:");
+				((GPIndividual)ind).printTrees(state, 0);
+				System.out.println("Score: "+((OmnetStateData)input).getTotalScore());
+				System.out.println("Times updated path score: "+((OmnetStateData)input).timesUpdatedScore);
+				((OmnetStateData)input).initializeState();
+				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
+						((GPIndividual)ind), this);
 			}
 			/*if(fitnessValue<6500){
 				System.out.println("current individual:");

@@ -8,6 +8,15 @@ import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import main.java.main.OmnetStateData;
 
+/*
+ * Currently I am removing for loops.  The handling of if then statements
+ * inside for loops are not handled correctly (to allow partially failing
+ * plans to remain the population - otherwise I think this could be included.
+ * The problem is that you have to save both branches from the if then
+ * statement and then start the for loop again, which leads to branch
+ * explosion.
+ */
+
 public class ForOperator extends GPNode {
 
 	int forCount;
@@ -36,9 +45,6 @@ public class ForOperator extends GPNode {
 			final Problem problem)
 	{
 		OmnetStateData o = (OmnetStateData)input;
-		if(!o.areAllStatesValid()){
-			return;
-		}
 		boolean onPossiblePlanEndPath = o.isPossiblePlanEnd();
 		o.setPossiblePlanEnd(false);
 		for(int i = 0; i < forCount; i++){
@@ -47,9 +53,6 @@ public class ForOperator extends GPNode {
 				o.setPossiblePlanEnd(true);
 			}
 			children[0].eval(state,thread,input,stack,individual,problem);
-			if(!o.areAllStatesValid()){
-				return;
-			}
 
 		}
 
