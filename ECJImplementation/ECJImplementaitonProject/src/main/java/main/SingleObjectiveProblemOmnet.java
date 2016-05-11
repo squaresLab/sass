@@ -58,13 +58,12 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 					((GPIndividual)ind), this);
 			//TODO: determine if you need to adjust the returned range
-			double fitnessValue = ((OmnetStateData)input).getTotalScore();
+			double fitnessValue = ((OmnetStateData)input).getSingleObjectiveScore();
 			if(fitnessValue==0){
 				System.out.println("debugging");
 				System.out.println("current individual:");
 				((GPIndividual)ind).printTrees(state, 0);
-				System.out.println("Score: "+((OmnetStateData)input).getTotalScore());
-				System.out.println("Times updated path score: "+((OmnetStateData)input).timesUpdatedScore);
+				System.out.println("Score: "+((OmnetStateData)input).getSingleObjectiveScore());
 				((OmnetStateData)input).initializeState();
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 						((GPIndividual)ind), this);
@@ -205,5 +204,7 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 
 		return branchCombinations;
 	}
+	
+	
 
 }

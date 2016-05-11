@@ -28,7 +28,7 @@ public class AverageFitnessStatistics extends SimpleStatistics {
         int addedCount=0;
         for(int x=0;x<state.population.subpops.length;x++){
             best_i[x] = state.population.subpops[x].individuals[0];
-            assert ((KozaFitness)best_i[x].fitness).standardizedFitness()<OmnetStateData.INVALID_PLAN_SCORE*2: "valid fitness greatere than invalid fitness 1";
+            assert ((KozaFitness)best_i[x].fitness).standardizedFitness()<=OmnetStateData.INVALID_PLAN_SCORE*2: "valid fitness greatere than invalid fitness 1";
             fitnessSum+=((KozaFitness)best_i[x].fitness).standardizedFitness();
             addedCount++;
             individualCount+=state.population.subpops[x].individuals.length;
@@ -48,7 +48,7 @@ public class AverageFitnessStatistics extends SimpleStatistics {
                      
                 }
                 else {
-                	assert ((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness()<OmnetStateData.INVALID_PLAN_SCORE*2
+                	assert ((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness()<=OmnetStateData.INVALID_PLAN_SCORE*2
                 	: "valid fitness greater than invalid fitness 2";
                 	fitnessSum+=((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness();
                 	addedCount++;

@@ -59,11 +59,11 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
 					((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result: "+sd.singleObjectiveScore());
+			System.out.println("Final Result: "+sd.getSingleObjectiveScore());
 			//TODO:Go back and make the test pass for different combinations of successes and failures
 			//At the moment I'm assuming all the actions succeed.  If any fail than the test
 			//will fail
-			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+			assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 	}
 	
 	
@@ -90,11 +90,11 @@ public class TestForLoop extends TestCase  {
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
 				((GPIndividual)ind), new SingleObjectiveProblem());
-		System.out.println("Final Result: "+sd.singleObjectiveScore());
+		System.out.println("Final Result: "+sd.getSingleObjectiveScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+		assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 	}
 	
 	public void testSequenceOperatorInIf(){
@@ -119,11 +119,11 @@ public class TestForLoop extends TestCase  {
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
 				((GPIndividual)ind), new SingleObjectiveProblem());
-		System.out.println("Final Result: "+sd.singleObjectiveScore());
+		System.out.println("Final Result: "+sd.getSingleObjectiveScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+		assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 	}
 	
 	public void testTripleForLoop(){
@@ -165,11 +165,11 @@ public class TestForLoop extends TestCase  {
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
 				((GPIndividual)ind), new SingleObjectiveProblem());
-		System.out.println("Final Result: "+sd.singleObjectiveScore());
+		System.out.println("Final Result: "+sd.getSingleObjectiveScore());
 		//TODO:Go back and make the test pass for different combinations of successes and failures
 		//At the moment I'm assuming all the actions succeed.  If any fail than the test
 		//will fail
-		assertFalse(sd.areAllStatesValid());
+		assertFalse(sd.areAllPathsValid());
 	}
 	
 	public void testLongerIncorrectPlan(){
@@ -270,8 +270,8 @@ public class TestForLoop extends TestCase  {
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 		((GPIndividual)ind), new SingleObjectiveProblem());
-		System.out.println("Final Result for longer plan: "+sd.singleObjectiveScore());
-		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+		System.out.println("Final Result for longer plan: "+sd.getSingleObjectiveScore());
+		assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 
 	}
 	
@@ -339,11 +339,11 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(), 
 					((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result: "+sd.singleObjectiveScore());
+			System.out.println("Final Result: "+sd.getSingleObjectiveScore());
 			//TODO:Go back and make the test pass for different combinations of successes and failures
 			//At the moment I'm assuming all the actions succeed.  If any fail than the test
 			//will fail
-			assertFalse(sd.areAllStatesValid());
+			assertFalse(sd.areAllPathsValid());
 		}
 		
 		public void test2ForIfThen(){
@@ -373,8 +373,8 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+			System.out.println("Final Result: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 
 		}
 		
@@ -395,8 +395,8 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertFalse(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+			System.out.println("Final Result: "+sd.getSingleObjectiveScore());
+			assertFalse(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 		}
 	
 		public void testLastPassingPlan(){
@@ -456,8 +456,8 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result last: "+sd.singleObjectiveScore());
-			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+			System.out.println("Final Result last: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 		}
 		
 		public void anotherShouldPassPlan(){
@@ -489,8 +489,8 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertFalse(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+			System.out.println("Final Result: "+sd.getSingleObjectiveScore());
+			assertFalse(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 
 		}
 		
@@ -525,8 +525,8 @@ public class TestForLoop extends TestCase  {
 		EvolutionState state = ev.initialize(params,0);
 		((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 		((GPIndividual)ind), new SingleObjectiveProblem());
-		System.out.println("Final Result: "+sd.singleObjectiveScore());
-		assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+		System.out.println("Final Result: "+sd.getSingleObjectiveScore());
+		assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 		}
 		
 		public void testSimplePlan() {
@@ -549,8 +549,8 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+			System.out.println("Final Result: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 		}
 		
 		public void testShouldNotBePerfectPlan(){
@@ -686,9 +686,165 @@ public class TestForLoop extends TestCase  {
 			EvolutionState state = ev.initialize(params,0);
 			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
 			((GPIndividual)ind), new SingleObjectiveProblem());
-			System.out.println("Final Result: "+sd.singleObjectiveScore());
-			assertTrue(sd.singleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
+			System.out.println("Final Result: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()>OmnetStateData.INVALID_PLAN_SCORE);
 		}
 		
+		
+		public void testInitialStateScore(){
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			System.out.println("Initial state score: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()==3547.3);
+		}
+		
+		public void testScoreAddingServerA(){
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			GPIndividual ind = new GPIndividual();
+			GPTree[] treeInit = {new GPTree()};
+			ind.trees = treeInit;
+			GPNode node1 = new StartNewServerA();
+			ind.trees[0].child=node1;
+
+			Evolve ev = new Evolve();
+			String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+			ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+			EvolutionState state = ev.initialize(params,0);
+			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind), new SingleObjectiveProblem());
+			System.out.println("Result after adding server A: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()==4046.8);
+		}
+		
+		public void testScoreRemovingServerA(){
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			GPIndividual ind = new GPIndividual();
+			GPTree[] treeInit = {new GPTree()};
+			ind.trees = treeInit;
+			GPNode node1 = new ShutdownServerA();
+			ind.trees[0].child=node1;
+
+			Evolve ev = new Evolve();
+			String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+			ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+			EvolutionState state = ev.initialize(params,0);
+			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind), new SingleObjectiveProblem());
+			System.out.println("Result after removing server A: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()==3047.8);
+		}
+		
+		public void testIfElseScore(){
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			GPIndividual ind = new GPIndividual();
+			GPTree[] treeInit = {new GPTree()};
+			ind.trees = treeInit;
+			GPNode node1 = new IfThenElseOperator();
+			GPNode[] childrenOfNode1 = {new StartNewServerA(),new StartNewServerA(),new ShutdownServerA()};
+			node1.children=childrenOfNode1;
+			ind.trees[0].child=node1;
+
+			Evolve ev = new Evolve();
+			String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+			ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+			EvolutionState state = ev.initialize(params,0);
+			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind), new SingleObjectiveProblem());
+			System.out.println("Result after basic if statement: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()==4396.45);
+		}
+		
+		public void testPlanWorseThanInitial(){
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			double initialScore=sd.getSingleObjectiveScore();
+			GPIndividual ind = new GPIndividual();
+			GPTree[] treeInit = {new GPTree()};
+			ind.trees = treeInit;
+			//Original Plan: (; IncreaseDimmerLevelD (; IncreaseDimmerLevelD 
+			//(; IncreaseDimmerLevelD (; IncreaseDimmerLevelD 
+			//(; ShutdownServerA (; ShutdownServerB ShutdownServerC))))))
+			GPNode node1 = new SequenceOperator();
+			GPNode node2 = new SequenceOperator();
+			GPNode node3 = new SequenceOperator();
+			GPNode node4 = new SequenceOperator();
+			GPNode node5 = new SequenceOperator();
+			GPNode node6 = new SequenceOperator();
+			GPNode[] node6Children = {new ShutdownServerB(), new ShutdownServerC()};
+			node6.children=node6Children;
+			GPNode[] childrenOfNode5 = new GPNode[2];
+			childrenOfNode5[0]=new ShutdownServerA();
+			childrenOfNode5[1]=node6;
+			node5.children=childrenOfNode5;
+			GPNode[] childrenOfNode4 = new GPNode[2];
+			childrenOfNode4[0]=new IncreaseDimmerLevelD();
+			childrenOfNode4[1]=node5;
+			node4.children=childrenOfNode4;
+			GPNode[] childrenOfNode3 = new GPNode[2];
+			childrenOfNode3[0]=new IncreaseDimmerLevelD();
+			childrenOfNode3[1]=node4;
+			node3.children=childrenOfNode3;
+			GPNode[] childrenOfNode2 = new GPNode[2];
+			childrenOfNode2[0]=new IncreaseDimmerLevelD();
+			childrenOfNode2[1]=node3;
+			node2.children=childrenOfNode2;
+			GPNode[] childrenOfNode1 = new GPNode[2];
+			childrenOfNode1[0]=new IncreaseDimmerLevelD();
+			childrenOfNode1[1]=node2;
+			node1.children=childrenOfNode1;
+			ind.trees[0].child=node1;
+
+			Evolve ev = new Evolve();
+			String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+			ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+			EvolutionState state = ev.initialize(params,0);
+			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind), new SingleObjectiveProblem());
+			System.out.println("Result after removing servers: "+sd.getSingleObjectiveScore());
+			assertTrue(sd.getSingleObjectiveScore()<initialScore);
+		}
+		
+		public void testCompareSequentialVsBranched(){
+			OmnetStateData sd = new OmnetStateData();
+			sd.initializeState();
+			GPIndividual ind = new GPIndividual();
+			GPTree[] treeInit = {new GPTree()};
+			ind.trees = treeInit;
+			//Original Plan: (; StartNewServerC StartNewServerC)
+			GPNode node1 = new SequenceOperator();
+			GPNode[] childrenOfNode1 = {new StartNewServerC(),new StartNewServerC()};
+			node1.children=childrenOfNode1;
+			ind.trees[0].child=node1;
+
+			Evolve ev = new Evolve();
+			String[] inputFile = {"-file","selfadaptivesystemsingleobjective.params"};
+			ParameterDatabase params = ev.loadParameterDatabase(inputFile);
+			EvolutionState state = ev.initialize(params,0);
+			((GPIndividual)ind).trees[0].child.eval(state, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind), new SingleObjectiveProblem());
+			double sequentialScore = sd.getSingleObjectiveScore();
+			sd.initializeState();
+			GPIndividual ind2 = new GPIndividual();
+			GPTree[] treeInit2 = {new GPTree()};
+			ind2.trees = treeInit2;
+			//Original Plan: (; StartNewServerC StartNewServerC)
+			GPNode p2node1 = new IfThenElseOperator();
+			GPNode[] childrenOfp2Node1 = {new StartNewServerC(),new StartNewServerC(),new StartNewServerC()};
+			p2node1.children=childrenOfp2Node1;
+			ind2.trees[0].child=p2node1;
+
+			Evolve ev2 = new Evolve();
+			ParameterDatabase params2 = ev.loadParameterDatabase(inputFile);
+			EvolutionState state2 = ev.initialize(params,0);
+			((GPIndividual)ind2).trees[0].child.eval(state2, 0, (GPData)sd, new ADFStack(),
+			((GPIndividual)ind2), new SingleObjectiveProblem());
+			double branchScore = sd.getSingleObjectiveScore();
+			System.out.println("Result- sequential score: "+
+					sequentialScore+" branch score: "+branchScore);
+			assertTrue(sequentialScore<branchScore);
+		}
 		
 }

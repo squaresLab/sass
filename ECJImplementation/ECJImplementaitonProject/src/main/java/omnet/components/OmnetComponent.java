@@ -3,6 +3,7 @@ package main.java.omnet.components;
 import java.io.Serializable;
 
 import main.java.main.OmnetStateData;
+import main.java.main.OmnetStatePath;
 
 
 public abstract class OmnetComponent implements Cloneable, Serializable{
@@ -82,7 +83,7 @@ public abstract class OmnetComponent implements Cloneable, Serializable{
 		return MaxDimmerLevel;
 	}
 
-	public void setDimmerLevel(int newDimmerLevel,OmnetStateData o) {
+	public void setDimmerLevel(int newDimmerLevel,OmnetStatePath o) {
 		if(newDimmerLevel < 0 || newDimmerLevel > MaxDimmerLevel){
 			o.setAllStatesValid(false, "Provided dimmer level of "
 					+ newDimmerLevel + " is outside valid dimmer" +
@@ -104,7 +105,7 @@ public abstract class OmnetComponent implements Cloneable, Serializable{
 		return trafficLevel;
 	}
 
-	public void setTrafficLevel(int newTrafficLevel, OmnetStateData o) {
+	public void setTrafficLevel(int newTrafficLevel, OmnetStatePath o) {
 		if(newTrafficLevel < 0 || newTrafficLevel > MaxTrafficLevel){
 			o.setAllStatesValid(false, "the provided traffic level "+
 				newTrafficLevel+" is not inside the valid range.");	

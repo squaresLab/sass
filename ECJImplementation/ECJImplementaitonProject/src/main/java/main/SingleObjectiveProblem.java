@@ -60,7 +60,7 @@ public class SingleObjectiveProblem extends GPProblem implements SimpleProblemFo
 			    ((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 					((GPIndividual)ind), this);
 			  //TODO: determine if you need to adjust the returned range
-			    double result = ((OmnetStateData)input).singleObjectiveScore();
+			    double result = ((StateData)input).calculateStateScore();
 			    if(result==Long.MAX_VALUE){
 				    feasible=false;
 				    break;

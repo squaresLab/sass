@@ -3,25 +3,25 @@ import re
 import ete3
 import copy
 
-class TreeNode:
-    parent=None
-    children=[]
-    name=""
-    def __init__(self,parent,name):
-        self.parent=parent
-        self.name=name
-    def addChild(self,child):
-        self.children.append(child)
-
-def getLeafNodesOfTree(tree):
-    if len(tree.children)==0:
-        return [tree]
-    else:
-        leafNodes=[]
-        for child in tree.children:
-            leafNodes=leafNodes+getLeafNodesOfTree(child)
-        return leafNodes
-
+#class TreeNode:
+#    parent=None
+#    children=[]
+#    name=""
+#    def __init__(self,parent,name):
+#        self.parent=parent
+#        self.name=name
+#    def addChild(self,child):
+#        self.children.append(child)
+#
+#def getLeafNodesOfTree(tree):
+#    if len(tree.children)==0:
+#        return [tree]
+#    else:
+#        leafNodes=[]
+#        for child in tree.children:
+#            leafNodes=leafNodes+getLeafNodesOfTree(child)
+#        return leafNodes
+#
 
 def dashrepl(matchobj):
     return matchobj.group(0).replace(' ','-')
@@ -64,33 +64,42 @@ def appendTrees(tree1,tree2):
 #transition the code to use ete3
 #also make sure the return types are the same, some may be returning 
 #children and others may be returning the parents
-def buildTreeDepthFirst(expr,parent):
+def buildTreeDepthFirst(expr,parentList):
     if expr[0]==';':
-        tree1=buildTreeDepthFirst(expr[1],parent)
-        tree2=buildTreeDepthFirst(expr[2],parent)
-        tree1=appendTrees(tree1,tree2)
-        return [tree1]
+        leafNodes=buildTreeDepthFirst(expr[1],parentList)
+        treeNodes=buildTreeDepthFirst(expr[2],leafNodes)
+        return treeNodes
     elif expr[0]=='if-then:':
-        tree1=buildTreeDepthFirst(expr[1],parent)
-        tree2=buildTreeDepthFirst(expr[2],parent)
-        tree3=buildTreeDepthFirst(expr[3],parent)
-        tree1=appendTrees(tree1,tree2)
-        return [tree1,tree3]
-    elif expr[0].find("Loop-for-") != -1:
-        line=expr[0][9:]
-        pos=line.find('-')
-        loopCount=line[:pos]
-        loopCount=int(loopCount)
-        tree1=buildTreeDepthFirst(expr[1],parent)
-        treeList=[tree1 for i in xrange(loopCount)]
-        j=loopCount-2
-        currentTree=treeList[loopCount-1]
-        while j > -1:
-            currentTree=appendTrees(treeList[j],currentTree)
-            j=j-1
-        return currentTree
+        leafNodes1=buildTreeDepthFirst(expr[1],parentList)
+        successLeafs=buildTreeDepthFirst(expr[2],leafNodes1)
+        failActionNodes=[]
+        for parent in parentList:
+            c=parent.add_child(name='Failed Action')
+            c.add_face(ete3.TextFace('Failed Action'),column=0)
+            failActionNodes.append(c)
+        failLeafs=buildTreeDepthFirst(expr[3],failActionNodes)
+        return successLeafs+failLeafs
+    #elif expr[0].find("Loop-for-") != -1:
+    #    line=expr[0][9:]
+    #    pos=line.find('-')
+    #    loopCount=line[:pos]
+    #    loopCount=int(loopCount)
+    #    tree1=buildTreeDepthFirst(expr[1],parent)
+    #    treeList=[tree1 for i in xrange(loopCount)]
+    #    j=loopCount-2
+    #    currentTree=treeList[loopCount-1]
+    #    while j > -1:
+    #        currentTree=appendTrees(treeList[j],currentTree)
+    #        j=j-1
+    #    return currentTree
     else:
-        return TreeNode(parent,expr)
+        resultList=[]
+        for parent in parentList:
+            c=parent.add_child(name=expr)
+            c.add_face(ete3.TextFace(expr),column=0)
+            resultList.append(c)
+        return resultList
+
 
 
 def convertTreeToEtetree(currentEte3Tree,dataTree):
@@ -101,13 +110,13 @@ def convertTreeToEtetree(currentEte3Tree,dataTree):
 
 
 def convertSExprToTree(sExpr):
-    t=TreeNode(None,"top")
-    return buildTreeDepthFirst(sExpr,t)
+    #t=TreeNode(None,"top")
+    t=ete3.Tree()
+    buildTreeDepthFirst(sExpr,[t])
+    return t
 
 def displayTree(tree):
-    t=ete3.Tree()
-    convertTreeToEtetree(t,tree)
-    t.show()
+    tree.show()
 
 def main(argv):
     if len(argv) != 2:

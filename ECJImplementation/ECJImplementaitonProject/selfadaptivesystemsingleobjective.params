@@ -66,11 +66,16 @@ gp.fs.0.func.25 = main.java.omnet.tactics.IncreaseTrafficLevelD
 gp.fs.0.func.25.nc = nc0
 
 
-
+gp.koza.xover.maxdepth = 6
+gp.koza.mutate.maxdepth = 6
+gp.koza.grow.min-depth = 6
+gp.koza.grow.max-depth = 6
+gp.koza.half.min-depth = 6
+gp.koza.half.max-depth = 6
 
 eval.problem = main.java.main.SingleObjectiveProblemOmnet
 eval.problem.data = main.java.main.OmnetStateData
-generations = 100
+generations = 10000
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
