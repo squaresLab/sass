@@ -58,7 +58,7 @@ public class MultiObjectiveProblem extends GPProblem implements SimpleProblemFor
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 						((GPIndividual)ind), this);
 				//TODO: determine if you need to adjust the returned range
-				timeTotal+=((OmnetStateData)input).getTotalTime();
+				/*timeTotal+=((OmnetStateData)input).getTotalTime();
 				costTotal+=((OmnetStateData)input).totalServerCostPerSecond();
 	            requestsHandledPerSecondTotal+=((OmnetStateData)input).requestsHandledPerSecond();;
 	            grossIncomeTotal+=((OmnetStateData)input).currentGrossIncome();
@@ -66,7 +66,7 @@ public class MultiObjectiveProblem extends GPProblem implements SimpleProblemFor
 	            	
 					feasible=false;
 					break;
-				}
+				}*/
 				//((StateData)input).initializeData();
 			}
 			profitTotal = grossIncomeTotal-costTotal;

@@ -21,11 +21,12 @@ repositories {
     
 }
 
+
 //sourceSets {
 //	main {
 //		java {
 //			srcDir 'src'
-//			}
+//			exclude '**/MultiObjectiveProblem.java'			}
 //		}
 //	}
 //
