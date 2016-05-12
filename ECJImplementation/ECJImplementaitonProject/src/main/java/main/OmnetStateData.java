@@ -360,6 +360,53 @@ public class OmnetStateData extends GPData {
 	        }
 	        return copy;
 	}
+	
+	public int getTotalPlanTime(){
+		double averagePlanTime=0;
+		for(OmnetStatePath path: paths){
+			averagePlanTime+=path.getTotalTime();
+		}
+		averagePlanTime=averagePlanTime/paths.size();
+		return (int)Math.round(averagePlanTime);
+	}
+	
+	public double getPlanCost(){
+		double averageCost=0;
+		for(OmnetStatePath path: paths){
+			averageCost+=path.totalServerCostPerSecond();
+		}
+		return averageCost/paths.size();
+		
+	}
+	
+	public double getPlanRequestsHandledPerSecond(){
+		double averageHandledRequests=0;
+		for(OmnetStatePath path: paths){
+			averageHandledRequests+=path.requestsHandledPerSecond();
+		}
+		return averageHandledRequests/paths.size();
+	}
+	
+	public double getPlanGrossIncome(){
+		double averageGrossIncome=0;
+		for(OmnetStatePath path:paths){
+			averageGrossIncome+=path.currentGrossIncome();
+		}
+		return averageGrossIncome/paths.size();
+	}
+	
+	public boolean isPlanValid(){
+		if(invalidActionCount>0){
+			return false;
+		}
+		//shouldn't need this next check but doing it to be safe
+		for(OmnetStatePath path: paths){
+			if(!path.areAllStatesValid()){
+				return false;
+			}
+		}
+		return true;
+	}
 
 }
 
