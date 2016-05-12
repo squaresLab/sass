@@ -75,7 +75,7 @@ gp.koza.half.max-depth = 6
 
 eval.problem = main.java.main.SingleObjectiveProblemOmnet
 eval.problem.data = main.java.main.OmnetStateData
-generations = 10000
+generations = 100
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
@@ -85,4 +85,13 @@ evalthreads = auto
 #print-params = true
 
 stat =	main.java.main.AverageFitnessStatistics
+
+gp.tc.0.init = main.java.main.MutationBuilder
+
+#come back and adjust this later when you know exactly what you need
+gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
+gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
+gp.koza.initmutate.maxdepth = 6
+gp.koza.initmutate.tries = 1
+
 

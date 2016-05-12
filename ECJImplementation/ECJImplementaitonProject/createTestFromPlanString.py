@@ -132,43 +132,45 @@ def planFromString(planString):
 
 def printNodeInPlan(plan,nodeCount):
     allChildrenAreLeafs=True
-    for child in plan.children:
-        if len(child.children) !=0:
-            allChildrenAreLeafs=False
-            break
+    #for child in plan.children:
+    #    if len(child.children) !=0:
+    #        allChildrenAreLeafs=False
+    #        break
     print("\tGPNode node%d = new %s();" % (nodeCount,plan.className))
     if plan.className=='ForOperator':
         print("\t((ForOperator)node%d).setForCount(%d);" %(nodeCount,plan.forCount))
-    if allChildrenAreLeafs:
-        print("\tGPNode[] node%dChildren = {" % (nodeCount),end='')
-        for childCount,child in enumerate(plan.children):
-            print("new %s()" % (child.className),end='')
-            if childCount == len(plan.children)-1:
-                print ("};")
-            else:
-                print(', ',end='')
-        print("\tnode{0}.children=node{0}Children;".format(nodeCount))
-        return nodeCount
-    else:
-        currentNodeCount=nodeCount
-        childNodesCount=[]
-        for child in plan.children:
-            if len(child.children) !=0:
-                childNodesCount.append(nodeCount+1)
-                nodeCount=printNodeInPlan(child,nodeCount+1)
-        print("\tGPNode[] childrenOfNode%d = new GPNode[%d];" % (currentNodeCount,plan.childCount))
-        for childCount,child in enumerate(plan.children):
-            if len(child.children) == 0:
-                childString="new %s()" % (child.className)
-            else:
-                childString="node%d" % (childNodesCount.pop(0))
-            print("\tchildrenOfNode%d[%d]=%s;" % (currentNodeCount,childCount,childString))
-        print("\tnode{0}.children=childrenOfNode{0};".format(currentNodeCount))
-        return nodeCount
+    #if allChildrenAreLeafs:
+    #    print("\tGPNode[] node%dChildren = {" % (nodeCount),end='')
+    #    for childCount,child in enumerate(plan.children):
+    #        print("new %s()" % (child.className),end='')
+    #        if childCount == len(plan.children)-1:
+    #            print ("};")
+    #        else:
+    #            print(', ',end='')
+    #    print("\tnode{0}.children=node{0}Children;".format(nodeCount))
+    #    return nodeCount
+    #else:
+    currentNodeCount=nodeCount
+    childNodesCount=[]
+    for child in plan.children:
+        #if len(child.children) !=0:
+        childNodesCount.append(nodeCount+1)
+        nodeCount=printNodeInPlan(child,nodeCount+1)
+    print("\tGPNode[] childrenOfNode%d = new GPNode[%d];" % (currentNodeCount,plan.childCount))
+    for childCount,child in enumerate(plan.children):
+    #    if len(child.children) == 0:
+    #        childString="new %s()" % (child.className)
+    #    else:
+        childString="node%d" % (childNodesCount.pop(0))
+        print("\tchildrenOfNode%d[%d]=%s;" % (currentNodeCount,childCount,childString))
+        print("\t%s.parent=node%d;" % (childString,currentNodeCount))
+    print("\tnode{0}.children=childrenOfNode{0};".format(currentNodeCount))
+    return nodeCount
 
 def printPlan(plan):
     printNodeInPlan(plan,1)
     print("\tind.trees[0].child=node1;")
+    print("\tnode1.parent=ind.trees[0];")
 
 def printOriginalStringAsComment(originalString):
     print("\t//Original Plan: %s" % (originalString))
