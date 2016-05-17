@@ -87,7 +87,7 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			//((GPIndividual)ind).printTrees(state,1);
 			//System.out.println("");
 			f.setStandardizedFitness(state, fitnessValue);
-			f.hits = 5;
+			f.hits = ((OmnetStateData)input).invalidActionCount;
 			ind.evaluated=true;
 
 			/*((GPIndividual)ind).trees[0].child.eval(

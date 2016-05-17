@@ -24,11 +24,12 @@ public class AverageFitnessStatistics extends SimpleStatistics {
         // for now we just print the best fitness per subpopulation.
         Individual[] best_i = new Individual[state.population.subpops.length];  // quiets compiler complaints
         double fitnessSum=0;
+        int invalidActionSum=0;
         int individualCount=0;
         int addedCount=0;
         for(int x=0;x<state.population.subpops.length;x++){
             best_i[x] = state.population.subpops[x].individuals[0];
-            assert ((KozaFitness)best_i[x].fitness).standardizedFitness()<=OmnetStateData.INVALID_PLAN_SCORE*2: "valid fitness greatere than invalid fitness 1";
+            assert ((KozaFitness)best_i[x].fitness).standardizedFitness()<=OmnetStateData.calculateWorstPlanScore(): "valid fitness greatere than invalid fitness 1";
             fitnessSum+=((KozaFitness)best_i[x].fitness).standardizedFitness();
             addedCount++;
             individualCount+=state.population.subpops[x].individuals.length;
@@ -41,16 +42,16 @@ public class AverageFitnessStatistics extends SimpleStatistics {
                         state.output.warnOnce("Null individuals found in subpopulation");
                         warned = true;  // we do this rather than relying on warnOnce because it is much faster in a tight loop
                         }
-                    //add the same score as an invalid plan to the fitness sum
-                    //times 2 to penalize more than plans that are just slightly bad
-                     fitnessSum+=2*OmnetStateData.INVALID_PLAN_SCORE;
+                    //add the worst score possible
+                     fitnessSum+=OmnetStateData.calculateWorstPlanScore();
                      addedCount++;
                      
                 }
                 else {
-                	assert ((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness()<=OmnetStateData.INVALID_PLAN_SCORE*2
+                	assert ((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness()<=OmnetStateData.calculateWorstPlanScore()
                 	: "valid fitness greater than invalid fitness 2";
                 	fitnessSum+=((KozaFitness)state.population.subpops[x].individuals[y].fitness).standardizedFitness();
+                	invalidActionSum+=((KozaFitness)state.population.subpops[x].individuals[y].fitness).hits;
                 	addedCount++;
                 	if (best_i[x] == null || state.population.subpops[x].individuals[y].fitness.betterThan(best_i[x].fitness)){
                 
@@ -73,16 +74,20 @@ public class AverageFitnessStatistics extends SimpleStatistics {
             if (best_of_run[x]==null || best_i[x].fitness.betterThan(best_of_run[x].fitness))
                 best_of_run[x] = (Individual)(best_i[x].clone());
             }
-        System.out.println("added count: "+addedCount);
         assert addedCount==individualCount : "fitnessSum incremened more than number of individuals in population";
-        assert fitnessSum/OmnetStateData.INVALID_PLAN_SCORE < 3*individualCount: "fitnessSum has too high score to be valid - average over possible values";
+        //I don't have initution about how the fitnessSum should look after the inverse changes - comeback to this later if you think of something
+        System.out.println("worst score possible: "+OmnetStateData.calculateWorstPlanScore());
+        //assert fitnessSum/OmnetStateData.MINIMAL_INVALID_PLAN_SCORE < 3*individualCount: "fitnessSum has too high score to be valid - average over possible values";
         double averageFitness = fitnessSum/individualCount;
+        double averageInvalidActions = ((double)invalidActionSum)/individualCount;
         // print the best-of-generation individual
         System.out.println("do generation: "+doGeneration);
         if (doGeneration) state.output.println("\nGeneration: " + state.generation,statisticslog);
         NumberFormat nf = new DecimalFormat("#0.00000");
         if (doGeneration) state.output.println("\nAverage Fitness: "+nf.format(averageFitness),statisticslog);
         System.out.println("Average Fitness: "+nf.format(averageFitness));
+        if (doGeneration) state.output.println("\nAverage Invalid Action Count: "+nf.format(averageInvalidActions),statisticslog);
+        System.out.println("Average Invalid Actions: "+nf.format(averageInvalidActions));
         if (doGeneration) state.output.println("Best Individual:",statisticslog);
         for(int x=0;x<state.population.subpops.length;x++)
             {

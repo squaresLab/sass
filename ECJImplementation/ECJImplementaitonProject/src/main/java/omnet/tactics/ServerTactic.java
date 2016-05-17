@@ -14,12 +14,23 @@ public abstract class ServerTactic extends FailableTactic {
 	//time to perform the tactic
     int latency; 
     
+    //if the tactic is located in the test position of an if statement
+    boolean inIfStatementTest = false;
+    
 	public void setLatency(int newLatency){
 		this.latency=newLatency;
 	}
 	
 	public int getLatency(){
 		return this.latency;
+	}
+	
+	public void setInIfStatementTest(boolean inIfStatementTest){
+		this.inIfStatementTest = inIfStatementTest;
+	}
+	
+	public boolean isInIfStatementTest(){
+		return inIfStatementTest;
 	}
 	
 	@Override

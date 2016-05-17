@@ -8,6 +8,7 @@ import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import main.java.actions.FailableTactic;
 import main.java.main.OmnetStateData;
+import main.java.omnet.tactics.ServerTactic;
 
 public class IfThenElseOperator extends GPNode {
 
@@ -34,10 +35,12 @@ public class IfThenElseOperator extends GPNode {
 		}
 		
 		boolean hasValidFailProbability=true;
-		if(!(children[0] instanceof FailableTactic)){
+		if(!(children[0] instanceof ServerTactic)){
 			o.setPathsInvalid(children[0].toStringForHumans());
 			hasValidFailProbability=false;
 			
+		} else {
+			((ServerTactic)children[0]).setInIfStatementTest(true);
 		}
 		  //System.out.println("beginning: "+sd.toString()+"\n");
 		 
