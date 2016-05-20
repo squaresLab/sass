@@ -52,5 +52,19 @@ task runSingleOptimization(type: JavaExec){
 	
 	main = 'ec.Evolve'
 	
+	//	args '-file','selfadaptivesystemsingleobjective.params'
+	args '-file','testParams/configParams.params'
+
+	maxHeapSize=10g
+}
+
+
+task checkParameters(type: JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+
+	main='ec.Evolve'
+
 	args '-file','selfadaptivesystemsingleobjective.params'
+
+	maxHeapSize=10g
 }
