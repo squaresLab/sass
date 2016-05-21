@@ -3,7 +3,7 @@
 while read file
 do
 	i=0
-	while [ $i -lt 10 ]
+	while [ $i -lt 1 ]
 	do
 		outputFile=$(echo $file | cut -d. -f1)Test$i.txt
 		echo "java -cp \"$PWD/libs/ecj.jar\" ec.Evolve -file $file > $outputFile"
