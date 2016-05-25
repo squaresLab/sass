@@ -76,7 +76,7 @@ gp.koza.half.max-depth = 6
 eval.problem = main.java.main.SingleObjectiveProblemOmnet
 eval.problem.data = main.java.main.OmnetStateData
 generations = 100
-pop.subpop.0.size =	1000
+pop.subpop.0.size =	100
 
 #allow ECJ to figure out the number of cores
 breedthreads = auto

@@ -1,4 +1,4 @@
-parent.0 = koza.params
+parent.0 = ../koza.params
 
 # the next four items are already defined in koza.params, but we
 # put them here to be clear.
