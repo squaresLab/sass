@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import ec.gp.GPData;
+import ec.gp.GPIndividual;
 import main.java.actions.operators.IfThenElseOperator;
 import main.java.omnet.components.OmnetComponent;
 import main.java.omnet.tactics.DecreaseDimmerLevel;
@@ -43,7 +44,7 @@ public class OmnetStateData extends GPData {
 	public void initializeState(){
 		paths= new ArrayList<OmnetStatePath>();
 		paths.add(new OmnetStatePath());
-		possiblePlanEnd=true;
+		possiblePlanEnd=true; 
 		//totalScore=0;
 		//pathScore=0;
 		invalidActionCount=0;
@@ -299,6 +300,7 @@ public class OmnetStateData extends GPData {
 		}
 	}
 
+	// this computes fitness of itself
 	public double getSingleObjectiveScore(){
 		if(planTooLarge){
 			//worst plan possible
@@ -327,6 +329,10 @@ public class OmnetStateData extends GPData {
 		}
 	}
 
+	public double countPossibleStates(GPIndividual ind) {
+		// TODO: fixme
+		return -1.0;
+	}
 	public static double calculateWorstPlanScore(){
 
 		return 1/(MINIMAL_INVALID_PLAN_SCORE % INVALID_ACTION_PENALTY);

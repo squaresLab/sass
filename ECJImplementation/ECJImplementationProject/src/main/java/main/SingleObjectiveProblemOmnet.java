@@ -48,7 +48,12 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			}*/
 			//System.out.println(ind.genotypeToStringForHumans());
 			//TODO figure out the log parameter later
-
+			//
+			boolean joannaTest = true;
+			if(joannaTest) {
+				double fitnessValue = ((OmnetStateData) input).countPossibleStates((GPIndividual)ind);
+				
+			} else {
 			//evaluate the fitness later
 			KozaFitness f = ((KozaFitness)ind.fitness);
 			//currently there is only ever one tree in trees
@@ -96,6 +101,7 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
              result = Math.abs(expectedResult - input.x);*/
 		}
 	} 
+	}
 
 	private int countAddServer(GPTree tree){
 		GPNode rootNode = tree.child;
@@ -205,6 +211,8 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 		return branchCombinations;
 	}
 	
-	
 
+	
+	
+	
 }
