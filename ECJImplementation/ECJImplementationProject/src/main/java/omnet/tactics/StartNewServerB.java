@@ -16,7 +16,7 @@ public class StartNewServerB extends StartNewServer {
 	}
 
 	@Override
-	protected void callPerformTactic(OmnetStateData sd) {
+	public void callPerformTactic(OmnetStateData sd) {
 		sd.performTactic(this, ServerB.class);
 		
 	}

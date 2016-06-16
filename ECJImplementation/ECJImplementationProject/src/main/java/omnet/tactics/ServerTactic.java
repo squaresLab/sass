@@ -41,7 +41,7 @@ public abstract class ServerTactic extends FailableTactic {
 		
 	}
 	
-	protected abstract void callPerformTactic(OmnetStateData sd);
+	public abstract void callPerformTactic(OmnetStateData sd);
 	
 	 //may need to change the state later
     @Override

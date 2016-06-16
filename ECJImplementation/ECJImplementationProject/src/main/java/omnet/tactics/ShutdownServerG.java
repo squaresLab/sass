@@ -17,7 +17,7 @@ public class ShutdownServerG extends ShutdownServer {
 	}
 
 	@Override
-	protected void callPerformTactic(OmnetStateData sd) {
+	public void callPerformTactic(OmnetStateData sd) {
 		sd.performTactic(this, ServerG.class);
 		
 	}

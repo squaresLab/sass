@@ -6,15 +6,20 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import ec.gp.GPData;
 import ec.gp.GPIndividual;
+import ec.gp.GPNode;
+import main.java.actions.FailableTactic;
 import main.java.actions.operators.IfThenElseOperator;
+import main.java.actions.operators.SequenceOperator;
 import main.java.omnet.components.OmnetComponent;
 import main.java.omnet.tactics.DecreaseDimmerLevel;
 import main.java.omnet.tactics.DecreaseTrafficLevel;
 import main.java.omnet.tactics.IncreaseDimmerLevel;
 import main.java.omnet.tactics.IncreaseTrafficLevel;
+import main.java.omnet.tactics.ServerTactic;
 import main.java.omnet.tactics.ShutdownServer;
 import main.java.omnet.tactics.StartNewServer;
 
@@ -178,11 +183,11 @@ public class OmnetStateData extends GPData {
 			}
 		}
 		if(notTestedInIf){
-		for(OmnetStatePath path: failPaths){
-			path.setTotalTime(path.getTotalTime()+s.getLatency());
-			path.setPathProbability(path.getPathProbability()*s.getFailureWeight());
-		}
-		paths.addAll(failPaths);
+			for(OmnetStatePath path: failPaths){
+				path.setTotalTime(path.getTotalTime()+s.getLatency());
+				path.setPathProbability(path.getPathProbability()*s.getFailureWeight());
+			}
+			paths.addAll(failPaths);
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
@@ -205,11 +210,11 @@ public class OmnetStateData extends GPData {
 			}
 		}
 		if(notTestedInIf){
-		for(OmnetStatePath path: failPaths){
-			path.setTotalTime(path.getTotalTime()+d.getLatency());
-			path.setPathProbability(path.getPathProbability()*d.getFailureWeight());
-		}
-		paths.addAll(failPaths);
+			for(OmnetStatePath path: failPaths){
+				path.setTotalTime(path.getTotalTime()+d.getLatency());
+				path.setPathProbability(path.getPathProbability()*d.getFailureWeight());
+			}
+			paths.addAll(failPaths);
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
@@ -232,11 +237,11 @@ public class OmnetStateData extends GPData {
 			}
 		}
 		if(notTestedInIf){
-		for(OmnetStatePath path: failPaths){
-			path.setTotalTime(path.getTotalTime()+d.getLatency());
-			path.setPathProbability(path.getPathProbability()*d.getFailureWeight());
-		}
-		paths.addAll(failPaths);
+			for(OmnetStatePath path: failPaths){
+				path.setTotalTime(path.getTotalTime()+d.getLatency());
+				path.setPathProbability(path.getPathProbability()*d.getFailureWeight());
+			}
+			paths.addAll(failPaths);
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
@@ -259,11 +264,11 @@ public class OmnetStateData extends GPData {
 			}
 		}
 		if(notTestedInIf){
-		for(OmnetStatePath path:failPaths){
-			path.setTotalTime(path.getTotalTime()+t.getLatency());
-			path.setPathProbability(path.getPathProbability()*t.getFailureWeight());
-		}
-		paths.addAll(failPaths);
+			for(OmnetStatePath path:failPaths){
+				path.setTotalTime(path.getTotalTime()+t.getLatency());
+				path.setPathProbability(path.getPathProbability()*t.getFailureWeight());
+			}
+			paths.addAll(failPaths);
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
@@ -286,11 +291,11 @@ public class OmnetStateData extends GPData {
 			}
 		}
 		if(notTestedInIf){
-		for(OmnetStatePath path: failPaths){
-			path.setTotalTime(path.getTotalTime()+t.getLatency());
-			path.setPathProbability(path.getPathProbability()*t.getFailureWeight());
-		}
-		paths.addAll(failPaths);
+			for(OmnetStatePath path: failPaths){
+				path.setTotalTime(path.getTotalTime()+t.getLatency());
+				path.setPathProbability(path.getPathProbability()*t.getFailureWeight());
+			}
+			paths.addAll(failPaths);
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
@@ -330,9 +335,32 @@ public class OmnetStateData extends GPData {
 	}
 
 	public double countPossibleStates(GPIndividual ind) {
-		// TODO: fixme
-		return -1.0;
+		int count = 1;
+		int initialInvalidAction = this.getInvalidActionCount(); //this should be 0 at the beginning. 
+		GPNode tac = ind.trees[0].child; //might be a tactics or an operator
+		Stack<GPNode> s = new Stack<GPNode>(); // used to traverse the ind tree
+		s.add(tac);
+		while(s.isEmpty() == false){
+			GPNode tactic = s.pop();
+			if(tactic.children[0] != null) s.add(tactic.children[0]);
+			if(tactic.children[1] != null) s.add(tactic.children[1]);
+			
+			if(tactic instanceof ServerTactic){
+				((ServerTactic) tactic).callPerformTactic(this); //can't just call tac.evol...
+				if(this.getInvalidActionCount() == initialInvalidAction){ //tactic is performed successfully
+					
+				//invalidActionCount will be increased during performTactic if there is an invalid action 
+				//so we check if after perform a tactics(or action?) the invalidAction is still the same, thus we 
+				//know if that tactics is performed successfully. 
+					count++;
+				}else{
+					initialInvalidAction++; //if the current tactics failed. 
+				}
+			}
+		}
+		return count;
 	}
+
 	public static double calculateWorstPlanScore(){
 
 		return 1/(MINIMAL_INVALID_PLAN_SCORE % INVALID_ACTION_PENALTY);
@@ -350,7 +378,7 @@ public class OmnetStateData extends GPData {
 		//for(OmnetStatePath path: paths){
 		//	path.setPathProbability(path.getPathProbability()*(1-failureProbability));
 		//}
-		
+
 		//need to update failure probability here because the failure never occurs
 		for(OmnetStatePath path: copy.paths){
 			path.setPathProbability(path.getPathProbability()*failureProbability);

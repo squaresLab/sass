@@ -1,0 +1,19 @@
+
+Generation: 0
+
+Average Fitness: 0.00000
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: false
+Fitness: Standardized=0.0 Adjusted=1.0 Hits=0
+Tree 0:
+ ShutdownServerC
+
+Best Individual of Run:
+Subpopulation 0:
+Evaluated: false
+Fitness: Standardized=0.0 Adjusted=1.0 Hits=0
+Tree 0:
+ ShutdownServerC

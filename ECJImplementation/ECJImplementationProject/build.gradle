@@ -10,7 +10,7 @@
 
 // Apply the java plugin to add support for Java
 apply plugin:'java'
-//apply plugin:'eclipse'
+apply plugin:'eclipse'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -22,13 +22,13 @@ repositories {
 }
 
 
-//sourceSets {
-//	main {
-//		java {
-//			srcDir 'src'
+sourceSets {
+	main {
+		java {
+			srcDir 'src' }
 //			exclude '**/MultiObjectiveProblem.java'			}
-//		}
-//	}
+		}
+	}
 //
 // In this section you declare the dependencies for your production and test code
 dependencies {

@@ -16,7 +16,7 @@ public class DecreaseDimmerLevelF extends DecreaseDimmerLevel {
 	}
 
 	@Override
-	protected void callPerformTactic(OmnetStateData sd) {
+	public void callPerformTactic(OmnetStateData sd) {
 		sd.performTactic(this, ServerF.class);
 		
 	}

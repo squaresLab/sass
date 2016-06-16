@@ -16,7 +16,7 @@ public class IncreaseTrafficLevelG extends IncreaseTrafficLevel {
 	}
 
 	@Override
-	protected void callPerformTactic(OmnetStateData sd) {
+	public void callPerformTactic(OmnetStateData sd) {
 		sd.performTactic(this, ServerG.class);
 		
 	}
