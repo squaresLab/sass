@@ -8,6 +8,7 @@ import ec.gp.GPIndividual;
 import ec.util.Parameter;
 import main.java.actions.FailableTactic;
 import main.java.main.OmnetStateData;
+import main.java.main.OmnetStatePath;
 
 public abstract class ServerTactic extends FailableTactic {
 	
@@ -42,6 +43,10 @@ public abstract class ServerTactic extends FailableTactic {
 	}
 	
 	public abstract void callPerformTactic(OmnetStateData sd);
+	
+	public abstract void reallyPerform(OmnetStatePath state);
+	
+	public abstract void reallyUndo(OmnetStatePath state);
 	
 	 //may need to change the state later
     @Override

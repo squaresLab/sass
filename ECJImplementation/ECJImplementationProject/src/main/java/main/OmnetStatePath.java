@@ -21,12 +21,13 @@ import main.java.omnet.tactics.DecreaseDimmerLevel;
 import main.java.omnet.tactics.DecreaseTrafficLevel;
 import main.java.omnet.tactics.IncreaseDimmerLevel;
 import main.java.omnet.tactics.IncreaseTrafficLevel;
+import main.java.omnet.tactics.ServerTactic;
 import main.java.omnet.tactics.ShutdownServer;
 import main.java.omnet.tactics.StartNewServer;
 
 public class OmnetStatePath implements Serializable{
 	public static final int SYSTEM_DEMAND=1000;
-	static final int MaxServerCount=5;
+	public static final int MaxServerCount=5;
 	ServerA prototypeServerA;
 	int serverCountA;
 	ServerB prototypeServerB;
@@ -35,25 +36,27 @@ public class OmnetStatePath implements Serializable{
 	int serverCountC;
 	ServerD prototypeServerD;
 	int serverCountD;
-	int[] countArray;
-	OmnetComponent[] serverArray;
+	public int[] countArray;
+	public OmnetComponent[] serverArray;
 	//ArrayList<ServerE> Eservers;
 	//ArrayList<ServerF> Fservers;
 	//ArrayList<ServerG> Gservers;
 	//ArrayList<ArrayList<? extends OmnetComponent>> serverList;
 	HashMap<Class<? extends OmnetComponent>,Integer> serverSetLookup;
-	int totalTime = 0;
+	public int totalTime = 0;
 	double normalProfitPerSecond=10;
 	double dimmedProfitPerSecond=1.5;
 	boolean allStatesValid=true;
-	String reasonForAllStatesValidSetting="all states are assumed to be initially true";
+	public String reasonForAllStatesValidSetting="all states are assumed to be initially true";
 
-	double pathProbability=1;
-	//private boolean modifiedCountArray;
-	ArrayDeque<Boolean> modifiedCountArray= new ArrayDeque<Boolean>();
-	ArrayDeque<Boolean> emptyCount= new ArrayDeque<Boolean>();
-	ArrayDeque<Boolean> modifiedDimmerLevel= new ArrayDeque<Boolean>();
-	ArrayDeque<Boolean> modifiedTrafficLevel= new ArrayDeque<Boolean>();
+	public double pathProbability=1;
+	
+	//record changes during performTactic
+	public ArrayDeque<Boolean> modifiedCountArray= new ArrayDeque<Boolean>();
+	public ArrayDeque<Boolean> emptyCount= new ArrayDeque<Boolean>();
+	public ArrayDeque<Boolean> modifiedDimmerLevel= new ArrayDeque<Boolean>();
+	public ArrayDeque<Boolean> modifiedTrafficLevel= new ArrayDeque<Boolean>();
+	public ArrayDeque<ServerTactic> alreadyPerformed = new ArrayDeque<ServerTactic>();
 	
 
 	public OmnetStatePath(){
@@ -70,7 +73,6 @@ public class OmnetStatePath implements Serializable{
 		serverCountB=1;
 		serverCountC=1;
 		serverCountD=1;
-
 
 		//serverList.add(Eservers);
 		//serverList.add(Fservers);
@@ -99,6 +101,11 @@ public class OmnetStatePath implements Serializable{
 		serverArray[2]=prototypeServerC;
 		serverArray[3]=prototypeServerD;
 	}
+	
+	public <T extends OmnetComponent> int getServerIndex(Class<T> c){
+		return serverSetLookup.get(c).intValue();
+	}
+	
 
 	public void setTotalTime(int totalTime){
 		this.totalTime = totalTime;
@@ -107,7 +114,7 @@ public class OmnetStatePath implements Serializable{
 	public int getTotalTime(){
 		return totalTime;
 	}
-
+	
 	public int getTotalServerCount(){
 		int total = 0;
 		for(int i=0; i<countArray.length;i++){
@@ -248,6 +255,15 @@ public class OmnetStatePath implements Serializable{
 		}
 		return totalRequestsHandled;
 	}
+	
+	public void performTactic(ServerTactic s){
+		s.reallyPerform(this);
+	}
+	
+	public void undoTactic(){
+		ServerTactic tac = alreadyPerformed.pollLast();
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends OmnetComponent> boolean performTactic(StartNewServer s, Class<T> c){
@@ -278,17 +294,20 @@ public class OmnetStatePath implements Serializable{
 				e.printStackTrace();
 			}
 		}
+		if(!tacticFail){
+			alreadyPerformed.add(s);
+		}
 		totalTime+=s.getLatency();
 		pathProbability=pathProbability*(1-s.getFailureWeight());
 		return tacticFail;
 	}
 	public <T extends OmnetComponent> void undoTactic(StartNewServer s, Class<T> c) throws InstantiationException{
 		int serverIndex = serverSetLookup.get(c).intValue();
-		if(emptyCount.pollLast()){
-			serverArray[serverIndex] = null;
+		if(emptyCount.peekLast() != null && emptyCount.pollLast()){
+				serverArray[serverIndex] = null;
 		}
 		
-		if(modifiedCountArray.pollLast()){
+		if(modifiedCountArray.peekLast() != null && modifiedCountArray.pollLast()){
 			countArray[serverIndex]--;
 		}
 		setAllStatesValid(true,"Undo the StarNewServer tactic");
@@ -317,6 +336,9 @@ public class OmnetStatePath implements Serializable{
 			countArray[serverIndex]--;
 			modifiedCountArray.add(true); //JW added this to keep track if countArray[serverIndex] is changed.
 		}
+		if(!tacticFail){
+			alreadyPerformed.add(s);
+		}
 		totalTime+=s.getLatency();
 		pathProbability=pathProbability*(1-s.getFailureWeight());
 		return tacticFail;
@@ -327,7 +349,7 @@ public class OmnetStatePath implements Serializable{
 	public <T extends OmnetComponent> void undoTactic(ShutdownServer s, Class<T> c) throws InstantiationException{
 		int serverIndex = serverSetLookup.get(c).intValue();
 		setAllStatesValid(true,"Undo the ShutdownServer tactic");
-		if(modifiedCountArray.pollLast()){
+		if(modifiedCountArray.peekLast() != null && modifiedCountArray.pollLast()){
 			countArray[serverIndex]++;
 		}
 		totalTime-=s.getLatency();
@@ -353,6 +375,9 @@ public class OmnetStatePath implements Serializable{
 			serverArray[serverIndex].setDimmerLevel(serverArray[serverIndex].getDimmerLevel()+1, this);
 			modifiedDimmerLevel.add(true);
 		}
+		if(!tacticFail){
+			alreadyPerformed.add(d);
+		}
 		totalTime+=d.getLatency();
 		pathProbability=pathProbability*(1-d.getFailureWeight());
 		return tacticFail;
@@ -361,7 +386,7 @@ public class OmnetStatePath implements Serializable{
 	public <T extends OmnetComponent> void undoTactic(IncreaseDimmerLevel d, Class<T> c) throws InstantiationException{
 		int serverIndex = serverSetLookup.get(c).intValue();
 		setAllStatesValid(true,"Undo the IncreaseDimmerLevel tactic");
-		if(modifiedDimmerLevel.pollLast()){
+		if(modifiedDimmerLevel.peekLast() != null && modifiedDimmerLevel.pollLast()){
 			serverArray[serverIndex].setDimmerLevel(serverArray[serverIndex].getDimmerLevel()-1, this);
 		}
 		totalTime-=d.getLatency();
@@ -387,6 +412,9 @@ public class OmnetStatePath implements Serializable{
 			serverArray[serverIndex].setDimmerLevel(serverArray[serverIndex].getDimmerLevel()-1, this);
 			modifiedDimmerLevel.add(true);
 		}
+		if(!tacticFail){
+			alreadyPerformed.add(d);
+		}
 		totalTime+=d.getLatency();
 		pathProbability=pathProbability*(1-d.getFailureWeight());
 		return tacticFail;
@@ -396,7 +424,7 @@ public class OmnetStatePath implements Serializable{
 	public <T extends OmnetComponent> void undoTactic(DecreaseDimmerLevel d, Class<T> c) throws InstantiationException{
 		int serverIndex = serverSetLookup.get(c).intValue();
 		setAllStatesValid(true,"Undo the DecreaseDimmerLevel tactic");
-		if(modifiedDimmerLevel.pollLast()){
+		if(modifiedDimmerLevel.peekLast() != null && modifiedDimmerLevel.pollLast()){
 			serverArray[serverIndex].setDimmerLevel(serverArray[serverIndex].getDimmerLevel()+1, this);
 		}
 		totalTime-=d.getLatency();
@@ -425,6 +453,9 @@ public class OmnetStatePath implements Serializable{
 				modifiedTrafficLevel.add(true);
 			}
 		}
+		if(!tacticFail){
+			alreadyPerformed.add(t);
+		}
 		totalTime+=t.getLatency();
 		pathProbability=pathProbability*(1-t.getFailureWeight());
 		return tacticFail;
@@ -433,7 +464,7 @@ public class OmnetStatePath implements Serializable{
 	public <T extends OmnetComponent> void undoTactic(IncreaseTrafficLevel t, Class<T> c) throws InstantiationException{
 		int serverIndex = serverSetLookup.get(c).intValue();
 		setAllStatesValid(true,"undo the IncreaseTrafficLevel tactic");
-		if(modifiedTrafficLevel.pollLast()){
+		if(modifiedTrafficLevel.peekLast() != null && modifiedTrafficLevel.pollLast()){
 			serverArray[serverIndex].setTrafficLevel(serverArray[serverIndex].getTrafficLevel()-1, this);
 		}
 		totalTime-=t.getLatency();
@@ -458,6 +489,9 @@ public class OmnetStatePath implements Serializable{
 			serverArray[serverIndex].setTrafficLevel(serverArray[serverIndex].getTrafficLevel()-1, this);
 			modifiedTrafficLevel.add(true);
 			}
+		if(!tacticFail){
+			alreadyPerformed.add(t);
+		}
 		totalTime+=t.getLatency();
 		pathProbability=pathProbability*(1-t.getFailureWeight());
 		return tacticFail;
@@ -466,13 +500,17 @@ public class OmnetStatePath implements Serializable{
 	public <T extends OmnetComponent> void undoTactic(DecreaseTrafficLevel t, Class<T> c) throws InstantiationException{
 		int serverIndex = serverSetLookup.get(c).intValue();
 		setAllStatesValid(true,"undo the IncreaseTrafficLevel tactic");
-		if(modifiedTrafficLevel.pollLast()){
+		if(modifiedTrafficLevel.peekLast() != null && modifiedTrafficLevel.pollLast()){
 			serverArray[serverIndex].setTrafficLevel(serverArray[serverIndex].getTrafficLevel()+1, this);
 		}
 		totalTime-=t.getLatency();
 		pathProbability = pathProbability/(1-t.getFailureWeight());	
 	}
 	
+	public void undo(){
+		ServerTactic st = alreadyPerformed.pollLast();
+		
+	}
 	/*Check the speed of this function later if you have optimization issues
 	 * 
 	 */
@@ -504,4 +542,17 @@ public class OmnetStatePath implements Serializable{
 		}
 		return copy;
 	}
+	
+	public void printEmptyCountArray(){		
+		for(Boolean boo: emptyCount){
+			System.out.println(boo);
+		}
+	}	
+	
+	public void printAlreadyPerformed(){		
+		for(ServerTactic boo: alreadyPerformed){
+			System.out.println(boo);
+		}
+	}
+	
 }

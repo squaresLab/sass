@@ -164,6 +164,7 @@ public class OmnetStateData extends GPData {
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
+			s.setActionSucceeded(false);
 		}
 		if(paths.size()>MAX_PATH_COPIES){
 			planTooLarge=true;
@@ -191,6 +192,7 @@ public class OmnetStateData extends GPData {
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
+			s.setActionSucceeded(false);
 		}
 		if(paths.size()>MAX_PATH_COPIES){
 			planTooLarge=true;
@@ -218,6 +220,7 @@ public class OmnetStateData extends GPData {
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
+			d.setActionSucceeded(false);
 		}
 		if(paths.size()>MAX_PATH_COPIES){
 			planTooLarge=true;
@@ -245,6 +248,7 @@ public class OmnetStateData extends GPData {
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
+			d.setActionSucceeded(false);
 		}
 		if(paths.size()>MAX_PATH_COPIES){
 			planTooLarge=true;
@@ -272,6 +276,7 @@ public class OmnetStateData extends GPData {
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
+			t.setActionSucceeded(false);
 		}
 		if(paths.size()>MAX_PATH_COPIES){
 			planTooLarge=true;
@@ -299,6 +304,7 @@ public class OmnetStateData extends GPData {
 		}
 		if(hadInvalidAction){
 			invalidActionCount++;
+			t.setActionSucceeded(false);
 		}
 		if(paths.size()>MAX_PATH_COPIES){
 			planTooLarge=true;
@@ -336,7 +342,9 @@ public class OmnetStateData extends GPData {
 
 	public double countPossibleStates(GPIndividual ind) {
 		int count = 1;
-		int initialInvalidAction = this.getInvalidActionCount(); //this should be 0 at the beginning. 
+		OmnetStatePath systemState = new OmnetStatePath(); //create a new state
+		systemState.initializeState();//initialize it
+		
 		GPNode tac = ind.trees[0].child; //might be a tactics or an operator
 		Stack<GPNode> s = new Stack<GPNode>(); // used to traverse the ind tree
 		s.add(tac);
@@ -347,14 +355,8 @@ public class OmnetStateData extends GPData {
 			
 			if(tactic instanceof ServerTactic){
 				((ServerTactic) tactic).callPerformTactic(this); //can't just call tac.evol...
-				if(this.getInvalidActionCount() == initialInvalidAction){ //tactic is performed successfully
-					
-				//invalidActionCount will be increased during performTactic if there is an invalid action 
-				//so we check if after perform a tactics(or action?) the invalidAction is still the same, thus we 
-				//know if that tactics is performed successfully. 
+				if(((ServerTactic) tactic).hasActionSucceeded()){ //tactic is performed successfully
 					count++;
-				}else{
-					initialInvalidAction++; //if the current tactics failed. 
 				}
 			}
 		}
