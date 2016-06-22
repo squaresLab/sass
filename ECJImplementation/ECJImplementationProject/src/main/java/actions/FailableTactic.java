@@ -30,9 +30,6 @@ public abstract class FailableTactic extends GPNode {
 		return failureWeight;
 	}
 
-	public void reallyUndo(OmnetStatePath state) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }

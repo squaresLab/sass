@@ -22,15 +22,6 @@ public class ShutdownServerA extends ShutdownServer {
 		
 	}
 	
-	public void reallyUndo(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
-		state.setAllStatesValid(true,"Undo the ShutdownServerA tactic");
-		if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
-			state.countArray[serverIndex]++;
-		}
-		state.totalTime-=this.getLatency();
-		state.pathProbability = state.pathProbability/(1-this.getFailureWeight());
-	}
 
 	@Override
 	public void reallyPerform(OmnetStatePath state) {
@@ -57,6 +48,20 @@ public class ShutdownServerA extends ShutdownServer {
 			state.alreadyPerformed.add(this);
 		}
 		state.totalTime += this.getLatency();
-		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());		
+		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
+		state.probabilityArray.add(state.pathProbability);
+	}
+	
+	public void reallyUndo(OmnetStatePath state) {
+		int serverIndex = state.getServerIndex(ServerA.class);
+		state.setAllStatesValid(true,"Undo the ShutdownServerA tactic");
+		if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
+			state.countArray[serverIndex]++;
+		}
+		state.totalTime-=this.getLatency();
+		if(state.pathProbability == state.probabilityArray.peekLast()){
+			state.probabilityArray.removeLast();
+		}
+		state.pathProbability = state.probabilityArray.pollLast();
 	}
 }

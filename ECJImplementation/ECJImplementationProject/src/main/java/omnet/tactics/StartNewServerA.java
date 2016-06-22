@@ -55,6 +55,7 @@ public class StartNewServerA extends StartNewServer {
 		}
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
+		state.probabilityArray.add(state.pathProbability);
 	}
 
 	@Override
@@ -69,7 +70,10 @@ public class StartNewServerA extends StartNewServer {
 		}
 		state.setAllStatesValid(true,"Undo the StarNewServer tactic");
 		state.totalTime-= this.getLatency();
-		state.pathProbability = state.pathProbability/(1-this.getFailureWeight());
+		if(state.pathProbability == state.probabilityArray.peekLast()){
+			state.probabilityArray.removeLast();
+		}
+		state.pathProbability = state.probabilityArray.pollLast();
 	}
 
 }
