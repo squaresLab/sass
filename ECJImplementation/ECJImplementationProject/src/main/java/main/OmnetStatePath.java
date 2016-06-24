@@ -28,7 +28,7 @@ import main.java.omnet.tactics.StartNewServer;
 public class OmnetStatePath implements Serializable{
 	public static final int SYSTEM_DEMAND=1000;
 	public static final int MaxServerCount=5;
-	ServerA prototypeServerA;
+	public ServerA prototypeServerA;
 	int serverCountA;
 	ServerB prototypeServerB;
 	int serverCountB;
@@ -58,6 +58,7 @@ public class OmnetStatePath implements Serializable{
 	public ArrayDeque<Boolean> modifiedTrafficLevel= new ArrayDeque<Boolean>();
 	public ArrayDeque<Double> probabilityArray= new ArrayDeque<Double>();
 	public ArrayDeque<ServerTactic> alreadyPerformed = new ArrayDeque<ServerTactic>();
+	public boolean undone = false;
 	
 
 	public OmnetStatePath(){
@@ -265,6 +266,12 @@ public class OmnetStatePath implements Serializable{
 	public void undoTactic(){
 		ServerTactic s = alreadyPerformed.pollLast();
 		s.reallyUndo(this);
+	}
+	
+	public void performFailure(ServerTactic s){
+		if(s != null){
+			s.failForSure(this);
+		}
 	}
 	/*Check the speed of this function later if you have optimization issues
 	 * 

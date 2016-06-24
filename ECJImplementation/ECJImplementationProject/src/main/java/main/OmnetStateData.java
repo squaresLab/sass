@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -40,6 +41,7 @@ public class OmnetStateData extends GPData {
 	public static final int MAX_PATH_COPIES=1048576;
 	//public int timesUpdatedScore=0;
 	ArrayList<OmnetStatePath> paths;
+	ArrayDeque<OmnetStatePath> visited; 
 	boolean planTooLarge=false;
 
 	public OmnetStateData(){
@@ -340,26 +342,65 @@ public class OmnetStateData extends GPData {
 		}
 	}
 
-	public double countPossibleStates(GPIndividual ind) {
-		int count = 1;
-		OmnetStatePath systemState = new OmnetStatePath(); //create a new state
-		systemState.initializeState();//initialize it
-		
+
+	//perform a given plan on a given state
+	public int performAll(GPIndividual ind, OmnetStatePath systemState){
+		//System.out.println("In");
 		GPNode tac = ind.trees[0].child; //might be a tactics or an operator
 		Stack<GPNode> s = new Stack<GPNode>(); // used to traverse the ind tree
 		s.add(tac);
+		int numTactic = 0;
+
+		//perform all tactics
 		while(s.isEmpty() == false){
 			GPNode tactic = s.pop();
 			if(tactic.children[0] != null) s.add(tactic.children[0]);
 			if(tactic.children[1] != null) s.add(tactic.children[1]);
-			
+
 			if(tactic instanceof ServerTactic){
-				((ServerTactic) tactic).callPerformTactic(this); //can't just call tac.evol...
-				if(((ServerTactic) tactic).hasActionSucceeded()){ //tactic is performed successfully
-					count++;
-				}
+				systemState.performTactic((ServerTactic) tactic);
+				numTactic++;
 			}
 		}
+		return numTactic;
+	}
+
+	public int countPossibleStates(GPIndividual ind) {
+		int count = 0;
+		int numSteps = 0;
+		int numUndo = 0;
+		GPIndividual tempTree = ind;
+		OmnetStatePath systemState = new OmnetStatePath(); //create a new state
+		systemState.initializeState();//initialize it
+
+		ServerTactic temp = null;
+		
+		numSteps = performAll(tempTree,systemState);
+		count++;
+		while(count != Math.pow(2.0, numSteps)){
+			temp = systemState.alreadyPerformed.peek();
+			systemState.undoTactic();
+			numUndo++;
+			
+			systemState.performFailure(temp);
+			count++;
+			
+			for(int i = 0; i == numUndo; i++){
+				systemState.undoTactic();
+			}
+			systemState.performFailure(temp);
+			
+			if(numUndo + 1 == numSteps){
+				numUndo = 0;
+			}
+			
+			tempTree.trees[0].child = tempTree.trees[0].child.children[1];
+			
+			performAll(tempTree,systemState);
+			count++;
+		}
+
+
 		return count;
 	}
 

@@ -76,5 +76,14 @@ public class StartNewServerA extends StartNewServer {
 		state.pathProbability = state.probabilityArray.pollLast();
 	}
 
+	@Override
+	public void failForSure(OmnetStatePath state) {
+		state.setAllStatesValid(false,"failing on purpose");
+		state.alreadyPerformed.add(this);
+		state.totalTime += this.getLatency();
+		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
+		state.probabilityArray.add(state.pathProbability);		
+	}
+
 }
 

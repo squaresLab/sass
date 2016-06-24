@@ -39,15 +39,17 @@ public abstract class ServerTactic extends FailableTactic {
 			Problem problem) {
 		OmnetStateData sd = (OmnetStateData)input;
      	callPerformTactic(sd);
-		
+
 	}
+	
+	public abstract void failForSure(OmnetStatePath state);
 	
 	public abstract void callPerformTactic(OmnetStateData sd);
 	
 	public abstract void reallyPerform(OmnetStatePath state);
 	
 	public abstract void reallyUndo(OmnetStatePath state);
-	
+		
 	 //may need to change the state later
     @Override
     public void checkConstraints(EvolutionState state, int tree,

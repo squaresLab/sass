@@ -37,7 +37,7 @@ public abstract class OmnetComponent implements Cloneable, Serializable{
 	// the first server would get 4 request
 	// for every one that the second server
 	// handles
-	public static final int MaxTrafficLevel=4;
+	public static final int MaxTrafficLevel=10;
 	// the value of the traffic level of the 
 	// server
 	int trafficLevel;
