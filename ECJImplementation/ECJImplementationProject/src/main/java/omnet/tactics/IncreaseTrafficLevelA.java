@@ -26,7 +26,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 
 	@Override
 	public void reallyPerform(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		boolean tacticFail=false;
 		if(state.countArray[serverIndex]==0){
 			state.setAllStatesValid(false, "unable to increase traffic level for"
@@ -56,7 +56,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 
 	@Override
 	public void reallyUndo(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		state.setAllStatesValid(true,"undo the IncreaseTrafficLevel tactic");
 		if(state.modifiedTrafficLevel.peekLast() != null && state.modifiedTrafficLevel.pollLast()){
 			state.serverArray[serverIndex].setTrafficLevel(state.serverArray[serverIndex].getTrafficLevel()-1, state);

@@ -29,21 +29,15 @@ import main.java.omnet.tactics.StartNewServer;
 public class OmnetStatePath implements Serializable{
 	public static final int SYSTEM_DEMAND=1000;
 	public static final int MaxServerCount=5;
-	public ServerA prototypeServerA;
-	int serverCountA;
-	ServerB prototypeServerB;
-	int serverCountB;
-	ServerC prototypeServerC;
-	int serverCountC;
-	ServerD prototypeServerD;
-	int serverCountD;
+	
+	public enum ServerType { SERVERA, SERVERB, SERVERC, SERVERD }
+	
 	public int[] countArray;
 	public OmnetComponent[] serverArray;
 	//ArrayList<ServerE> Eservers;
 	//ArrayList<ServerF> Fservers;
 	//ArrayList<ServerG> Gservers;
 	//ArrayList<ArrayList<? extends OmnetComponent>> serverList;
-	HashMap<Class<? extends OmnetComponent>,Integer> serverSetLookup;
 	public int totalTime = 0;
 	double normalProfitPerSecond=10;
 	double dimmedProfitPerSecond=1.5;
@@ -68,48 +62,27 @@ public class OmnetStatePath implements Serializable{
 
 
 	public void initializeState(){
-		prototypeServerA = new ServerA();
-		prototypeServerB = new ServerB();
-		prototypeServerC = new ServerC();
-		prototypeServerD = new ServerD();
-		serverCountA=1;
-		serverCountB=1;
-		serverCountC=1;
-		serverCountD=1;
-
-		//serverList.add(Eservers);
+				//serverList.add(Eservers);
 		//serverList.add(Fservers);
 		//serverList.add(Gservers);
-		serverSetLookup = new HashMap<Class<? extends OmnetComponent>,Integer>();
-		serverSetLookup.put(ServerA.class,0);
-		serverSetLookup.put(ServerB.class,1);
-		serverSetLookup.put(ServerC.class,2);
-		serverSetLookup.put(ServerD.class,3);
-		//serverSetLookup.put(ServerE.class,Eservers);
-		//serverSetLookup.put(ServerF.class,Fservers);
-		//serverSetLookup.put(ServerG.class,Gservers);
+		
 		totalTime=0;
 		allStatesValid=true;
 		reasonForAllStatesValidSetting="all states are assumed to be initially true";
 		pathProbability=1;
 		countArray = new int[4];
-		countArray[0]=serverCountA;
-		countArray[1]=serverCountB;
-		countArray[2]=serverCountC;
-		countArray[3]=serverCountD;
+		countArray[0]=1;
+		countArray[1]=1;
+		countArray[2]=1;
+		countArray[3]=1;
 		
 		serverArray = new OmnetComponent[4];
-		serverArray[0]=prototypeServerA;
-		serverArray[1]=prototypeServerB;
-		serverArray[2]=prototypeServerC;
-		serverArray[3]=prototypeServerD;
+		serverArray[ServerType.SERVERA.ordinal()]=new ServerA();
+		serverArray[ServerType.SERVERB.ordinal()]=new ServerB();
+		serverArray[ServerType.SERVERC.ordinal()]=new ServerC();
+		serverArray[ServerType.SERVERD.ordinal()]=new ServerD();
 		probabilityArray.add(pathProbability);
 	}
-	
-	public <T extends OmnetComponent> int getServerIndex(Class<T> c){
-		return serverSetLookup.get(c).intValue();
-	}
-	
 
 	public void setTotalTime(int totalTime){
 		this.totalTime = totalTime;
@@ -331,14 +304,6 @@ public class OmnetStatePath implements Serializable{
 	    
 	    return this.totalTime != s.totalTime &&
 	    		this.pathProbability == s.pathProbability &&
-	    		(this.prototypeServerA.getDimmerLevel() == s.prototypeServerA.getDimmerLevel()) &&
-	    		(this.prototypeServerA.getTrafficLevel() == s.prototypeServerA.getTrafficLevel()) &&
-	    		(this.prototypeServerB.getDimmerLevel() == s.prototypeServerB.getDimmerLevel()) &&
-	    		(this.prototypeServerB.getTrafficLevel() == s.prototypeServerB.getTrafficLevel()) &&
-	    		(this.prototypeServerC.getDimmerLevel() == s.prototypeServerC.getDimmerLevel()) &&
-	    		(this.prototypeServerC.getTrafficLevel() == s.prototypeServerC.getTrafficLevel()) &&
-	    		(this.prototypeServerD.getDimmerLevel() == s.prototypeServerD.getDimmerLevel()) &&
-	    		(this.prototypeServerD.getTrafficLevel() == s.prototypeServerD.getTrafficLevel()) &&
 	    		countResult && 
 	    		serverResult;
 	}
@@ -350,14 +315,6 @@ public class OmnetStatePath implements Serializable{
 	    int result = 1;
 	    result = PRIME * result + totalTime;
 	    result = PRIME * result + (int)pathProbability;
-	    result = PRIME * result + prototypeServerA.getDimmerLevel();
-	    result = PRIME * result + prototypeServerA.getTrafficLevel();
-	    result = PRIME * result + prototypeServerB.getDimmerLevel();
-	    result = PRIME * result + prototypeServerB.getTrafficLevel();
-	    result = PRIME * result + prototypeServerC.getDimmerLevel();
-	    result = PRIME * result + prototypeServerC.getTrafficLevel();
-	    result = PRIME * result + prototypeServerD.getDimmerLevel();
-	    result = PRIME * result + prototypeServerD.getTrafficLevel();
 	    result = PRIME * result + countArray.hashCode();
 	    result = PRIME * result + serverArray.hashCode();
 	    return result;

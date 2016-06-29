@@ -25,7 +25,7 @@ public class ShutdownServerA extends ShutdownServer {
 
 	@Override
 	public void reallyPerform(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		boolean tacticFail=false;
 		if (state.countArray[serverIndex] == 0){
 			state.setAllStatesValid(false,"unable to shutdown "
@@ -53,7 +53,7 @@ public class ShutdownServerA extends ShutdownServer {
 	}
 	
 	public void reallyUndo(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		state.setAllStatesValid(true,"Undo the ShutdownServerA tactic");
 		if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
 			state.countArray[serverIndex]++;

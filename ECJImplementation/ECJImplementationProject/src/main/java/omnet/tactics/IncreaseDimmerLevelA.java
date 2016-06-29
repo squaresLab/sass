@@ -24,7 +24,7 @@ public class IncreaseDimmerLevelA extends IncreaseDimmerLevel {
 
 	@Override
 	public void reallyPerform(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		boolean tacticFail=false;
 		if(state.countArray[serverIndex]==0){
 			state.setAllStatesValid(false, "unable to increase dimmer level for"
@@ -51,7 +51,7 @@ public class IncreaseDimmerLevelA extends IncreaseDimmerLevel {
 
 	@Override
 	public void reallyUndo(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		state.setAllStatesValid(true,"Undo the IncreaseDimmerLevel tactic");
 		if(state.modifiedDimmerLevel.peekLast() != null && state.modifiedDimmerLevel.pollLast()){
 			state.serverArray[serverIndex].setDimmerLevel(state.serverArray[serverIndex].getDimmerLevel()-1, state);

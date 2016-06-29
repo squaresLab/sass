@@ -27,7 +27,7 @@ public class ShutdownServerB extends ShutdownServer {
 
 	@Override
 	public void reallyPerform(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerB.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		boolean tacticFail=false;
 		if (state.countArray[serverIndex] == 0){
 			state.setAllStatesValid(false,"unable to shutdown "

@@ -24,8 +24,8 @@ public class StartNewServerA extends StartNewServer {
 
 	@Override
 	public void reallyPerform(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
 		boolean tacticFail=false;
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		if(state.countArray[serverIndex]+1 > state.MaxServerCount){
 			state.setAllStatesValid(false, "unable to start up "+ ServerA.class.toString()
 			+" there are already the max amount of servers"
@@ -60,7 +60,7 @@ public class StartNewServerA extends StartNewServer {
 
 	@Override
 	public void reallyUndo(OmnetStatePath state) {
-		int serverIndex = state.getServerIndex(ServerA.class);
+		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		if(state.emptyCount.peekLast() != null && state.emptyCount.pollLast()){
 				state.serverArray[serverIndex] = null;
 		}
