@@ -10,16 +10,16 @@ public class StartNewServerA extends StartNewServer {
 		latency = 120;
 		failureWeight=0.1;
 	}
-	
+
 	@Override
 	public String toString(){
-	 	return "StartNewServerA";
+		return "StartNewServerA";
 	}
 
 	@Override
 	public void callPerformTactic(OmnetStateData sd) {
 		//sd.performTactic(this, ServerA.class);
-		
+
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class StartNewServerA extends StartNewServer {
 		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		if(state.countArray[serverIndex]+1 > state.MaxServerCount){
 			state.setAllStatesValid(false, "unable to start up "+ ServerA.class.toString()
-			+" there are already the max amount of servers"
-			+ "at that location");
+					+" there are already the max amount of servers"
+					+ "at that location");
 			tacticFail=true;
 			state.emptyCount.add(false);
 			state.modifiedCountArray.add(false);
@@ -56,15 +56,16 @@ public class StartNewServerA extends StartNewServer {
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
+		state.SetUniqueID(state.getUniqueID() + 1);
 	}
 
 	@Override
 	public void reallyUndo(OmnetStatePath state) {
 		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
 		if(state.emptyCount.peekLast() != null && state.emptyCount.pollLast()){
-				state.serverArray[serverIndex] = null;
+			state.serverArray[serverIndex] = null;
 		}
-		
+
 		if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
 			state.countArray[serverIndex]--;
 		}
@@ -76,7 +77,7 @@ public class StartNewServerA extends StartNewServer {
 		if(state.probabilityArray.peek() != null){
 			state.pathProbability = state.probabilityArray.pollLast();
 		}
-		
+		state.SetUniqueID(state.getUniqueID() - 1);		
 	}
 
 	@Override
@@ -85,7 +86,8 @@ public class StartNewServerA extends StartNewServer {
 		state.alreadyPerformed.add(this);
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
-		state.probabilityArray.add(state.pathProbability);		
+		state.probabilityArray.add(state.pathProbability);	
+		state.SetUniqueID(state.getUniqueID() + 1);
 	}
 
 }

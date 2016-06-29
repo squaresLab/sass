@@ -10,5 +10,9 @@ public class ServerA extends OmnetComponent{
 		dimmedRequestsHandledPerSecond = 150;
 		
 	}
+	
+	public String toString() {
+		return "myStateFixMe";
+	}
 
 }

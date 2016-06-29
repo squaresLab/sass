@@ -50,7 +50,10 @@ public class OmnetStateData extends GPData {
 	public HashSet<OmnetStatePath> visited = new HashSet<OmnetStatePath>();//HashSet to store visited states
 	public GPNode currentNode;
 	GPNode initialTactic;
-	
+	int numVistedInitial = 0;
+	OmnetStatePath initialState = new OmnetStatePath();
+
+
 	public OmnetStateData(){
 		this.initializeState();
 	}
@@ -379,6 +382,10 @@ public class OmnetStateData extends GPData {
 			if(currentNode != initialTactic){
 				currentNode = (GPNode) currentNode.parent;
 			}
+			if((systemState.equals(initialState))){
+				visited.add(systemState);
+				break;
+			}
 		}
 		visited.add(systemState); //at the new undone state to visited
 		//System.out.println(currentNode);
@@ -388,9 +395,6 @@ public class OmnetStateData extends GPData {
 		int count = 0;
 		initialTactic = ind.trees[0].child; //the tactic to begin with.
 		OmnetStatePath systemState = new OmnetStatePath(); //create a new state
-		systemState.initializeState();//initialize it
-		OmnetStatePath initialState = new OmnetStatePath();//initialize it
-
 		//count the left most path, unique situation
 		performAll(initialTactic,systemState);
 		count++; //first time all success version of final state
@@ -399,24 +403,24 @@ public class OmnetStateData extends GPData {
 		systemState.performFailure(currentNode);
 		count++;
 		undoUntilVisited(systemState);
+		System.out.println("count = " + count);
 
-
-		while(!systemState.equals(initialState) && !visited.contains(initialState)){
-			System.out.println("equals? " + systemState.equals(initialState));
-			System.out.println("contains? " + visited.contains(initialState));
-			System.out.println("In here and count is " + count);
-			systemState.performFailure(currentNode); // need to fix temp. Perform the last tactic
-			if(true){
-				initialTactic = currentNode;
-			}
-			performAll(initialTactic,systemState); //need to fix initialTactic. Start with a later node
+		while(numVistedInitial < 2){
+			systemState.performFailure(currentNode); 
+			initialTactic = currentNode;
+			performAll(initialTactic,systemState); 
 			count++; //reached a success final state
 			systemState.undoTactic();
 			visited.add(systemState);
 			systemState.performFailure(currentNode);// need to fix temp. Perform the last tactic
 			count++;
 			undoUntilVisited(systemState);//this might be a problem
+			if(systemState.equals(initialState)){
+				numVistedInitial++;
+			}
+			System.out.println("count = " + count); 
 		}
+
 		return count;
 	}
 

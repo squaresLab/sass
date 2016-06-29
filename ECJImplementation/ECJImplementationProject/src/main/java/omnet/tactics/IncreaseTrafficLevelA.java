@@ -51,7 +51,8 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
-	}
+		state.SetUniqueID(state.getUniqueID() + 1);
+		}
 
 
 	@Override
@@ -68,6 +69,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		if(state.probabilityArray.peek() != null){
 			state.pathProbability = state.probabilityArray.pollLast();
 		}
+		state.SetUniqueID(state.getUniqueID() - 1);
 		
 	}
 
@@ -79,6 +81,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
+		state.SetUniqueID(state.getUniqueID() + 1);
 	}
 	
 }

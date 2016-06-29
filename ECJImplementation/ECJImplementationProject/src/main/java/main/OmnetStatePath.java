@@ -27,11 +27,13 @@ import main.java.omnet.tactics.ShutdownServer;
 import main.java.omnet.tactics.StartNewServer;
 
 public class OmnetStatePath implements Serializable{
+		
 	public static final int SYSTEM_DEMAND=1000;
 	public static final int MaxServerCount=5;
 	
 	public enum ServerType { SERVERA, SERVERB, SERVERC, SERVERD }
 	
+	public int uniqueID = 0;
 	public int[] countArray;
 	public OmnetComponent[] serverArray;
 	//ArrayList<ServerE> Eservers;
@@ -62,7 +64,8 @@ public class OmnetStatePath implements Serializable{
 
 
 	public void initializeState(){
-				//serverList.add(Eservers);
+
+		//serverList.add(Eservers);
 		//serverList.add(Fservers);
 		//serverList.add(Gservers);
 		
@@ -238,8 +241,10 @@ public class OmnetStatePath implements Serializable{
 	}
 	
 	public void undoTactic(){
-		ServerTactic s = alreadyPerformed.pollLast();
-		s.reallyUndo(this);
+		if(alreadyPerformed.peekLast() != null){
+			ServerTactic s = alreadyPerformed.pollLast();
+			s.reallyUndo(this);
+		}
 	}
 	
 	public void performFailure(GPNode s){
@@ -289,10 +294,10 @@ public class OmnetStatePath implements Serializable{
 	    {
 	        return false;
 	    }
-//	    if (state == this)
-//	    {
-//	        return true;
-//	    }
+	    if (state == this)
+	    {
+	        return true;
+	    }
 	    if (getClass() != state.getClass())
 	    {
 	        return false;
@@ -301,11 +306,24 @@ public class OmnetStatePath implements Serializable{
 	    OmnetStatePath s = (OmnetStatePath) state;
 	    boolean countResult = Arrays.equals(this.countArray,s.countArray);
 	    boolean serverResult = Arrays.equals(this.serverArray,s.serverArray);
+	    boolean match = false;
 	    
-	    return this.totalTime != s.totalTime &&
+	    for(int i = 0; i <= this.serverArray.length; i++){
+	    		if(this.serverArray[i].getDimmerLevel() == s.serverArray[i].getDimmerLevel() &&
+	    				this.serverArray[i].getTrafficLevel() == s.serverArray[i].getTrafficLevel()){
+	    			match = true;
+	    		}
+	    				
+	    }
+	    
+	    return this.totalTime == s.totalTime &&
 	    		this.pathProbability == s.pathProbability &&
+
+	    		
 	    		countResult && 
 	    		serverResult;
+	    
+	   // return this.getUniqueID() == s.getUniqueID();
 	}
 	
 	@Override
@@ -318,6 +336,17 @@ public class OmnetStatePath implements Serializable{
 	    result = PRIME * result + countArray.hashCode();
 	    result = PRIME * result + serverArray.hashCode();
 	    return result;
+	    
+	   // result = PRIME * result + this.getUniqueID();
+	    //return result;
+	}
+	
+	public void SetUniqueID(int newID){
+		uniqueID = newID;
+	}
+	
+	public int getUniqueID(){
+		return uniqueID;
 	}
 	
 //	public void printProbabilityArray(){
