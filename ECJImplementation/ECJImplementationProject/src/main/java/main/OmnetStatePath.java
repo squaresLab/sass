@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -268,9 +269,12 @@ public class OmnetStatePath implements Serializable{
 		s.reallyUndo(this);
 	}
 	
-	public void performFailure(ServerTactic s){
-		if(s != null){
-			s.failForSure(this);
+	public void performFailure(GPNode s){
+		if(s != null && s instanceof ServerTactic){
+			((ServerTactic) s).failForSure(this);
+		}
+		else if(s.children[0] != null && s.children[0] instanceof ServerTactic){
+			((ServerTactic) s.children[0]).failForSure(this);
 		}
 	}
 	/*Check the speed of this function later if you have optimization issues
@@ -305,22 +309,64 @@ public class OmnetStatePath implements Serializable{
 		return copy;
 	}
 	
-	public void printEmptyCountArray(){		
-		for(Boolean boo: emptyCount){
-			System.out.println(boo);
-		}
-	}	
 	
-	public void printAlreadyPerformed(){		
-		for(ServerTactic boo: alreadyPerformed){
-			System.out.println(boo);
-		}
+	@Override
+    public boolean equals(Object state) {
+		if(state == null)
+	    {
+	        return false;
+	    }
+//	    if (state == this)
+//	    {
+//	        return true;
+//	    }
+	    if (getClass() != state.getClass())
+	    {
+	        return false;
+	    }
+	     
+	    OmnetStatePath s = (OmnetStatePath) state;
+	    boolean countResult = Arrays.equals(this.countArray,s.countArray);
+	    boolean serverResult = Arrays.equals(this.serverArray,s.serverArray);
+	    
+	    return this.totalTime != s.totalTime &&
+	    		this.pathProbability == s.pathProbability &&
+	    		(this.prototypeServerA.getDimmerLevel() == s.prototypeServerA.getDimmerLevel()) &&
+	    		(this.prototypeServerA.getTrafficLevel() == s.prototypeServerA.getTrafficLevel()) &&
+	    		(this.prototypeServerB.getDimmerLevel() == s.prototypeServerB.getDimmerLevel()) &&
+	    		(this.prototypeServerB.getTrafficLevel() == s.prototypeServerB.getTrafficLevel()) &&
+	    		(this.prototypeServerC.getDimmerLevel() == s.prototypeServerC.getDimmerLevel()) &&
+	    		(this.prototypeServerC.getTrafficLevel() == s.prototypeServerC.getTrafficLevel()) &&
+	    		(this.prototypeServerD.getDimmerLevel() == s.prototypeServerD.getDimmerLevel()) &&
+	    		(this.prototypeServerD.getTrafficLevel() == s.prototypeServerD.getTrafficLevel()) &&
+	    		countResult && 
+	    		serverResult;
 	}
 	
-	public void printProbabilityArray(){
-		for(Double boo: probabilityArray){
-			System.out.println(boo);
-		}
+	@Override
+	public int hashCode()
+	{
+	    final int PRIME = 31;
+	    int result = 1;
+	    result = PRIME * result + totalTime;
+	    result = PRIME * result + (int)pathProbability;
+	    result = PRIME * result + prototypeServerA.getDimmerLevel();
+	    result = PRIME * result + prototypeServerA.getTrafficLevel();
+	    result = PRIME * result + prototypeServerB.getDimmerLevel();
+	    result = PRIME * result + prototypeServerB.getTrafficLevel();
+	    result = PRIME * result + prototypeServerC.getDimmerLevel();
+	    result = PRIME * result + prototypeServerC.getTrafficLevel();
+	    result = PRIME * result + prototypeServerD.getDimmerLevel();
+	    result = PRIME * result + prototypeServerD.getTrafficLevel();
+	    result = PRIME * result + countArray.hashCode();
+	    result = PRIME * result + serverArray.hashCode();
+	    return result;
 	}
+	
+//	public void printProbabilityArray(){
+//		for(Double boo: probabilityArray){
+//			System.out.println(boo);
+//		}
+//	}
 
 }

@@ -19,7 +19,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 
 	@Override
 	public void callPerformTactic(OmnetStateData sd) {
-		sd.performTactic(this, ServerA.class);
+		//sd.performTactic(this, ServerA.class);
 		
 	}
 
@@ -62,10 +62,12 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 			state.serverArray[serverIndex].setTrafficLevel(state.serverArray[serverIndex].getTrafficLevel()-1, state);
 		}
 		state.totalTime -= this.getLatency();
-		if(state.pathProbability == state.probabilityArray.peekLast()){
+		if(state.probabilityArray.peekLast() != null && state.pathProbability == state.probabilityArray.peekLast()){
 			state.probabilityArray.removeLast();
 		}
-		state.pathProbability = state.probabilityArray.pollLast();
+		if(state.probabilityArray.peek() != null){
+			state.pathProbability = state.probabilityArray.pollLast();
+		}
 		
 	}
 

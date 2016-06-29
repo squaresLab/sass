@@ -18,7 +18,7 @@ public class StartNewServerA extends StartNewServer {
 
 	@Override
 	public void callPerformTactic(OmnetStateData sd) {
-		sd.performTactic(this, ServerA.class);
+		//sd.performTactic(this, ServerA.class);
 		
 	}
 
@@ -70,10 +70,13 @@ public class StartNewServerA extends StartNewServer {
 		}
 		state.setAllStatesValid(true,"Undo the StarNewServer tactic");
 		state.totalTime-= this.getLatency();
-		if(state.pathProbability == state.probabilityArray.peekLast()){
+		if(state.probabilityArray.peekLast() != null && state.pathProbability == state.probabilityArray.peekLast()){
 			state.probabilityArray.removeLast();
 		}
-		state.pathProbability = state.probabilityArray.pollLast();
+		if(state.probabilityArray.peek() != null){
+			state.pathProbability = state.probabilityArray.pollLast();
+		}
+		
 	}
 
 	@Override

@@ -51,45 +51,53 @@ public class TestUndoTactics {
 		OmnetStatePath systemState = new OmnetStatePath();
 		OmnetStateData sd = new OmnetStateData();
 		GPIndividual ind = new GPIndividual();
+		
+		//building a plan tree
 		GPTree[] treeInit = {new GPTree()};
 		ind.trees = treeInit;
 		GPNode node1 = new SequenceOperator();
-		GPNode node2 = new StartNewServerA();
+		GPNode node2 = new IncreaseTrafficLevelA();
 		GPNode node3 = new SequenceOperator();
 		GPNode node4 = new IncreaseTrafficLevelA();
-		
+		GPNode node5 = new SequenceOperator();
+		GPNode node6 = new IncreaseTrafficLevelA();
 		GPNode[] childrenOfNode1 = new GPNode[2];
 		GPNode[] childrenOfNode2 = new GPNode[2];
 		GPNode[] childrenOfNode3 = new GPNode[2];
 		GPNode[] childrenOfNode4 = new GPNode[2];
-		
+		GPNode[] childrenOfNode5 = new GPNode[2];
+		GPNode[] childrenOfNode6 = new GPNode[2];
 		childrenOfNode1[0] = node2;
 		childrenOfNode1[1] = node3;
 		childrenOfNode2[0] = null;
 		childrenOfNode2[1] = null;
 		childrenOfNode3[0] = node4;
-		childrenOfNode3[1] = null;
+		childrenOfNode3[1] = node5;
 		childrenOfNode4[0] = null;
 		childrenOfNode4[1] = null;
+		childrenOfNode5[0] = node6;
+		childrenOfNode5[1] = null;
+		childrenOfNode6[0] = null;
+		childrenOfNode6[1] = null;
 		ind.trees[0].child=node1;
 		node1.children = childrenOfNode1;
 		node2.children = childrenOfNode2;
 		node3.children = childrenOfNode3;
 		node4.children = childrenOfNode4;
-		
-		
+		node5.children = childrenOfNode5;
+		node6.children = childrenOfNode6;
 		node1.parent = ind.trees[0];
 		node2.parent = node1;
 		node3.parent = node1;
 		node4.parent = node3;
-
-		System.out.println(sd.performAll(ind, systemState));
-		System.out.println("total server count = " + systemState.getTotalServerCount());
-		System.out.println("total time = " + systemState.getTotalTime());
-		System.out.println("path Probability = " + systemState.getPathProbability());
-		System.out.println("ServerA current traffic level" + systemState.prototypeServerA.getTrafficLevel());
+		node5.parent = node3;
+		node6.parent = node5;
 		
-		//sd.performAll(ind, systemState);
-		//System.out.println(ind.trees[0].child.children[1].children[1]);
+		//Start to test
+//		sd.performAll(node1, systemState);
+//		sd.undoUntilVisited(systemState);
+		System.out.println(sd.countPossibleStates(ind));
+		
+
 	}
 }
