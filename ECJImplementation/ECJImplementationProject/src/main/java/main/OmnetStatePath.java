@@ -27,16 +27,10 @@ import main.java.omnet.tactics.ShutdownServer;
 import main.java.omnet.tactics.StartNewServer;
 
 public class OmnetStatePath implements Serializable{
+		
 	public static final int SYSTEM_DEMAND=1000;
 	public static final int MaxServerCount=5;
-	public ServerA prototypeServerA;
-	int serverCountA;
-	ServerB prototypeServerB;
-	int serverCountB;
-	ServerC prototypeServerC;
-	int serverCountC;
-	ServerD prototypeServerD;
-	int serverCountD;
+	public int uniqueID = 0;
 	public int[] countArray;
 	public OmnetComponent[] serverArray;
 	//ArrayList<ServerE> Eservers;
@@ -68,14 +62,6 @@ public class OmnetStatePath implements Serializable{
 
 
 	public void initializeState(){
-		prototypeServerA = new ServerA();
-		prototypeServerB = new ServerB();
-		prototypeServerC = new ServerC();
-		prototypeServerD = new ServerD();
-		serverCountA=1;
-		serverCountB=1;
-		serverCountC=1;
-		serverCountD=1;
 
 		//serverList.add(Eservers);
 		//serverList.add(Fservers);
@@ -93,16 +79,16 @@ public class OmnetStatePath implements Serializable{
 		reasonForAllStatesValidSetting="all states are assumed to be initially true";
 		pathProbability=1;
 		countArray = new int[4];
-		countArray[0]=serverCountA;
-		countArray[1]=serverCountB;
-		countArray[2]=serverCountC;
-		countArray[3]=serverCountD;
+		countArray[0]=1;
+		countArray[1]=1;
+		countArray[2]=1;
+		countArray[3]=1;
 		
 		serverArray = new OmnetComponent[4];
-		serverArray[0]=prototypeServerA;
-		serverArray[1]=prototypeServerB;
-		serverArray[2]=prototypeServerC;
-		serverArray[3]=prototypeServerD;
+		serverArray[0]=new ServerA();
+		serverArray[1]=new ServerB();
+		serverArray[2]=new ServerC();
+		serverArray[3]=new ServerD();
 		probabilityArray.add(pathProbability);
 	}
 	
@@ -265,8 +251,10 @@ public class OmnetStatePath implements Serializable{
 	}
 	
 	public void undoTactic(){
-		ServerTactic s = alreadyPerformed.pollLast();
-		s.reallyUndo(this);
+		if(alreadyPerformed.peekLast() != null){
+			ServerTactic s = alreadyPerformed.pollLast();
+			s.reallyUndo(this);
+		}
 	}
 	
 	public void performFailure(GPNode s){
@@ -316,10 +304,10 @@ public class OmnetStatePath implements Serializable{
 	    {
 	        return false;
 	    }
-//	    if (state == this)
-//	    {
-//	        return true;
-//	    }
+	    if (state == this)
+	    {
+	        return true;
+	    }
 	    if (getClass() != state.getClass())
 	    {
 	        return false;
@@ -328,19 +316,23 @@ public class OmnetStatePath implements Serializable{
 	    OmnetStatePath s = (OmnetStatePath) state;
 	    boolean countResult = Arrays.equals(this.countArray,s.countArray);
 	    boolean serverResult = Arrays.equals(this.serverArray,s.serverArray);
+	    boolean match = false;
 	    
-	    return this.totalTime != s.totalTime &&
+	    for(int i = 0; i <= this.serverArray.length; i++){
+	    		if(this.serverArray[i].getDimmerLevel() == s.serverArray[i].getDimmerLevel() &&
+	    				this.serverArray[i].getTrafficLevel() == s.serverArray[i].getTrafficLevel()){
+	    			match = true;
+	    		}
+	    				
+	    }
+	    
+	    return this.totalTime == s.totalTime &&
 	    		this.pathProbability == s.pathProbability &&
-	    		(this.prototypeServerA.getDimmerLevel() == s.prototypeServerA.getDimmerLevel()) &&
-	    		(this.prototypeServerA.getTrafficLevel() == s.prototypeServerA.getTrafficLevel()) &&
-	    		(this.prototypeServerB.getDimmerLevel() == s.prototypeServerB.getDimmerLevel()) &&
-	    		(this.prototypeServerB.getTrafficLevel() == s.prototypeServerB.getTrafficLevel()) &&
-	    		(this.prototypeServerC.getDimmerLevel() == s.prototypeServerC.getDimmerLevel()) &&
-	    		(this.prototypeServerC.getTrafficLevel() == s.prototypeServerC.getTrafficLevel()) &&
-	    		(this.prototypeServerD.getDimmerLevel() == s.prototypeServerD.getDimmerLevel()) &&
-	    		(this.prototypeServerD.getTrafficLevel() == s.prototypeServerD.getTrafficLevel()) &&
+	    		
 	    		countResult && 
 	    		serverResult;
+	    
+	   // return this.getUniqueID() == s.getUniqueID();
 	}
 	
 	@Override
@@ -350,17 +342,20 @@ public class OmnetStatePath implements Serializable{
 	    int result = 1;
 	    result = PRIME * result + totalTime;
 	    result = PRIME * result + (int)pathProbability;
-	    result = PRIME * result + prototypeServerA.getDimmerLevel();
-	    result = PRIME * result + prototypeServerA.getTrafficLevel();
-	    result = PRIME * result + prototypeServerB.getDimmerLevel();
-	    result = PRIME * result + prototypeServerB.getTrafficLevel();
-	    result = PRIME * result + prototypeServerC.getDimmerLevel();
-	    result = PRIME * result + prototypeServerC.getTrafficLevel();
-	    result = PRIME * result + prototypeServerD.getDimmerLevel();
-	    result = PRIME * result + prototypeServerD.getTrafficLevel();
 	    result = PRIME * result + countArray.hashCode();
 	    result = PRIME * result + serverArray.hashCode();
 	    return result;
+	    
+	   // result = PRIME * result + this.getUniqueID();
+	    //return result;
+	}
+	
+	public void SetUniqueID(int newID){
+		uniqueID = newID;
+	}
+	
+	public int getUniqueID(){
+		return uniqueID;
 	}
 	
 //	public void printProbabilityArray(){
