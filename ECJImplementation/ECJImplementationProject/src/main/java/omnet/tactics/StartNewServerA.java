@@ -33,13 +33,17 @@ public class StartNewServerA extends StartNewServer {
 			tacticFail=true;
 			state.emptyCount.add(false);
 			state.modifiedCountArray.add(false);
+			state.modifiedTrafficLevel.add(false);
 		} else{
 			try {
 				if(state.countArray[serverIndex] == 0){
 					state.serverArray[serverIndex]=ServerA.class.newInstance();
-					state.emptyCount.add(true); //JW added this to keep track if there is no server at all before startnewserver
+					state.emptyCount.add(true);
+					state.modifiedTrafficLevel.add(false);
 				}
 				state.countArray[serverIndex]++;
+				state.emptyCount.add(false);
+				state.modifiedTrafficLevel.add(false);
 				state.modifiedCountArray.add(true);//JW added this to keep track if countArray[serverIndex] is changed.
 
 			} catch (InstantiationException e) {
@@ -56,7 +60,6 @@ public class StartNewServerA extends StartNewServer {
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
-		state.SetUniqueID(state.getUniqueID() + 1);
 	}
 
 	@Override
@@ -65,29 +68,29 @@ public class StartNewServerA extends StartNewServer {
 		if(state.emptyCount.peekLast() != null && state.emptyCount.pollLast()){
 			state.serverArray[serverIndex] = null;
 		}
-
 		if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
 			state.countArray[serverIndex]--;
 		}
 		state.setAllStatesValid(true,"Undo the StarNewServer tactic");
 		state.totalTime-= this.getLatency();
-		if(state.probabilityArray.peekLast() != null && state.pathProbability == state.probabilityArray.peekLast()){
-			state.probabilityArray.removeLast();
+		state.modifiedTrafficLevel.removeLast();
+		state.probabilityArray.removeLast();
+		if(state.probabilityArray.peekLast() != null){
+			state.pathProbability = state.probabilityArray.peekLast();
 		}
-		if(state.probabilityArray.peek() != null){
-			state.pathProbability = state.probabilityArray.pollLast();
-		}
-		state.SetUniqueID(state.getUniqueID() - 1);		
 	}
 
 	@Override
 	public void failForSure(OmnetStatePath state) {
 		state.setAllStatesValid(false,"failing on purpose");
-		state.alreadyPerformed.add(this);
+		state.modifiedDimmerLevel.add(false);
+		state.modifiedCountArray.add(false);
+		state.emptyCount.add(false);
+		state.modifiedTrafficLevel.add(false);
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
-		state.probabilityArray.add(state.pathProbability);	
-		state.SetUniqueID(state.getUniqueID() + 1);
+		state.probabilityArray.add(state.pathProbability);
+		state.alreadyPerformed.add(this);
 	}
 
 }

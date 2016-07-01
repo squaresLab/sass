@@ -9,5 +9,11 @@ public class ServerC extends OmnetComponent{
 		normalRequestsHandledPerSecond = 150;
 		dimmedRequestsHandledPerSecond = 300;
 	}
-
+	
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("DimmerLevel " + this.getDimmerLevel());
+		result.append("TrafficLevel " + this.getTrafficLevel());
+		return result.toString();
+	}
 }

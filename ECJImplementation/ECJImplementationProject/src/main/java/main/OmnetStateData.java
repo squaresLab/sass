@@ -362,30 +362,24 @@ public class OmnetStateData extends GPData {
 
 			if(temp instanceof ServerTactic){
 				systemState.performTactic((ServerTactic) temp);
-				//System.out.println(temp);
 				currentNode = (GPNode) temp.parent;
 			}
 			else{
 				currentNode = (GPNode) temp;
 			}
-
 		}
-		//System.out.println(currentNode);
 	}
 
 
 	//undo tactics until it reach a state that has not been undone yet. 
 	public void undoUntilVisited(OmnetStatePath systemState){
 		systemState.undoTactic();
-		while(visited.contains(systemState)){
+		while(visited.contains(systemState) && !(systemState.equals(initialState))){
 			systemState.undoTactic();
-			if(currentNode != initialTactic){
+			//if(currentNode != initialTactic){
 				currentNode = (GPNode) currentNode.parent;
-			}
-			if((systemState.equals(initialState))){
-				visited.add(systemState);
-				break;
-			}
+			//}
+			
 		}
 		visited.add(systemState); //at the new undone state to visited
 		//System.out.println(currentNode);
@@ -399,26 +393,26 @@ public class OmnetStateData extends GPData {
 		performAll(initialTactic,systemState);
 		count++; //first time all success version of final state
 		systemState.undoTactic();
+		//currentNode = (GPNode) currentNode.parent;
 		visited.add(systemState);
 		systemState.performFailure(currentNode);
+		//currentNode = (GPNode) currentNode.children[1];
 		count++;
 		undoUntilVisited(systemState);
-		System.out.println("count = " + count);
 
 		while(numVistedInitial < 2){
 			systemState.performFailure(currentNode); 
-			initialTactic = currentNode;
-			performAll(initialTactic,systemState); 
+			currentNode = currentNode.children[1];
+			performAll(currentNode,systemState); 
 			count++; //reached a success final state
 			systemState.undoTactic();
 			visited.add(systemState);
-			systemState.performFailure(currentNode);// need to fix temp. Perform the last tactic
+			systemState.performFailure(currentNode);
 			count++;
-			undoUntilVisited(systemState);//this might be a problem
+			undoUntilVisited(systemState);
 			if(systemState.equals(initialState)){
 				numVistedInitial++;
 			}
-			System.out.println("count = " + count); 
 		}
 
 		return count;

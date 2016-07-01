@@ -48,10 +48,11 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		if(!tacticFail){
 			state.alreadyPerformed.add(this);
 		}
+		state.modifiedCountArray.add(false);
+		state.emptyCount.add(false);
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
-		state.SetUniqueID(state.getUniqueID() + 1);
 		}
 
 
@@ -63,13 +64,12 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 			state.serverArray[serverIndex].setTrafficLevel(state.serverArray[serverIndex].getTrafficLevel()-1, state);
 		}
 		state.totalTime -= this.getLatency();
-		if(state.probabilityArray.peekLast() != null && state.pathProbability == state.probabilityArray.peekLast()){
-			state.probabilityArray.removeLast();
+		state.probabilityArray.removeLast();
+		if(state.probabilityArray.peekLast() != null){
+			state.pathProbability = state.probabilityArray.peekLast();
 		}
-		if(state.probabilityArray.peek() != null){
-			state.pathProbability = state.probabilityArray.pollLast();
-		}
-		state.SetUniqueID(state.getUniqueID() - 1);
+		state.modifiedCountArray.removeLast();
+		state.emptyCount.removeLast();
 		
 	}
 
@@ -77,11 +77,14 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 	@Override
 	public void failForSure(OmnetStatePath state) {
 		state.setAllStatesValid(false,"failing on purpose");
-		state.alreadyPerformed.add(this);
+		state.modifiedDimmerLevel.add(false);
+		state.modifiedCountArray.add(false);
+		state.emptyCount.add(false);
+		state.modifiedTrafficLevel.add(false);
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
-		state.SetUniqueID(state.getUniqueID() + 1);
+		state.alreadyPerformed.add(this);
 	}
 	
 }

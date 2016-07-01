@@ -12,7 +12,10 @@ public class ServerA extends OmnetComponent{
 	}
 	
 	public String toString() {
-		return "myStateFixMe";
+		StringBuilder result = new StringBuilder();
+		result.append("DimmerLevel " + this.getDimmerLevel());
+		result.append("TrafficLevel " + this.getTrafficLevel());
+		return result.toString();
 	}
 
 }
