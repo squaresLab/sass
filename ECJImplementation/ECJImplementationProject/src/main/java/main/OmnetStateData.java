@@ -382,7 +382,6 @@ public class OmnetStateData extends GPData {
 			
 		}
 		visited.add(systemState); //at the new undone state to visited
-		//System.out.println(currentNode);
 	}
 
 	public int countPossibleStates(GPIndividual ind) {
