@@ -34,6 +34,9 @@ public class OmnetStateData extends GPData {
 
 
 
+	public GPNode currentNode;
+	GPNode initialTactic;
+	public HashSet<OmnetStatePath> visited = new HashSet<OmnetStatePath>();//HashSet to store visited states
 	//variable that holds if the current path could include the end of the plan
 	boolean possiblePlanEnd=true;
 	//path score is the score of the current evaluation path
@@ -46,11 +49,9 @@ public class OmnetStateData extends GPData {
 	public static final int MAX_PATH_COPIES=1048576;
 	//public int timesUpdatedScore=0;
 	ArrayList<OmnetStatePath> paths;
+	public ArrayList<Double> finalScores;
 	boolean planTooLarge=false;
-	public HashSet<OmnetStatePath> visited = new HashSet<OmnetStatePath>();//HashSet to store visited states
-	public GPNode currentNode;
-	GPNode initialTactic;
-	int numVistedInitial = 0;
+	
 	OmnetStatePath initialState = new OmnetStatePath();
 
 
@@ -61,6 +62,7 @@ public class OmnetStateData extends GPData {
 	public void initializeState(){
 		paths= new ArrayList<OmnetStatePath>();
 		paths.add(new OmnetStatePath());
+		finalScores = new ArrayList<Double>();
 		possiblePlanEnd=true; 
 		//totalScore=0;
 		//pathScore=0;
@@ -149,176 +151,7 @@ public class OmnetStateData extends GPData {
 		}
 		return copy;
 	}
-	//
-	//	@SuppressWarnings("unchecked")
-	//	public <T extends OmnetComponent> void performTactic(StartNewServer s, Class<T> c){
-	//		boolean notTestedInIf = !s.isInIfStatementTest();
-	//
-	//		ArrayList<OmnetStatePath> failPaths = null;
-	//		if(notTestedInIf){
-	//			failPaths = deepCopyPaths();
-	//		}
-	//		boolean hadInvalidAction=false;
-	//		for(OmnetStatePath path: paths){
-	//			if(path.performTactic(s,c)){
-	//				hadInvalidAction=true;
-	//			}
-	//		}
-	//		if(notTestedInIf){
-	//			for(OmnetStatePath path: failPaths){
-	//				path.setTotalTime(path.getTotalTime()+s.getLatency());
-	//				path.setPathProbability(path.getPathProbability()*s.getFailureWeight());
-	//			}
-	//			paths.addAll(failPaths);
-	//		}
-	//		if(hadInvalidAction){
-	//			invalidActionCount++;
-	//			s.setActionSucceeded(false);
-	//		}
-	//		if(paths.size()>MAX_PATH_COPIES){
-	//			planTooLarge=true;
-	//		}
-	//	}
-	//
-	//	public <T extends OmnetComponent> void performTactic(ShutdownServer s, Class<T> c) {
-	//		boolean notTestedInIf = !s.isInIfStatementTest();
-	//		ArrayList<OmnetStatePath> failPaths = null;
-	//		if(notTestedInIf){
-	//			failPaths=deepCopyPaths();
-	//		}
-	//		boolean hadInvalidAction=false;
-	//		for(OmnetStatePath path: paths){
-	//			if(path.performTactic(s,c)){
-	//				hadInvalidAction=true;
-	//			}
-	//		}
-	//		if(notTestedInIf){
-	//			for(OmnetStatePath path: failPaths){
-	//				path.setTotalTime(path.getTotalTime()+s.getLatency());
-	//				path.setPathProbability(path.getPathProbability()*s.getFailureWeight());
-	//			}
-	//			paths.addAll(failPaths);
-	//		}
-	//		if(hadInvalidAction){
-	//			invalidActionCount++;
-	//			s.setActionSucceeded(false);
-	//		}
-	//		if(paths.size()>MAX_PATH_COPIES){
-	//			planTooLarge=true;
-	//		}
-	//	}
-	//
-	//	public <T extends OmnetComponent> void performTactic(IncreaseDimmerLevel d, Class<T> c){
-	//		boolean notTestedInIf = !d.isInIfStatementTest();
-	//		ArrayList<OmnetStatePath> failPaths = null;
-	//		if(notTestedInIf){
-	//			failPaths=deepCopyPaths();
-	//		}
-	//		boolean hadInvalidAction=false;
-	//		for(OmnetStatePath path:paths){
-	//			if(path.performTactic(d,c)){
-	//				hadInvalidAction=true;
-	//			}
-	//		}
-	//		if(notTestedInIf){
-	//			for(OmnetStatePath path: failPaths){
-	//				path.setTotalTime(path.getTotalTime()+d.getLatency());
-	//				path.setPathProbability(path.getPathProbability()*d.getFailureWeight());
-	//			}
-	//			paths.addAll(failPaths);
-	//		}
-	//		if(hadInvalidAction){
-	//			invalidActionCount++;
-	//			d.setActionSucceeded(false);
-	//		}
-	//		if(paths.size()>MAX_PATH_COPIES){
-	//			planTooLarge=true;
-	//		}
-	//	}
-	//
-	//	public <T extends OmnetComponent> void performTactic(DecreaseDimmerLevel d, Class<T> c){
-	//		boolean notTestedInIf = !d.isInIfStatementTest();
-	//		ArrayList<OmnetStatePath> failPaths = null;
-	//		if(notTestedInIf){
-	//			failPaths=deepCopyPaths();
-	//		}
-	//		boolean hadInvalidAction=false;
-	//		for(OmnetStatePath path:paths){
-	//			if(path.performTactic(d,c)){
-	//				hadInvalidAction=true;
-	//			}
-	//		}
-	//		if(notTestedInIf){
-	//			for(OmnetStatePath path: failPaths){
-	//				path.setTotalTime(path.getTotalTime()+d.getLatency());
-	//				path.setPathProbability(path.getPathProbability()*d.getFailureWeight());
-	//			}
-	//			paths.addAll(failPaths);
-	//		}
-	//		if(hadInvalidAction){
-	//			invalidActionCount++;
-	//			d.setActionSucceeded(false);
-	//		}
-	//		if(paths.size()>MAX_PATH_COPIES){
-	//			planTooLarge=true;
-	//		}
-	//	}
-	//
-	//	public <T extends OmnetComponent> void performTactic(IncreaseTrafficLevel t, Class<T> c){
-	//		boolean notTestedInIf = !t.isInIfStatementTest();
-	//		ArrayList<OmnetStatePath> failPaths=null;
-	//		if(notTestedInIf){
-	//			failPaths = deepCopyPaths();
-	//		}
-	//		boolean hadInvalidAction=false;
-	//		for(OmnetStatePath path:paths){
-	//			if(path.performTactic(t,c)){
-	//				hadInvalidAction=true;
-	//			}
-	//		}
-	//		if(notTestedInIf){
-	//			for(OmnetStatePath path:failPaths){
-	//				path.setTotalTime(path.getTotalTime()+t.getLatency());
-	//				path.setPathProbability(path.getPathProbability()*t.getFailureWeight());
-	//			}
-	//			paths.addAll(failPaths);
-	//		}
-	//		if(hadInvalidAction){
-	//			invalidActionCount++;
-	//			t.setActionSucceeded(false);
-	//		}
-	//		if(paths.size()>MAX_PATH_COPIES){
-	//			planTooLarge=true;
-	//		}
-	//	}
 
-	//	public <T extends OmnetComponent> void performTactic(DecreaseTrafficLevel t, Class<T> c){
-	//		boolean notTestedInIf = !t.isInIfStatementTest();
-	//		ArrayList<OmnetStatePath> failPaths = null;
-	//		if(notTestedInIf){
-	//			failPaths=deepCopyPaths();
-	//		}
-	//		boolean hadInvalidAction=false;
-	//		for(OmnetStatePath path:paths){
-	//			if(path.performTactic(t,c)){
-	//				hadInvalidAction=true;
-	//			}
-	//		}
-	//		if(notTestedInIf){
-	//			for(OmnetStatePath path: failPaths){
-	//				path.setTotalTime(path.getTotalTime()+t.getLatency());
-	//				path.setPathProbability(path.getPathProbability()*t.getFailureWeight());
-	//			}
-	//			paths.addAll(failPaths);
-	//		}
-	//		if(hadInvalidAction){
-	//			invalidActionCount++;
-	//			t.setActionSucceeded(false);
-	//		}
-	//		if(paths.size()>MAX_PATH_COPIES){
-	//			planTooLarge=true;
-	//		}
-	//	}
 
 	// this computes fitness of itself
 	public double getSingleObjectiveScore(){
@@ -374,6 +207,7 @@ public class OmnetStateData extends GPData {
 	//undo tactics until it reach a state that has not been undone yet. 
 	public void undoUntilVisited(OmnetStatePath systemState){
 		systemState.undoTactic();
+		
 		while(visited.contains(systemState) && !(systemState.equals(initialState))){
 			systemState.undoTactic();
 			//if(currentNode != initialTactic){
@@ -383,19 +217,39 @@ public class OmnetStateData extends GPData {
 		}
 		visited.add(systemState); //at the new undone state to visited
 	}
+	
+	public void addScore(OmnetStatePath systemState){
+		double currentScore;
+		if(systemState.invalidActions == 0){
+			currentScore = systemState.calculateProfit() * systemState.getPathProbability();
+			finalScores.add(1/currentScore);
+		}
+		else{
+			currentScore = MINIMAL_INVALID_PLAN_SCORE - systemState.invalidActions * INVALID_ACTION_PENALTY;
+			if(currentScore >= 0){
+				finalScores.add(currentScore);
+			}
+			else{
+				finalScores.add(calculateWorstPlanScore());
+			}
+		}
+	}
 
 	public int countPossibleStates(GPIndividual ind) {
 		int count = 0;
+		int numVistedInitial = 0;
+		double currentScore = 0;
 		initialTactic = ind.trees[0].child; //the tactic to begin with.
 		OmnetStatePath systemState = new OmnetStatePath(); //create a new state
 		//count the left most path, unique situation
 		performAll(initialTactic,systemState);
+		addScore(systemState);
 		count++; //first time all success version of final state
+		
 		systemState.undoTactic();
-		//currentNode = (GPNode) currentNode.parent;
 		visited.add(systemState);
 		systemState.performFailure(currentNode);
-		//currentNode = (GPNode) currentNode.children[1];
+		addScore(systemState);
 		count++;
 		undoUntilVisited(systemState);
 
@@ -403,20 +257,30 @@ public class OmnetStateData extends GPData {
 			systemState.performFailure(currentNode); 
 			currentNode = currentNode.children[1];
 			performAll(currentNode,systemState); 
+			addScore(systemState);
 			count++; //reached a success final state
+			
 			systemState.undoTactic();
 			visited.add(systemState);
-			systemState.performFailure(currentNode);
+			systemState.performFailure(currentNode);			
+			addScore(systemState);
 			count++;
+			
 			undoUntilVisited(systemState);
 			if(systemState.equals(initialState)){
 				numVistedInitial++;
+				visited.clear();
 			}
 		}
 
 		return count;
 	}
 
+	public void printScores(){
+		for(int i = 0; i < finalScores.size(); i++){
+			System.out.println("The " + (i+1) + " final state score is " + finalScores.get(i));
+		}
+	}
 
 	public static double calculateWorstPlanScore(){
 

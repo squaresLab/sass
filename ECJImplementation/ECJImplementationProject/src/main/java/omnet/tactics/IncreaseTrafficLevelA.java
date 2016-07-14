@@ -50,6 +50,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		}
 		state.modifiedCountArray.add(false);
 		state.emptyCount.add(false);
+		state.modifiedDimmerLevel.add(false);
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
@@ -62,6 +63,8 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		state.setAllStatesValid(true,"undo the IncreaseTrafficLevel tactic");
 		if(state.modifiedTrafficLevel.peekLast() != null && state.modifiedTrafficLevel.pollLast()){
 			state.serverArray[serverIndex].setTrafficLevel(state.serverArray[serverIndex].getTrafficLevel()-1, state);
+		}else{
+			state.invalidActions--;
 		}
 		state.totalTime -= this.getLatency();
 		state.probabilityArray.removeLast();
@@ -70,6 +73,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		}
 		state.modifiedCountArray.removeLast();
 		state.emptyCount.removeLast();
+		state.modifiedDimmerLevel.removeLast();
 		
 	}
 
@@ -84,6 +88,7 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
+		state.invalidActions++;
 		state.alreadyPerformed.add(this);
 	}
 	

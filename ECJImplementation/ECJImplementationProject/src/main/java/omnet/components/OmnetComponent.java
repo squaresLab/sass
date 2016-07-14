@@ -47,7 +47,7 @@ public abstract class OmnetComponent implements Cloneable, Serializable{
 	//for the dimmerLevel and trafficLevel
 	public OmnetComponent(){
 		//default dimmerLevel
-		dimmerLevel=0;
+		dimmerLevel=1;
 		//default trafficLevel
 		trafficLevel=4;
 	}

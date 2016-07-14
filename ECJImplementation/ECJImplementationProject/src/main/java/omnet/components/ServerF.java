@@ -10,6 +10,11 @@ public class ServerF extends OmnetComponent{
 		dimmedRequestsHandledPerSecond = 550;
 	}
 	
-
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("DimmerLevel " + this.getDimmerLevel());
+		result.append("TrafficLevel " + this.getTrafficLevel());
+		return result.toString();
+	}
 	
 }

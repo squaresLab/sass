@@ -34,17 +34,19 @@ public class StartNewServerA extends StartNewServer {
 			state.emptyCount.add(false);
 			state.modifiedCountArray.add(false);
 			state.modifiedTrafficLevel.add(false);
+			state.modifiedDimmerLevel.add(false);
 		} else{
 			try {
 				if(state.countArray[serverIndex] == 0){
 					state.serverArray[serverIndex]=ServerA.class.newInstance();
 					state.emptyCount.add(true);
-					state.modifiedTrafficLevel.add(false);
+					//state.modifiedTrafficLevel.add(false);
 				}
 				state.countArray[serverIndex]++;
+				state.modifiedCountArray.add(true);
 				state.emptyCount.add(false);
 				state.modifiedTrafficLevel.add(false);
-				state.modifiedCountArray.add(true);//JW added this to keep track if countArray[serverIndex] is changed.
+				state.modifiedDimmerLevel.add(false);
 
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
@@ -65,19 +67,23 @@ public class StartNewServerA extends StartNewServer {
 	@Override
 	public void reallyUndo(OmnetStatePath state) {
 		int serverIndex = OmnetStatePath.ServerType.SERVERA.ordinal();
+		state.setAllStatesValid(true,"Undo the StarNewServer tactic");
 		if(state.emptyCount.peekLast() != null && state.emptyCount.pollLast()){
 			state.serverArray[serverIndex] = null;
 		}
-		if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
+		else if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
 			state.countArray[serverIndex]--;
 		}
-		state.setAllStatesValid(true,"Undo the StarNewServer tactic");
+		else{
+			state.invalidActions--;
+		}
 		state.totalTime-= this.getLatency();
-		state.modifiedTrafficLevel.removeLast();
 		state.probabilityArray.removeLast();
 		if(state.probabilityArray.peekLast() != null){
 			state.pathProbability = state.probabilityArray.peekLast();
 		}
+		state.modifiedTrafficLevel.removeLast();
+		state.modifiedDimmerLevel.removeLast();
 	}
 
 	@Override
@@ -91,6 +97,7 @@ public class StartNewServerA extends StartNewServer {
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
 		state.alreadyPerformed.add(this);
+		state.invalidActions++;
 	}
 
 }

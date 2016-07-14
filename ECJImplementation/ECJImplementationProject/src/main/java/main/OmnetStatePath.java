@@ -18,6 +18,9 @@ import main.java.omnet.components.ServerA;
 import main.java.omnet.components.ServerB;
 import main.java.omnet.components.ServerC;
 import main.java.omnet.components.ServerD;
+import main.java.omnet.components.ServerE;
+import main.java.omnet.components.ServerF;
+import main.java.omnet.components.ServerG;
 import main.java.omnet.tactics.DecreaseDimmerLevel;
 import main.java.omnet.tactics.DecreaseTrafficLevel;
 import main.java.omnet.tactics.IncreaseDimmerLevel;
@@ -27,12 +30,12 @@ import main.java.omnet.tactics.ShutdownServer;
 import main.java.omnet.tactics.StartNewServer;
 
 public class OmnetStatePath implements Serializable{
-		
+
 	public static final int SYSTEM_DEMAND=1000;
 	public static final int MaxServerCount=5;
-	
-	public enum ServerType { SERVERA, SERVERB, SERVERC, SERVERD }
-	
+
+	public enum ServerType { SERVERA, SERVERB, SERVERC, SERVERD, SERVERE, SERVERF, SERVERG }
+
 	public int uniqueID = 0;
 	public int[] countArray;
 	public OmnetComponent[] serverArray;
@@ -47,7 +50,8 @@ public class OmnetStatePath implements Serializable{
 	public String reasonForAllStatesValidSetting="all states are assumed to be initially true";
 
 	public double pathProbability=1;
-	
+	public int invalidActions;
+
 	//record changes during performTactic
 	public ArrayDeque<Boolean> modifiedCountArray= new ArrayDeque<Boolean>();
 	public ArrayDeque<Boolean> emptyCount= new ArrayDeque<Boolean>();
@@ -56,7 +60,7 @@ public class OmnetStatePath implements Serializable{
 	public ArrayDeque<Double> probabilityArray= new ArrayDeque<Double>();
 	public ArrayDeque<ServerTactic> alreadyPerformed = new ArrayDeque<ServerTactic>();
 	public boolean undone = false;
-	
+
 
 	public OmnetStatePath(){
 		initializeState();
@@ -68,33 +72,39 @@ public class OmnetStatePath implements Serializable{
 		//serverList.add(Eservers);
 		//serverList.add(Fservers);
 		//serverList.add(Gservers);
-		
+
 		totalTime=0;
 		allStatesValid=true;
 		reasonForAllStatesValidSetting="all states are assumed to be initially true";
 		pathProbability=1;
-		countArray = new int[4];
+		countArray = new int[7];
 		countArray[0]=1;
 		countArray[1]=1;
 		countArray[2]=1;
 		countArray[3]=1;
-		
-		serverArray = new OmnetComponent[4];
+		countArray[4]=1;
+		countArray[5]=1;
+		countArray[6]=1;
+
+		serverArray = new OmnetComponent[7];
 		serverArray[ServerType.SERVERA.ordinal()]=new ServerA();
 		serverArray[ServerType.SERVERB.ordinal()]=new ServerB();
 		serverArray[ServerType.SERVERC.ordinal()]=new ServerC();
 		serverArray[ServerType.SERVERD.ordinal()]=new ServerD();
+		serverArray[ServerType.SERVERE.ordinal()]=new ServerE();
+		serverArray[ServerType.SERVERF.ordinal()]=new ServerF();
+		serverArray[ServerType.SERVERG.ordinal()]=new ServerG();
 		probabilityArray.add(pathProbability);
 	}
 
 	public void setTotalTime(int totalTime){
 		this.totalTime = totalTime;
 	}
-	
+
 	public int getTotalTime(){
 		return totalTime;
 	}
-	
+
 	public int getTotalServerCount(){
 		int total = 0;
 		for(int i=0; i<countArray.length;i++){
@@ -235,18 +245,18 @@ public class OmnetStatePath implements Serializable{
 		}
 		return totalRequestsHandled;
 	}
-	
+
 	public void performTactic(ServerTactic s){
 		s.reallyPerform(this);
 	}
-	
+
 	public void undoTactic(){
 		if(alreadyPerformed.peekLast() != null){
 			ServerTactic s = alreadyPerformed.pollLast();
 			s.reallyUndo(this);
 		}
 	}
-	
+
 	public void performFailure(GPNode s){
 		if(s != null && s instanceof ServerTactic){
 			((ServerTactic) s).failForSure(this);
@@ -286,73 +296,86 @@ public class OmnetStatePath implements Serializable{
 		}
 		return copy;
 	}
-	
-	
-	@Override
-    public boolean equals(Object state) {
-		if(state == null)
-	    {
-	        return false;
-	    }
-	    if (state == this)
-	    {
-	        return true;
-	    }
-	    if (getClass() != state.getClass())
-	    {
-	        return false;
-	    }
-	     
-	    OmnetStatePath s = (OmnetStatePath) state;
-	    boolean countResult = Arrays.equals(this.countArray,s.countArray);
-	    boolean serverResult = Arrays.equals(this.serverArray,s.serverArray);
-	    boolean match = false;
-	    
-	    for(int i = 0; i <= this.serverArray.length; i++){
-	    		if(this.serverArray[i].getDimmerLevel() == s.serverArray[i].getDimmerLevel() &&
-	    				this.serverArray[i].getTrafficLevel() == s.serverArray[i].getTrafficLevel()){
-	    			match = true;
-	    		}
-	    				
-	    }
-	    
-	    return this.totalTime == s.totalTime &&
-	    		this.pathProbability == s.pathProbability &&
 
-	    		
-	    		countResult && 
-	    		serverResult;
-	    
-	   // return this.getUniqueID() == s.getUniqueID();
+
+	@Override
+	public boolean equals(Object state) {
+		if(state == null)
+		{
+			return false;
+		}
+		if (state == this)
+		{
+			return true;
+		}
+		if (getClass() != state.getClass())
+		{
+			return false;
+		}
+
+		OmnetStatePath s = (OmnetStatePath) state;
+
+
+
+		return this.totalTime == s.totalTime &&
+				this.pathProbability == s.pathProbability &&
+				this.serverArray[ServerType.SERVERA.ordinal()].toString().equals(s.serverArray[ServerType.SERVERA.ordinal()].toString()) &&
+				this.serverArray[ServerType.SERVERB.ordinal()].toString().equals(s.serverArray[ServerType.SERVERB.ordinal()].toString()) &&
+				this.serverArray[ServerType.SERVERC.ordinal()].toString().equals(s.serverArray[ServerType.SERVERC.ordinal()].toString()) &&
+				this.serverArray[ServerType.SERVERD.ordinal()].toString().equals(s.serverArray[ServerType.SERVERD.ordinal()].toString()) &&
+				this.serverArray[ServerType.SERVERE.ordinal()].toString().equals(s.serverArray[ServerType.SERVERA.ordinal()].toString()) &&
+				this.serverArray[ServerType.SERVERF.ordinal()].toString().equals(s.serverArray[ServerType.SERVERB.ordinal()].toString()) &&
+				this.serverArray[ServerType.SERVERG.ordinal()].toString().equals(s.serverArray[ServerType.SERVERC.ordinal()].toString()) &&
+				this.countArray[ServerType.SERVERA.ordinal()] == s.countArray[ServerType.SERVERA.ordinal()]&&
+				this.countArray[ServerType.SERVERB.ordinal()] == s.countArray[ServerType.SERVERB.ordinal()]&&
+				this.countArray[ServerType.SERVERC.ordinal()] == s.countArray[ServerType.SERVERC.ordinal()]&&
+				this.countArray[ServerType.SERVERD.ordinal()] == s.countArray[ServerType.SERVERD.ordinal()]&&
+				this.countArray[ServerType.SERVERE.ordinal()] == s.countArray[ServerType.SERVERB.ordinal()]&&
+				this.countArray[ServerType.SERVERF.ordinal()] == s.countArray[ServerType.SERVERC.ordinal()]&&
+				this.countArray[ServerType.SERVERG.ordinal()] == s.countArray[ServerType.SERVERD.ordinal()]&&
+				this.modifiedCountArray.size() == s.modifiedCountArray.size() &&
+				this.modifiedDimmerLevel.size() == s.modifiedDimmerLevel.size() &&
+				this.modifiedTrafficLevel.size() == s.modifiedDimmerLevel.size() &&
+				this.emptyCount.size() == s.emptyCount.size();
+
+
+
+		// return this.getUniqueID() == s.getUniqueID();
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
-	    final int PRIME = 31;
-	    int result = 1;
-	    result = PRIME * result + totalTime;
-	    result = PRIME * result + (int)pathProbability;
-	    result = PRIME * result + countArray.hashCode();
-	    result = PRIME * result + serverArray.hashCode();
-	    return result;
-	    
-	   // result = PRIME * result + this.getUniqueID();
-	    //return result;
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + totalTime;
+		result = PRIME * result + (int)pathProbability;
+		result = PRIME * result + serverArray[ServerType.SERVERA.ordinal()].toString().hashCode();
+		result = PRIME * result + serverArray[ServerType.SERVERB.ordinal()].toString().hashCode();
+		result = PRIME * result + serverArray[ServerType.SERVERC.ordinal()].toString().hashCode();
+		result = PRIME * result + serverArray[ServerType.SERVERD.ordinal()].toString().hashCode();
+		result = PRIME * result + serverArray[ServerType.SERVERE.ordinal()].toString().hashCode();
+		result = PRIME * result + serverArray[ServerType.SERVERF.ordinal()].toString().hashCode();
+		result = PRIME * result + serverArray[ServerType.SERVERG.ordinal()].toString().hashCode();
+		result = PRIME * result + countArray[ServerType.SERVERA.ordinal()];
+		result = PRIME * result + countArray[ServerType.SERVERB.ordinal()];
+		result = PRIME * result + countArray[ServerType.SERVERC.ordinal()];
+		result = PRIME * result + countArray[ServerType.SERVERD.ordinal()];
+		result = PRIME * result + countArray[ServerType.SERVERE.ordinal()];
+		result = PRIME * result + countArray[ServerType.SERVERF.ordinal()];
+		result = PRIME * result + countArray[ServerType.SERVERG.ordinal()];
+		result = PRIME * result + modifiedCountArray.size();
+		result = PRIME * result + modifiedDimmerLevel.size();
+		result = PRIME * result + modifiedTrafficLevel.size();
+		result = PRIME * result + emptyCount.size();
+		return result;
+
+
 	}
-	
-	public void SetUniqueID(int newID){
-		uniqueID = newID;
-	}
-	
-	public int getUniqueID(){
-		return uniqueID;
-	}
-	
-//	public void printProbabilityArray(){
-//		for(Double boo: probabilityArray){
-//			System.out.println(boo);
-//		}
-//	}
+
+
+
+
+
 
 }

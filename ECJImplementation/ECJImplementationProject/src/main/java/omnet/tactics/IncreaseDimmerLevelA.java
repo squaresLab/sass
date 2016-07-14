@@ -18,7 +18,7 @@ public class IncreaseDimmerLevelA extends IncreaseDimmerLevel {
 
 	@Override
 	public void callPerformTactic(OmnetStateData sd) {
-		sd.performTactic(this, ServerA.class);
+		//sd.performTactic(this, ServerA.class);
 		
 	}
 
@@ -44,6 +44,9 @@ public class IncreaseDimmerLevelA extends IncreaseDimmerLevel {
 		if(!tacticFail){
 			state.alreadyPerformed.add(this);
 		}
+		state.modifiedCountArray.add(false);
+		state.emptyCount.add(false);
+		state.modifiedTrafficLevel.add(false);
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
@@ -55,11 +58,30 @@ public class IncreaseDimmerLevelA extends IncreaseDimmerLevel {
 		state.setAllStatesValid(true,"Undo the IncreaseDimmerLevel tactic");
 		if(state.modifiedDimmerLevel.peekLast() != null && state.modifiedDimmerLevel.pollLast()){
 			state.serverArray[serverIndex].setDimmerLevel(state.serverArray[serverIndex].getDimmerLevel()-1, state);
+		}else{
+			state.invalidActions--;
 		}
-		state.totalTime -= this.getLatency();
-		if(state.pathProbability == state.probabilityArray.peekLast()){
-			state.probabilityArray.removeLast();
+		state.totalTime -= this.getLatency(); 
+		state.probabilityArray.removeLast();
+		if(state.probabilityArray.peekLast() != null){
+			state.pathProbability = state.probabilityArray.peekLast();
 		}
-		state.pathProbability = state.probabilityArray.pollLast();
+		state.modifiedCountArray.removeLast();
+		state.emptyCount.removeLast();
+		state.modifiedTrafficLevel.removeLast();
+	}
+	
+	@Override
+	public void failForSure(OmnetStatePath state) {
+		state.setAllStatesValid(false,"failing on purpose");
+		state.modifiedTrafficLevel.add(false);
+		state.modifiedCountArray.add(false);
+		state.emptyCount.add(false);
+		state.modifiedDimmerLevel.add(false);
+		state.totalTime += this.getLatency();
+		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
+		state.probabilityArray.add(state.pathProbability);
+		state.invalidActions++;
+		state.alreadyPerformed.add(this);
 	}
 }

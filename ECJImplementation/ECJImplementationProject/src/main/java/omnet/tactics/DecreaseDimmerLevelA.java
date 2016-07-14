@@ -10,17 +10,17 @@ public class DecreaseDimmerLevelA extends DecreaseDimmerLevel {
 		latency=1;
 		failureWeight=0.05;
 	}
-	
-	
+
+
 	@Override
 	public String toString(){
-	 	return "DecreaseDimmerLevelA";
+		return "DecreaseDimmerLevelA";
 	}
 
 	@Override
 	public void callPerformTactic(OmnetStateData sd) {
-		sd.performTactic(this, ServerA.class);
-		
+		//sd.performTactic(this, ServerA.class);
+
 	}
 
 
@@ -46,6 +46,9 @@ public class DecreaseDimmerLevelA extends DecreaseDimmerLevel {
 		if(!tacticFail){
 			state.alreadyPerformed.add(this);
 		}
+		state.modifiedCountArray.add(false);
+		state.emptyCount.add(false);
+		state.modifiedTrafficLevel.add(false);
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);
@@ -58,11 +61,33 @@ public class DecreaseDimmerLevelA extends DecreaseDimmerLevel {
 		state.setAllStatesValid(true,"Undo the DecreaseDimmerLevel tactic");
 		if(state.modifiedDimmerLevel.peekLast() != null && state.modifiedDimmerLevel.pollLast()){
 			state.serverArray[serverIndex].setDimmerLevel(state.serverArray[serverIndex].getDimmerLevel()+1, state);
+		}else{
+			state.invalidActions--;
 		}
-		state.totalTime -= this.getLatency();
-		state.pathProbability = state.pathProbability/(1-this.getFailureWeight());		
+		state.totalTime -= this.getLatency(); 
+		state.probabilityArray.removeLast();
+		if(state.probabilityArray.peekLast() != null){
+			state.pathProbability = state.probabilityArray.peekLast();
+		}
+		state.modifiedCountArray.removeLast();
+		state.emptyCount.removeLast();
+		state.modifiedTrafficLevel.removeLast();
 	}
 	
+	@Override
+	public void failForSure(OmnetStatePath state) {
+		state.setAllStatesValid(false,"failing on purpose");
+		state.modifiedTrafficLevel.add(false);
+		state.modifiedCountArray.add(false);
+		state.emptyCount.add(false);
+		state.modifiedDimmerLevel.add(false);
+		state.totalTime += this.getLatency();
+		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
+		state.probabilityArray.add(state.pathProbability);
+		state.invalidActions++;
+		state.alreadyPerformed.add(this);
+	}
+
 
 
 }

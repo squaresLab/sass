@@ -10,5 +10,10 @@ public class ServerG extends OmnetComponent{
 		dimmedRequestsHandledPerSecond = 180;
 	}
 	
-
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("DimmerLevel " + this.getDimmerLevel());
+		result.append("TrafficLevel " + this.getTrafficLevel());
+		return result.toString();
+	}
 }
