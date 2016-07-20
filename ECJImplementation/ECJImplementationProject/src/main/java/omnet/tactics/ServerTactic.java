@@ -38,7 +38,8 @@ public abstract class ServerTactic extends FailableTactic {
 	public void eval(EvolutionState state, int thread, GPData input, ADFStack stack, GPIndividual individual,
 			Problem problem) {
 		OmnetStateData sd = (OmnetStateData)input;
-     	callPerformTactic(sd);
+     	//callPerformTactic(sd);
+		sd.countPossibleStates(individual);
 
 	}
 	

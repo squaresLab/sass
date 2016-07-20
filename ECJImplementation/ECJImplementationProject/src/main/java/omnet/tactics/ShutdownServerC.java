@@ -4,6 +4,7 @@ import main.java.main.OmnetStateData;
 import main.java.main.OmnetStatePath;
 import main.java.omnet.components.ServerA;
 import main.java.omnet.components.ServerC;
+import main.java.omnet.components.ServerD;
 
 public class ShutdownServerC extends ShutdownServer {
 
@@ -57,12 +58,9 @@ public class ShutdownServerC extends ShutdownServer {
 
 	public void reallyUndo(OmnetStatePath state) {
 		int serverIndex = OmnetStatePath.ServerType.SERVERC.ordinal();
-		state.setAllStatesValid(true,"Undo the ShutdownServerA tactic");
+		state.setAllStatesValid(true,"Undo the ShutdownServerC tactic");
 		if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
 			state.countArray[serverIndex]++;
-		}
-		else if(state.modifiedCountArray.peekLast() != null && state.modifiedCountArray.pollLast()){
-			state.countArray[serverIndex]--;
 		}
 		else{
 			state.invalidActions--;

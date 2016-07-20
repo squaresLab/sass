@@ -26,7 +26,7 @@ public abstract class OmnetComponent implements Cloneable, Serializable{
 	int dimmedRequestsHandledPerSecond;
 	//This is the highest value of the dimmer
 	//so 4 out 4 dimmer would be 100% dimming
-	public static final int MaxDimmerLevel=4;
+	public static final int MaxDimmerLevel=10;
 	//The level the quality of the server traffic
 	//is reduced
 	int dimmerLevel;
@@ -47,7 +47,7 @@ public abstract class OmnetComponent implements Cloneable, Serializable{
 	//for the dimmerLevel and trafficLevel
 	public OmnetComponent(){
 		//default dimmerLevel
-		dimmerLevel=1;
+		dimmerLevel=3;
 		//default trafficLevel
 		trafficLevel=4;
 	}

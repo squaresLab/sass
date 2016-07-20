@@ -15,24 +15,34 @@ import main.java.main.OmnetStatePath;
 import main.java.main.SingleObjectiveProblem;
 import main.java.omnet.components.ServerA;
 import main.java.omnet.tactics.DecreaseDimmerLevelA;
+import main.java.omnet.tactics.DecreaseDimmerLevelB;
+import main.java.omnet.tactics.DecreaseDimmerLevelC;
+import main.java.omnet.tactics.DecreaseDimmerLevelD;
 import main.java.omnet.tactics.DecreaseDimmerLevelF;
 import main.java.omnet.tactics.DecreaseTrafficLevelA;
 import main.java.omnet.tactics.DecreaseTrafficLevelB;
 import main.java.omnet.tactics.DecreaseTrafficLevelD;
+import main.java.omnet.tactics.DecreaseTrafficLevelG;
 import main.java.omnet.tactics.IncreaseDimmerLevelA;
 import main.java.omnet.tactics.IncreaseDimmerLevelB;
 import main.java.omnet.tactics.IncreaseDimmerLevelC;
+import main.java.omnet.tactics.IncreaseDimmerLevelD;
+import main.java.omnet.tactics.IncreaseDimmerLevelE;
 import main.java.omnet.tactics.IncreaseDimmerLevelF;
 import main.java.omnet.tactics.IncreaseTrafficLevelA;
 import main.java.omnet.tactics.IncreaseTrafficLevelB;
 import main.java.omnet.tactics.IncreaseTrafficLevelC;
 import main.java.omnet.tactics.IncreaseTrafficLevelD;
+import main.java.omnet.tactics.IncreaseTrafficLevelE;
 import main.java.omnet.tactics.IncreaseTrafficLevelF;
 import main.java.omnet.tactics.IncreaseTrafficLevelG;
 import main.java.omnet.tactics.ServerTactic;
 import main.java.omnet.tactics.ShutdownServerA;
 import main.java.omnet.tactics.ShutdownServerB;
+import main.java.omnet.tactics.ShutdownServerC;
+import main.java.omnet.tactics.ShutdownServerD;
 import main.java.omnet.tactics.ShutdownServerE;
+import main.java.omnet.tactics.ShutdownServerF;
 import main.java.omnet.tactics.ShutdownServerG;
 import main.java.omnet.tactics.StartNewServerA;
 import main.java.omnet.tactics.StartNewServerB;
@@ -48,21 +58,29 @@ public class TestUndoTactics {
 		GPTree[] treeInit = {new GPTree()};
 		ind.trees = treeInit;
 		GPNode node1 = new SequenceOperator();
-		GPNode node2 = new ShutdownServerG();
+		GPNode node2 = new IncreaseDimmerLevelA();
 		GPNode node3 = new SequenceOperator();
-		GPNode node4 = new IncreaseDimmerLevelC();
+		GPNode node4 = new IncreaseDimmerLevelA();
 		GPNode node5 = new SequenceOperator();
-		GPNode node6 = new StartNewServerF();
+		GPNode node6 = new IncreaseDimmerLevelA();
 		GPNode node7 = new SequenceOperator();
-		GPNode node8 = new IncreaseTrafficLevelC();
+		GPNode node8 = new DecreaseDimmerLevelA();
 		GPNode node9 = new SequenceOperator();
-		GPNode node10 = new ShutdownServerE();
+		GPNode node10 = new IncreaseDimmerLevelE();
 		GPNode node11 = new SequenceOperator();
-		GPNode node12 = new IncreaseTrafficLevelD();
+		GPNode node12 = new DecreaseDimmerLevelA();
 		GPNode node13 = new SequenceOperator();
-		GPNode node14 = new ShutdownServerB();
+		GPNode node14 = new DecreaseDimmerLevelC();
 		GPNode node15 = new SequenceOperator();
-		GPNode node16 = new DecreaseDimmerLevelA();
+		GPNode node16 = new DecreaseDimmerLevelD();
+		GPNode node17 = new SequenceOperator();
+		GPNode node18 = new DecreaseDimmerLevelA();
+		GPNode node19 = new SequenceOperator();
+		GPNode node20 = new DecreaseTrafficLevelB();
+		GPNode node21 = new SequenceOperator();
+		GPNode node22 = new ShutdownServerC();
+		GPNode node23 = new SequenceOperator();
+		GPNode node24 = new DecreaseTrafficLevelG();
 		
 		GPNode[] childrenOfNode1 = new GPNode[2];
 		GPNode[] childrenOfNode2 = new GPNode[2];
@@ -80,6 +98,15 @@ public class TestUndoTactics {
 		GPNode[] childrenOfNode14 = new GPNode[2];
 		GPNode[] childrenOfNode15 = new GPNode[2];
 		GPNode[] childrenOfNode16 = new GPNode[2];
+		GPNode[] childrenOfNode17 = new GPNode[2];
+		GPNode[] childrenOfNode18 = new GPNode[2];
+		GPNode[] childrenOfNode19 = new GPNode[2];
+		GPNode[] childrenOfNode20 = new GPNode[2];
+		GPNode[] childrenOfNode21 = new GPNode[2];
+		GPNode[] childrenOfNode22 = new GPNode[2];
+		GPNode[] childrenOfNode23 = new GPNode[2];
+		GPNode[] childrenOfNode24 = new GPNode[2];
+		
 		childrenOfNode1[0] = node2;
 		childrenOfNode1[1] = node3;
 		childrenOfNode2[0] = null;
@@ -109,9 +136,25 @@ public class TestUndoTactics {
 		childrenOfNode14[0] = null;
 		childrenOfNode14[1] = null;
 		childrenOfNode15[0] = node16;
-		childrenOfNode15[1] = null;
+		childrenOfNode15[1] = node17;
 		childrenOfNode16[0] = null;
 		childrenOfNode16[1] = null;
+		childrenOfNode17[0] = node18;
+		childrenOfNode17[1] = node19;
+		childrenOfNode18[0] = null;
+		childrenOfNode18[1] = null;
+		childrenOfNode19[0] = node20;
+		childrenOfNode19[1] = node21;
+		childrenOfNode20[0] = null;
+		childrenOfNode20[1] = null;
+		childrenOfNode21[0] = node22;
+		childrenOfNode21[1] = node23;
+		childrenOfNode22[0] = null;
+		childrenOfNode22[1] = null;
+		childrenOfNode23[0] = node24;
+		childrenOfNode23[1] = null;
+		childrenOfNode24[0] = null;
+		childrenOfNode24[1] = null;
 		
 		ind.trees[0].child=node1;
 		node1.children = childrenOfNode1;
@@ -130,6 +173,14 @@ public class TestUndoTactics {
 		node14.children = childrenOfNode14;
 		node15.children = childrenOfNode15;
 		node16.children = childrenOfNode16;
+		node17.children = childrenOfNode17;
+		node18.children = childrenOfNode18;
+		node19.children = childrenOfNode19;
+		node20.children = childrenOfNode20;
+		node21.children = childrenOfNode21;
+		node22.children = childrenOfNode22;
+		node23.children = childrenOfNode23;
+		node24.children = childrenOfNode24;
 		node1.parent = ind.trees[0];
 		node2.parent = node1;
 		node3.parent = node1;
@@ -146,10 +197,75 @@ public class TestUndoTactics {
 		node14.parent = node13;
 		node15.parent = node13;
 		node16.parent = node15;
+		node17.parent = node15;
+		node18.parent = node17;
+		node19.parent = node17;
+		node20.parent = node19;
+		node21.parent = node19;
+		node22.parent = node21;
+		node23.parent = node21;
+		node24.parent = node23;
 	}
 	
-	public void print(){
+	public static void build2(GPIndividual ind){
+		//4 actions plan
+		GPTree[] treeInit = {new GPTree()};
+		ind.trees = treeInit;
+		GPNode node1 = new SequenceOperator();
+		GPNode node2 = new IncreaseDimmerLevelA();
+		GPNode node3 = new SequenceOperator();
+		GPNode node4 = new DecreaseDimmerLevelA();
+		GPNode node5 = new SequenceOperator();
+		GPNode node6 = new DecreaseDimmerLevelA();
+		GPNode node7 = new SequenceOperator();
+		GPNode node8 = new ShutdownServerC();
+		GPNode node9 = new SequenceOperator();
+		GPNode node10 = new DecreaseDimmerLevelB();
 		
+		GPNode[] childrenOfNode1 = new GPNode[2];
+		GPNode[] childrenOfNode2 = new GPNode[2];
+		GPNode[] childrenOfNode3 = new GPNode[2];
+		GPNode[] childrenOfNode4 = new GPNode[2];
+		GPNode[] childrenOfNode5 = new GPNode[2];
+		GPNode[] childrenOfNode6 = new GPNode[2];
+		GPNode[] childrenOfNode7 = new GPNode[2];
+		GPNode[] childrenOfNode8 = new GPNode[2];
+		
+		childrenOfNode1[0] = node2;
+		childrenOfNode1[1] = node3;
+		childrenOfNode2[0] = null;
+		childrenOfNode2[1] = null;
+		childrenOfNode3[0] = node4;
+		childrenOfNode3[1] = node5;
+		childrenOfNode4[0] = null;
+		childrenOfNode4[1] = null;
+		childrenOfNode5[0] = node6;
+		childrenOfNode5[1] = node7;
+		childrenOfNode6[0] = null;
+		childrenOfNode6[1] = null;
+		childrenOfNode7[0] = node8;
+		childrenOfNode7[1] = null;
+		childrenOfNode8[0] = null;
+		childrenOfNode8[1] = null;
+		
+		ind.trees[0].child=node1;
+		node1.children = childrenOfNode1;
+		node2.children = childrenOfNode2;
+		node3.children = childrenOfNode3;
+		node4.children = childrenOfNode4;
+		node5.children = childrenOfNode5;
+		node6.children = childrenOfNode6;
+		node7.children = childrenOfNode7;
+		node8.children = childrenOfNode8;
+		node1.parent = ind.trees[0];
+		node2.parent = node1;
+		node3.parent = node1;
+		node4.parent = node3;
+		node5.parent = node3;
+		node6.parent = node5;
+		node7.parent = node5;
+		node8.parent = node7;
+
 	}
 	public static void main(String[] args) throws InstantiationException{	
 		
@@ -157,7 +273,7 @@ public class TestUndoTactics {
 		GPIndividual ind = new GPIndividual();
 		build(ind);
 		System.out.println("There are " + sd.countPossibleStates(ind) + " possible final states");
-		sd.printScores();
+		//sd.printScores();
 
 	}
 }

@@ -227,7 +227,7 @@ public class OmnetStateData extends GPData {
 		else{
 			currentScore = MINIMAL_INVALID_PLAN_SCORE - systemState.invalidActions * INVALID_ACTION_PENALTY;
 			if(currentScore >= 0){
-				finalScores.add(currentScore);
+				finalScores.add(1/currentScore);
 			}
 			else{
 				finalScores.add(calculateWorstPlanScore());
@@ -269,7 +269,7 @@ public class OmnetStateData extends GPData {
 			undoUntilVisited(systemState);
 			if(systemState.equals(initialState)){
 				numVistedInitial++;
-				visited.clear();
+				//visited.clear();
 			}
 		}
 

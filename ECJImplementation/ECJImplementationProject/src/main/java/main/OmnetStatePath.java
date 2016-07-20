@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import ec.gp.GPNode;
 import main.java.omnet.components.OmnetComponent;
@@ -95,6 +98,11 @@ public class OmnetStatePath implements Serializable{
 		serverArray[ServerType.SERVERF.ordinal()]=new ServerF();
 		serverArray[ServerType.SERVERG.ordinal()]=new ServerG();
 		probabilityArray.add(pathProbability);
+//		modifiedCountArray.add(null);
+//		modifiedDimmerLevel.add(null);
+//		modifiedTrafficLevel.add(null);
+//		emptyCount.add(null);
+
 	}
 
 	public void setTotalTime(int totalTime){
@@ -296,6 +304,11 @@ public class OmnetStatePath implements Serializable{
 		}
 		return copy;
 	}
+	
+	public String printModifiedCountArray(){
+		return modifiedCountArray.toString();
+		
+	}
 
 
 	@Override
@@ -314,7 +327,9 @@ public class OmnetStatePath implements Serializable{
 		}
 
 		OmnetStatePath s = (OmnetStatePath) state;
-
+		
+		Object[] count = this.modifiedCountArray.toArray();
+		
 
 
 		return this.totalTime == s.totalTime &&
@@ -333,10 +348,10 @@ public class OmnetStatePath implements Serializable{
 				this.countArray[ServerType.SERVERE.ordinal()] == s.countArray[ServerType.SERVERB.ordinal()]&&
 				this.countArray[ServerType.SERVERF.ordinal()] == s.countArray[ServerType.SERVERC.ordinal()]&&
 				this.countArray[ServerType.SERVERG.ordinal()] == s.countArray[ServerType.SERVERD.ordinal()]&&
-				this.modifiedCountArray.size() == s.modifiedCountArray.size() &&
-				this.modifiedDimmerLevel.size() == s.modifiedDimmerLevel.size() &&
-				this.modifiedTrafficLevel.size() == s.modifiedDimmerLevel.size() &&
-				this.emptyCount.size() == s.emptyCount.size();
+				this.modifiedCountArray.toString() == s.modifiedCountArray.toString() &&
+				this.modifiedDimmerLevel.toString() == s.modifiedDimmerLevel.toString() &&
+				this.modifiedTrafficLevel.toString() == s.modifiedDimmerLevel.toString() &&
+				this.emptyCount.toString() == s.emptyCount.toString();
 
 
 
@@ -364,10 +379,10 @@ public class OmnetStatePath implements Serializable{
 		result = PRIME * result + countArray[ServerType.SERVERE.ordinal()];
 		result = PRIME * result + countArray[ServerType.SERVERF.ordinal()];
 		result = PRIME * result + countArray[ServerType.SERVERG.ordinal()];
-		result = PRIME * result + modifiedCountArray.size();
-		result = PRIME * result + modifiedDimmerLevel.size();
-		result = PRIME * result + modifiedTrafficLevel.size();
-		result = PRIME * result + emptyCount.size();
+		result = PRIME * result + modifiedCountArray.toString().hashCode();
+		result = PRIME * result + modifiedDimmerLevel.toString().hashCode();
+		result = PRIME * result + modifiedTrafficLevel.toString().hashCode();
+		result = PRIME * result + emptyCount.toString().hashCode();
 		return result;
 
 
