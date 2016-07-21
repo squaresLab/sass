@@ -269,8 +269,11 @@ public class OmnetStatePath implements Serializable{
 		if(s != null && s instanceof ServerTactic){
 			((ServerTactic) s).failForSure(this);
 		}
-		else if(s.children[0] != null && s.children[0] instanceof ServerTactic){
+		else if(s.children[0] instanceof ServerTactic){
 			((ServerTactic) s.children[0]).failForSure(this);
+		}
+		else if(s.children[0].children[1] instanceof ServerTactic){
+			((ServerTactic) s.children[0].children[1]).failForSure(this);
 		}
 	}
 	/*Check the speed of this function later if you have optimization issues

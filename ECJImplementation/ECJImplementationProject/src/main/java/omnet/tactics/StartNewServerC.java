@@ -26,9 +26,9 @@ public class StartNewServerC extends StartNewServer {
 	@Override
 	public void reallyPerform(OmnetStatePath state) {
 		boolean tacticFail=false;
-		int serverIndex = OmnetStatePath.ServerType.SERVERB.ordinal();
+		int serverIndex = OmnetStatePath.ServerType.SERVERC.ordinal();
 		if(state.countArray[serverIndex]+1 > state.MaxServerCount){
-			state.setAllStatesValid(false, "unable to start up "+ ServerA.class.toString()
+			state.setAllStatesValid(false, "unable to start up "+ ServerC.class.toString()
 					+" there are already the max amount of servers"
 					+ "at that location");
 			tacticFail=true;
@@ -39,7 +39,7 @@ public class StartNewServerC extends StartNewServer {
 		} else{
 			try {
 				if(state.countArray[serverIndex] == 0){
-					state.serverArray[serverIndex]=ServerA.class.newInstance();
+					state.serverArray[serverIndex]=ServerC.class.newInstance();
 					state.emptyCount.add(true);
 					//state.modifiedTrafficLevel.add(false);
 				}
@@ -67,7 +67,7 @@ public class StartNewServerC extends StartNewServer {
 
 	@Override
 	public void reallyUndo(OmnetStatePath state) {
-		int serverIndex = OmnetStatePath.ServerType.SERVERB.ordinal();
+		int serverIndex = OmnetStatePath.ServerType.SERVERC.ordinal();
 		state.setAllStatesValid(true,"Undo the StarNewServer tactic");
 		if(state.emptyCount.peekLast() != null && state.emptyCount.pollLast()){
 			state.serverArray[serverIndex] = null;

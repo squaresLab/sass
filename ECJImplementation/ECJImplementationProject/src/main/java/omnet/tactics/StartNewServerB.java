@@ -28,7 +28,7 @@ public class StartNewServerB extends StartNewServer {
 		boolean tacticFail=false;
 		int serverIndex = OmnetStatePath.ServerType.SERVERB.ordinal();
 		if(state.countArray[serverIndex]+1 > state.MaxServerCount){
-			state.setAllStatesValid(false, "unable to start up "+ ServerA.class.toString()
+			state.setAllStatesValid(false, "unable to start up "+ ServerB.class.toString()
 					+" there are already the max amount of servers"
 					+ "at that location");
 			tacticFail=true;
@@ -39,7 +39,7 @@ public class StartNewServerB extends StartNewServer {
 		} else{
 			try {
 				if(state.countArray[serverIndex] == 0){
-					state.serverArray[serverIndex]=ServerA.class.newInstance();
+					state.serverArray[serverIndex]=ServerB.class.newInstance();
 					state.emptyCount.add(true);
 					//state.modifiedTrafficLevel.add(false);
 				}

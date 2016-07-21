@@ -86,6 +86,7 @@ public class AverageFitnessStatistics extends SimpleStatistics {
         NumberFormat nf = new DecimalFormat("#0.00000");
         if (doGeneration) state.output.println("\nAverage Fitness: "+nf.format(averageFitness),statisticslog);
         System.out.println("Average Fitness: "+nf.format(averageFitness));
+       // System.out.println("Test fitnessSum " + fitnessSum);
         if (doGeneration) state.output.println("\nAverage Invalid Action Count: "+nf.format(averageInvalidActions),statisticslog);
         System.out.println("Average Invalid Actions: "+nf.format(averageInvalidActions));
         if (doGeneration) state.output.println("Best Individual:",statisticslog);

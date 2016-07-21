@@ -25,26 +25,31 @@ public class SequenceOperator extends GPNode {
 		
 		//now handling with a runtime exception
 		OmnetStateData o = (OmnetStateData)input;
-		if(o.isPlanTooLarge()){
-			return;
-		}
-		boolean onPossiblePlanEndPath = o.isPossiblePlanEnd();
-		//no need to evaluate any more if an invalid state has been reached
-		o.setPossiblePlanEnd(false);
-		//System.out.println("beginning: "+sd.toString()+"\n");
+		o.countPossibleStates(this);
 		
-		children[0].eval(state,thread,input,stack,individual,problem);
-		if(o.isPlanTooLarge()){
-			return;
-		}
-		//no need to evaluate any more if an invalid state has been reached
-		if(onPossiblePlanEndPath){
-		  o.setPossiblePlanEnd(true);
-		}
-		//System.out.println("middle: "+sd.toString()+"\n");
-		children[1].eval(state,thread,input,stack,individual,problem);
-		//System.out.println("after: "+sd.toString()+"\n");
-		//the result information should now be held in input
+//		if(o.isPlanTooLarge()){
+//			return;
+//		}
+//		boolean onPossiblePlanEndPath = o.isPossiblePlanEnd();
+//		//no need to evaluate any more if an invalid state has been reached
+//		o.setPossiblePlanEnd(false);
+//		//System.out.println("beginning: "+sd.toString()+"\n");
+//		
+//		children[0].eval(state,thread,input,stack,individual,problem);
+//		
+//		if(o.isPlanTooLarge()){
+//			return;
+//		}
+//		//no need to evaluate any more if an invalid state has been reached
+//		if(onPossiblePlanEndPath){
+//		  o.setPossiblePlanEnd(true);
+//		}
+//		//System.out.println("middle: "+sd.toString()+"\n");
+//		if(this.children.length > 1){
+//			children[1].eval(state,thread,input,stack,individual,problem);
+//		}
+//		//System.out.println("after: "+sd.toString()+"\n");
+//		//the result information should now be held in input
 		
 	}
 	

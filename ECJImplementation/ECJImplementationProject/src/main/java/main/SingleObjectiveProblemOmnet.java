@@ -15,7 +15,7 @@ import main.java.znn.tactics.IncreaseDatabaseAThreads;
 
 public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProblemForm {
 
-	
+
 
 	public void setup(final EvolutionState state, final Parameter base){
 		super.setup(state, base);
@@ -40,7 +40,6 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 		boolean feasible=true;
 		if(!ind.evaluated) //don't reevaluate it again
 		{
-
 			/*if(countIncreaseDatabaseAThreads(((GPIndividual)ind).trees[0])>3){
 				System.out.println("Stopping for debugging");
 				System.out.println("current individual:");
@@ -49,58 +48,38 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			//System.out.println(ind.genotypeToStringForHumans());
 			//TODO figure out the log parameter later
 			//
-			boolean joannaTest = true;
-			if(joannaTest) {
-				double fitnessValue = ((OmnetStateData) input).countPossibleStates((GPIndividual)ind);
-				
-			} else {
+			//boolean joannaTest = true;
+			//			if(joannaTest) {
+			//				double fitnessValue = ((OmnetStateData) input).countPossibleStates((GPIndividual)ind);
+			//				
+			//			} else {
 			//evaluate the fitness later
 			KozaFitness f = ((KozaFitness)ind.fitness);
 			//currently there is only ever one tree in trees
 			//long fitnessValue = Math.abs(countAddServer(((GPIndividual)ind).trees[0])-5);
 			//boolean allPathsFeasible= allPathsFeasible(state,ind,threadnum);
 			((OmnetStateData)input).initializeState();
-			((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
-					((GPIndividual)ind), this);
+			((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, ((GPIndividual)ind), this);
 			//TODO: determine if you need to adjust the returned range
-			double fitnessValue = ((OmnetStateData)input).getSingleObjectiveScore();
+			//double fitnessValue = ((OmnetStateData)input).getSingleObjectiveScore();
+//			System.err.println("DO I EVER MAKE IT here?");
+//			System.exit(0);
+			double fitnessValue = ((OmnetStateData)input).averageScore();
 			if(fitnessValue==0){
 				System.out.println("debugging");
 				System.out.println("current individual:");
 				((GPIndividual)ind).printTrees(state, 0);
-				System.out.println("Score: "+((OmnetStateData)input).getSingleObjectiveScore());
+				System.out.println("Score: "+((OmnetStateData)input).averageScore());
 				((OmnetStateData)input).initializeState();
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
 						((GPIndividual)ind), this);
 			}
-			/*if(fitnessValue<6500){
-				System.out.println("current individual:");
-				((GPIndividual)ind).printTrees(state, 0);
-				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
-						((GPIndividual)ind), this);
-				System.out.println("Number of databaseAThreads: "+((StateData)input).getDatabaseAThreadsCount());
-				System.out.println("Max databastAThreads: "+((StateData)input).getMaxDatabaseAThreadsCount());
-				System.out.println("Single evaluation score: "+((StateData)input).calculateStateScore());
-				System.out.println("Final evaluation score: "+fitnessValue);
-				System.out.println("Stopping for debugging");
-				((StateData)input).initializeData();
-				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, 
-						((GPIndividual)ind), this);
-				((StateData)input).initializeData();
-			}*/
-			//System.out.println("Fitness Value: "+fitnessValue);
-			//((GPIndividual)ind).printTrees(state,1);
-			//System.out.println("");
+			
 			f.setStandardizedFitness(state, fitnessValue);
 			f.hits = ((OmnetStateData)input).invalidActionCount;
+			//f.hits = 5;
 			ind.evaluated=true;
-
-			/*((GPIndividual)ind).trees[0].child.eval(
-                    state,threadnum,input,stack,((GPIndividual)ind),this);
-
-             result = Math.abs(expectedResult - input.x);*/
-		}
-	} 
+		} 
 	}
 
 	private int countAddServer(GPTree tree){
@@ -210,9 +189,9 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 
 		return branchCombinations;
 	}
-	
 
-	
-	
-	
+
+
+
+
 }

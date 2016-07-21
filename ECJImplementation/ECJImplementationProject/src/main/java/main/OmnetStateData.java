@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ public class OmnetStateData extends GPData {
 
 
 	public GPNode currentNode;
+	int currentStep;
 	GPNode initialTactic;
 	public HashSet<OmnetStatePath> visited = new HashSet<OmnetStatePath>();//HashSet to store visited states
 	//variable that holds if the current path could include the end of the plan
@@ -51,7 +53,8 @@ public class OmnetStateData extends GPData {
 	ArrayList<OmnetStatePath> paths;
 	public ArrayList<Double> finalScores;
 	boolean planTooLarge=false;
-	
+	ArrayList<ServerTactic> plan = new ArrayList<ServerTactic>();
+
 	OmnetStatePath initialState = new OmnetStatePath();
 
 
@@ -79,21 +82,6 @@ public class OmnetStateData extends GPData {
 		this.possiblePlanEnd = possiblePlanEnd;
 	}
 
-	/*public double getTotalScore(){
-		return totalScore;
-	}
-
-	public void setTotalScore(double totalScore){
-		this.totalScore=totalScore;
-	}
-
-	public double getPathScore(){
-		return pathScore;
-	}
-
-	public void setPathScore(double pathScore){
-		this.pathScore=pathScore;
-	}*/
 
 	public int getInvalidActionCount(){
 		return invalidActionCount;
@@ -111,14 +99,6 @@ public class OmnetStateData extends GPData {
 		this.planTooLarge = planTooLarge;
 	}
 
-	/*
-	 * Will later need to change this to also handle multi-objective functions
-	 */
-	/*private void setEndOfPathScore(OmnetStatePath path){
-		pathScore = path.calculateProfit()*path.getPathProbability();
-		timesUpdatedScore++;
-		totalScore+=pathScore;
-	}*/
 
 	/*Check the speed of this function later if you have optimization issues
 	 * 
@@ -182,24 +162,25 @@ public class OmnetStateData extends GPData {
 		}
 	}
 
-
-	//perform a given plan on a given state	
-	public void performAll(GPNode node, OmnetStatePath systemState){
+	public void extractPlan(GPNode node){
 		ArrayDeque<GPNode> s = new ArrayDeque<GPNode>();
 		s.add(node);
 		while(s.isEmpty() == false){
 			GPNode temp = s.pollFirst();
-
-			if(temp.children[0] != null) s.add(temp.children[0]);
-			if(temp.children[1] != null) s.add(temp.children[1]);
+			if(temp.children.length > 0) s.add(temp.children[0]);
+			if(temp.children.length > 1) s.add(temp.children[1]);
 
 			if(temp instanceof ServerTactic){
-				systemState.performTactic((ServerTactic) temp);
-				currentNode = (GPNode) temp.parent;
+				plan.add((ServerTactic) temp);
 			}
-			else{
-				currentNode = (GPNode) temp;
-			}
+		}
+	}
+
+	
+	public void performAll(OmnetStatePath systemState, int start){
+		for(int i = start; i < plan.size(); i++){
+			systemState.performTactic(plan.get(i));
+			currentStep = i;
 		}
 	}
 
@@ -207,17 +188,13 @@ public class OmnetStateData extends GPData {
 	//undo tactics until it reach a state that has not been undone yet. 
 	public void undoUntilVisited(OmnetStatePath systemState){
 		systemState.undoTactic();
-		
-		while(visited.contains(systemState) && !(systemState.equals(initialState))){
+		while(visited.contains(systemState) && !(systemState.equals(initialState)) && currentStep >= 0){
 			systemState.undoTactic();
-			//if(currentNode != initialTactic){
-				currentNode = (GPNode) currentNode.parent;
-			//}
-			
+			currentStep--;
 		}
 		visited.add(systemState); //at the new undone state to visited
 	}
-	
+
 	public void addScore(OmnetStatePath systemState){
 		double currentScore;
 		if(systemState.invalidActions == 0){
@@ -226,7 +203,7 @@ public class OmnetStateData extends GPData {
 		}
 		else{
 			currentScore = MINIMAL_INVALID_PLAN_SCORE - systemState.invalidActions * INVALID_ACTION_PENALTY;
-			if(currentScore >= 0){
+			if(currentScore > 0){
 				finalScores.add(1/currentScore);
 			}
 			else{
@@ -235,45 +212,62 @@ public class OmnetStateData extends GPData {
 		}
 	}
 
-	public int countPossibleStates(GPIndividual ind) {
+	public int countPossibleStates(GPNode ind) {
 		int count = 0;
 		int numVistedInitial = 0;
 		double currentScore = 0;
-		initialTactic = ind.trees[0].child; //the tactic to begin with.
 		OmnetStatePath systemState = new OmnetStatePath(); //create a new state
 		//count the left most path, unique situation
-		performAll(initialTactic,systemState);
+		extractPlan(ind);
+		performAll(systemState,0);
+
 		addScore(systemState);
 		count++; //first time all success version of final state
-		
+
 		systemState.undoTactic();
+		if(systemState.equals(initialState)){
+			numVistedInitial++;
+		}
 		visited.add(systemState);
-		systemState.performFailure(currentNode);
+		systemState.performFailure(plan.get(currentStep));
 		addScore(systemState);
 		count++;
 		undoUntilVisited(systemState);
+		if(systemState.equals(initialState)){
+			numVistedInitial++;
+		}
 
 		while(numVistedInitial < 2){
-			systemState.performFailure(currentNode); 
-			currentNode = currentNode.children[1];
-			performAll(currentNode,systemState); 
+			systemState.performFailure(plan.get(currentStep));
+			currentStep++;
+			performAll(systemState,currentStep); 
 			addScore(systemState);
 			count++; //reached a success final state
-			
 			systemState.undoTactic();
 			visited.add(systemState);
-			systemState.performFailure(currentNode);			
+			systemState.performFailure(plan.get(currentStep));	
 			addScore(systemState);
 			count++;
-			
+
 			undoUntilVisited(systemState);
 			if(systemState.equals(initialState)){
 				numVistedInitial++;
-				//visited.clear();
 			}
 		}
 
 		return count;
+	}
+
+	public void perform(ServerTactic tac){
+		initialState.performTactic(tac);
+	}
+
+	public double averageScore(){
+		double total = 0;
+		for(int i = 0; i < finalScores.size(); i++){
+			total = total + finalScores.get(i);
+		}
+		return total/finalScores.size();
 	}
 
 	public void printScores(){
