@@ -254,7 +254,7 @@ public class OmnetStateData extends GPData {
 				numVistedInitial++;
 			}
 		}
-
+		plan.clear();
 		return count;
 	}
 
