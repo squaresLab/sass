@@ -1,28 +1,22 @@
 package main.java.tests;
 
-import ec.EvolutionState;
-import ec.Evolve;
-import ec.gp.ADFStack;
-import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import ec.util.ParameterDatabase;
-import main.java.actions.FailableTactic;
 import main.java.actions.operators.SequenceOperator;
 import main.java.main.OmnetStateData;
+import main.java.omnet.tactics.DecreaseDimmerLevelC;
 import main.java.omnet.tactics.DecreaseTrafficLevelB;
+import main.java.omnet.tactics.DecreaseTrafficLevelF;
+import main.java.omnet.tactics.IncreaseDimmerLevelA;
 import main.java.omnet.tactics.IncreaseTrafficLevelA;
 import main.java.omnet.tactics.IncreaseTrafficLevelB;
-import main.java.omnet.tactics.IncreaseTrafficLevelC;
 import main.java.omnet.tactics.IncreaseTrafficLevelD;
-import main.java.omnet.tactics.IncreaseTrafficLevelE;
-import main.java.omnet.tactics.IncreaseTrafficLevelF;
-import main.java.omnet.tactics.IncreaseTrafficLevelG;
+import main.java.omnet.tactics.ShutdownServerC;
+import main.java.omnet.tactics.StartNewServerB;
 
-
-public class TestUndoTactics {
-	public static void build20(GPIndividual ind){
+public class TestSize16 {
+	public static void build16(GPIndividual ind){
 		GPTree[] treeInit = {new GPTree()};
 		ind.trees = treeInit;
 		GPNode node1 = new SequenceOperator();
@@ -36,35 +30,26 @@ public class TestUndoTactics {
 		GPNode node9 = new SequenceOperator();
 		GPNode node10 = new SequenceOperator();
 		GPNode node11 = new SequenceOperator();
-		GPNode node12 = new IncreaseTrafficLevelA();
-		GPNode node13 = new IncreaseTrafficLevelB();
-		GPNode node14 = new IncreaseTrafficLevelC();
-		GPNode node15 = new IncreaseTrafficLevelD();
-		GPNode node16 = new SequenceOperator();
-		GPNode node17 = new SequenceOperator();
-		GPNode node18 = new SequenceOperator();
-		GPNode node19 = new SequenceOperator();
-		GPNode node20 = new SequenceOperator();
-		GPNode node21 = new SequenceOperator();
-		GPNode node22 = new SequenceOperator();
-		GPNode node23 = new SequenceOperator();
-		GPNode node24 = new IncreaseTrafficLevelE();
-		GPNode node25 = new IncreaseTrafficLevelF();
-		GPNode node26 = new IncreaseTrafficLevelG();
-		GPNode node27 = new IncreaseTrafficLevelA();
-		GPNode node28 = new DecreaseTrafficLevelB();
-		GPNode node29 = new IncreaseTrafficLevelB();
-		GPNode node30 = new IncreaseTrafficLevelC();
-		GPNode node31 = new IncreaseTrafficLevelD();
-		GPNode node32 = new IncreaseTrafficLevelE();
-		GPNode node33 = new IncreaseTrafficLevelF();
-		GPNode node34 = new IncreaseTrafficLevelG();
-		GPNode node35 = new IncreaseTrafficLevelA();
-		GPNode node36 = new IncreaseTrafficLevelB();
-		GPNode node37 = new IncreaseTrafficLevelC();
-		GPNode node38 = new IncreaseTrafficLevelD();
-		GPNode node39 = new IncreaseTrafficLevelE();
-
+		GPNode node12 = new SequenceOperator();
+		GPNode node13 = new SequenceOperator();
+		GPNode node14 = new SequenceOperator();
+		GPNode node15 = new SequenceOperator();
+		GPNode node16 = new IncreaseDimmerLevelA();
+		GPNode node17 = new IncreaseDimmerLevelA();
+		GPNode node18 = new StartNewServerB();
+		GPNode node19 = new IncreaseTrafficLevelD();
+		GPNode node20 = new DecreaseTrafficLevelF();
+		GPNode node21 = new IncreaseTrafficLevelD();
+		GPNode node22 = new IncreaseTrafficLevelD();
+		GPNode node23 = new IncreaseTrafficLevelD();
+		GPNode node24 = new IncreaseTrafficLevelD();
+		GPNode node25 = new IncreaseTrafficLevelB();
+		GPNode node26 = new DecreaseTrafficLevelB();
+		GPNode node27 = new IncreaseTrafficLevelD();
+		GPNode node28 = new DecreaseDimmerLevelC();
+		GPNode node29 = new IncreaseTrafficLevelA();
+		GPNode node30 = new IncreaseTrafficLevelA();
+		GPNode node31 = new ShutdownServerC();
 
 		GPNode[] childrenOfNode1 = new GPNode[2];
 		GPNode[] childrenOfNode2 = new GPNode[2];
@@ -77,18 +62,18 @@ public class TestUndoTactics {
 		GPNode[] childrenOfNode9 = new GPNode[2];
 		GPNode[] childrenOfNode10 = new GPNode[2];
 		GPNode[] childrenOfNode11 = new GPNode[2];
-		GPNode[] childrenOfNode12 = new GPNode[0];
-		GPNode[] childrenOfNode13 = new GPNode[0];
-		GPNode[] childrenOfNode14 = new GPNode[0];
-		GPNode[] childrenOfNode15 = new GPNode[0];
-		GPNode[] childrenOfNode16 = new GPNode[2];
-		GPNode[] childrenOfNode17 = new GPNode[2];
-		GPNode[] childrenOfNode18 = new GPNode[2];
-		GPNode[] childrenOfNode19 = new GPNode[2];
-		GPNode[] childrenOfNode20 = new GPNode[2];
-		GPNode[] childrenOfNode21 = new GPNode[2];
-		GPNode[] childrenOfNode22 = new GPNode[2];
-		GPNode[] childrenOfNode23 = new GPNode[2];
+		GPNode[] childrenOfNode12 = new GPNode[2];
+		GPNode[] childrenOfNode13 = new GPNode[2];
+		GPNode[] childrenOfNode14 = new GPNode[2];
+		GPNode[] childrenOfNode15 = new GPNode[2];
+		GPNode[] childrenOfNode16 = new GPNode[0];
+		GPNode[] childrenOfNode17 = new GPNode[0];
+		GPNode[] childrenOfNode18 = new GPNode[0];
+		GPNode[] childrenOfNode19 = new GPNode[0];
+		GPNode[] childrenOfNode20 = new GPNode[0];
+		GPNode[] childrenOfNode21 = new GPNode[0];
+		GPNode[] childrenOfNode22 = new GPNode[0];
+		GPNode[] childrenOfNode23 = new GPNode[0];
 		GPNode[] childrenOfNode24 = new GPNode[0];
 		GPNode[] childrenOfNode25 = new GPNode[0];
 		GPNode[] childrenOfNode26 = new GPNode[0];
@@ -97,15 +82,6 @@ public class TestUndoTactics {
 		GPNode[] childrenOfNode29 = new GPNode[0];
 		GPNode[] childrenOfNode30 = new GPNode[0];
 		GPNode[] childrenOfNode31 = new GPNode[0];
-		GPNode[] childrenOfNode32 = new GPNode[0];		
-		GPNode[] childrenOfNode33 = new GPNode[0];
-		GPNode[] childrenOfNode34 = new GPNode[0];
-		GPNode[] childrenOfNode35 = new GPNode[0];
-		GPNode[] childrenOfNode36 = new GPNode[0];
-		GPNode[] childrenOfNode37 = new GPNode[0];
-		GPNode[] childrenOfNode38 = new GPNode[0];
-		GPNode[] childrenOfNode39 = new GPNode[0];
-
 
 		childrenOfNode1[0] = node2;
 		childrenOfNode1[1] = node3;
@@ -129,24 +105,15 @@ public class TestUndoTactics {
 		childrenOfNode10[1] = node21;
 		childrenOfNode11[0] = node22;
 		childrenOfNode11[1] = node23;
+		childrenOfNode12[0] = node24;
+		childrenOfNode12[1] = node25;
+		childrenOfNode13[0] = node26;
+		childrenOfNode13[1] = node27;
+		childrenOfNode14[0] = node28;
+		childrenOfNode14[1] = node29;
+		childrenOfNode15[0] = node30;
+		childrenOfNode15[1] = node31;
 
-
-		childrenOfNode16[0] = node24;
-		childrenOfNode16[1] = node25;
-		childrenOfNode17[0] = node26;
-		childrenOfNode17[1] = node27;
-		childrenOfNode18[0] = node28;
-		childrenOfNode18[1] = node29;
-		childrenOfNode19[0] = node30;
-		childrenOfNode19[1] = node31;
-		childrenOfNode20[0] = node32;
-		childrenOfNode20[1] = node33;
-		childrenOfNode21[0] = node34;
-		childrenOfNode21[1] = node35;
-		childrenOfNode22[0] = node36;
-		childrenOfNode22[1] = node37;
-		childrenOfNode23[0] = node38;
-		childrenOfNode23[1] = node39;
 
 		ind.trees[0].child=node1;
 		node1.children = childrenOfNode1;
@@ -180,28 +147,17 @@ public class TestUndoTactics {
 		node29.children = childrenOfNode29;
 		node30.children = childrenOfNode30;
 		node31.children = childrenOfNode31;
-		node32.children = childrenOfNode32;
-		node33.children = childrenOfNode33;
-		node34.children = childrenOfNode34;
-		node35.children = childrenOfNode35;
-		node36.children = childrenOfNode36;
-		node37.children = childrenOfNode37;
-		node38.children = childrenOfNode38;
-		node39.children = childrenOfNode39;
-
 	}
-
+	
 	public static void main(String[] args) throws InstantiationException{	
 
 		OmnetStateData sd = new OmnetStateData();
 		GPIndividual ind = new GPIndividual();
-		build20(ind);
+		build16(ind);
 		sd.countPossibleStates(ind.trees[0].child);
 		sd.averageScore();
 		//System.out.println(sd.finalScores.size());
 		//sd.printScores();
 
 	}
-
-
 }

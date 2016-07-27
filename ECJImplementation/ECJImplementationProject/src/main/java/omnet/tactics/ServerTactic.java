@@ -76,4 +76,5 @@ public abstract class ServerTactic extends FailableTactic {
 	@Override
 	public abstract String toString();
 
+
 }

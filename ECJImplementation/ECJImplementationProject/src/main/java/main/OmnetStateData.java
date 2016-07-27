@@ -167,8 +167,8 @@ public class OmnetStateData extends GPData {
 		s.add(node);
 		while(s.isEmpty() == false){
 			GPNode temp = s.pollFirst();
-			if(temp.children.length > 0) s.add(temp.children[0]);
-			if(temp.children.length > 1) s.add(temp.children[1]);
+			if(temp.children.length >= 1) s.add(temp.children[0]);
+			if(temp.children.length >= 2) s.add(temp.children[1]);
 
 			if(temp instanceof ServerTactic){
 				plan.add((ServerTactic) temp);
@@ -188,7 +188,7 @@ public class OmnetStateData extends GPData {
 	//undo tactics until it reach a state that has not been undone yet. 
 	public void undoUntilVisited(OmnetStatePath systemState){
 		systemState.undoTactic();
-		while(visited.contains(systemState) && !(systemState.equals(initialState)) && currentStep >= 0){
+		while(visited.contains(systemState) && !(systemState.equals(initialState)) && currentStep > 0){
 			systemState.undoTactic();
 			currentStep--;
 		}
@@ -212,8 +212,8 @@ public class OmnetStateData extends GPData {
 		}
 	}
 
-	public int countPossibleStates(GPNode ind) {
-		int count = 0;
+	public void countPossibleStates(GPNode ind) {
+		//int count = 0;
 		int numVistedInitial = 0;
 		double currentScore = 0;
 		OmnetStatePath systemState = new OmnetStatePath(); //create a new state
@@ -222,7 +222,7 @@ public class OmnetStateData extends GPData {
 		performAll(systemState,0);
 
 		addScore(systemState);
-		count++; //first time all success version of final state
+		//count++; //first time all success version of final state
 
 		systemState.undoTactic();
 		if(systemState.equals(initialState)){
@@ -231,7 +231,7 @@ public class OmnetStateData extends GPData {
 		visited.add(systemState);
 		systemState.performFailure(plan.get(currentStep));
 		addScore(systemState);
-		count++;
+		//count++;
 		undoUntilVisited(systemState);
 		if(systemState.equals(initialState)){
 			numVistedInitial++;
@@ -242,12 +242,12 @@ public class OmnetStateData extends GPData {
 			currentStep++;
 			performAll(systemState,currentStep); 
 			addScore(systemState);
-			count++; //reached a success final state
+			//count++; //reached a success final state
 			systemState.undoTactic();
 			visited.add(systemState);
 			systemState.performFailure(plan.get(currentStep));	
 			addScore(systemState);
-			count++;
+			//count++;
 
 			undoUntilVisited(systemState);
 			if(systemState.equals(initialState)){
@@ -255,7 +255,7 @@ public class OmnetStateData extends GPData {
 			}
 		}
 		plan.clear();
-		return count;
+		//return count;
 	}
 
 	public void perform(ServerTactic tac){
@@ -403,6 +403,7 @@ public class OmnetStateData extends GPData {
 		}
 		return true;
 	}
+
 
 }
 

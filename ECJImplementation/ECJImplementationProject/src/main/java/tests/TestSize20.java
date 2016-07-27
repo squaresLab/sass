@@ -1,14 +1,8 @@
 package main.java.tests;
 
-import ec.EvolutionState;
-import ec.Evolve;
-import ec.gp.ADFStack;
-import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import ec.util.ParameterDatabase;
-import main.java.actions.FailableTactic;
 import main.java.actions.operators.SequenceOperator;
 import main.java.main.OmnetStateData;
 import main.java.omnet.tactics.DecreaseTrafficLevelB;
@@ -20,8 +14,8 @@ import main.java.omnet.tactics.IncreaseTrafficLevelE;
 import main.java.omnet.tactics.IncreaseTrafficLevelF;
 import main.java.omnet.tactics.IncreaseTrafficLevelG;
 
-
-public class TestUndoTactics {
+public class TestSize20 {
+	
 	public static void build20(GPIndividual ind){
 		GPTree[] treeInit = {new GPTree()};
 		ind.trees = treeInit;
@@ -190,7 +184,6 @@ public class TestUndoTactics {
 		node39.children = childrenOfNode39;
 
 	}
-
 	public static void main(String[] args) throws InstantiationException{	
 
 		OmnetStateData sd = new OmnetStateData();
@@ -202,6 +195,4 @@ public class TestUndoTactics {
 		//sd.printScores();
 
 	}
-
-
 }

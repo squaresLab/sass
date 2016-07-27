@@ -266,15 +266,17 @@ public class OmnetStatePath implements Serializable{
 	}
 
 	public void performFailure(GPNode s){
-		if(s != null && s instanceof ServerTactic){
-			((ServerTactic) s).failForSure(this);
-		}
-		else if(s.children[0] instanceof ServerTactic){
-			((ServerTactic) s.children[0]).failForSure(this);
-		}
-		else if(s.children[0].children[1] instanceof ServerTactic){
-			((ServerTactic) s.children[0].children[1]).failForSure(this);
-		}
+//		if(s != null && s instanceof ServerTactic){
+//			((ServerTactic) s).failForSure(this);
+//		}
+//		else if(s.children[0] instanceof ServerTactic){
+//			((ServerTactic) s.children[0]).failForSure(this);
+//		}
+//		else if(s.children[0].children[1] instanceof ServerTactic){
+//			((ServerTactic) s.children[0].children[1]).failForSure(this);
+//		}
+		((ServerTactic) s).failForSure(this);
+		
 	}
 	/*Check the speed of this function later if you have optimization issues
 	 * 
@@ -390,10 +392,6 @@ public class OmnetStatePath implements Serializable{
 
 
 	}
-
-
-
-
 
 
 }
