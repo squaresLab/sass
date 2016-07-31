@@ -212,7 +212,7 @@ public class OmnetStateData extends GPData {
 		}
 	}
 
-	public void countPossibleStates(GPNode ind) {
+	public void getAllFinalStates(GPNode ind) {
 		//int count = 0;
 		int numVistedInitial = 0;
 		double currentScore = 0;
@@ -262,7 +262,7 @@ public class OmnetStateData extends GPData {
 		initialState.performTactic(tac);
 	}
 
-	public double averageScore(){
+	public double getPlanScore(){
 		double total = 0;
 		for(int i = 0; i < finalScores.size(); i++){
 			total = total + finalScores.get(i);

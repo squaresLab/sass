@@ -25,7 +25,7 @@ public class SequenceOperator extends GPNode {
 		
 		//now handling with a runtime exception
 		OmnetStateData o = (OmnetStateData)input;
-		o.countPossibleStates(this);
+		o.getAllFinalStates(this);
 		
 //		if(o.isPlanTooLarge()){
 //			return;

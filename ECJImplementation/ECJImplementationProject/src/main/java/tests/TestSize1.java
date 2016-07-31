@@ -23,8 +23,7 @@ public class TestSize1 {
 		OmnetStateData sd = new OmnetStateData();
 		GPIndividual ind = new GPIndividual();
 		build1(ind);
-		sd.countPossibleStates(ind.trees[0].child);
-		sd.averageScore();
+		//sd.getPlanScore(ind.trees[0].child);
 		//System.out.println(sd.finalScores.size());
 		//sd.printScores();
 

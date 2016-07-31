@@ -196,8 +196,8 @@ public class TestUndoTactics {
 		OmnetStateData sd = new OmnetStateData();
 		GPIndividual ind = new GPIndividual();
 		build20(ind);
-		sd.countPossibleStates(ind.trees[0].child);
-		sd.averageScore();
+		sd.getAllFinalStates(ind.trees[0].child);
+		//sd.getPlanScore(null);
 		//System.out.println(sd.finalScores.size());
 		//sd.printScores();
 
