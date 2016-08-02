@@ -11,16 +11,29 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 3
+gp.fs.0.size = 11
 gp.fs.0.func.0 = main.java.actions.operators.SequenceOperator
 gp.fs.0.func.0.nc = nc2
 gp.fs.0.func.1 = main.java.omnet.tactics.StartNewServerA
 gp.fs.0.func.1.nc = nc0
 gp.fs.0.func.2 = main.java.omnet.tactics.StartNewServerB
 gp.fs.0.func.2.nc = nc0
-
-
-
+gp.fs.0.func.3 = main.java.omnet.tactics.DecreaseDimmerLevelA
+gp.fs.0.func.3.nc = nc0
+gp.fs.0.func.4 = main.java.omnet.tactics.DecreaseDimmerLevelB
+gp.fs.0.func.4.nc = nc0
+gp.fs.0.func.5 = main.java.omnet.tactics.IncreaseTrafficLevelA
+gp.fs.0.func.5.nc = nc0
+gp.fs.0.func.6 = main.java.omnet.tactics.IncreaseTrafficLevelB
+gp.fs.0.func.6.nc = nc0
+gp.fs.0.func.7 = main.java.omnet.tactics.IncreaseTrafficLevelC
+gp.fs.0.func.7.nc = nc0
+gp.fs.0.func.8 = main.java.omnet.tactics.IncreaseTrafficLevelD
+gp.fs.0.func.8.nc = nc0
+gp.fs.0.func.9 = main.java.omnet.tactics.ShutdownServerC
+gp.fs.0.func.9.nc = nc0
+gp.fs.0.func.10 = main.java.omnet.tactics.ShutdownServerD
+gp.fs.0.func.10.nc = nc0
 
 
 
@@ -34,12 +47,12 @@ gp.koza.half.max-depth = 6
 
 eval.problem = main.java.main.SingleObjectiveProblemOmnet
 eval.problem.data = main.java.main.OmnetStateData
-generations = 100
-pop.subpop.0.size =	100
+generations = 10
+pop.subpop.0.size =	10
 
 #allow ECJ to figure out the number of cores
-breedthreads = auto
-evalthreads = auto
+breedthreads = 1
+evalthreads = 1
 
 #print-params = true
 

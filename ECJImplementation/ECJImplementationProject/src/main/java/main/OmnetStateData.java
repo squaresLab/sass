@@ -63,8 +63,9 @@ public class OmnetStateData extends GPData {
 	}
 
 	public void initializeState(){
-		paths= new ArrayList<OmnetStatePath>();
-		paths.add(new OmnetStatePath());
+		OmnetStatePath systemState = new OmnetStatePath();
+//		paths= new ArrayList<OmnetStatePath>();
+//		paths.add(new OmnetStatePath());
 		finalScores = new ArrayList<Double>();
 		possiblePlanEnd=true; 
 		//totalScore=0;
@@ -269,6 +270,7 @@ public class OmnetStateData extends GPData {
 		}
 		return total/finalScores.size();
 	}
+	
 
 	public void printScores(){
 		for(int i = 0; i < finalScores.size(); i++){

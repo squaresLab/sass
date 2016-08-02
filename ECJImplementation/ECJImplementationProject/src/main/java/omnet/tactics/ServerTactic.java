@@ -40,7 +40,7 @@ public abstract class ServerTactic extends FailableTactic {
 		OmnetStateData sd = (OmnetStateData)input;
 		//callPerformTactic(sd);
 		sd.getAllFinalStates(this);
-		//sd.perform(this);
+		//sd.performOne(this);
 
 	}
 

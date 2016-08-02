@@ -13,6 +13,8 @@ import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
 import ec.util.Parameter;
 import main.java.actions.operators.SequenceOperator;
+import main.java.omnet.tactics.IncreaseDimmerLevelA;
+import main.java.omnet.tactics.IncreaseTrafficLevelD;
 import main.java.omnet.tactics.StartNewServerB;
 import main.java.omnet.tactics.StartNewServerC;
 
@@ -145,30 +147,52 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	GPIndividual ind = new GPIndividual();
 	GPTree[] treeInit = {new GPTree()};
 	ind.trees = treeInit;
+	
+//	GPNode node1 = new IncreaseTrafficLevelD();
+//	GPNode[] childrenOfNode1 = new GPNode[0];
+//	ind.trees[0].child=node1;
+//	node1.children = childrenOfNode1;
+//	node1.parent = ind.trees[0];
+	
 	GPNode node1 = new SequenceOperator();
 	GPNode node2 = new StartNewServerB();
 	GPNode node3 = new SequenceOperator();
 	GPNode node4 = new StartNewServerC();
+	GPNode node5 = new SequenceOperator();
+	GPNode node6 = new IncreaseTrafficLevelD();
+	GPNode node7 = new IncreaseDimmerLevelA();
 	
 	GPNode[] childrenOfNode1 = new GPNode[2];
 	GPNode[] childrenOfNode2 = new GPNode[0];
-	GPNode[] childrenOfNode3 = new GPNode[1];
+	GPNode[] childrenOfNode3 = new GPNode[2];
 	GPNode[] childrenOfNode4 = new GPNode[0];
+	GPNode[] childrenOfNode5 = new GPNode[2];
+	GPNode[] childrenOfNode6 = new GPNode[0];
+	GPNode[] childrenOfNode7 = new GPNode[0];
 	
 	childrenOfNode1[0] = node2;
 	childrenOfNode1[1] = node3;
 	childrenOfNode3[0] = node4;
+	childrenOfNode3[1] = node5;
+	childrenOfNode5[0] = node6;
+	childrenOfNode5[1] = node7;
 	ind.trees[0].child=node1;
 	node1.children = childrenOfNode1;
 	node2.children = childrenOfNode2;
 	node3.children = childrenOfNode3;
 	node4.children = childrenOfNode4;
+	node5.children = childrenOfNode5;
+	node6.children = childrenOfNode6;
+	node7.children = childrenOfNode7;
 	
 	
 	node1.parent = ind.trees[0];
 	node2.parent = node1;
 	node3.parent = node1;
 	node4.parent = node3;
+	node5.parent = node3;
+	node6.parent = node6;
+	node7.parent = node5;
 	
 //	OmnetStateData sd = new OmnetStateData();
 //	sd.initializeState();

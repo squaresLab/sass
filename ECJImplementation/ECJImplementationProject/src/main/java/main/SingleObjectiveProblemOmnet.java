@@ -77,7 +77,6 @@ public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProb
 			
 			f.setStandardizedFitness(state, fitnessValue);
 			f.hits = ((OmnetStateData)input).invalidActionCount;
-			//f.hits = 5;
 			ind.evaluated=true;
 		} 
 	}
