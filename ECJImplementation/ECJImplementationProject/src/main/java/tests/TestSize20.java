@@ -189,9 +189,8 @@ public class TestSize20 {
 		OmnetStateData sd = new OmnetStateData();
 		GPIndividual ind = new GPIndividual();
 		build20(ind);
-		//sd.getPlanScore(ind.trees[0].child);
-		//System.out.println(sd.finalScores.size());
-		//sd.printScores();
+		sd.getAllFinalStates(ind.trees[0].child);
+		sd.printScores();
 
 	}
 }

@@ -1,0 +1,127 @@
+
+Generation: 0
+
+Average Fitness: 1.23619
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 1
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 2
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 3
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 4
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 5
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 6
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 7
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 8
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Generation: 9
+
+Average Fitness: 1.11119
+
+Average Invalid Action Count: 0.00000
+Best Individual:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
+
+Best Individual of Run:
+Subpopulation 0:
+Evaluated: true
+Fitness: Standardized=1.1111908452456132 Adjusted=0.47366632071751963 Hits=0
+Tree 0:
+ StartNewServerB
