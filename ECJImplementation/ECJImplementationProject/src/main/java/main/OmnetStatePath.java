@@ -367,7 +367,7 @@ public class OmnetStatePath implements Serializable{
 	public int hashCode()
 	{
 		final int PRIME = 31;
-		double result = 1;
+		int result = 1;
 		result = PRIME * result + totalTime;
 		result = PRIME * result + (int)pathProbability;
 		result = PRIME * result + serverArray[ServerType.SERVERA.ordinal()].toString().hashCode();
