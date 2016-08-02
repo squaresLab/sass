@@ -338,7 +338,7 @@ public class OmnetStatePath implements Serializable{
 
 
 		return this.totalTime == s.totalTime &&
-				this.pathProbability == s.pathProbability &&
+				this.pathProbability - s.pathProbability == 0.0 &&
 				this.serverArray[ServerType.SERVERA.ordinal()].toString().equals(s.serverArray[ServerType.SERVERA.ordinal()].toString()) &&
 				this.serverArray[ServerType.SERVERB.ordinal()].toString().equals(s.serverArray[ServerType.SERVERB.ordinal()].toString()) &&
 				this.serverArray[ServerType.SERVERC.ordinal()].toString().equals(s.serverArray[ServerType.SERVERC.ordinal()].toString()) &&
@@ -353,10 +353,10 @@ public class OmnetStatePath implements Serializable{
 				this.countArray[ServerType.SERVERE.ordinal()] == s.countArray[ServerType.SERVERB.ordinal()]&&
 				this.countArray[ServerType.SERVERF.ordinal()] == s.countArray[ServerType.SERVERC.ordinal()]&&
 				this.countArray[ServerType.SERVERG.ordinal()] == s.countArray[ServerType.SERVERD.ordinal()]&&
-				this.modifiedCountArray.toString() == s.modifiedCountArray.toString() &&
-				this.modifiedDimmerLevel.toString() == s.modifiedDimmerLevel.toString() &&
-				this.modifiedTrafficLevel.toString() == s.modifiedDimmerLevel.toString() &&
-				this.emptyCount.toString() == s.emptyCount.toString();
+				this.modifiedCountArray.toString().equals(s.modifiedCountArray.toString()) &&
+				this.modifiedDimmerLevel.toString().equals(s.modifiedDimmerLevel.toString()) &&
+				this.modifiedTrafficLevel.toString().equals(s.modifiedDimmerLevel.toString()) &&
+				this.emptyCount.toString().equals(s.emptyCount.toString());
 
 
 
@@ -367,7 +367,7 @@ public class OmnetStatePath implements Serializable{
 	public int hashCode()
 	{
 		final int PRIME = 31;
-		int result = 1;
+		double result = 1;
 		result = PRIME * result + totalTime;
 		result = PRIME * result + (int)pathProbability;
 		result = PRIME * result + serverArray[ServerType.SERVERA.ordinal()].toString().hashCode();
