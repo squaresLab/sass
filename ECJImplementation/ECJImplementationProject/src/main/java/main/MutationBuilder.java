@@ -13,9 +13,16 @@ import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
 import ec.util.Parameter;
 import main.java.actions.operators.SequenceOperator;
+import main.java.omnet.tactics.DecreaseDimmerLevelA;
+import main.java.omnet.tactics.DecreaseDimmerLevelB;
+import main.java.omnet.tactics.DecreaseDimmerLevelD;
+import main.java.omnet.tactics.DecreaseTrafficLevelF;
 import main.java.omnet.tactics.IncreaseDimmerLevelA;
 import main.java.omnet.tactics.IncreaseTrafficLevelA;
+import main.java.omnet.tactics.IncreaseTrafficLevelB;
 import main.java.omnet.tactics.IncreaseTrafficLevelD;
+import main.java.omnet.tactics.ShutdownServerC;
+import main.java.omnet.tactics.StartNewServerA;
 import main.java.omnet.tactics.StartNewServerB;
 import main.java.omnet.tactics.StartNewServerC;
 
@@ -148,49 +155,139 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	GPIndividual ind = new GPIndividual();
 	GPTree[] treeInit = {new GPTree()};
 	ind.trees = treeInit;
+
 	
+	//size 2, worked, no hanging
+//	GPNode node1 = new SequenceOperator();
+//	GPNode node2 = new StartNewServerA();
+//	GPNode node3 = new IncreaseTrafficLevelD();
+//	
+//	GPNode[] childrenOfNode1 = new GPNode[2];
+//	GPNode[] childrenOfNode2 = new GPNode[0];
+//	GPNode[] childrenOfNode3 = new GPNode[0];
+//	
+//	childrenOfNode1[0] = node2;
+//	childrenOfNode1[1] = node3;
+//	ind.trees[0].child=node1;
+//	node1.children = childrenOfNode1;
+//	node2.children = childrenOfNode2;
+//	node3.children = childrenOfNode3;
+//	node1.parent = ind.trees[0];
+//	node2.parent = node1;
+//	node3.parent = node1;
+	
+	//size 3, worked, no hanging
+//	GPNode node1 = new SequenceOperator();
+//	GPNode node2 = new SequenceOperator();
+//	GPNode node3 = new IncreaseTrafficLevelB();
+//	GPNode node4 = new StartNewServerA();
+//	GPNode node5 = new IncreaseTrafficLevelB();
+//
+//	GPNode[] childrenOfNode1 = new GPNode[2];
+//	GPNode[] childrenOfNode2 = new GPNode[2];
+//	GPNode[] childrenOfNode3 = new GPNode[0];
+//	GPNode[] childrenOfNode4 = new GPNode[0];
+//	GPNode[] childrenOfNode5 = new GPNode[0];
+//
+//	childrenOfNode1[0] = node2;
+//	childrenOfNode1[1] = node3;
+//	childrenOfNode2[0] = node4;
+//	childrenOfNode2[1] = node5;
+
+//	ind.trees[0].child=node1;
+//	node1.children = childrenOfNode1;
+//	node2.children = childrenOfNode2;
+//	node3.children = childrenOfNode3;
+//	node4.children = childrenOfNode4;
+//	node5.children = childrenOfNode5;
+//	
+//	node1.parent = ind.trees[0];
+//	node2.parent = node1;
+//	node3.parent = node1;
+//	node4.parent = node2;
+//	node5.parent = node2;
+
+//size 4, hang sometimes...
 	GPNode node1 = new SequenceOperator();
-	GPNode node2 = new IncreaseTrafficLevelA();
-	GPNode node3 = new IncreaseTrafficLevelD();
-	
+	GPNode node2 = new IncreaseTrafficLevelD();
+	GPNode node3 = new SequenceOperator();
+	GPNode node4 = new DecreaseDimmerLevelB();
+	GPNode node5 = new SequenceOperator();
+	GPNode node6 = new DecreaseDimmerLevelA();
+	GPNode node7 = new SequenceOperator();
+	GPNode node8 = new DecreaseDimmerLevelD();
+
 	GPNode[] childrenOfNode1 = new GPNode[2];
 	GPNode[] childrenOfNode2 = new GPNode[0];
-	GPNode[] childrenOfNode3 = new GPNode[0];
-	
+	GPNode[] childrenOfNode3 = new GPNode[2];
+	GPNode[] childrenOfNode4 = new GPNode[0];
+	GPNode[] childrenOfNode5 = new GPNode[2];
+	GPNode[] childrenOfNode6 = new GPNode[0];
+	GPNode[] childrenOfNode7 = new GPNode[1];
+	GPNode[] childrenOfNode8 = new GPNode[0];
+
 	childrenOfNode1[0] = node2;
 	childrenOfNode1[1] = node3;
+	childrenOfNode3[0] = node4;
+	childrenOfNode3[1] = node5;
+	childrenOfNode5[0] = node6;
+	childrenOfNode5[1] = node7;
+	childrenOfNode7[0] = node8;
+
 	ind.trees[0].child=node1;
 	node1.children = childrenOfNode1;
 	node2.children = childrenOfNode2;
 	node3.children = childrenOfNode3;
+	node4.children = childrenOfNode4;
+	node5.children = childrenOfNode5;
+	node6.children = childrenOfNode6;
+	node7.children = childrenOfNode7;
+	node8.children = childrenOfNode8;
 	node1.parent = ind.trees[0];
 	node2.parent = node1;
 	node3.parent = node1;
+	node4.parent = node3;
+	node5.parent = node3;
+	node6.parent = node5;
+	node7.parent = node5;
+	node8.parent = node7;
 	
 	
 	
+//size 5, hang sometimes, when it is working, it is giving me three generations of 
+//	different statistics!!! 
 //	GPNode node1 = new SequenceOperator();
-//	GPNode node2 = new IncreaseTrafficLevelD();
+//	GPNode node2 = new SequenceOperator();
 //	GPNode node3 = new SequenceOperator();
-//	GPNode node4 = new StartNewServerC();
-//	GPNode node5 = new SequenceOperator();
-//	GPNode node6 = new IncreaseTrafficLevelD();
-//	GPNode node7 = new IncreaseTrafficLevelD();
-//	
+//	GPNode node4 = new DecreaseDimmerLevelA();
+//	GPNode node5 = new StartNewServerB();
+//	GPNode node6 = new SequenceOperator();
+//	GPNode node7 = new SequenceOperator();
+//	GPNode node8 = new ShutdownServerC();
+//	GPNode node9 = new IncreaseTrafficLevelD();
+//	GPNode node10 = new DecreaseTrafficLevelF();
+//
 //	GPNode[] childrenOfNode1 = new GPNode[2];
-//	GPNode[] childrenOfNode2 = new GPNode[0];
+//	GPNode[] childrenOfNode2 = new GPNode[2];
 //	GPNode[] childrenOfNode3 = new GPNode[2];
 //	GPNode[] childrenOfNode4 = new GPNode[0];
-//	GPNode[] childrenOfNode5 = new GPNode[2];
-//	GPNode[] childrenOfNode6 = new GPNode[0];
-//	GPNode[] childrenOfNode7 = new GPNode[0];
-//	
+//	GPNode[] childrenOfNode5 = new GPNode[0];
+//	GPNode[] childrenOfNode6 = new GPNode[1];
+//	GPNode[] childrenOfNode7 = new GPNode[2];
+//	GPNode[] childrenOfNode8 = new GPNode[0];
+//	GPNode[] childrenOfNode9 = new GPNode[0];
+//	GPNode[] childrenOfNode10 = new GPNode[0];
+//
 //	childrenOfNode1[0] = node2;
 //	childrenOfNode1[1] = node3;
-//	childrenOfNode3[0] = node4;
-//	childrenOfNode3[1] = node5;
-//	childrenOfNode5[0] = node6;
-//	childrenOfNode5[1] = node7;
+//	childrenOfNode2[0] = node4;
+//	childrenOfNode2[1] = node5;
+//	childrenOfNode3[0] = node6;
+//	childrenOfNode3[1] = node7;
+//	childrenOfNode6[0] = node8;
+//	childrenOfNode7[0] = node9;
+//	childrenOfNode7[1] = node10;
+//
 //	ind.trees[0].child=node1;
 //	node1.children = childrenOfNode1;
 //	node2.children = childrenOfNode2;
@@ -199,16 +296,23 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 //	node5.children = childrenOfNode5;
 //	node6.children = childrenOfNode6;
 //	node7.children = childrenOfNode7;
-//	
-//	
+//	node8.children = childrenOfNode8;
+//	node9.children = childrenOfNode9;
+//	node10.children = childrenOfNode10;
 //	node1.parent = ind.trees[0];
 //	node2.parent = node1;
 //	node3.parent = node1;
-//	node4.parent = node3;
-//	node5.parent = node3;
-//	node6.parent = node6;
-//	node7.parent = node5;
+//	node4.parent = node2;
+//	node5.parent = node2;
+//	node6.parent = node3;
+//	node7.parent = node3;
+//	node8.parent = node6;
+//	node9.parent = node7;
+//	node10.parent = node7;
+
+
 	
+//Zack's original starting plan
 //	OmnetStateData sd = new OmnetStateData();
 //	sd.initializeState();
 //	GPIndividual ind = new GPIndividual();

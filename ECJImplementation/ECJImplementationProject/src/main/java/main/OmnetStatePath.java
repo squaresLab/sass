@@ -81,13 +81,13 @@ public class OmnetStatePath implements Serializable{
 		reasonForAllStatesValidSetting="all states are assumed to be initially true";
 		pathProbability=1;
 		countArray = new int[7];
-		countArray[0]=1;
-		countArray[1]=1;
-		countArray[2]=1;
-		countArray[3]=1;
-		countArray[4]=1;
-		countArray[5]=1;
-		countArray[6]=1;
+		countArray[ServerType.SERVERA.ordinal()]=1;
+		countArray[ServerType.SERVERB.ordinal()]=1;
+		countArray[ServerType.SERVERC.ordinal()]=1;
+		countArray[ServerType.SERVERD.ordinal()]=1;
+		countArray[ServerType.SERVERE.ordinal()]=1;
+		countArray[ServerType.SERVERF.ordinal()]=1;
+		countArray[ServerType.SERVERG.ordinal()]=1;
 
 		serverArray = new OmnetComponent[7];
 		serverArray[ServerType.SERVERA.ordinal()]=new ServerA();
