@@ -57,9 +57,12 @@ public class StartNewServerD extends StartNewServer {
 				e.printStackTrace();
 			}
 		}
-		if(!tacticFail){
-			state.alreadyPerformed.add(this);
+		if(tacticFail){
+			state.invalidActions++;
+		
 		}
+			state.alreadyPerformed.add(this);
+	
 		state.totalTime += this.getLatency();
 		state.pathProbability = state.pathProbability*(1-this.getFailureWeight());
 		state.probabilityArray.add(state.pathProbability);

@@ -45,9 +45,12 @@ public class ShutdownServerC extends ShutdownServer {
 			state.countArray[serverIndex]--;
 			state.modifiedCountArray.add(true); 
 		}
-		if(!tacticFail){
-			state.alreadyPerformed.add(this);
+		if(tacticFail){
+			state.invalidActions++;
+		
 		}
+			state.alreadyPerformed.add(this);
+	
 		state.emptyCount.add(false);
 		state.modifiedDimmerLevel.add(false);
 		state.modifiedTrafficLevel.add(false);

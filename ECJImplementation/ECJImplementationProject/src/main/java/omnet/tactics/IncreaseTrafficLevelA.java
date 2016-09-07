@@ -45,9 +45,12 @@ public class IncreaseTrafficLevelA extends IncreaseTrafficLevel {
 				state.modifiedTrafficLevel.add(true);
 			}
 		}
-		if(!tacticFail){
-			state.alreadyPerformed.add(this);
+		if(tacticFail){
+			state.invalidActions++;
+		
 		}
+			state.alreadyPerformed.add(this);
+	
 		state.modifiedCountArray.add(false);
 		state.emptyCount.add(false);
 		state.modifiedDimmerLevel.add(false);

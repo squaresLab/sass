@@ -40,9 +40,12 @@ public class DecreaseDimmerLevelF extends DecreaseDimmerLevel {
 			state.serverArray[serverIndex].setDimmerLevel(state.serverArray[serverIndex].getDimmerLevel()-1, state);
 			state.modifiedDimmerLevel.add(true);
 		}
-		if(!tacticFail){
-			state.alreadyPerformed.add(this);
+		if(tacticFail){
+			state.invalidActions++;
+		
 		}
+			state.alreadyPerformed.add(this);
+	
 		state.modifiedCountArray.add(false);
 		state.emptyCount.add(false);
 		state.modifiedTrafficLevel.add(false);
