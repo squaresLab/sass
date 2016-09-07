@@ -58,6 +58,17 @@ task runSingleOptimization(type: JavaExec){
 	maxHeapSize='10g'
 }
 
+task runMultiOptimization(type: JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+	
+	main = 'ec.Evolve'
+	
+	args '-file','selfadaptivesystemmultiobjective.params'
+		args '-file','testParams/configParams.params'
+
+	maxHeapSize='10g'
+}
+
 
 task checkParameters(type: JavaExec){
 	classpath = sourceSets.main.runtimeClasspath
