@@ -1,7 +1,7 @@
-package main.java.znn.tactics;
+package znn.tactics;
 
 
-public abstract class DecreaseDatabaseThreads extends main.java.actions.ActionTemplate{
+public abstract class DecreaseDatabaseThreads extends actions.ActionTemplate{
 	
 
 	@Override

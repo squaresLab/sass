@@ -1,4 +1,4 @@
-package main.java.tests;
+package tests;
 
 import org.junit.Test;
 
@@ -11,21 +11,21 @@ import ec.gp.GPNode;
 import ec.gp.GPTree;
 import ec.util.ParameterDatabase;
 import junit.framework.TestCase;
-import main.java.actions.operators.ForOperator;
-import main.java.actions.operators.IfThenElseOperator;
-import main.java.actions.operators.SequenceOperator;
-import main.java.main.MultiObjectiveProblem;
-import main.java.main.SingleObjectiveProblem;
-import main.java.main.StateData;
-import main.java.znn.tactics.AddServerL1;
-import main.java.znn.tactics.DecreaseDatabaseAThreads;
-import main.java.znn.tactics.DecreaseDatabaseBThreads;
-import main.java.znn.tactics.DecreaseQuality;
-import main.java.znn.tactics.DeleteServerL1;
-import main.java.znn.tactics.DeleteServerL2;
-import main.java.znn.tactics.IncreaseDatabaseAThreads;
-import main.java.znn.tactics.IncreaseDatabaseBThreads;
-import main.java.znn.tactics.IncreaseQuality;
+import actions.operators.ForOperator;
+import actions.operators.IfThenElseOperator;
+import actions.operators.SequenceOperator;
+import main.MultiObjectiveProblem;
+import main.SingleObjectiveProblem;
+import main.StateData;
+import znn.tactics.AddServerL1;
+import znn.tactics.DecreaseDatabaseAThreads;
+import znn.tactics.DecreaseDatabaseBThreads;
+import znn.tactics.DecreaseQuality;
+import znn.tactics.DeleteServerL1;
+import znn.tactics.DeleteServerL2;
+import znn.tactics.IncreaseDatabaseAThreads;
+import znn.tactics.IncreaseDatabaseBThreads;
+import znn.tactics.IncreaseQuality;
 
 public class TestTrees extends TestCase {
   

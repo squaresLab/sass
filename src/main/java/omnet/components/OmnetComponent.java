@@ -1,9 +1,9 @@
-package main.java.omnet.components;
+package omnet.components;
 
 import java.io.Serializable;
 
-import main.java.main.OmnetStateData;
-import main.java.main.OmnetStatePath;
+import main.OmnetStateData;
+import main.OmnetStatePath;
 
 
 public abstract class OmnetComponent implements Cloneable, Serializable{

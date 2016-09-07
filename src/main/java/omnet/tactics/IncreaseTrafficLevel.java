@@ -1,4 +1,4 @@
-package main.java.omnet.tactics;
+package omnet.tactics;
 
 
 public abstract class IncreaseTrafficLevel extends ServerTactic {

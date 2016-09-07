@@ -1,13 +1,13 @@
-package main.java.tests;
+package tests;
 
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import main.java.actions.operators.SequenceOperator;
-import main.java.main.OmnetStateData;
-import main.java.omnet.tactics.StartNewServerA;
-import main.java.omnet.tactics.StartNewServerB;
-import main.java.omnet.tactics.StartNewServerC;
+import actions.operators.SequenceOperator;
+import main.OmnetStateData;
+import omnet.tactics.StartNewServerA;
+import omnet.tactics.StartNewServerB;
+import omnet.tactics.StartNewServerC;
 
 public class TestSize3 {
 	//plan size 3

@@ -1,8 +1,8 @@
-package main.java.znn.tactics;
+package znn.tactics;
 
-import main.java.actions.AddServer;
-import main.java.main.StateData;
-import main.java.znn.components.L3Server;
+import actions.AddServer;
+import main.StateData;
+import znn.components.L3Server;
 
 public class AddServerL3 extends AddServer {
 	

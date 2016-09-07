@@ -1,8 +1,8 @@
-package main.java.omnet.tactics;
+package omnet.tactics;
 
-import main.java.main.OmnetStateData;
-import main.java.main.OmnetStatePath;
-import main.java.omnet.components.ServerA;
+import main.OmnetStateData;
+import main.OmnetStatePath;
+import omnet.components.ServerA;
 
 public class DecreaseDimmerLevelA extends DecreaseDimmerLevel {
 

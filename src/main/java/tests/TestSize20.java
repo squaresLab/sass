@@ -1,18 +1,18 @@
-package main.java.tests;
+package tests;
 
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import main.java.actions.operators.SequenceOperator;
-import main.java.main.OmnetStateData;
-import main.java.omnet.tactics.DecreaseTrafficLevelB;
-import main.java.omnet.tactics.IncreaseTrafficLevelA;
-import main.java.omnet.tactics.IncreaseTrafficLevelB;
-import main.java.omnet.tactics.IncreaseTrafficLevelC;
-import main.java.omnet.tactics.IncreaseTrafficLevelD;
-import main.java.omnet.tactics.IncreaseTrafficLevelE;
-import main.java.omnet.tactics.IncreaseTrafficLevelF;
-import main.java.omnet.tactics.IncreaseTrafficLevelG;
+import actions.operators.SequenceOperator;
+import main.OmnetStateData;
+import omnet.tactics.DecreaseTrafficLevelB;
+import omnet.tactics.IncreaseTrafficLevelA;
+import omnet.tactics.IncreaseTrafficLevelB;
+import omnet.tactics.IncreaseTrafficLevelC;
+import omnet.tactics.IncreaseTrafficLevelD;
+import omnet.tactics.IncreaseTrafficLevelE;
+import omnet.tactics.IncreaseTrafficLevelF;
+import omnet.tactics.IncreaseTrafficLevelG;
 
 public class TestSize20 {
 	

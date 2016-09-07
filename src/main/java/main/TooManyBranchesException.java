@@ -1,4 +1,4 @@
-package main.java.main;
+package main;
 
 /**
  * This exception if there are too many branches in the plan for the code to

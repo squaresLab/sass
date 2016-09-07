@@ -1,4 +1,4 @@
-package main.java.actions;
+package actions;
 
 import ec.EvolutionState;
 import ec.Problem;
@@ -7,8 +7,8 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.util.Parameter;
-import main.java.main.StateData;
-import main.java.znn.components.ZnnComponent;
+import main.StateData;
+import znn.components.ZnnComponent;
 
 public abstract class ActionTemplate extends GPNode{
 	

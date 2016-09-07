@@ -1,8 +1,8 @@
-package main.java.znn.tactics;
+package znn.tactics;
 
-import main.java.actions.ActionTemplate;
-import main.java.main.StateData;
-import main.java.znn.components.QualityChange;
+import actions.ActionTemplate;
+import main.StateData;
+import znn.components.QualityChange;
 
 public class IncreaseQuality extends ActionTemplate {
 	

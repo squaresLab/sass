@@ -1,6 +1,6 @@
-package main.java.actions;
+package actions;
 
-import main.java.main.StateData;
+import main.StateData;
 
 public abstract class DeleteServer extends ActionTemplate{
 

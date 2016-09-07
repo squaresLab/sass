@@ -1,4 +1,4 @@
-package main.java.actions.operators;
+package actions.operators;
 
 import ec.EvolutionState;
 import ec.Problem;
@@ -6,9 +6,9 @@ import ec.gp.ADFStack;
 import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
-import main.java.actions.FailableTactic;
-import main.java.main.OmnetStateData;
-import main.java.omnet.tactics.ServerTactic;
+import actions.FailableTactic;
+import main.OmnetStateData;
+import omnet.tactics.ServerTactic;
 
 public class IfThenElseOperator extends GPNode {
 

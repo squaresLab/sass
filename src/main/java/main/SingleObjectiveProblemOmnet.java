@@ -1,4 +1,4 @@
-package main.java.main;
+package main;
 
 import ec.EvolutionState;
 import ec.Individual;
@@ -9,9 +9,9 @@ import ec.gp.GPTree;
 import ec.gp.koza.KozaFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
-import main.java.actions.AddServer;
-import main.java.actions.operators.IfThenElseOperator;
-import main.java.znn.tactics.IncreaseDatabaseAThreads;
+import actions.AddServer;
+import actions.operators.IfThenElseOperator;
+import znn.tactics.IncreaseDatabaseAThreads;
 
 public class SingleObjectiveProblemOmnet extends GPProblem implements SimpleProblemForm {
 

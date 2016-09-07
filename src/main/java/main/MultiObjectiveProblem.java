@@ -1,4 +1,4 @@
-package main.java.main;
+package main;
 
 import ec.EvolutionState;
 import ec.Individual;
@@ -9,7 +9,7 @@ import ec.gp.GPTree;
 import ec.multiobjective.MultiObjectiveFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
-import main.java.actions.operators.IfThenElseOperator;
+import actions.operators.IfThenElseOperator;
 
 public class MultiObjectiveProblem extends GPProblem implements SimpleProblemForm{
 

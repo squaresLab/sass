@@ -1,4 +1,4 @@
-package main.java.actions.operators;
+package actions.operators;
 
 import ec.EvolutionState;
 import ec.Problem;

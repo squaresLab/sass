@@ -1,4 +1,4 @@
-package main.java.main;
+package main;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,17 +18,17 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import main.java.actions.FailableTactic;
-import main.java.actions.operators.IfThenElseOperator;
-import main.java.actions.operators.SequenceOperator;
-import main.java.omnet.components.OmnetComponent;
-import main.java.omnet.tactics.DecreaseDimmerLevel;
-import main.java.omnet.tactics.DecreaseTrafficLevel;
-import main.java.omnet.tactics.IncreaseDimmerLevel;
-import main.java.omnet.tactics.IncreaseTrafficLevel;
-import main.java.omnet.tactics.ServerTactic;
-import main.java.omnet.tactics.ShutdownServer;
-import main.java.omnet.tactics.StartNewServer;
+import actions.FailableTactic;
+import actions.operators.IfThenElseOperator;
+import actions.operators.SequenceOperator;
+import omnet.components.OmnetComponent;
+import omnet.tactics.DecreaseDimmerLevel;
+import omnet.tactics.DecreaseTrafficLevel;
+import omnet.tactics.IncreaseDimmerLevel;
+import omnet.tactics.IncreaseTrafficLevel;
+import omnet.tactics.ServerTactic;
+import omnet.tactics.ShutdownServer;
+import omnet.tactics.StartNewServer;
 
 
 public class OmnetStateData extends GPData {

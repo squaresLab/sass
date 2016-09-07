@@ -1,4 +1,4 @@
-package main.java.omnet.components;
+package omnet.components;
 
 
 public class ServerB extends OmnetComponent{

@@ -1,7 +1,7 @@
-package main.java.actions;
+package actions;
 
 import ec.gp.GPNode;
-import main.java.main.OmnetStatePath;
+import main.OmnetStatePath;
 
 public abstract class FailableTactic extends GPNode {
 	

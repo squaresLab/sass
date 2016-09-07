@@ -1,10 +1,10 @@
-package main.java.omnet.tactics;
+package omnet.tactics;
 
-import main.java.main.OmnetStateData;
-import main.java.main.OmnetStatePath;
-import main.java.omnet.components.ServerA;
-import main.java.omnet.components.ServerC;
-import main.java.omnet.components.ServerD;
+import main.OmnetStateData;
+import main.OmnetStatePath;
+import omnet.components.ServerA;
+import omnet.components.ServerC;
+import omnet.components.ServerD;
 
 public class ShutdownServerC extends ShutdownServer {
 

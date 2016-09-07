@@ -1,4 +1,4 @@
-package main.java.main;
+package main;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,21 +16,21 @@ import java.util.Stack;
 import javax.swing.text.html.HTMLDocument.Iterator;
 
 import ec.gp.GPNode;
-import main.java.omnet.components.OmnetComponent;
-import main.java.omnet.components.ServerA;
-import main.java.omnet.components.ServerB;
-import main.java.omnet.components.ServerC;
-import main.java.omnet.components.ServerD;
-import main.java.omnet.components.ServerE;
-import main.java.omnet.components.ServerF;
-import main.java.omnet.components.ServerG;
-import main.java.omnet.tactics.DecreaseDimmerLevel;
-import main.java.omnet.tactics.DecreaseTrafficLevel;
-import main.java.omnet.tactics.IncreaseDimmerLevel;
-import main.java.omnet.tactics.IncreaseTrafficLevel;
-import main.java.omnet.tactics.ServerTactic;
-import main.java.omnet.tactics.ShutdownServer;
-import main.java.omnet.tactics.StartNewServer;
+import omnet.components.OmnetComponent;
+import omnet.components.ServerA;
+import omnet.components.ServerB;
+import omnet.components.ServerC;
+import omnet.components.ServerD;
+import omnet.components.ServerE;
+import omnet.components.ServerF;
+import omnet.components.ServerG;
+import omnet.tactics.DecreaseDimmerLevel;
+import omnet.tactics.DecreaseTrafficLevel;
+import omnet.tactics.IncreaseDimmerLevel;
+import omnet.tactics.IncreaseTrafficLevel;
+import omnet.tactics.ServerTactic;
+import omnet.tactics.ShutdownServer;
+import omnet.tactics.StartNewServer;
 
 public class OmnetStatePath implements Serializable{
 

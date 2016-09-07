@@ -1,4 +1,4 @@
-package main.java.actions.operators;
+package actions.operators;
 
 import ec.EvolutionState;
 import ec.Problem;
@@ -6,7 +6,7 @@ import ec.gp.ADFStack;
 import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
-import main.java.main.OmnetStateData;
+import main.OmnetStateData;
 
 /*
  * Currently I am removing for loops.  The handling of if then statements

@@ -1,7 +1,7 @@
-package main.java.znn.tactics;
+package znn.tactics;
 
-import main.java.main.StateData;
-import main.java.znn.components.DatabaseAThread;
+import main.StateData;
+import znn.components.DatabaseAThread;
 
 public class DecreaseDatabaseAThreads extends DecreaseDatabaseThreads {
 

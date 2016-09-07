@@ -1,10 +1,10 @@
-package main.java.tests;
+package tests;
 
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import main.java.main.OmnetStateData;
-import main.java.omnet.tactics.IncreaseTrafficLevelA;
+import main.OmnetStateData;
+import omnet.tactics.IncreaseTrafficLevelA;
 
 public class TestSize1 {
 	

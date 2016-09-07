@@ -1,8 +1,8 @@
-package main.java.znn.components;
+package znn.components;
 
 
-import main.java.actions.Component;
-import main.java.main.StateData;
+import actions.Component;
+import main.StateData;
 
 public class ZnnComponent extends Component {
 	int clockTime;

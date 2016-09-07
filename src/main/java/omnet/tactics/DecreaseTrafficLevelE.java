@@ -1,9 +1,9 @@
-package main.java.omnet.tactics;
+package omnet.tactics;
 
-import main.java.main.OmnetStateData;
-import main.java.main.OmnetStatePath;
-import main.java.omnet.components.ServerA;
-import main.java.omnet.components.ServerE;
+import main.OmnetStateData;
+import main.OmnetStatePath;
+import omnet.components.ServerA;
+import omnet.components.ServerE;
 
 public class DecreaseTrafficLevelE extends DecreaseTrafficLevel {
 

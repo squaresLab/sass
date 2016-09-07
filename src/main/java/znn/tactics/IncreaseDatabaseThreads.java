@@ -1,6 +1,6 @@
-package main.java.znn.tactics;
+package znn.tactics;
 
-public abstract class IncreaseDatabaseThreads extends main.java.actions.ActionTemplate{
+public abstract class IncreaseDatabaseThreads extends actions.ActionTemplate{
 
 	@Override
 	protected boolean areAddingItem() {

@@ -1,4 +1,4 @@
-package main.java.main;
+package main;
 
 import ec.EvolutionState;
 import ec.gp.GPFunctionSet;
@@ -12,19 +12,19 @@ import ec.gp.GPTree;
 import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
 import ec.util.Parameter;
-import main.java.actions.operators.SequenceOperator;
-import main.java.omnet.tactics.DecreaseDimmerLevelA;
-import main.java.omnet.tactics.DecreaseDimmerLevelB;
-import main.java.omnet.tactics.DecreaseDimmerLevelD;
-import main.java.omnet.tactics.DecreaseTrafficLevelF;
-import main.java.omnet.tactics.IncreaseDimmerLevelA;
-import main.java.omnet.tactics.IncreaseTrafficLevelA;
-import main.java.omnet.tactics.IncreaseTrafficLevelB;
-import main.java.omnet.tactics.IncreaseTrafficLevelD;
-import main.java.omnet.tactics.ShutdownServerC;
-import main.java.omnet.tactics.StartNewServerA;
-import main.java.omnet.tactics.StartNewServerB;
-import main.java.omnet.tactics.StartNewServerC;
+import actions.operators.SequenceOperator;
+import omnet.tactics.DecreaseDimmerLevelA;
+import omnet.tactics.DecreaseDimmerLevelB;
+import omnet.tactics.DecreaseDimmerLevelD;
+import omnet.tactics.DecreaseTrafficLevelF;
+import omnet.tactics.IncreaseDimmerLevelA;
+import omnet.tactics.IncreaseTrafficLevelA;
+import omnet.tactics.IncreaseTrafficLevelB;
+import omnet.tactics.IncreaseTrafficLevelD;
+import omnet.tactics.ShutdownServerC;
+import omnet.tactics.StartNewServerA;
+import omnet.tactics.StartNewServerB;
+import omnet.tactics.StartNewServerC;
 
 /*
  * This class now compiles - test that it works at run time tomorrow

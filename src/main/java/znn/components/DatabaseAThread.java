@@ -1,6 +1,6 @@
-package main.java.znn.components;
+package znn.components;
 
-import main.java.main.StateData;
+import main.StateData;
 
 public class DatabaseAThread extends DatabaseThread{
 	

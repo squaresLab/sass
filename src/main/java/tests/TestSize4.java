@@ -1,13 +1,13 @@
-package main.java.tests;
+package tests;
 
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import main.java.actions.operators.SequenceOperator;
-import main.java.main.OmnetStateData;
-import main.java.omnet.tactics.DecreaseDimmerLevelA;
-import main.java.omnet.tactics.IncreaseDimmerLevelA;
-import main.java.omnet.tactics.ShutdownServerC;
+import actions.operators.SequenceOperator;
+import main.OmnetStateData;
+import omnet.tactics.DecreaseDimmerLevelA;
+import omnet.tactics.IncreaseDimmerLevelA;
+import omnet.tactics.ShutdownServerC;
 
 public class TestSize4 {
 	

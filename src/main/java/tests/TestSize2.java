@@ -1,12 +1,12 @@
-package main.java.tests;
+package tests;
 
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
-import main.java.actions.operators.SequenceOperator;
-import main.java.main.OmnetStateData;
-import main.java.omnet.tactics.DecreaseDimmerLevelA;
-import main.java.omnet.tactics.IncreaseTrafficLevelF;
+import actions.operators.SequenceOperator;
+import main.OmnetStateData;
+import omnet.tactics.DecreaseDimmerLevelA;
+import omnet.tactics.IncreaseTrafficLevelF;
 
 public class TestSize2 {
 	public static void build2(GPIndividual ind){

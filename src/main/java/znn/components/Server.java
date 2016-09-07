@@ -1,4 +1,4 @@
-package main.java.znn.components;
+package znn.components;
 
 public class Server extends ZnnComponent{
 	

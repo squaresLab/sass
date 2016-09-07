@@ -1,6 +1,6 @@
-package main.java.omnet.tactics;
+package omnet.tactics;
 
-import main.java.main.OmnetStatePath;
+import main.OmnetStatePath;
 
 public abstract class ShutdownServer extends ServerTactic{
 

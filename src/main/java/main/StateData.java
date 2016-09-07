@@ -1,10 +1,10 @@
-package main.java.main;
+package main;
 
 import ec.gp.GPData;
-import main.java.znn.components.DatabaseAThread;
-import main.java.znn.components.DatabaseBThread;
-import main.java.znn.components.L1Server;
-import main.java.znn.components.L2Server;
+import znn.components.DatabaseAThread;
+import znn.components.DatabaseBThread;
+import znn.components.L1Server;
+import znn.components.L2Server;
 
 public class StateData extends GPData {
 	
