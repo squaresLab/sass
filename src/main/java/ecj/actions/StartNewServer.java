@@ -1,7 +1,5 @@
 package ecj.actions;
 
-import codysomnet.tactics.ShutdownServer;
-import codysomnet.tactics.StartServer;
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -9,6 +7,8 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.StateData;
+import generalomnet.tactics.ShutdownServer;
+import generalomnet.tactics.StartServer;
 
 public abstract class StartNewServer extends GPNode {
 

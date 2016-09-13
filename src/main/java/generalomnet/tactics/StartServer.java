@@ -1,7 +1,7 @@
-package codysomnet.tactics;
+package generalomnet.tactics;
 
-import codysomnet.Omnet;
-import codysomnet.components.Server;
+import generalomnet.Omnet;
+import generalomnet.components.Server;
 import system.SystemState;
 import tactics.FailableTactic;
 

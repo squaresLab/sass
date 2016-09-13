@@ -1,18 +1,18 @@
-package codysomnet.tactics;
+package generalomnet.tactics;
 
-import codysomnet.Omnet;
-import codysomnet.components.Server;
+import generalomnet.Omnet;
+import generalomnet.components.Server;
 import system.SystemState;
 import tactics.FailableTactic;
 
-public class IncreaseTraffic extends FailableTactic {
+public class DecreaseTraffic extends FailableTactic {
 
 	// set statically for now
 	private static double failChance = 0.05;
 	
 	private String server;
-	
-	public IncreaseTraffic(String serverName){
+
+	public DecreaseTraffic(String serverName){
 		server = serverName;
 	}
 	
@@ -24,13 +24,9 @@ public class IncreaseTraffic extends FailableTactic {
 		// first, get the target server
 		Server target = omnet.getServer(server);
 		
+		// next, decrease that servers traffic
+		target.setTraffic(target.getTraffic()-1);
 		
-		if (target != null){
-		// next, increase that servers traffic
-		target.setTraffic(target.getTraffic()+1);
-		}else{
-			this.setFailed(true);
-		}
 	}
 
 	@Override
@@ -40,19 +36,19 @@ public class IncreaseTraffic extends FailableTactic {
 
 	@Override
 	public void undo(SystemState systemState) {
+		
 		Omnet omnet = (Omnet) systemState;
 		
 		// first, get the target server
 		Server target = omnet.getServer(server);
 		
-		// next, decrease that servers traffic
-		if (target != null)
-		target.setTraffic(target.getTraffic()-1);
+		// next, increase that servers traffic
+		target.setTraffic(target.getTraffic()+1);
 		
 	}
 	
 	public String toString() {
-		 return "IncreaseTraffic"+server;
+		 return "DecreaseTraffic"+server;
 		}
 
 }

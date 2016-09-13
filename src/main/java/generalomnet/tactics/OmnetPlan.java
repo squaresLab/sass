@@ -1,6 +1,6 @@
-package codysomnet.tactics;
+package generalomnet.tactics;
 
-import codysomnet.Omnet;
+import generalomnet.Omnet;
 import tactics.FailableTactic;
 import tactics.Plan;
 import tactics.Tactic;

@@ -1,8 +1,8 @@
 package ecj;
 
-import codysomnet.Omnet;
-import codysomnet.tactics.OmnetPlan;
 import ec.gp.GPData;
+import generalomnet.Omnet;
+import generalomnet.tactics.OmnetPlan;
 import tactics.Plan;
 
 public class StateData extends GPData {

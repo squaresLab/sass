@@ -1,8 +1,8 @@
-package codysomnet;
+package generalomnet;
 
 import java.util.ArrayList;
 
-import codysomnet.components.Server;
+import generalomnet.components.Server;
 import system.SystemState;
 import tactics.Tactic;
 

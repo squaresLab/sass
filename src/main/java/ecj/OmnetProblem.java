@@ -1,6 +1,5 @@
 package ecj;
 
-import codysomnet.Omnet;
 import ec.EvolutionState;
 import ec.Individual;
 import ec.gp.GPIndividual;
@@ -10,6 +9,7 @@ import ec.gp.GPTree;
 import ec.gp.koza.KozaFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
+import generalomnet.Omnet;
 
 public class OmnetProblem extends GPProblem implements SimpleProblemForm {
 

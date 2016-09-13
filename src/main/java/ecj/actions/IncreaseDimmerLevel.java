@@ -1,7 +1,5 @@
 package ecj.actions;
 
-import codysomnet.tactics.DecreaseDimmer;
-import codysomnet.tactics.IncreaseDimmer;
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -9,6 +7,8 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.StateData;
+import generalomnet.tactics.DecreaseDimmer;
+import generalomnet.tactics.IncreaseDimmer;
 
 public abstract class IncreaseDimmerLevel extends GPNode {
 	

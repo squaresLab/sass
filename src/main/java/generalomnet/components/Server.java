@@ -1,4 +1,4 @@
-package codysomnet.components;
+package generalomnet.components;
 
 public class Server {
 	
