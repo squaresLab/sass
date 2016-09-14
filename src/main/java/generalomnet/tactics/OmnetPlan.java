@@ -31,13 +31,13 @@ public class OmnetPlan extends Plan {
 	public static void main(String[] args){
 		OmnetPlan plan = new OmnetPlan();
 		
-		TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("A"), new OmnetPlan(Arrays.asList(new StartServer("B"))),new OmnetPlan(Arrays.asList(new DecreaseDimmer("A"))));
+		TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("A"), new OmnetPlan(Arrays.asList(new StartServer("B"))),new OmnetPlan(Arrays.asList(new DecreaseDimmer("A"), new DecreaseDimmer("B"))));
 		
 	//	plan.tactics.add(new StartServer("A"));
 	//	plan.tactics.add(new ShutdownServer("B"));
-		plan.tactics.add(new StartServer("C"));
+	//	plan.tactics.add(new StartServer("C"));
 		plan.tactics.add(tcf);
-		plan.tactics.add(new ShutdownServer("C"));
+	//	plan.tactics.add(new ShutdownServer("C"));
 		
 		System.out.println(plan.evaluate(new Omnet()));
 		
@@ -63,7 +63,7 @@ public class OmnetPlan extends Plan {
 				// if we are one, and the if part suceeded, then we must add the finally part
 				if(!tcf.getFailed()){
 					for (int count = 0; count < tcf.getFinally().getTactics().size(); count++){
-						tactics.add(currentStep+1+count, tcf.getFinally().getTactics().get(count));
+						tactics.add(currentStep+1+count, (Tactic) tcf.getFinally().getTactics().get(count).clone());
 					}
 				}
 			}
@@ -102,7 +102,7 @@ public class OmnetPlan extends Plan {
 						
 						// if we are one, and the if part failed, then we must add the catch part
 						for (int count = 0; count < tcf.getCatch().getTactics().size(); count++){
-							tactics.add(currentStep+1+count, tcf.getCatch().getTactics().get(count));
+							tactics.add(currentStep+1+count, (Tactic) tcf.getCatch().getTactics().get(count).clone());
 						}
 					}
 					

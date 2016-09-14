@@ -4,12 +4,18 @@ public abstract class FailableTactic implements Tactic {
 	
 	private boolean failed;
 	
+	private boolean intentionalFail;
+	
 	public FailableTactic(){
 		failed = false;
 	}
 	
 	public boolean getFailed(){
 		return failed;
+	}
+	
+	public boolean getIntentionalFailed(){
+		return intentionalFail;
 	}
 	
 	public void setFailed(boolean failstate){
@@ -24,6 +30,7 @@ public abstract class FailableTactic implements Tactic {
 		FailableTactic copy = (FailableTactic) clone();
 			
 			copy.setFailed(true);
+			copy.intentionalFail = true;
 			
 			return copy;
 	

@@ -64,7 +64,9 @@ public abstract class SystemState {
 			double chance = ft.getFailed() ? ft.getFailChance() : 1 - ft.getFailChance();
 			
 			// undo the probability change
-			pathProbability /= chance;
+			if (ft.getIntentionalFailed() || !ft.getFailed()){
+				pathProbability /= chance;
+			}
 		}
 		
 		// now undo the effect on the system state if needed
