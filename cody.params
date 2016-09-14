@@ -11,7 +11,7 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 9
+gp.fs.0.size = 10
 gp.fs.0.func.0 = ecj.operators.SequenceOperator
 gp.fs.0.func.0.nc = nc2
 gp.fs.0.func.1 = ecj.actions.StartNewServerA
@@ -30,6 +30,8 @@ gp.fs.0.func.7 = ecj.actions.ShutdownServerA
 gp.fs.0.func.7.nc = nc0
 gp.fs.0.func.8 = ecj.actions.ShutdownServerB
 gp.fs.0.func.8.nc = nc0
+gp.fs.0.func.9 = ecj.operators.TryCatchFinally
+gp.fs.0.func.9.nc = nc3
 
 gp.koza.xover.maxdepth = 6
 gp.koza.mutate.maxdepth = 6
@@ -40,8 +42,8 @@ gp.koza.half.max-depth = 6
 
 eval.problem = ecj.OmnetProblem
 eval.problem.data = ecj.StateData
-generations = 10
-pop.subpop.0.size =	10
+generations = 100
+pop.subpop.0.size =	100
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1
