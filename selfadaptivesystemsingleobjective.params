@@ -11,32 +11,27 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 11
-gp.fs.0.func.0 = actions.operators.SequenceOperator
+gp.fs.0.size = 10
+gp.fs.0.func.0 = ecj.operators.SequenceOperator
 gp.fs.0.func.0.nc = nc2
-gp.fs.0.func.1 = omnet.tactics.StartNewServerA
+gp.fs.0.func.1 = ecj.actions.StartNewServerA
 gp.fs.0.func.1.nc = nc0
-gp.fs.0.func.2 = omnet.tactics.StartNewServerB
+gp.fs.0.func.2 = ecj.actions.StartNewServerB
 gp.fs.0.func.2.nc = nc0
-gp.fs.0.func.3 = omnet.tactics.DecreaseDimmerLevelA
+gp.fs.0.func.3 = ecj.actions.DecreaseDimmerLevelA
 gp.fs.0.func.3.nc = nc0
-gp.fs.0.func.4 = omnet.tactics.DecreaseDimmerLevelB
+gp.fs.0.func.4 = ecj.actions.DecreaseDimmerLevelB
 gp.fs.0.func.4.nc = nc0
-gp.fs.0.func.5 = omnet.tactics.IncreaseTrafficLevelA
+gp.fs.0.func.5 = ecj.actions.IncreaseTrafficLevelA
 gp.fs.0.func.5.nc = nc0
-gp.fs.0.func.6 = omnet.tactics.IncreaseTrafficLevelB
+gp.fs.0.func.6 = ecj.actions.IncreaseTrafficLevelB
 gp.fs.0.func.6.nc = nc0
-gp.fs.0.func.7 = omnet.tactics.IncreaseTrafficLevelC
+gp.fs.0.func.7 = ecj.actions.ShutdownServerA
 gp.fs.0.func.7.nc = nc0
-gp.fs.0.func.8 = omnet.tactics.IncreaseTrafficLevelD
+gp.fs.0.func.8 = ecj.actions.ShutdownServerB
 gp.fs.0.func.8.nc = nc0
-gp.fs.0.func.9 = omnet.tactics.ShutdownServerC
-gp.fs.0.func.9.nc = nc0
-gp.fs.0.func.10 = omnet.tactics.ShutdownServerD
-gp.fs.0.func.10.nc = nc0
-
-
-
+gp.fs.0.func.9 = ecj.operators.TryCatchFinally
+gp.fs.0.func.9.nc = nc3
 
 gp.koza.xover.maxdepth = 6
 gp.koza.mutate.maxdepth = 6
@@ -45,10 +40,10 @@ gp.koza.grow.max-depth = 6
 gp.koza.half.min-depth = 6
 gp.koza.half.max-depth = 6
 
-eval.problem = main.SingleObjectiveProblemOmnet
-eval.problem.data = main.OmnetStateData
-generations = 10
-pop.subpop.0.size =	10
+eval.problem = ecj.OmnetProblem
+eval.problem.data = ecj.StateData
+generations = 100
+pop.subpop.0.size =	100
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1
@@ -58,7 +53,7 @@ evalthreads = 1
 
 stat =	main.AverageFitnessStatistics
 
-gp.tc.0.init = main.MutationBuilder
+gp.tc.0.init = ecj.MutationBuilder
 
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
