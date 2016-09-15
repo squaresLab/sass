@@ -40,7 +40,7 @@ gp.koza.grow.max-depth = 6
 gp.koza.half.min-depth = 6
 gp.koza.half.max-depth = 6
 
-eval.problem = ecj.OmnetProblem
+eval.problem = ecj.OmnetProblemSingle
 eval.problem.data = ecj.StateData
 generations = 100
 pop.subpop.0.size =	100
