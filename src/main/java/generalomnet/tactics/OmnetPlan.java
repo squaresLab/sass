@@ -13,6 +13,8 @@ import tactics.TryCatchFinallyTactic;
 public class OmnetPlan extends Plan {
 	
 	public int invalidActions;
+	
+	private double responses,income,cost,profit,time,dimmedResponses,normalResponses;
 
 	public OmnetPlan(){
 		super();
@@ -40,12 +42,14 @@ public class OmnetPlan extends Plan {
 	//	plan.tactics.add(new ShutdownServer("C"));
 		
 		System.out.println(plan.evaluate(new Omnet()));
+		System.out.println(plan.profit);
 		
 	}
 	
 	private double evaluate(Omnet system, int currentStep){
 		
 		if (currentStep == tactics.size()){
+			processLeaf(system);
 			return system.calculateProfit() * system.getProbability();
 		}else{
 			
@@ -140,6 +144,46 @@ public class OmnetPlan extends Plan {
 		}
 	}
 	
+	private void processLeaf(Omnet system) {
+		
+		profit += system.calculateProfit() * system.getProbability();
+		responses += (system.getDimmedResponses() + system.getNormalResponses())* system.getProbability();
+		dimmedResponses += system.getDimmedResponses()* system.getProbability();
+		normalResponses += system.getDimmedResponses()* system.getProbability();
+		income += system.getIncome() * system.getProbability();
+		//time += 
+		cost += system.getCost() * system.getProbability();
+		
+	}
+
+	public int getInvalidActions() {
+		return invalidActions;
+	}
+
+	public double getResponses() {
+		return responses;
+	}
+
+	public double getIncome() {
+		return income;
+	}
+
+	public double getCost() {
+		return cost;
+	}
+
+	public double getProfit() {
+		return profit;
+	}
+
+	public double getDimmedResponses() {
+		return dimmedResponses;
+	}
+
+	public double getNormalResponses() {
+		return normalResponses;
+	}
+
 	public String toString(){
 		String ans = "";
 		
@@ -160,6 +204,11 @@ public class OmnetPlan extends Plan {
 		
 		return copy;
 		
+	}
+
+	public double getTime() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
