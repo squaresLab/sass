@@ -7,7 +7,6 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.StateData;
-import main.OmnetStateData;
 
 public class SequenceOperator extends GPNode {
 

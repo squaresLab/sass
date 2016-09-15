@@ -7,9 +7,7 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.StateData;
-import generalomnet.tactics.DecreaseDimmer;
 import generalomnet.tactics.ShutdownServer;
-import main.OmnetStatePath;
 
 public abstract class ShutdownServerNode extends GPNode {
 

@@ -7,7 +7,6 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.StateData;
-import generalomnet.tactics.ShutdownServer;
 import generalomnet.tactics.StartServer;
 
 public abstract class StartNewServer extends GPNode {

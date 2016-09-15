@@ -8,7 +8,6 @@ import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.StateData;
 import tactics.FailableTactic;
-import tactics.Tactic;
 import tactics.TryCatchFinallyTactic;
 
 public class TryCatchFinally extends GPNode {

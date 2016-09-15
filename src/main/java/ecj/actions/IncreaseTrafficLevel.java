@@ -7,7 +7,6 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.StateData;
-import generalomnet.tactics.IncreaseDimmer;
 import generalomnet.tactics.IncreaseTraffic;
 
 public abstract class IncreaseTrafficLevel extends GPNode {

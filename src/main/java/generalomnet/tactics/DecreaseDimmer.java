@@ -4,7 +4,6 @@ import generalomnet.Omnet;
 import generalomnet.components.Server;
 import system.SystemState;
 import tactics.FailableTactic;
-import tactics.Tactic;
 
 public class DecreaseDimmer extends FailableTactic {
 

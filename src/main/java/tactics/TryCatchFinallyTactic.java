@@ -1,9 +1,5 @@
 package tactics;
 
-import java.util.ArrayList;
-
-import generalomnet.Omnet;
-import generalomnet.tactics.OmnetPlan;
 import system.SystemState;
 
 public class TryCatchFinallyTactic extends FailableTactic {

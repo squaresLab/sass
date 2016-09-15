@@ -13,19 +13,10 @@ import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
 import ec.util.Parameter;
 import ecj.operators.SequenceOperator;
-import main.OmnetStateData;
 import ecj.actions.DecreaseDimmerLevelA;
 import ecj.actions.DecreaseDimmerLevelB;
 import ecj.actions.DecreaseDimmerLevelD;
-import ecj.actions.DecreaseTrafficLevelF;
-import ecj.actions.IncreaseDimmerLevelA;
-import ecj.actions.IncreaseTrafficLevelA;
-import ecj.actions.IncreaseTrafficLevelB;
 import ecj.actions.IncreaseTrafficLevelD;
-import ecj.actions.ShutdownServerC;
-import ecj.actions.StartNewServerA;
-import ecj.actions.StartNewServerB;
-import ecj.actions.StartNewServerC;
 
 /*
  * This class now compiles - test that it works at run time tomorrow
@@ -151,7 +142,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 		
 	//Original Plan: (; StartNewServerB (; StartNewServerB (; (; StartNewServerB (; StartNewServerC StartNewServerC)) (; StartNewServerB (; StartNewServerC StartNewServerC))))))
 		// change to: ( StartNewServerB ; StartNewServerC )
-	OmnetStateData sd = new OmnetStateData();
+	StateData sd = new StateData();
 	sd.initializeState();
 	GPIndividual ind = new GPIndividual();
 	GPTree[] treeInit = {new GPTree()};
