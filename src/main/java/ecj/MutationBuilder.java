@@ -13,10 +13,10 @@ import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
 import ec.util.Parameter;
 import ecj.operators.SequenceOperator;
-import ecj.actions.DecreaseDimmerLevelA;
-import ecj.actions.DecreaseDimmerLevelB;
-import ecj.actions.DecreaseDimmerLevelD;
-import ecj.actions.IncreaseTrafficLevelD;
+import ecj.actions.DecreaseDimmerLevel;
+import ecj.actions.IncreaseTrafficLevel;
+import ecj.actions.ServerA;
+import ecj.actions.ServerB;
 
 /*
  * This class now compiles - test that it works at run time tomorrow
@@ -201,29 +201,40 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 
 //size 4, hang sometimes...
 	GPNode node1 = new SequenceOperator();
-	GPNode node2 = new IncreaseTrafficLevelD();
-	GPNode node3 = new SequenceOperator();
-	GPNode node4 = new DecreaseDimmerLevelB();
-	GPNode node5 = new SequenceOperator();
-	GPNode node6 = new DecreaseDimmerLevelA();
-	GPNode node7 = new DecreaseDimmerLevelD();
+	GPNode node2 = new IncreaseTrafficLevel();
+	GPNode node3 = new ServerA();
+	GPNode node4 = new SequenceOperator();
+	GPNode node5 = new DecreaseDimmerLevel();
+	GPNode node6 = new ServerB();
+	GPNode node7 = new SequenceOperator();
+	GPNode node8 = new DecreaseDimmerLevel();
+	GPNode node9 = new ServerB();
+	GPNode node10 = new DecreaseDimmerLevel();
+	GPNode node11 = new ServerB();
 
 	GPNode[] childrenOfNode1 = new GPNode[2];
-	GPNode[] childrenOfNode2 = new GPNode[0];
-	GPNode[] childrenOfNode3 = new GPNode[2];
-	GPNode[] childrenOfNode4 = new GPNode[0];
-	GPNode[] childrenOfNode5 = new GPNode[2];
+	GPNode[] childrenOfNode2 = new GPNode[1];
+	GPNode[] childrenOfNode3 = new GPNode[0];
+	GPNode[] childrenOfNode4 = new GPNode[2];
+	GPNode[] childrenOfNode5 = new GPNode[1];
 	GPNode[] childrenOfNode6 = new GPNode[0];
-	GPNode[] childrenOfNode7 = new GPNode[0];
+	GPNode[] childrenOfNode7 = new GPNode[2];
+	GPNode[] childrenOfNode8 = new GPNode[1];
+	GPNode[] childrenOfNode9 = new GPNode[0];
+	GPNode[] childrenOfNode10 = new GPNode[1];
+	GPNode[] childrenOfNode11 = new GPNode[0];
 
 	childrenOfNode1[0] = node2;
-	childrenOfNode1[1] = node3;
-	childrenOfNode3[0] = node4;
-	childrenOfNode3[1] = node5;
+	childrenOfNode1[1] = node4;
+	childrenOfNode2[0] = node3;
+	childrenOfNode4[0] = node5;
+	childrenOfNode4[1] = node7;
 	childrenOfNode5[0] = node6;
-	childrenOfNode5[1] = node7;
-
-
+	childrenOfNode7[0] = node8;
+	childrenOfNode7[1] = node10;
+	childrenOfNode8[0] = node9;
+	childrenOfNode10[0] = node11;
+	
 	ind.trees[0].child=node1;
 	node1.children = childrenOfNode1;
 	node2.children = childrenOfNode2;
@@ -232,14 +243,22 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	node5.children = childrenOfNode5;
 	node6.children = childrenOfNode6;
 	node7.children = childrenOfNode7;
+	node8.children = childrenOfNode8;
+	node9.children = childrenOfNode9;
+	node10.children = childrenOfNode10;
+	node11.children = childrenOfNode11;
 	
 	node1.parent = ind.trees[0];
 	node2.parent = node1;
-	node3.parent = node1;
-	node4.parent = node3;
-	node5.parent = node3;
+	node3.parent = node2;
+	node4.parent = node1;
+	node5.parent = node4;
 	node6.parent = node5;
-	node7.parent = node5;
+	node7.parent = node4;
+	node8.parent = node7;
+	node9.parent = node8;
+	node10.parent = node7;
+	node11.parent = node10;
 	
 	
 	
