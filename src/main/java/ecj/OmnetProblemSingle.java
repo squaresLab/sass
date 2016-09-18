@@ -11,8 +11,8 @@ import generalomnet.Omnet;
 
 public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 
-		private final int INVALID_ACTION_PENALTY = 30;
-		private final int VERBOSENESS_PENALTY = 20;
+		private final double INVALID_ACTION_PENALTY = .1;
+		private final double VERBOSENESS_PENALTY = .1;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);
@@ -61,12 +61,20 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				//double fitnessValue = ((OmnetStateData)input).getSingleObjectiveScore();
 //				System.err.println("DO I EVER MAKE IT here?");
 //				System.exit(0);
-				double fitnessValue = ((StateData)input).plan.evaluate(new Omnet());
+				
+				
+				double fitnessValue;
+				
+				if(((StateData)input).plan.size() < 50){
+					fitnessValue = ((StateData)input).plan.evaluate(new Omnet());
+				}else{
+					fitnessValue = 0;
+				}
 				
 				//take off a penalty for invalid actions
 				fitnessValue -= ((StateData)input).plan.invalidActions * INVALID_ACTION_PENALTY;
 				//take off a penalty for plan length
-				fitnessValue -= ((GPIndividual)ind).size() * VERBOSENESS_PENALTY;
+				fitnessValue -= ((StateData)input).plan.size() * VERBOSENESS_PENALTY;
 				
 				
 				
@@ -76,7 +84,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 					fitnessValue = 1 / fitnessValue;
 				}
 				
-				System.out.println("Score: "+((GPIndividual)ind).size()+" "+1.0/fitnessValue + " " + ((StateData)input).plan);
+				//System.out.println("Score: "+((GPIndividual)ind).size()+" "+1.0/fitnessValue + " " + ((StateData)input).plan);
 				
 				/*
 				System.out.println("current individual:");

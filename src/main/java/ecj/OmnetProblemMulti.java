@@ -35,7 +35,7 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 		        	paramValue = null;
 		        if (state.parameters.exists(objectivesParam, null))
 		        {
-		            paramValue = state.parameters.getStringWithDefault(objectivesParam, null, "tcrfdipl");
+		            paramValue = state.parameters.getStringWithDefault(objectivesParam, null, "paqtcrfdil");
 		        } else {
 		        	System.err.println("please define the objectives parameter to list what the plans should be evaluated on");
 		        	System.exit(1);
@@ -94,15 +94,28 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				
 				// begin code for multi objective				
 				
+				double[] objectives;
+				
+				
+				
 				((StateData)input).initializeState();
 				
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, ((GPIndividual)ind), this);
 				
-				double[] objectives = getObjectives(paramValue,(StateData)input,(GPIndividual)ind);
+				
+				if (((StateData)input).plan.size() < 60){
+				
+					objectives = getObjectives(paramValue,(StateData)input,(GPIndividual)ind);
+				
+				}else{
+					objectives = getNonsense(paramValue.length());
+				}
+				
 				
 				((MultiObjectiveFitness)ind.fitness).setObjectives(state, objectives);
 				
 				//System.out.println(((StateData)input).plan);
+				
 				
 				ind.evaluated=true;
 			} 
@@ -123,8 +136,18 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 		#l - minimize plan length
 		#example objective string: rql - evaluate based on response time, quality, and plan length 
 		 
-		objectives=tcripl
+		objectives=tcrfdipl
+		1      2     3       4    5      6     7       8
+		time,cost,respones,full,dimmed,income,profit,length
 		*/
+		
+		private double[] getNonsense(int size){
+			double[] ans = new double[size];
+			for (int count = 0; count < size; count++){
+				ans[count] = Double.NEGATIVE_INFINITY;
+			}
+			return ans;
+		}
 		
 		private double[] getObjectives(String objString, StateData input,GPIndividual ind) {
 			
@@ -140,12 +163,14 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				 switch(cur){
 				 case 't' : ans[count] = plan.getTime(); break;
 				 case 'c' : ans[count] = plan.getCost(); break;
-				 case 'r' : ans[count] = plan.getDimmedResponses(); break;
-				 case 'd' : ans[count] = plan.getNormalResponses(); break;
-				 case 'f' : ans[count] = plan.getResponses(); break;
+				 case 'r' : ans[count] = plan.getResponses(); break;
+				 case 'd' : ans[count] = plan.getDimmedResponses(); break;
+				 case 'f' : ans[count] = plan.getNormalResponses(); break;
 				 case 'i' : ans[count] = plan.getIncome(); break;
 				 case 'p' : ans[count] = plan.getProfit(); break;
-				 case 'l' : ans[count] = ind.size(); break;
+				 case 'l' : ans[count] = plan.size(); break;
+				 case 'q' : ans[count] = plan.getNormalResponses() / plan.getResponses(); break;
+				 case 'a' : ans[count] = plan.getLatency(); break;
 				}
 				
 			}
