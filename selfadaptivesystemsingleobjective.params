@@ -11,39 +11,129 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 10
-gp.fs.0.func.0 = ecj.operators.SequenceOperator
-gp.fs.0.func.0.nc = nc2
-gp.fs.0.func.1 = ecj.actions.StartNewServerA
-gp.fs.0.func.1.nc = nc0
-gp.fs.0.func.2 = ecj.actions.StartNewServerB
-gp.fs.0.func.2.nc = nc0
-gp.fs.0.func.3 = ecj.actions.DecreaseDimmerLevelA
-gp.fs.0.func.3.nc = nc0
-gp.fs.0.func.4 = ecj.actions.DecreaseDimmerLevelB
-gp.fs.0.func.4.nc = nc0
-gp.fs.0.func.5 = ecj.actions.IncreaseTrafficLevelA
-gp.fs.0.func.5.nc = nc0
-gp.fs.0.func.6 = ecj.actions.IncreaseTrafficLevelB
-gp.fs.0.func.6.nc = nc0
-gp.fs.0.func.7 = ecj.actions.ShutdownServerA
-gp.fs.0.func.7.nc = nc0
-gp.fs.0.func.8 = ecj.actions.ShutdownServerB
+gp.fs.0.size = 12
+gp.fs.0.func.0 = ecj.operators.TryCatchFinally
+gp.fs.0.func.0.nc = nc3
+gp.fs.0.func.1 = ecj.operators.SequenceOperator
+gp.fs.0.func.1.nc = nc2
+gp.fs.0.func.2 = ecj.actions.StartNewServer
+gp.fs.0.func.2.nc = nc1
+gp.fs.0.func.3 = ecj.actions.IncreaseDimmerLevel
+gp.fs.0.func.3.nc = nc1
+gp.fs.0.func.4 = ecj.actions.DecreaseDimmerLevel
+gp.fs.0.func.4.nc = nc1
+gp.fs.0.func.5 = ecj.actions.IncreaseTrafficLevel
+gp.fs.0.func.5.nc = nc1
+gp.fs.0.func.6 = ecj.actions.DecreaseTrafficLevel
+gp.fs.0.func.6.nc = nc1
+gp.fs.0.func.7 = ecj.actions.ShutdownServerNode
+gp.fs.0.func.7.nc = nc1
+gp.fs.0.func.8 = ecj.actions.ServerA
 gp.fs.0.func.8.nc = nc0
-gp.fs.0.func.9 = ecj.operators.TryCatchFinally
-gp.fs.0.func.9.nc = nc3
+gp.fs.0.func.9 = ecj.actions.ServerB
+gp.fs.0.func.9.nc = nc0
+gp.fs.0.func.10 = ecj.actions.ServerC
+gp.fs.0.func.10.nc = nc0
+gp.fs.0.func.11 = ecj.actions.ServerD
+gp.fs.0.func.11.nc = nc0
 
-gp.koza.xover.maxdepth = 6
-gp.koza.mutate.maxdepth = 6
-gp.koza.grow.min-depth = 6
-gp.koza.grow.max-depth = 6
-gp.koza.half.min-depth = 6
-gp.koza.half.max-depth = 6
+
+# Here we define a single atomic type, "nil", which everyone will use.
+# There are no set types defined.
+
+gp.type.a.size = 2
+gp.type.a.0.name = server
+gp.type.a.1.name = plan
+gp.type.s.size = 0
+
+# Here we define one GPTreeConstraints object, "tc0",
+# which uses ec.gp.koza.HalfBuilder to create nodes,
+# only allows nodes from the GPFunctionSet "fset",
+# and has the single type "nil" as its tree type.
+# You don't need to include the class declaration here,
+# but it quiets warnings.
+
+gp.tc.size = 1
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+gp.tc.0.fset = f0
+gp.tc.0.returns = plan
+
+# Here we define 7 GPNodeConstraints, nc0...nc6, which
+# describe nodes with 0...6 children respectively, which only
+# use a single type, "nil", for their argument and return types
+# You don't need to include the class declarations with everything
+# else below, but it quiets warnings
+
+gp.nc.size = 4
+
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = nc0
+gp.nc.0.returns = server
+gp.nc.0.size = 0
+
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = nc1
+gp.nc.1.returns = plan
+gp.nc.1.size = 1
+gp.nc.1.child.0 = server
+
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = nc2
+gp.nc.2.returns = plan
+gp.nc.2.size = 2
+gp.nc.2.child.0 = plan
+gp.nc.2.child.1 = plan
+
+gp.nc.3 = ec.gp.GPNodeConstraints
+gp.nc.3.name = nc3
+gp.nc.3.returns = plan
+gp.nc.3.size = 3
+gp.nc.3.child.0 = plan
+gp.nc.3.child.1 = plan
+gp.nc.3.child.2 = plan
+
+gp.nc.4 = ec.gp.GPNodeConstraints
+gp.nc.4.name = nc4
+gp.nc.4.returns = plan
+gp.nc.4.size = 4
+gp.nc.4.child.0 = plan
+gp.nc.4.child.1 = plan
+gp.nc.4.child.2 = plan
+gp.nc.4.child.3 = plan
+
+gp.nc.5 = ec.gp.GPNodeConstraints
+gp.nc.5.name = nc5
+gp.nc.5.returns = plan
+gp.nc.5.size = 5
+gp.nc.5.child.0 = plan
+gp.nc.5.child.1 = plan
+gp.nc.5.child.2 = plan
+gp.nc.5.child.3 = plan
+gp.nc.5.child.4 = plan
+
+gp.nc.6 = ec.gp.GPNodeConstraints
+gp.nc.6.name = nc6
+gp.nc.6.returns = plan
+gp.nc.6.size = 6
+gp.nc.6.child.0 = plan
+gp.nc.6.child.1 = plan
+gp.nc.6.child.2 = plan
+gp.nc.6.child.3 = plan
+gp.nc.6.child.4 = plan
+gp.nc.6.child.5 = plan
+
+gp.koza.xover.maxdepth = 20
+gp.koza.mutate.maxdepth = 20
+gp.koza.grow.min-depth = 4
+gp.koza.grow.max-depth = 20
+gp.koza.half.min-depth = 4
+gp.koza.half.max-depth = 20
 
 eval.problem = ecj.OmnetProblemSingle
 eval.problem.data = ecj.StateData
-generations = 100
-pop.subpop.0.size =	100
+generations = 1000
+pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1
@@ -51,14 +141,14 @@ evalthreads = 1
 
 #print-params = true
 
-stat =	main.AverageFitnessStatistics
+stat =	ec.simple.SimpleStatistics
 
-gp.tc.0.init = ecj.MutationBuilder
+gp.tc.0.init = ec.gp.koza.HalfBuilder
 
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
 gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
-gp.koza.initmutate.maxdepth = 6
+gp.koza.initmutate.maxdepth = 20
 gp.koza.initmutate.tries = 1
 
 
