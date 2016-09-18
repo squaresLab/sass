@@ -19,6 +19,8 @@ public class TryCatchFinallyTactic extends FailableTactic {
 	@Override
 	public void visit(SystemState systemState) {
 		inTry.visit(systemState);
+		if (inTry.getFailed())
+			setFailed(true);
 	}
 	
 	@Override
@@ -41,6 +43,16 @@ public class TryCatchFinallyTactic extends FailableTactic {
 	
 	public String toString(){
 		return "T("+inTry+") catch ("+inCatch+")("+inFinally+")";
+	}
+
+	@Override
+	public int size() {
+		return inTry.size() + inCatch.size() + inFinally.size();
+	}
+
+	@Override
+	public double getTime() {
+		return inTry.getTime() + inCatch.getTime() * inTry.getFailChance() + inFinally.getTime() * (1 - inTry.getFailChance());
 	}
 
 }

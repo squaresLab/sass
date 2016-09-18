@@ -46,5 +46,10 @@ public abstract class FailableTactic implements Tactic {
 			return null;
 		}
 	}
+	
+	// default size is 1
+	public int size(){
+		return 1;
+	}
 
 }

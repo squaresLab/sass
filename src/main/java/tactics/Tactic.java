@@ -12,4 +12,8 @@ public interface Tactic extends Cloneable {
 	
 	public Object clone();
 
+	public int size();
+
+	public double getTime();
+
 }

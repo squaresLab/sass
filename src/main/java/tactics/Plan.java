@@ -19,4 +19,20 @@ public abstract class Plan implements Cloneable {
 		return tactics;
 	}
 	
+	public int size(){
+		int ans = 0;
+		for (int count = 0; count < tactics.size(); count++){
+			ans += tactics.get(count).size();
+		}
+		return ans;
+	}
+	
+	public double getTime(){
+		int ans = 0;
+		for (int count = 0; count < tactics.size(); count++){
+			ans += tactics.get(count).getTime();
+		}
+		return ans;
+	}
+	
 }
