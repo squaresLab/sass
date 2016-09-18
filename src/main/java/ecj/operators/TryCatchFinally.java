@@ -12,7 +12,7 @@ import tactics.TryCatchFinallyTactic;
 
 public class TryCatchFinally extends GPNode {
 	
-	public String toString() { return ";"; }
+	public String toString() { return "T"; }
 
 	public int expectedChildren() { return 3;}
 
