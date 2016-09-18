@@ -3,7 +3,9 @@ package generalomnet.components;
 public class Server {
 	
 	// the cost per second
-	private double cost;
+	private double cost = 10;
+	// the computational power
+	private double power = 1500;
 	// the number of requests per seccond
 	private double normalLoad;
 	private double dimmedLoad;
@@ -25,8 +27,8 @@ public class Server {
 		this.name = name;
 		
 		// provide default values
-		dimmer = 3;
-		traffic = 4;
+		dimmer = 5;
+		traffic = 5;
 		
 		validState = true;
 	
@@ -97,6 +99,10 @@ public class Server {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public double getPower() {
+		return power;
 	}
 	
 	

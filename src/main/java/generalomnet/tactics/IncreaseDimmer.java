@@ -24,8 +24,14 @@ public class IncreaseDimmer extends FailableTactic {
 		// first, get the target server
 		Server target = omnet.getServer(server);
 		
+		if (target != null){
+		
 		// next, increase that servers dimmer
 		target.setDimmer(target.getDimmer()+1);	
+		
+		}else{
+			this.setFailed(true);
+		}
 		
 	}
 
@@ -49,5 +55,10 @@ public class IncreaseDimmer extends FailableTactic {
 	public String toString() {
 		 return "IncreaseDimmer"+server;
 		}
+
+	@Override
+	public double getTime() {
+		return 15;
+	}
 
 }

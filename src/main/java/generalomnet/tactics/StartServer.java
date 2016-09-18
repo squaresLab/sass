@@ -57,4 +57,9 @@ public class StartServer extends FailableTactic {
 		 return "StartServer"+server;
 		}
 
+	@Override
+	public double getTime() {
+		return 60;
+	}
+
 }

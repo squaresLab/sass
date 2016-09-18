@@ -24,8 +24,14 @@ public class DecreaseTraffic extends FailableTactic {
 		// first, get the target server
 		Server target = omnet.getServer(server);
 		
+		if (target != null){
+		
 		// next, decrease that servers traffic
 		target.setTraffic(target.getTraffic()-1);
+		
+		}else{
+			this.setFailed(true);
+		}
 		
 	}
 
@@ -50,5 +56,10 @@ public class DecreaseTraffic extends FailableTactic {
 	public String toString() {
 		 return "DecreaseTraffic"+server;
 		}
+
+	@Override
+	public double getTime() {
+		return 10;
+	}
 
 }

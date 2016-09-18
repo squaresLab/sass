@@ -46,9 +46,9 @@ public class ShutdownServer extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 		
-		removed = omnet.getServer(server);
+		Server check = omnet.getServer(server);
 		
-		if (removed != null){
+		if (check == null){
 			
 			// re-add the server from the servers list
 			omnet.getServers().add(removed);
@@ -59,5 +59,10 @@ public class ShutdownServer extends FailableTactic {
 	public String toString() {
 		 return "ShutdownServer"+server;
 		}
+
+	@Override
+	public double getTime() {
+		return 30;
+	}
 
 }

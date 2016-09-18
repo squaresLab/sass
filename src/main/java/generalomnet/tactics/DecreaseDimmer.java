@@ -63,5 +63,10 @@ public class DecreaseDimmer extends FailableTactic {
 		return new DecreaseDimmer(server);
 	}
 
+	@Override
+	public double getTime() {
+		return 10;
+	}
+
 
 }

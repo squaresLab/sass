@@ -55,4 +55,9 @@ public class IncreaseTraffic extends FailableTactic {
 		 return "IncreaseTraffic"+server;
 		}
 
+	@Override
+	public double getTime() {
+		return 5;
+	}
+
 }

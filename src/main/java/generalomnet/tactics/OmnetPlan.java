@@ -13,7 +13,7 @@ public class OmnetPlan extends Plan {
 	
 	public int invalidActions;
 	
-	private double responses,income,cost,profit,time,dimmedResponses,normalResponses;
+	private double responses,income,cost,profit,time,dimmedResponses,normalResponses,latency;
 
 	public OmnetPlan(){
 		super();
@@ -22,7 +22,7 @@ public class OmnetPlan extends Plan {
 	public OmnetPlan(List<Tactic> asList) {
 		super(asList);
 	}
-
+	
 	public double evaluate(Omnet system){
 		
 		return evaluate(system, 0);
@@ -148,8 +148,9 @@ public class OmnetPlan extends Plan {
 		profit += system.calculateProfit() * system.getProbability();
 		responses += (system.getDimmedResponses() + system.getNormalResponses())* system.getProbability();
 		dimmedResponses += system.getDimmedResponses()* system.getProbability();
-		normalResponses += system.getDimmedResponses()* system.getProbability();
+		normalResponses += system.getNormalResponses()* system.getProbability();
 		income += system.getIncome() * system.getProbability();
+		latency += system.getLatency() * system.getProbability();
 		//time += 
 		cost += system.getCost() * system.getProbability();
 		
@@ -205,9 +206,8 @@ public class OmnetPlan extends Plan {
 		
 	}
 
-	public double getTime() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getLatency() {
+		return latency;
 	}
 
 }
