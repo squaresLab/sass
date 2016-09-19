@@ -61,7 +61,7 @@ public abstract class LabeledTactic<T extends FailableTactic> extends GPNode {
 	
 	@Override
 	public String toString(){
-		return tactic.getName();
+		return tactic.getSimpleName();
 	}
 
 }
