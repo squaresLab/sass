@@ -49,7 +49,7 @@ public class DecreaseDimmer extends FailableTactic {
 		Server target = omnet.getServer(server);
 		
 		// next, increase that servers dimmer
-		if (target != null)
+		//if (target != null)
 		target.setDimmer(target.getDimmer()+1);
 		
 	}

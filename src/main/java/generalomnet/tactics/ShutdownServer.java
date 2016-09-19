@@ -45,15 +45,11 @@ public class ShutdownServer extends FailableTactic {
 	public void undo(SystemState systemState) {
 		
 		Omnet omnet = (Omnet) systemState;
-		
-		Server check = omnet.getServer(server);
-		
-		if (check == null){
 			
-			// re-add the server from the servers list
-			omnet.getServers().add(removed);
+		// re-add the server from the servers list
+		omnet.getServers().add(removed);
 
-		}
+		
 		
 	}
 	public String toString() {
