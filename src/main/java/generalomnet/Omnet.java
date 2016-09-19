@@ -13,15 +13,17 @@ public class Omnet extends SystemState {
 	
 	private static final double NORMAL_PROFIT_PER_SECOND = 10;
 
-	private static final double DIMMED_PROFIT_PER_SECOND = 1.5;
+	private static final double DIMMED_PROFIT_PER_SECOND = 2;
 	
 	private static final double POWER_PER_NORMAL_RESPONSE_PER_SECOND = 10;
 	
-	private static final double POWER_PER_DIMMED_RESPONSE_PER_SECOND = 2;
+	private static final double POWER_PER_DIMMED_RESPONSE_PER_SECOND = 5;
 	
 	private double dimmedResponses,normalResponses,income,cost,latency;
 
 	private ArrayList<Server> servers;
+
+	private static final double MAX_LATENCY_PER_SERVER = 1000;
 	
 	public Omnet(){
 		servers = new ArrayList<Server>();
@@ -32,7 +34,7 @@ public class Omnet extends SystemState {
 		public double calculateProfit(){
 			
 			//reset fields
-			dimmedResponses = 0; normalResponses = 0; income = 0; cost = 0; latency = Double.POSITIVE_INFINITY;
+			dimmedResponses = 0; normalResponses = 0; income = 0; cost = 0; latency = 0;
 			
 			if(isStateValid()){
 				
@@ -43,8 +45,6 @@ public class Omnet extends SystemState {
 				// take sum of traffic level over all servers
 				for(int i = 0; i < servers.size(); i++){
 					sumTrafficLevel += servers.get(i).getTraffic();
-					latency = 0; // reset latency if there are servers present
-					// otherwise it will remain infinity
 				}
 				
 				double requestsPerTrafficLevel = ((double)SYSTEM_DEMAND)/sumTrafficLevel;
@@ -53,7 +53,7 @@ public class Omnet extends SystemState {
 					current = servers.get(i);
 					
 						double currentDimmerPercentage = ((double)current.getDimmer())
-								/servers.get(i).MAX_DIMMER_LVL;
+								/current.MAX_DIMMER_LVL;
 						
 						double currentRequests = requestsPerTrafficLevel * current.getTraffic();
 						
@@ -75,7 +75,7 @@ public class Omnet extends SystemState {
 						totalProfit += NORMAL_PROFIT_PER_SECOND * fullReplys + 
 								DIMMED_PROFIT_PER_SECOND * dimmedReplys;
 								
-						totalProfit -= servers.get(i).getCost();
+						totalProfit -= current.getCost();
 						
 						dimmedResponses += dimmedReplys;
 						normalResponses += fullReplys;
@@ -83,7 +83,20 @@ public class Omnet extends SystemState {
 						income += NORMAL_PROFIT_PER_SECOND * fullReplys + 
 								DIMMED_PROFIT_PER_SECOND * dimmedReplys;
 						
-						latency += 1 / (handleable - requests);
+						/*
+						double calcLatency = 1 / (handleable - requests);
+						
+						if (!Double.isFinite(calcLatency)){
+							calcLatency = MAX_LATENCY_PER_SERVER ;
+						}
+						
+						latency += calcLatency;
+						*/
+						
+						if (currentRequests - fullReplys - dimmedReplys < 0)
+							System.out.println("wtf?");
+						
+						latency += currentRequests - fullReplys - dimmedReplys;
 						
 					
 				}
