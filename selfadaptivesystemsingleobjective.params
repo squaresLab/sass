@@ -132,8 +132,8 @@ gp.koza.half.max-depth = 20
 
 eval.problem = ecj.OmnetProblemSingle
 eval.problem.data = ecj.StateData
-generations = 1000
-pop.subpop.0.size =	1000
+generations = 100
+pop.subpop.0.size =	100
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1

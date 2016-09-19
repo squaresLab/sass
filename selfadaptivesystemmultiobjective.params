@@ -183,12 +183,12 @@ gp.koza.half.max-depth = 6
 
 eval.problem = ecj.OmnetProblemMulti
 eval.problem.data = ecj.StateData
-generations = 500
-pop.subpop.0.size =	100
+generations = 1000
+pop.subpop.0.size =	200
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1
-evalthreads = 1
+evalthreads = 4
 
 #print-params = true
 
@@ -196,6 +196,9 @@ evalthreads = 1
 pop.subpop.0.species = ec.vector.FloatVectorSpecies
 pop.subpop.0.species.ind = ec.vector.DoubleVectorIndividual
 seed.0 = time
+seed.1 = 45674673
+seed.2 = 674356287
+seed.3 = 658345764
 
 eval.problem.stack = ec.gp.ADFStack
 eval.problem.stack.context = ec.gp.ADFContext
