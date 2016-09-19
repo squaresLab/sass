@@ -65,7 +65,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				
 				double fitnessValue;
 				
-				if(((StateData)input).plan.size() < 20){
+				if(((StateData)input).plan.size() < 50){
 					fitnessValue = ((StateData)input).plan.evaluate(new Omnet());
 				}else{
 					fitnessValue = 0;

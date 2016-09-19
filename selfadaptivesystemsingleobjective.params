@@ -148,7 +148,7 @@ gp.tc.0.init = ec.gp.koza.HalfBuilder
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
 gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
-gp.koza.initmutate.maxdepth = 20
+gp.koza.initmutate.maxdepth = 10
 gp.koza.initmutate.tries = 1
 
 

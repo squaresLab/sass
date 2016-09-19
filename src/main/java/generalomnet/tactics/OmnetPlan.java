@@ -36,16 +36,21 @@ public class OmnetPlan extends Plan {
 		
 		plan.tactics.add(new StartServer("A"));
 		plan.tactics.add(new StartServer("B"));
-		//plan.tactics.add(new StartServer("D"));
+		plan.tactics.add(new StartServer("D"));
 	//	plan.tactics.add(new ShutdownServer("B"));
-	//	plan.tactics.add(new StartServer("C"));
+		plan.tactics.add(new StartServer("C"));
 		
-		
+		plan.tactics.add(new DecreaseDimmer("D"));
+		plan.tactics.add(new DecreaseDimmer("D"));
+		plan.tactics.add(new DecreaseDimmer("C"));
+		plan.tactics.add(new DecreaseDimmer("C"));
+		plan.tactics.add(new DecreaseDimmer("C"));
 		plan.tactics.add(new DecreaseDimmer("B"));
-		//plan.tactics.add(new DecreaseDimmer("A"));
-		//plan.tactics.add(new DecreaseDimmer("A"));
-		//plan.tactics.add(new DecreaseDimmer("A"));
-		//plan.tactics.add(new DecreaseDimmer("A"));
+		plan.tactics.add(new DecreaseDimmer("B"));
+		plan.tactics.add(new DecreaseDimmer("B"));
+		plan.tactics.add(new DecreaseDimmer("A"));
+		plan.tactics.add(new DecreaseDimmer("A"));
+		
 		
 	//	plan.tactics.add(tcf);
 	//	plan.tactics.add(new ShutdownServer("C"));
