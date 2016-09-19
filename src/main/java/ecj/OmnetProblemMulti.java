@@ -103,7 +103,7 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, ((GPIndividual)ind), this);
 				
 				
-				if (((StateData)input).plan.size() < 60){
+				if (((StateData)input).plan.size() < 10){
 				
 					objectives = getObjectives(paramValue,(StateData)input,(GPIndividual)ind);
 				
