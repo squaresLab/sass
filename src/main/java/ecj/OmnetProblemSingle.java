@@ -11,8 +11,8 @@ import generalomnet.Omnet;
 
 public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 
-		private final double INVALID_ACTION_PENALTY = .1;
-		private final double VERBOSENESS_PENALTY = .1;
+		private final double INVALID_ACTION_PENALTY = 1;
+		private final double VERBOSENESS_PENALTY = 1;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);

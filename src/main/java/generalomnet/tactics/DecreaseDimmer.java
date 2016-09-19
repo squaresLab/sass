@@ -26,8 +26,8 @@ public class DecreaseDimmer extends FailableTactic {
 		
 		if (target != null){
 		
-		// next, decrease that servers dimmer
-		target.setDimmer(target.getDimmer()-1);
+			// next, decrease that servers dimmer
+			target.setDimmer(target.getDimmer()-1);
 		
 		} else {
 			this.setFailed(true);
