@@ -10,11 +10,25 @@ public abstract class SystemState {
 //	public ArrayList<Attribute> getAttributes();
 	protected ArrayList<Tactic> history;
 	
+	protected ArrayList<Double> probabilityHistory;
+	
 	double pathProbability;
 	
 	public SystemState(){
 		history = new ArrayList<Tactic>();
+		probabilityHistory = new ArrayList<Double>();
+		
 		pathProbability = 1;
+		
+		probabilityHistory.add(pathProbability);
+	}
+	
+	private void updateProbability(double p){
+		
+		pathProbability *= p;
+		
+		probabilityHistory.add(pathProbability);
+		
 	}
 	
 	public void accept(Tactic tactic){
@@ -34,13 +48,13 @@ public abstract class SystemState {
 				if (!ft.getFailed()){
 				// only if we succeeded, then adjust probability
 				// if failed because of impossible request, then we should not modify it
-				pathProbability *= 1 - ft.getFailChance();
+				updateProbability(1 - ft.getFailChance());
 				}
 				
 			}else{
 				// if it WAS set to intentionaly fail
 				// then we do not execute the tactic, but still adjust probability
-				pathProbability *= ft.getFailChance();
+				updateProbability(ft.getFailChance());
 			}
 			
 			
@@ -65,7 +79,11 @@ public abstract class SystemState {
 			
 			// undo the probability change
 			if (ft.getIntentionalFailed() || !ft.getFailed()){
-				pathProbability /= chance;
+				
+				probabilityHistory.remove(probabilityHistory.size() - 1);
+				
+				pathProbability = probabilityHistory.get(probabilityHistory.size() - 1);
+				
 			}
 		}
 		
