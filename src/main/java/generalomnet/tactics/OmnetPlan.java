@@ -34,10 +34,20 @@ public class OmnetPlan extends Plan {
 		
 		TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("A"), new OmnetPlan(Arrays.asList(new StartServer("B"))),new OmnetPlan(Arrays.asList(new DecreaseDimmer("A"), new DecreaseDimmer("B"))));
 		
-	//	plan.tactics.add(new StartServer("A"));
+		plan.tactics.add(new StartServer("A"));
+		plan.tactics.add(new StartServer("B"));
+		//plan.tactics.add(new StartServer("D"));
 	//	plan.tactics.add(new ShutdownServer("B"));
 	//	plan.tactics.add(new StartServer("C"));
-		plan.tactics.add(tcf);
+		
+		
+		plan.tactics.add(new DecreaseDimmer("B"));
+		//plan.tactics.add(new DecreaseDimmer("A"));
+		//plan.tactics.add(new DecreaseDimmer("A"));
+		//plan.tactics.add(new DecreaseDimmer("A"));
+		//plan.tactics.add(new DecreaseDimmer("A"));
+		
+	//	plan.tactics.add(tcf);
 	//	plan.tactics.add(new ShutdownServer("C"));
 		
 		System.out.println(plan.evaluate(new Omnet()));
@@ -54,9 +64,9 @@ public class OmnetPlan extends Plan {
 			
 			double onSuccess,onFail;
 			
-			Tactic current = tactics.get(currentStep);
+			Tactic current = (Tactic) tactics.get(currentStep).clone();
 			
-			system.accept(tactics.get(currentStep));
+			system.accept(current);
 			
 			// first, check for a TryCatchFinally
 			if (current instanceof TryCatchFinallyTactic){
