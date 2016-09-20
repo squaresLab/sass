@@ -1,5 +1,5 @@
 TITLE="Pareto Front for GP"
-gnuplot> set xlabel "quality"
-gnuplot> set ylabel "latency"
-gnuplot> set zlabel "profit"
-gnuplot> splot 'front.stat' u 2:3:1
+set xlabel "quality"
+set ylabel "latency"
+set zlabel "profit"
+splot 'front.stat' u 2:3:1
