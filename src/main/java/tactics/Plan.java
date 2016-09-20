@@ -35,4 +35,6 @@ public abstract class Plan implements Cloneable {
 		return ans;
 	}
 	
+	public abstract Object clone();
+	
 }

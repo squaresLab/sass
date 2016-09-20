@@ -54,5 +54,12 @@ public class TryCatchFinallyTactic extends FailableTactic {
 	public double getTime() {
 		return inTry.getTime() + inCatch.getTime() * inTry.getFailChance() + inFinally.getTime() * (1 - inTry.getFailChance());
 	}
+	
+	public Object clone(){
+		
+		TryCatchFinallyTactic ans = new TryCatchFinallyTactic((FailableTactic) inTry.clone(), (Plan) inCatch.clone(),(Plan) inCatch.clone());
+		
+		return ans;
+	}
 
 }
