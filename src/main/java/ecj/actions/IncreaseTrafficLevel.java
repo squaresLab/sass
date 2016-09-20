@@ -1,6 +1,6 @@
 package ecj.actions;
 
-import generalomnet.tactics.IncreaseTraffic;
+import omnet.tactics.IncreaseTraffic;
 
 public class IncreaseTrafficLevel extends LabeledTactic {
 	

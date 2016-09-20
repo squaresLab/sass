@@ -1,8 +1,8 @@
-package generalomnet;
+package omnet;
 
 import java.util.ArrayList;
 
-import generalomnet.components.Server;
+import omnet.components.Server;
 import system.SystemState;
 import tactics.Tactic;
 

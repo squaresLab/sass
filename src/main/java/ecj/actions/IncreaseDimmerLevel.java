@@ -1,6 +1,6 @@
 package ecj.actions;
 
-import generalomnet.tactics.IncreaseDimmer;
+import omnet.tactics.IncreaseDimmer;
 
 public class IncreaseDimmerLevel extends LabeledTactic {
 	

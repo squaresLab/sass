@@ -1,6 +1,6 @@
 package ecj.actions;
 
-import generalomnet.tactics.ShutdownServer;
+import omnet.tactics.ShutdownServer;
 
 public class ShutdownServerNode extends LabeledTactic {
 	

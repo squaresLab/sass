@@ -7,8 +7,8 @@ import ec.gp.GPProblem;
 import ec.multiobjective.MultiObjectiveFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
-import generalomnet.Omnet;
-import generalomnet.tactics.OmnetPlan;
+import omnet.Omnet;
+import omnet.tactics.OmnetPlan;
 
 public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 	

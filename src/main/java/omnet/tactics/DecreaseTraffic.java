@@ -1,7 +1,7 @@
-package generalomnet.tactics;
+package omnet.tactics;
 
-import generalomnet.Omnet;
-import generalomnet.components.Server;
+import omnet.Omnet;
+import omnet.components.Server;
 import system.SystemState;
 import tactics.FailableTactic;
 

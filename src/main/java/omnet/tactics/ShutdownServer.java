@@ -1,7 +1,7 @@
-package generalomnet.tactics;
+package omnet.tactics;
 
-import generalomnet.Omnet;
-import generalomnet.components.Server;
+import omnet.Omnet;
+import omnet.components.Server;
 import system.SystemState;
 import tactics.FailableTactic;
 
@@ -48,8 +48,8 @@ public class ShutdownServer extends FailableTactic {
 			
 		// re-add the server from the servers list
 		omnet.getServers().add(removed);
-
 		
+		removed = null;
 		
 	}
 	public String toString() {

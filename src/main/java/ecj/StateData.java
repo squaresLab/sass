@@ -1,7 +1,7 @@
 package ecj;
 
 import ec.gp.GPData;
-import generalomnet.tactics.OmnetPlan;
+import omnet.tactics.OmnetPlan;
 
 public class StateData extends GPData {
 

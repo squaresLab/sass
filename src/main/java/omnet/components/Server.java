@@ -1,4 +1,4 @@
-package generalomnet.components;
+package omnet.components;
 
 public class Server {
 	
@@ -27,7 +27,7 @@ public class Server {
 		this.name = name;
 		
 		// provide default values
-		dimmer = 10;
+		dimmer = 5;
 		traffic = 5;
 		
 		validState = true;

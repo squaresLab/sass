@@ -7,12 +7,12 @@ import ec.gp.GPProblem;
 import ec.gp.koza.KozaFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
-import generalomnet.Omnet;
+import omnet.Omnet;
 
 public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 
-		private final double INVALID_ACTION_PENALTY = 1;
-		private final double VERBOSENESS_PENALTY = 1;
+		private final double INVALID_ACTION_PENALTY = 2;
+		private final double VERBOSENESS_PENALTY = .5;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);
@@ -65,7 +65,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				
 				double fitnessValue;
 				
-				if(((StateData)input).plan.size() < 50){
+				if(((StateData)input).plan.size() < 40){
 					fitnessValue = ((StateData)input).plan.evaluate(new Omnet());
 				}else{
 					fitnessValue = 0;
@@ -75,6 +75,8 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				fitnessValue -= ((StateData)input).plan.invalidActions * INVALID_ACTION_PENALTY;
 				//take off a penalty for plan length
 				fitnessValue -= ((StateData)input).plan.size() * VERBOSENESS_PENALTY;
+				// and tree size
+				fitnessValue -= ((GPIndividual)ind).size() * VERBOSENESS_PENALTY * 2;
 				
 				
 				

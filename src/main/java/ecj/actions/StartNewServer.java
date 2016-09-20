@@ -1,6 +1,6 @@
 package ecj.actions;
 
-import generalomnet.tactics.StartServer;
+import omnet.tactics.StartServer;
 
 public class StartNewServer extends LabeledTactic {
 	
