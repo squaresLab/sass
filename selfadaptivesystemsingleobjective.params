@@ -165,7 +165,10 @@ stat.num-children = 1
 stat.child.0 = ec.parsimony.TarpeianStatistics
 stat.child.0.kill-proportion = 0.2
 
-gp.tc.0.init = ec.gp.koza.HalfBuilder
+#gp.tc.0.init = ec.gp.koza.HalfBuilder
+
+gp.tc.0.init = ecj.MutationBuilder
+
 
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
