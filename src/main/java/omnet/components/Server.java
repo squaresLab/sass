@@ -3,18 +3,15 @@ package omnet.components;
 public class Server {
 	
 	// the cost per second
-	private double cost = 50;
+	protected double cost;
 	// the computational power
-	private double power = 1000;
-	// the number of requests per seccond
-	private double normalLoad;
-	private double dimmedLoad;
+	protected double power;
 	// the dimmer settings
-	public static final int MAX_DIMMER_LVL = 10;
+	public static final int MAX_DIMMER_LVL = 4;
 	public static final int MIN_DIMMER_LVL = 0;
 	private int dimmer;
 	// the requested traffic ratio
-	public static final int MAX_TRAFFIC_LVL = 10;
+	public static final int MAX_TRAFFIC_LVL = 4;
 	public static final int MIN_TRAFFIC_LVL = 0;
 	private int traffic;
 	
@@ -23,12 +20,24 @@ public class Server {
 	
 	private boolean validState;
 	
+	protected double powerPerNormal;
+	protected double powerPerDimmed;
+	protected double latency;
+	
 	public Server(String name){
 		this.name = name;
 		
 		// provide default values
-		dimmer = 5;
-		traffic = 5;
+		dimmer = 0;
+		traffic = 4;
+		
+		powerPerNormal = 2;
+		powerPerDimmed = 1;
+		power = 200;
+		
+		cost = 1;
+		
+		latency = 120;
 		
 		validState = true;
 	
@@ -40,22 +49,6 @@ public class Server {
 
 	public void setCost(double cost) {
 		this.cost = cost;
-	}
-
-	public double getNormalLoad() {
-		return normalLoad;
-	}
-
-	public void setNormalLoad(double normalLoad) {
-		this.normalLoad = normalLoad;
-	}
-
-	public double getDimmedLoad() {
-		return dimmedLoad;
-	}
-
-	public void setDimmedLoad(double dimmedLoad) {
-		this.dimmedLoad = dimmedLoad;
 	}
 
 	public int getDimmer() {
@@ -103,6 +96,18 @@ public class Server {
 
 	public double getPower() {
 		return power;
+	}
+
+	public double getPowerPerNormal() {
+		return powerPerNormal;
+	}
+
+	public double getPowerPerDimmed() {
+		return powerPerDimmed;
+	}
+
+	public double getLatency() {
+		return latency;
 	}
 	
 	
