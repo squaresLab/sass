@@ -29,7 +29,13 @@ public class Omnet extends SystemState {
 	public Omnet(){
 		servers = new ArrayList<Server>();
 		serverFactory = new ServerFactory();
-		// starting state is assumed valid
+		
+		// we will start with 1 server of each
+		servers.add(serverFactory.getA());
+		servers.add(serverFactory.getB());
+		servers.add(serverFactory.getC());
+		servers.add(serverFactory.getD());
+		
 	}
 	
 	//lower is better - goal is to get as close to zero as possible
