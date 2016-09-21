@@ -34,6 +34,8 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	public static final String P_MAXDEPTH = "maxdepth";
 	public static final int NO_SIZE_LIMIT = -1;
 	
+	Parameter base;
+	
 	/** How to choose a subtree to mutate */
     public GPNodeSelector nodeselect;
     
@@ -59,6 +61,8 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     {
     super.setup(state,base);
 
+    this.base = base;
+    
     Parameter def = defaultBase();
 
     Parameter p = base.push(P_NODESELECTOR);
@@ -211,7 +215,23 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	GPNode node9 = new ServerB();
 	GPNode node10 = new DecreaseDimmerLevel();
 	GPNode node11 = new ServerB();
-
+	
+	Parameter seq = new Parameter("gp.fs.0.func.1");
+	Parameter tac = new Parameter("gp.fs.0.func.2");
+	Parameter ser = new Parameter("gp.fs.0.func.8");
+	
+	node1.setup(state, seq);
+	node2.setup(state, tac);
+	node3.setup(state, ser);
+	node4.setup(state, seq);
+	node5.setup(state, tac);
+	node6.setup(state, ser);
+	node7.setup(state, seq);
+	node8.setup(state, tac);
+	node9.setup(state, ser);
+	node10.setup(state, tac);
+	node11.setup(state, ser);
+	
 	GPNode[] childrenOfNode1 = new GPNode[2];
 	GPNode[] childrenOfNode2 = new GPNode[1];
 	GPNode[] childrenOfNode3 = new GPNode[0];
