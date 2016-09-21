@@ -3,6 +3,7 @@ package omnet;
 import java.util.ArrayList;
 
 import omnet.components.Server;
+import omnet.components.ServerFactory;
 import system.SystemState;
 import tactics.Tactic;
 
@@ -11,22 +12,23 @@ public class Omnet extends SystemState {
 	// requests / sec on the system, assumed constant for now
 	public static final int SYSTEM_DEMAND = 1000;
 	
-	private static final double NORMAL_PROFIT_PER_SECOND = 10;
+	private static final double NORMAL_PROFIT_PER_SECOND = 3;
 
-	private static final double DIMMED_PROFIT_PER_SECOND = 2;
-	
-	private static final double POWER_PER_NORMAL_RESPONSE_PER_SECOND = 10;
-	
-	private static final double POWER_PER_DIMMED_RESPONSE_PER_SECOND = 5;
+	private static final double DIMMED_PROFIT_PER_SECOND = 1;
 	
 	private double dimmedResponses,normalResponses,income,cost,latency;
 
-	private ArrayList<Server> servers;
-
 	private static final double MAX_LATENCY_PER_SERVER = 1000;
+	
+	private ArrayList<Server> servers;
+	
+	private ServerFactory serverFactory;
+
+	public static final int MAX_SERVER_COUNT_PER_LOC = 5;
 	
 	public Omnet(){
 		servers = new ArrayList<Server>();
+		serverFactory = new ServerFactory();
 		// starting state is assumed valid
 	}
 	
@@ -58,20 +60,38 @@ public class Omnet extends SystemState {
 						double currentRequests = requestsPerTrafficLevel * current.getTraffic();
 						
 						double p = current.getPower();
-						double fc = POWER_PER_NORMAL_RESPONSE_PER_SECOND;
-						double dc = POWER_PER_DIMMED_RESPONSE_PER_SECOND;
+						double fc = current.getPowerPerNormal();
+						double dc = current.getPowerPerDimmed();
 						double ra = currentDimmerPercentage;
 						
-						double avgCostPerUser = dc*ra + fc * (1-ra);
+						// use ratio to determine the amount of power to devote to each type of response
+						double maxNormal = (p * (1-ra)) / fc;
+						double maxDimmed = (p * (ra)) / dc;
 						
-						double handleable =  p / avgCostPerUser;
+						double fullReplys,dimmedReplys;
 						
-						double requests = Math.min(handleable, currentRequests);
-						
-						double fullReplys = requests * (1-ra);
-					
-						double dimmedReplys = (requests * ra);
-						
+						// give normal responses when under low load
+						if (currentRequests <= maxNormal){
+							
+							fullReplys = currentRequests;
+							dimmedReplys = 0;
+							
+						}else{
+							
+							fullReplys = maxNormal;
+							
+							// check if we have enough power to fullfill the rest of the requests as dimmed
+							if (currentRequests - fullReplys >= maxDimmed){
+								dimmedReplys = maxDimmed;
+							}else{
+								// otherwise fulfill as many as we can
+								dimmedReplys = currentRequests - fullReplys;
+							}
+							
+							
+							
+						}
+		
 						totalProfit += NORMAL_PROFIT_PER_SECOND * fullReplys + 
 								DIMMED_PROFIT_PER_SECOND * dimmedReplys;
 								
@@ -92,9 +112,6 @@ public class Omnet extends SystemState {
 						
 						latency += calcLatency;
 						*/
-						
-						if (currentRequests - fullReplys - dimmedReplys < 0)
-							System.out.println("wtf?");
 						
 						latency += currentRequests - fullReplys - dimmedReplys;
 						
@@ -176,6 +193,18 @@ public class Omnet extends SystemState {
 
 	public double getLatency() {
 		return latency;
+	}
+
+	public int serversUp(String location) {
+		
+		int index = serverFactory.getIndex(location);
+		
+		return serverFactory.getNumServers()[index];
+		
+	}
+	
+	public ServerFactory getServerFactory(){
+		return serverFactory;
 	}
 	
 }
