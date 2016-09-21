@@ -8,7 +8,8 @@ import tactics.FailableTactic;
 public class ShutdownServer extends FailableTactic {
 
 	// set statically for now
-	private static double failChance = 0.05;
+	private static double failChance = 0.1;
+	private static double latency = 30;
 	
 	private String server;
 	
@@ -24,15 +25,25 @@ public class ShutdownServer extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 		
-		removed = omnet.getServer(server);
+		int running = omnet.serversUp(server);
 		
-		if (removed == null){
+		if (running > 0){
+		
+			String serverInstance = server + (running - 1);
+		
+			removed = omnet.getServer(serverInstance);
+		
+			// remove the server from the servers list
+			omnet.getServers().remove(removed);
+		
+			// now update the count in the factory
+			int index = omnet.getServerFactory().getIndex(server);
+			omnet.getServerFactory().getNumServers()[index]--;
+		
+		}else{
 			setFailed(true);
 			return;
 		}
-		
-		// remove the server from the servers list
-		omnet.getServers().remove(removed);
 				
 	}
 
@@ -49,6 +60,10 @@ public class ShutdownServer extends FailableTactic {
 		// re-add the server from the servers list
 		omnet.getServers().add(removed);
 		
+		// update the count in the factory
+		int index = omnet.getServerFactory().getIndex(server);
+		omnet.getServerFactory().getNumServers()[index]++;
+		
 		removed = null;
 		
 	}
@@ -58,7 +73,7 @@ public class ShutdownServer extends FailableTactic {
 
 	@Override
 	public double getTime() {
-		return 30;
+		return latency;
 	}
 
 }

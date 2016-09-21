@@ -35,14 +35,14 @@ public class OmnetPlan extends Plan {
 		TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("A"), new OmnetPlan(Arrays.asList(new StartServer("B"))),new OmnetPlan(Arrays.asList(new DecreaseDimmer("A"), new DecreaseDimmer("B"))));
 		
 		plan.tactics.add(new StartServer("A"));
-		plan.tactics.add(new StartServer("B"));
+	//	plan.tactics.add(new StartServer("B"));
 		plan.tactics.add(new StartServer("D"));
 	//	plan.tactics.add(new ShutdownServer("B"));
-		plan.tactics.add(new StartServer("C"));
+	//	plan.tactics.add(new StartServer("C"));
 		
-		plan.tactics.add(new StartServer("A"));
-		plan.tactics.add(new StartServer("A"));
-		plan.tactics.add(new StartServer("A"));
+		//plan.tactics.add(new StartServer("A"));
+		//plan.tactics.add(new StartServer("A"));
+		//plan.tactics.add(new StartServer("A"));
 		
 	//	plan.tactics.add(new DecreaseDimmer("A"));
 	
