@@ -34,11 +34,10 @@ public class Omnet extends SystemState {
 		servers.add(serverFactory.getA());
 		servers.add(serverFactory.getB());
 		servers.add(serverFactory.getC());
-		servers.add(serverFactory.getD());
+	//	servers.add(serverFactory.getD());
 		
 	}
 	
-	//lower is better - goal is to get as close to zero as possible
 		public double calculateProfit(){
 			
 			//reset fields
@@ -211,6 +210,21 @@ public class Omnet extends SystemState {
 	
 	public ServerFactory getServerFactory(){
 		return serverFactory;
+	}
+
+	public ArrayList<Server> getServers(String server) {
+		
+		ArrayList<Server> ans = new ArrayList<Server>();
+		
+		int num = serversUp(server);
+		
+		for (int count = 0; count < num; count++){
+			
+			ans.add(getServer(server+count));
+			
+		}
+		
+		return ans;
 	}
 	
 }
