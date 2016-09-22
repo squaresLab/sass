@@ -33,6 +33,7 @@ public class Server {
 		
 		powerPerNormal = 2;
 		powerPerDimmed = 1;
+		
 		power = 200;
 		
 		cost = 1;
