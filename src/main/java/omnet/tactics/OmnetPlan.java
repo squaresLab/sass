@@ -32,23 +32,26 @@ public class OmnetPlan extends Plan {
 	public static void main(String[] args){
 		OmnetPlan plan = new OmnetPlan();
 		
-		TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("A"), new OmnetPlan(Arrays.asList(new StartServer("B"))),new OmnetPlan(Arrays.asList(new DecreaseDimmer("A"), new DecreaseDimmer("B"))));
+		//TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("A"), new OmnetPlan(Arrays.asList(new StartServer("B"))),new OmnetPlan(Arrays.asList(new DecreaseDimmer("A"), new DecreaseDimmer("B"))));
 		
-		plan.tactics.add(new StartServer("A"));
-	//	plan.tactics.add(new StartServer("B"));
-		plan.tactics.add(new StartServer("D"));
-	//	plan.tactics.add(new ShutdownServer("B"));
-	//	plan.tactics.add(new StartServer("C"));
+		for (int count = 0; count < 3; count++)
+			plan.tactics.add(new ShutdownServer("A"));
 		
-		//plan.tactics.add(new StartServer("A"));
-		//plan.tactics.add(new StartServer("A"));
-		//plan.tactics.add(new StartServer("A"));
+
 		
-	//	plan.tactics.add(new DecreaseDimmer("A"));
+		for (int count = 0; count < 5; count++)
+			plan.tactics.add(new StartServer("B"));
+			
+		for (int count = 0; count < 4; count++)
+			plan.tactics.add(new StartServer("C"));
 	
-	//	plan.tactics.add(tcf);
-	//	plan.tactics.add(new ShutdownServer("C"));
+		/*
+		for (int count = 0; count < 5; count++)
+			plan.tactics.add(new StartServer("C"));
 		
+		for (int count = 0; count < 1; count++)
+			plan.tactics.add(new StartServer("B"));
+		*/
 		System.out.println(plan.evaluate(new Omnet()));
 		System.out.println(plan.profit);
 		

@@ -1,5 +1,7 @@
 package omnet.tactics;
 
+import java.util.ArrayList;
+
 import omnet.Omnet;
 import omnet.components.Server;
 import system.SystemState;
@@ -22,14 +24,13 @@ public class DecreaseTraffic extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 		
-		// first, get the target server
-		Server target = omnet.getServer(server);
+		ArrayList<Server> targets = omnet.getServers(server);
 		
-		if (target != null){
-		
-		// next, decrease that servers traffic
-		target.setTraffic(target.getTraffic()-1);
-		
+		if (targets.size() > 0){
+			
+			for (Server t : targets){
+				t.setTraffic(t.getTraffic()-1);
+			}
 		}else{
 			this.setFailed(true);
 		}
@@ -46,11 +47,11 @@ public class DecreaseTraffic extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 		
-		// first, get the target server
-		Server target = omnet.getServer(server);
-		
-		// next, increase that servers traffic
-		target.setTraffic(target.getTraffic()+1);
+		ArrayList<Server> targets = omnet.getServers(server);
+			
+			for (Server t : targets){
+				t.setTraffic(t.getTraffic()+1);
+			}
 		
 	}
 	
