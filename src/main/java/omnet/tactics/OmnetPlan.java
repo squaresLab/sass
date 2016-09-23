@@ -11,6 +11,13 @@ import tactics.TryCatchFinallyTactic;
 
 public class OmnetPlan extends Plan {
 	
+	
+	private static final double EST_MAX_FITNESS = 10000;
+	
+	private static final double MIN_POSSIBLE_IMPROVEMENT = 0.1;
+	
+	private static final double MINIMUM_POSSIBLE_FITNESS = 0;
+	
 	public int invalidActions;
 	
 	private double responses,income,cost,profit,time,dimmedResponses,normalResponses,latency;
@@ -32,8 +39,11 @@ public class OmnetPlan extends Plan {
 	public static void main(String[] args){
 		OmnetPlan plan = new OmnetPlan();
 		
-		//TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("A"), new OmnetPlan(Arrays.asList(new StartServer("B"))),new OmnetPlan(Arrays.asList(new DecreaseDimmer("A"), new DecreaseDimmer("B"))));
+		//TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new ShutdownServer("A"), new OmnetPlan(Arrays.asList(new ShutdownServer("A"),new StartServer("C"),new StartServer("C"),new StartServer("C"),new StartServer("C"),new StartServer("C"),new StartServer("B"),new StartServer("B"),new StartServer("B"),new StartServer("B"))),new OmnetPlan(Arrays.asList(new ShutdownServer("A"))));
 		
+		//plan.tactics.add(tcf);
+		
+		/*
 		for (int count = 0; count < 3; count++)
 			plan.tactics.add(new ShutdownServer("A"));
 		
@@ -44,24 +54,29 @@ public class OmnetPlan extends Plan {
 			
 		for (int count = 0; count < 4; count++)
 			plan.tactics.add(new StartServer("C"));
-	
-		/*
+	*/
+		
 		for (int count = 0; count < 5; count++)
 			plan.tactics.add(new StartServer("C"));
 		
-		for (int count = 0; count < 1; count++)
+		for (int count = 0; count < 4; count++)
 			plan.tactics.add(new StartServer("B"));
-		*/
+		
+		for (int count = 0; count < 3; count++)
+			plan.tactics.add(new ShutdownServer("A"));
+		
 		System.out.println(plan.evaluate(new Omnet()));
 		System.out.println(plan.profit);
 		
 	}
 	
 	private double evaluate(Omnet system, int currentStep){
-		
+
 		if (currentStep == tactics.size()){
 			processLeaf(system);
 			return system.calculateProfit() * system.getProbability();
+		}else if (system.getProbability() * EST_MAX_FITNESS < MIN_POSSIBLE_IMPROVEMENT){
+			return MINIMUM_POSSIBLE_FITNESS;
 		}else{
 			
 			double onSuccess,onFail;
