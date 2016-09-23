@@ -11,7 +11,7 @@ import omnet.Omnet;
 
 public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 
-		private final double INVALID_ACTION_PENALTY = .05;
+		private final double INVALID_ACTION_PENALTY = .01;
 		private final double VERBOSENESS_PENALTY = .01;
 
 		public void setup(final EvolutionState state, final Parameter base){
@@ -65,7 +65,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				
 				double fitnessValue;
 				
-				if(((StateData)input).plan.size() < 20){
+				if(((StateData)input).plan.size() <= 20){
 					fitnessValue = ((StateData)input).plan.evaluate(new Omnet());
 				}else{
 					fitnessValue = 0;
@@ -76,7 +76,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				//take off a penalty for plan length
 				fitnessValue -= ((StateData)input).plan.size() * VERBOSENESS_PENALTY;
 				// and tree size
-				fitnessValue -= ((GPIndividual)ind).size() * VERBOSENESS_PENALTY;
+				//fitnessValue -= ((GPIndividual)ind).size() * VERBOSENESS_PENALTY;
 				
 				
 				
