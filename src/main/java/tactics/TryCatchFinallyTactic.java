@@ -47,7 +47,7 @@ public class TryCatchFinallyTactic extends FailableTactic {
 
 	@Override
 	public int size() {
-		return inTry.size() + inCatch.size() + inFinally.size();
+		return inTry.size() + Math.max(inCatch.size(),inFinally.size());
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class TryCatchFinallyTactic extends FailableTactic {
 	
 	public Object clone(){
 		
-		TryCatchFinallyTactic ans = new TryCatchFinallyTactic((FailableTactic) inTry.clone(), (Plan) inCatch.clone(),(Plan) inCatch.clone());
+		TryCatchFinallyTactic ans = new TryCatchFinallyTactic((FailableTactic) inTry.clone(), (Plan) inCatch.clone(),(Plan) inFinally.clone());
 		
 		return ans;
 	}
