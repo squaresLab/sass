@@ -69,8 +69,11 @@ public class Server {
 	}
 
 	public void setTraffic(int traffic) {
-		if (traffic > MAX_TRAFFIC_LVL || traffic < MIN_TRAFFIC_LVL)
-		this.traffic = traffic;
+		if (traffic > MAX_TRAFFIC_LVL || traffic < MIN_TRAFFIC_LVL){
+			validState = false;
+		}else{
+			this.traffic = traffic;
+		}
 	}
 
 	public String getName() {
