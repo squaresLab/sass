@@ -47,6 +47,14 @@ dependencies {
     compile 'junit:junit:4.12'
 }
 
+task runParamSweeper(type: JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+	
+	main = 'ecj.Sweeper'
+	
+	maxHeapSize='10g'
+}
+
 task runSingleOptimization(type: JavaExec){
 	classpath = sourceSets.main.runtimeClasspath
 	
