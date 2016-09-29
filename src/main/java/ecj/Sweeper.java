@@ -103,7 +103,7 @@ public class Sweeper {
 									
 									evaluatedState.run(EvolutionState.C_STARTED_FRESH);
 									
-									long runtime = starttime = System.currentTimeMillis();
+									long runtime = System.currentTimeMillis() - starttime;
 									
 									SimpleStatistics stats = (SimpleStatistics) evaluatedState.statistics;
 									
