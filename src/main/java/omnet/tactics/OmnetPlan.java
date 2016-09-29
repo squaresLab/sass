@@ -14,7 +14,7 @@ public class OmnetPlan extends Plan {
 	
 	private static final double EST_MAX_FITNESS = 10000;
 	
-	private static final double MIN_POSSIBLE_IMPROVEMENT = 0.1;
+	private static double MIN_POSSIBLE_IMPROVEMENT = 0.01;
 	
 	private static final double MINIMUM_POSSIBLE_FITNESS = 0;
 	
@@ -56,13 +56,13 @@ public class OmnetPlan extends Plan {
 			plan.tactics.add(new StartServer("C"));
 	*/
 		
-		for (int count = 0; count < 5; count++)
+		for (int count = 0; count < 4; count++)
 			plan.tactics.add(new StartServer("C"));
 		
-		for (int count = 0; count < 4; count++)
+		for (int count = 0; count < 10; count++)
 			plan.tactics.add(new StartServer("B"));
 		
-		for (int count = 0; count < 3; count++)
+		for (int count = 0; count < 6; count++)
 			plan.tactics.add(new ShutdownServer("A"));
 		
 		System.out.println(plan.evaluate(new Omnet()));
@@ -235,6 +235,10 @@ public class OmnetPlan extends Plan {
 
 	public double getLatency() {
 		return latency;
+	}
+	
+	public void setMinAcceptedImprovment(double minAcceptedImprovement){
+		this.MIN_POSSIBLE_IMPROVEMENT = minAcceptedImprovement;
 	}
 
 }

@@ -11,8 +11,9 @@ import omnet.Omnet;
 
 public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 
-		private final double INVALID_ACTION_PENALTY = .01;
-		private final double VERBOSENESS_PENALTY = .01;
+		private double INVALID_ACTION_PENALTY = 0;
+		private double VERBOSENESS_PENALTY = 0;
+		private double minAcceptedImprovement = 0;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);
@@ -24,8 +25,10 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				//set up the initial state
 				StateData sd = (StateData)(input);
 				sd.initializeState();
-				//TODO set up the initial server setting in each location
-
+				
+				INVALID_ACTION_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("invalid_action_penalty"),null,0);
+				VERBOSENESS_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("verboseness_penalty"),null,0);
+				minAcceptedImprovement = state.parameters.getDoubleWithDefault(new Parameter("min_accepted_improvement"),null,0);
 			}
 		}
 
@@ -52,6 +55,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				//			} else {
 				//evaluate the fitness later
 				KozaFitness f = ((KozaFitness)ind.fitness);
+				
 				//currently there is only ever one tree in trees
 				//long fitnessValue = Math.abs(countAddServer(((GPIndividual)ind).trees[0])-5);
 				//boolean allPathsFeasible= allPathsFeasible(state,ind,threadnum);
@@ -63,6 +67,8 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 //				System.exit(0);
 				
 				
+				((StateData)input).plan.setMinAcceptedImprovment(minAcceptedImprovement);
+				
 				double fitnessValue;
 				
 				if(((StateData)input).plan.size() <= 20){
@@ -70,7 +76,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				}else{
 					fitnessValue = 0;
 				}
-				
+			
 				//take off a penalty for invalid actions
 				fitnessValue -= ((StateData)input).plan.invalidActions * INVALID_ACTION_PENALTY;
 				//take off a penalty for plan length
