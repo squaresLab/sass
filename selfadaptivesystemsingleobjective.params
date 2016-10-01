@@ -156,10 +156,10 @@ breedthreads = 1
 evalthreads = 1
 
 
-seed.0 = time
-seed.1 = 45674673
-seed.2 = 674356287
-seed.3 = 658345764
+seed.0 = 123456789
+seed.1 = 123456789
+seed.2 = 123456789
+seed.3 = 123456789
 
 #print-params = true
 
