@@ -57,14 +57,17 @@ public class Sweeper {
 		// print header
 		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,runtime,profit");
 		
+		// run multiple trials
+		for (int trials = 0; trials < 10; trials++){
+		
 		for (int generations = 10; generations <= 1000; generations *= 10){
 
-			for(int popSize = 10; popSize < 10000; popSize *= 10){
+			for(int popSize = 10; popSize <= 1000; popSize *= 10){
 
-				for (double crossoverChance = .9; crossoverChance > .6; crossoverChance-= .1){
+				for (double crossoverChance: new double[] {.9,.8,.7,.6,0}){
 					double mutationChance = 1-crossoverChance;
 
-					for (double killRatio = 0; killRatio < .4; killRatio+=.1){
+					for (double killRatio: new double[] {0,.1,.2,.3,.4}){
 
 						for(double invalidActionPenalty = 10; invalidActionPenalty > 0.0001; invalidActionPenalty /= 10){
 
@@ -121,6 +124,7 @@ public class Sweeper {
 
 						}
 
+					}
 					}
 
 				}
