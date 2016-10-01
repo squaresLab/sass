@@ -7,6 +7,7 @@ import java.io.IOException;
 import ec.EvolutionState;
 import ec.Evolve;
 import ec.gp.GPIndividual;
+import ec.simple.SimpleEvaluator;
 import ec.simple.SimpleStatistics;
 import ec.util.DataPipe;
 import ec.util.Output;
@@ -37,8 +38,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
 public class Sweeper {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
-
-		 						
+		
 		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		Output out = Evolve.buildOutput();
@@ -56,6 +56,12 @@ public class Sweeper {
 		
 		// print header
 		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,runtime,profit");
+		
+		// copy the database so that we can change the values we are interested in
+		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
+		
+		// run ECJ with the settings that I asked for
+		EvolutionState evaluatedState = Evolve.initialize(copy,0,out);
 		
 		// run multiple trials
 		for (int trials = 0; trials < 10; trials++){
@@ -75,11 +81,9 @@ public class Sweeper {
 
 								for(double minAcceptedImprovement: new double[] {10,1,.1,.01,.001,0}){
 
-									// copy the database so that we can change the values we are interested in
-									ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
-
 									String line = generations + "," + popSize + "," + crossoverChance + "," + killRatio + "," + invalidActionPenalty +"," + verbosenessPenalty + "," + minAcceptedImprovement + ",";
-									
+																	
+									Evolve.cleanup(evaluatedState);
 									// change the file name so we know where this data came from
 									//copy.setProperty("stat.file", fileString);
 									
@@ -98,10 +102,7 @@ public class Sweeper {
 									copy.setProperty("invalid_action_penalty", invalidActionPenalty+"");
 									copy.setProperty("verboseness_penalty", verbosenessPenalty+"");
 									copy.setProperty("min_accepted_improvement", minAcceptedImprovement+"");									
-									
-									// run ECJ with the settings that I asked for
-									EvolutionState evaluatedState = Evolve.initialize(copy,0,out);
-									
+													
 									long starttime = System.currentTimeMillis();
 									
 									evaluatedState.run(EvolutionState.C_STARTED_FRESH);
@@ -116,7 +117,7 @@ public class Sweeper {
 									
 									System.out.println(line+runtime+","+profit);
 									
-									Evolve.cleanup(evaluatedState);
+									((SimpleEvaluator)evaluatedState.evaluator).pool.killAll();
 									
 								}
 
