@@ -168,7 +168,7 @@ stat =	ecj.CustomStats
 stat.do-size = true
 stat.do-time = true
 
-breed.elite.0=2
+#breed.elite.0=2
 
 # use TarpeianStatistics parsimony pressure
 # picks individuals that are bigger than average, then kill a proportion of them
