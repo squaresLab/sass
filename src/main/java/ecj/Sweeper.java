@@ -69,11 +69,11 @@ public class Sweeper {
 
 					for (double killRatio: new double[] {0,.1,.2,.3,.4}){
 
-						for(double invalidActionPenalty = 10; invalidActionPenalty > 0.0001; invalidActionPenalty /= 10){
+						for(double invalidActionPenalty: new double[] {10,1,.1,.01,.001,0}){
 
-							for(double verbosenessPenalty = 10; verbosenessPenalty > 0.0001; verbosenessPenalty /= 10){
+							for(double verbosenessPenalty: new double[] {10,1,.1,.01,.001,0}){
 
-								for(double minAcceptedImprovement = 10; minAcceptedImprovement > 0.0001; minAcceptedImprovement /= 10){
+								for(double minAcceptedImprovement: new double[] {10,1,.1,.01,.001,0}){
 
 									// copy the database so that we can change the values we are interested in
 									ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
