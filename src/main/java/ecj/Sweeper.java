@@ -39,7 +39,7 @@ public class Sweeper {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 		
-		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		Output out = Evolve.buildOutput();
 		
@@ -56,11 +56,6 @@ public class Sweeper {
 		
 		// print header
 		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,runtime,profit");
-		
-		// copy the database so that we can change the values we are interested in
-		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
-		
-
 		
 		// run multiple trials
 		for (int trials = 0; trials < 10; trials++){
@@ -80,6 +75,9 @@ public class Sweeper {
 
 								for(double minAcceptedImprovement: new double[] {10,1,.1,.01,.001,0}){
 
+									// copy the database so that we can change the values we are interested in
+									ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
+									
 									// run ECJ with the settings that I asked for
 									EvolutionState evaluatedState = Evolve.initialize(copy,0,out);
 									
