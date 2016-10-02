@@ -52,7 +52,7 @@ public class Sweeper {
 		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,runtime,profit");
 		
 		// run multiple trials
-		for (int trials = 0; trials < 10; trials++){
+		for (int trial = 0; trial < 10; trial++){
 		
 		for (int generations = 10; generations <= 1000; generations *= 10){
 
@@ -79,7 +79,7 @@ public class Sweeper {
 									ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 									
 									// run ECJ with the settings that I asked for
-									EvolutionState evaluatedState = Evolve.initialize(copy,0,out);
+									EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
 									
 									String line = generations + "," + popSize + "," + crossoverChance + "," + killRatio + "," + invalidActionPenalty +"," + verbosenessPenalty + "," + minAcceptedImprovement + ",";
 																	
