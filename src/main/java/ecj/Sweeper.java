@@ -60,8 +60,7 @@ public class Sweeper {
 		// copy the database so that we can change the values we are interested in
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
-		// run ECJ with the settings that I asked for
-		EvolutionState evaluatedState = Evolve.initialize(copy,0,out);
+
 		
 		// run multiple trials
 		for (int trials = 0; trials < 10; trials++){
@@ -81,9 +80,11 @@ public class Sweeper {
 
 								for(double minAcceptedImprovement: new double[] {10,1,.1,.01,.001,0}){
 
+									// run ECJ with the settings that I asked for
+									EvolutionState evaluatedState = Evolve.initialize(copy,0,out);
+									
 									String line = generations + "," + popSize + "," + crossoverChance + "," + killRatio + "," + invalidActionPenalty +"," + verbosenessPenalty + "," + minAcceptedImprovement + ",";
 																	
-									Evolve.cleanup(evaluatedState);
 									// change the file name so we know where this data came from
 									//copy.setProperty("stat.file", fileString);
 									
@@ -118,6 +119,8 @@ public class Sweeper {
 									System.out.println(line+runtime+","+profit);
 									
 									((SimpleEvaluator)evaluatedState.evaluator).pool.killAll();
+									
+									Evolve.cleanup(evaluatedState);
 									
 								}
 
