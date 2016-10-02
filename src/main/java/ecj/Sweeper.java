@@ -46,7 +46,7 @@ public class Sweeper {
 		//disable output
 		out.getLog(0).silent = true;
 		out.getLog(1).silent = true;
-
+		
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
 		// set statistics to simplestatistics
@@ -75,6 +75,9 @@ public class Sweeper {
 
 								for(double minAcceptedImprovement: new double[] {10,1,.1,.01,.001,0}){
 
+									// try to fix memory leak
+									out.restart();
+									
 									// copy the database so that we can change the values we are interested in
 									ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 									
