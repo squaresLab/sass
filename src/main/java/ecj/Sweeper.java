@@ -51,23 +51,23 @@ public class Sweeper {
 		// print header
 		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,runtime,profit");
 		
-		// run multiple trials
-		for (int trial = 0; trial < 10; trial++){
-		
-		for (int generations = 10; generations <= 1000; generations *= 10){
+		for (int generations = 10; generations <= 100; generations *= 10){
 
 			for(int popSize = 10; popSize <= 1000; popSize *= 10){
 
 				for (double crossoverChance: new double[] {.9,.8,.7,.6,0}){
 					double mutationChance = 1-crossoverChance;
 
-					for (double killRatio: new double[] {0,.1,.2,.3,.4}){
+					for (double killRatio: new double[] {0,.1,.2}){
 
-						for(double invalidActionPenalty: new double[] {10,1,.1,.01,.001,0}){
+						for(double invalidActionPenalty: new double[] {10,1,.1,.01,0}){
 
-							for(double verbosenessPenalty: new double[] {10,1,.1,.01,.001,0}){
+							for(double verbosenessPenalty: new double[] {10,1,.1,.01,0}){
 
 								for(double minAcceptedImprovement: new double[] {10,1,.1,.01,.001,0}){
+									
+									// run multiple trials
+									for (int trial = 0; trial < 10; trial++){
 									
 									Output out = Evolve.buildOutput();
 									
