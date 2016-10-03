@@ -154,13 +154,17 @@ pop.subpop.0.size =	1024
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1
-evalthreads = 4
+evalthreads = 8
 
 
 seed.0 = 123456789
 seed.1 = 123456788
 seed.2 = 123456787
 seed.3 = 123456786
+seed.4 = 123456785
+seed.5 = 123456784
+seed.6 = 123456783
+seed.7 = 123456782
 
 #print-params = true
 
