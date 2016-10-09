@@ -89,8 +89,8 @@ public class Sweeper {
 									// params in the ecj params file that we want to vary
 									copy.setProperty("generations", generations+"");
 									copy.setProperty("pop.subpop.0.size", popSize+"");
-									copy.setProperty("pop.subpop.0.species.pipe.source.0.prob", crossoverChance+"");
-									copy.setProperty("pop.subpop.0.species.pipe.source.1.prob", mutationChance+"");
+									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.0.prob", crossoverChance+"");
+									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.1.prob", mutationChance+"");
 
 									// these three are all setting up Tarpeian Parsimony pressure
 									copy.setProperty("stat.num-children", "1");

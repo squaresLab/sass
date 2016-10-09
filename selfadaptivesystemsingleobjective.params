@@ -5,19 +5,21 @@ parent.0 = koza.params
 
 pop.subpop.0.species.ind.tree.0.print-style = dot
 
-
 pop.subpop.0.species.pipe = ec.gp.breed.MutateERCPipeline
 
 pop.subpop.0.species.pipe.source.0 = ec.breed.MultiBreedingPipeline
 
+#pop.subpop.0.species.pipe = ec.breed.ReproductionPipeline
+#pop.subpop.0.species.pipe.source.0 = ec.select.FirstSelection
+
 # Koza's decision here was odd...
 pop.subpop.0.species.pipe.generate-max = false
 # Subsidiary pipelines:
-pop.subpop.0.species.pipe.num-sources = 2
-pop.subpop.0.species.pipe.source.0 = ec.gp.koza.CrossoverPipeline
-pop.subpop.0.species.pipe.source.0.prob = 0.9
-pop.subpop.0.species.pipe.source.1 = ec.breed.ReproductionPipeline
-pop.subpop.0.species.pipe.source.1.prob = 0.1
+pop.subpop.0.species.pipe.source.0.num-sources = 2
+pop.subpop.0.species.pipe.source.0.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0.prob = 0.9
+pop.subpop.0.species.pipe.source.0.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.0.species.pipe.source.0.source.1.prob = 0.1
 
 pop.subpop.0.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
 
@@ -168,7 +170,7 @@ seed.7 = 123456782
 
 #print-params = true
 
-stat =	ecj.CustomStats
+stat =	ec.simple.SimpleStatistics
 
 stat.do-size = true
 stat.do-time = true
