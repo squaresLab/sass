@@ -56,7 +56,7 @@ public class Sweeper {
 			for(int popSize = 10; popSize <= 1000; popSize *= 10){
 
 				for (double crossoverChance: new double[] {.9,.8,.7,.6,0}){
-					double mutationChance = 1-crossoverChance;
+					double reproductionChance = 1-crossoverChance;
 
 					for (double killRatio: new double[] {0,.1,.2}){
 
@@ -90,7 +90,7 @@ public class Sweeper {
 									copy.setProperty("generations", generations+"");
 									copy.setProperty("pop.subpop.0.size", popSize+"");
 									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.0.prob", crossoverChance+"");
-									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.1.prob", mutationChance+"");
+									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.1.prob", reproductionChance+"");
 
 									// these three are all setting up Tarpeian Parsimony pressure
 									copy.setProperty("stat.num-children", "1");
