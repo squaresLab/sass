@@ -49,7 +49,7 @@ public class Sweeper {
 		dbase.setProperty("stat.file", "/dev/null");
 		
 		// print header
-		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,runtime,profit");
+		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
 		
 		for (int generations: new int[] {1,10,20,30}){
 
@@ -114,7 +114,9 @@ public class Sweeper {
 									
 									double profit = CustomStats.getProfit(evaluatedState, best);
 									
-									System.out.println(line+runtime+","+profit);
+									int size = CustomStats.getSize(evaluatedState, best);
+									
+									System.out.println(line+size+","+runtime+","+profit);
 									
 									((SimpleEvaluator)evaluatedState.evaluator).pool.killAll();
 									
