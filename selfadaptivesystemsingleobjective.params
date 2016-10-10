@@ -33,7 +33,7 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 14
+gp.fs.0.size = 13
 gp.fs.0.func.0 = ecj.operators.TryCatchFinally
 gp.fs.0.func.0.nc = nc3
 gp.fs.0.func.1 = ecj.operators.SequenceOperator
@@ -56,12 +56,10 @@ gp.fs.0.func.9 = ecj.actions.ServerB
 gp.fs.0.func.9.nc = nc0
 gp.fs.0.func.10 = ecj.actions.ServerC
 gp.fs.0.func.10.nc = nc0
-gp.fs.0.func.11 = ecj.actions.ServerD
-gp.fs.0.func.11.nc = nc0
-gp.fs.0.func.12 = ecj.operators.For
-gp.fs.0.func.12.nc = nc4
-gp.fs.0.func.13 = ecj.operators.ForIndex
-gp.fs.0.func.13.nc = nc5
+gp.fs.0.func.11 = ecj.operators.For
+gp.fs.0.func.11.nc = nc4
+gp.fs.0.func.12 = ecj.operators.ForIndex
+gp.fs.0.func.12.nc = nc5
 
 # Here we define a single atomic type, "nil", which everyone will use.
 # There are no set types defined.
@@ -151,8 +149,8 @@ gp.koza.half.max-depth = 20
 
 eval.problem = ecj.OmnetProblemSingle
 eval.problem.data = ecj.StateData
-generations = 50
-pop.subpop.0.size =	1024
+generations = 10
+pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1
@@ -197,5 +195,5 @@ gp.koza.initmutate.tries = 1
 # custom params that I put in to handle penalties and tree pruning
 invalid_action_penalty = 0
 verboseness_penalty = 0
-min_accepted_improvement = 0
+min_accepted_improvement = 0.001
 
