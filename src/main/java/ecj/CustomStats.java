@@ -421,7 +421,20 @@ public class CustomStats extends Statistics
     	
 	}
 
-
+public static int getSize(final EvolutionState state,Individual individual) {
+    	
+    	GPIndividual ind = (GPIndividual) individual;
+        
+        GPProblem problem = new OmnetProblemSingle();           
+                    
+        StateData input = new StateData();
+        
+        ((StateData)input).initializeState();
+		((GPIndividual)ind).trees[0].child.eval(state, 0, input, problem.stack, ((GPIndividual)ind), problem);
+		
+		return input.plan.size();
+    	
+	}
 
 	/** Logs the best individual of the run. */
     public void finalStatistics(final EvolutionState state, final int result)
