@@ -15,14 +15,18 @@ pop.subpop.0.species.pipe.source.0 = ec.breed.MultiBreedingPipeline
 # Koza's decision here was odd...
 pop.subpop.0.species.pipe.generate-max = false
 # Subsidiary pipelines:
-pop.subpop.0.species.pipe.source.0.num-sources = 2
+pop.subpop.0.species.pipe.source.0.num-sources = 3
 pop.subpop.0.species.pipe.source.0.source.0 = ec.gp.koza.CrossoverPipeline
-pop.subpop.0.species.pipe.source.0.source.0.prob = 0.9
+pop.subpop.0.species.pipe.source.0.source.0.prob = 0.8
 pop.subpop.0.species.pipe.source.0.source.1 = ec.breed.ReproductionPipeline
 pop.subpop.0.species.pipe.source.0.source.1.prob = 0.1
+pop.subpop.0.species.pipe.source.0.source.2 = ec.gp.koza.MutationPipeline
+pop.subpop.0.species.pipe.source.0.source.2.prob = 0.1
 
 pop.subpop.0.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
 
+gp.breed.mutate-one-node.source.0 = ec.select.TournamentSelection
+gp.breed.mutate-one-node.ns.0 = ec.gp.koza.KozaNodeSelector
 
 
 # We have one function set, of class GPFunctionSet
@@ -33,7 +37,7 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 13
+gp.fs.0.size = 14
 gp.fs.0.func.0 = ecj.operators.TryCatchFinally
 gp.fs.0.func.0.nc = nc3
 gp.fs.0.func.1 = ecj.operators.SequenceOperator
@@ -60,6 +64,11 @@ gp.fs.0.func.11 = ecj.operators.For
 gp.fs.0.func.11.nc = nc4
 gp.fs.0.func.12 = ecj.operators.ForIndex
 gp.fs.0.func.12.nc = nc5
+gp.fs.0.func.13 = ecj.actions.ServerD
+gp.fs.0.func.13.nc = nc0
+gp.fs.0.func.14 = ecj.operators.Retry
+gp.fs.0.func.14.nc = nc6
+
 
 # Here we define a single atomic type, "nil", which everyone will use.
 # There are no set types defined.
@@ -89,7 +98,7 @@ gp.tc.0.returns = plan
 # You don't need to include the class declarations with everything
 # else below, but it quiets warnings
 
-gp.nc.size = 6
+gp.nc.size = 7
 
 gp.nc.0 = ec.gp.GPNodeConstraints
 gp.nc.0.name = nc0
@@ -132,24 +141,19 @@ gp.nc.5.size = 0
 gp.nc.6 = ec.gp.GPNodeConstraints
 gp.nc.6.name = nc6
 gp.nc.6.returns = plan
-gp.nc.6.size = 6
+gp.nc.6.size = 1
 gp.nc.6.child.0 = plan
-gp.nc.6.child.1 = plan
-gp.nc.6.child.2 = plan
-gp.nc.6.child.3 = plan
-gp.nc.6.child.4 = plan
-gp.nc.6.child.5 = plan
 
 gp.koza.xover.maxdepth = 20
 gp.koza.mutate.maxdepth = 20
-gp.koza.grow.min-depth = 2
+gp.koza.grow.min-depth = 1
 gp.koza.grow.max-depth = 20
-gp.koza.half.min-depth = 2
+gp.koza.half.min-depth = 1
 gp.koza.half.max-depth = 20
 
 eval.problem = ecj.OmnetProblemSingle
 eval.problem.data = ecj.StateData
-generations = 10
+generations = 100
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
@@ -168,7 +172,8 @@ seed.7 = 123456782
 
 #print-params = true
 
-stat =	ec.simple.SimpleStatistics
+#stat =	ec.simple.SimpleStatistics
+stat = ecj.CustomStats
 
 stat.do-size = true
 stat.do-time = true
@@ -185,15 +190,14 @@ stat.do-time = true
 
 gp.tc.0.init = ecj.MutationBuilder
 
-
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
 gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
-gp.koza.initmutate.maxdepth = 10
-gp.koza.initmutate.tries = 1
+gp.koza.initmutate.maxdepth = 21
+gp.koza.initmutate.tries = 100
 
 # custom params that I put in to handle penalties and tree pruning
 invalid_action_penalty = 0
-verboseness_penalty = 0
-min_accepted_improvement = 0.001
+verboseness_penalty = 0.001
+min_accepted_improvement = 0.0001
 
