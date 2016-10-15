@@ -1,6 +1,15 @@
 package ecj;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.io.StringReader;
+
 import ec.EvolutionState;
+import ec.Species;
 import ec.gp.GPFunctionSet;
 import ec.gp.GPIndividual;
 import ec.gp.GPInitializer;
@@ -8,6 +17,7 @@ import ec.gp.GPNode;
 import ec.gp.GPNodeBuilder;
 import ec.gp.GPNodeParent;
 import ec.gp.GPNodeSelector;
+import ec.gp.GPSpecies;
 import ec.gp.GPTree;
 import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
@@ -41,6 +51,9 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     
     /** How mutated subtrees are built */
     public GPNodeBuilder builder;
+    
+    // the starting individual
+    GPIndividual ind = null;
     
     int numTries;
     
@@ -102,10 +115,37 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
             (state.parameters.getInstanceForParameter(
                 p,d, GPNodeBuilder.class));
         builder.setup(state,p);
-    
     }
 	
-	  /** Returns true if inner1 can feasibly be swapped into inner2's position */
+	  protected static GPIndividual loadStartInd(EvolutionState state) {
+		  String indString = 
+					"Evaluated: F\n"+
+					"Fitness: d4554802393809453312|3.3430128051926966E-4|i0|\n"+
+					"Tree 0:\n";
+		  
+		   // indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
+			indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
+			
+		//	indString = readPlanFromFile("prismproc.txt");
+			
+			LineNumberReader lnr = new LineNumberReader(new StringReader(indString));
+			
+			GPSpecies species = new GPSpecies();
+			
+			species.setup(state, new Parameter("pop.subpop.0.species"));
+			
+			GPIndividual ind = null;
+			
+			try {
+				ind = (GPIndividual) species.newIndividual(state, lnr);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return ind;
+	}
+
+	/** Returns true if inner1 can feasibly be swapped into inner2's position */
 
     public boolean verifyPoints(GPNode inner1, GPNode inner2)
         {
@@ -148,282 +188,12 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 		// change to: ( StartNewServerB ; StartNewServerC )
 	StateData sd = new StateData();
 	sd.initializeState();
-	GPIndividual ind = new GPIndividual();
-	GPTree[] treeInit = {new GPTree()};
-	ind.trees = treeInit;
-
 	
-	//size 2, worked, no hanging
-//	GPNode node1 = new SequenceOperator();
-//	GPNode node2 = new StartNewServerA();
-//	GPNode node3 = new IncreaseTrafficLevelD();
-//	
-//	GPNode[] childrenOfNode1 = new GPNode[2];
-//	GPNode[] childrenOfNode2 = new GPNode[0];
-//	GPNode[] childrenOfNode3 = new GPNode[0];
-//	
-//	childrenOfNode1[0] = node2;
-//	childrenOfNode1[1] = node3;
-//	ind.trees[0].child=node1;
-//	node1.children = childrenOfNode1;
-//	node2.children = childrenOfNode2;
-//	node3.children = childrenOfNode3;
-//	node1.parent = ind.trees[0];
-//	node2.parent = node1;
-//	node3.parent = node1;
+	if (ind == null)
+		ind = loadStartInd(state);
 	
-	//size 3, worked, no hanging
-//	GPNode node1 = new SequenceOperator();
-//	GPNode node2 = new SequenceOperator();
-//	GPNode node3 = new IncreaseTrafficLevelB();
-//	GPNode node4 = new StartNewServerA();
-//	GPNode node5 = new IncreaseTrafficLevelB();
-//
-//	GPNode[] childrenOfNode1 = new GPNode[2];
-//	GPNode[] childrenOfNode2 = new GPNode[2];
-//	GPNode[] childrenOfNode3 = new GPNode[0];
-//	GPNode[] childrenOfNode4 = new GPNode[0];
-//	GPNode[] childrenOfNode5 = new GPNode[0];
-//
-//	childrenOfNode1[0] = node2;
-//	childrenOfNode1[1] = node3;
-//	childrenOfNode2[0] = node4;
-//	childrenOfNode2[1] = node5;
-
-//	ind.trees[0].child=node1;
-//	node1.children = childrenOfNode1;
-//	node2.children = childrenOfNode2;
-//	node3.children = childrenOfNode3;
-//	node4.children = childrenOfNode4;
-//	node5.children = childrenOfNode5;
-//	
-//	node1.parent = ind.trees[0];
-//	node2.parent = node1;
-//	node3.parent = node1;
-//	node4.parent = node2;
-//	node5.parent = node2;
-
-//size 4, hang sometimes...
-	GPNode node1 = new SequenceOperator();
-	GPNode node2 = new IncreaseTrafficLevel();
-	GPNode node3 = new ServerA();
-	GPNode node4 = new SequenceOperator();
-	GPNode node5 = new DecreaseDimmerLevel();
-	GPNode node6 = new ServerB();
-	GPNode node7 = new SequenceOperator();
-	GPNode node8 = new DecreaseDimmerLevel();
-	GPNode node9 = new ServerB();
-	GPNode node10 = new DecreaseDimmerLevel();
-	GPNode node11 = new ServerB();
+	//GPIndividual ind = (GPIndividual) this.ind.clone();
 	
-	Parameter seq = new Parameter("gp.fs.0.func.1");
-	Parameter tac = new Parameter("gp.fs.0.func.2");
-	Parameter ser = new Parameter("gp.fs.0.func.8");
-	
-	node1.setup(state, seq);
-	node2.setup(state, tac);
-	node3.setup(state, ser);
-	node4.setup(state, seq);
-	node5.setup(state, tac);
-	node6.setup(state, ser);
-	node7.setup(state, seq);
-	node8.setup(state, tac);
-	node9.setup(state, ser);
-	node10.setup(state, tac);
-	node11.setup(state, ser);
-	
-	GPNode[] childrenOfNode1 = new GPNode[2];
-	GPNode[] childrenOfNode2 = new GPNode[1];
-	GPNode[] childrenOfNode3 = new GPNode[0];
-	GPNode[] childrenOfNode4 = new GPNode[2];
-	GPNode[] childrenOfNode5 = new GPNode[1];
-	GPNode[] childrenOfNode6 = new GPNode[0];
-	GPNode[] childrenOfNode7 = new GPNode[2];
-	GPNode[] childrenOfNode8 = new GPNode[1];
-	GPNode[] childrenOfNode9 = new GPNode[0];
-	GPNode[] childrenOfNode10 = new GPNode[1];
-	GPNode[] childrenOfNode11 = new GPNode[0];
-
-	childrenOfNode1[0] = node2;
-	childrenOfNode1[1] = node4;
-	childrenOfNode2[0] = node3;
-	childrenOfNode4[0] = node5;
-	childrenOfNode4[1] = node7;
-	childrenOfNode5[0] = node6;
-	childrenOfNode7[0] = node8;
-	childrenOfNode7[1] = node10;
-	childrenOfNode8[0] = node9;
-	childrenOfNode10[0] = node11;
-	
-	ind.trees[0].child=node1;
-	node1.children = childrenOfNode1;
-	node2.children = childrenOfNode2;
-	node3.children = childrenOfNode3;
-	node4.children = childrenOfNode4;
-	node5.children = childrenOfNode5;
-	node6.children = childrenOfNode6;
-	node7.children = childrenOfNode7;
-	node8.children = childrenOfNode8;
-	node9.children = childrenOfNode9;
-	node10.children = childrenOfNode10;
-	node11.children = childrenOfNode11;
-	
-	node1.parent = ind.trees[0];
-	node2.parent = node1;
-	node3.parent = node2;
-	node4.parent = node1;
-	node5.parent = node4;
-	node6.parent = node5;
-	node7.parent = node4;
-	node8.parent = node7;
-	node9.parent = node8;
-	node10.parent = node7;
-	node11.parent = node10;
-	
-	
-	
-//size 5, hang sometimes, when it is working, it is giving me three generations of 
-//	different statistics!!! 
-//	GPNode node1 = new SequenceOperator();
-//	GPNode node2 = new SequenceOperator();
-//	GPNode node3 = new SequenceOperator();
-//	GPNode node4 = new DecreaseDimmerLevelA();
-//	GPNode node5 = new StartNewServerB();
-//	GPNode node6 = new SequenceOperator();
-//	GPNode node7 = new SequenceOperator();
-//	GPNode node8 = new ShutdownServerC();
-//	GPNode node9 = new IncreaseTrafficLevelD();
-//	GPNode node10 = new DecreaseTrafficLevelF();
-//
-//	GPNode[] childrenOfNode1 = new GPNode[2];
-//	GPNode[] childrenOfNode2 = new GPNode[2];
-//	GPNode[] childrenOfNode3 = new GPNode[2];
-//	GPNode[] childrenOfNode4 = new GPNode[0];
-//	GPNode[] childrenOfNode5 = new GPNode[0];
-//	GPNode[] childrenOfNode6 = new GPNode[1];
-//	GPNode[] childrenOfNode7 = new GPNode[2];
-//	GPNode[] childrenOfNode8 = new GPNode[0];
-//	GPNode[] childrenOfNode9 = new GPNode[0];
-//	GPNode[] childrenOfNode10 = new GPNode[0];
-//
-//	childrenOfNode1[0] = node2;
-//	childrenOfNode1[1] = node3;
-//	childrenOfNode2[0] = node4;
-//	childrenOfNode2[1] = node5;
-//	childrenOfNode3[0] = node6;
-//	childrenOfNode3[1] = node7;
-//	childrenOfNode6[0] = node8;
-//	childrenOfNode7[0] = node9;
-//	childrenOfNode7[1] = node10;
-//
-//	ind.trees[0].child=node1;
-//	node1.children = childrenOfNode1;
-//	node2.children = childrenOfNode2;
-//	node3.children = childrenOfNode3;
-//	node4.children = childrenOfNode4;
-//	node5.children = childrenOfNode5;
-//	node6.children = childrenOfNode6;
-//	node7.children = childrenOfNode7;
-//	node8.children = childrenOfNode8;
-//	node9.children = childrenOfNode9;
-//	node10.children = childrenOfNode10;
-//	node1.parent = ind.trees[0];
-//	node2.parent = node1;
-//	node3.parent = node1;
-//	node4.parent = node2;
-//	node5.parent = node2;
-//	node6.parent = node3;
-//	node7.parent = node3;
-//	node8.parent = node6;
-//	node9.parent = node7;
-//	node10.parent = node7;
-
-
-	
-//Zack's original starting plan
-//	OmnetStateData sd = new OmnetStateData();
-//	sd.initializeState();
-//	GPIndividual ind = new GPIndividual();
-//	GPTree[] treeInit = {new GPTree()};
-//	ind.trees = treeInit;
-//	GPNode node1 = new SequenceOperator();
-//	GPNode node2 = new StartNewServerB();
-//	GPNode[] childrenOfNode2 = new GPNode[0];
-//	node2.children=childrenOfNode2;
-//	GPNode node3 = new SequenceOperator();
-//	GPNode node4 = new StartNewServerB();
-//	GPNode[] childrenOfNode4 = new GPNode[0];
-//	node4.children=childrenOfNode4;
-//	GPNode node5 = new SequenceOperator();
-//	GPNode node6 = new SequenceOperator();
-//	GPNode node7 = new StartNewServerB();
-//	GPNode[] childrenOfNode7 = new GPNode[0];
-//	node7.children=childrenOfNode7;
-//	GPNode node8 = new SequenceOperator();
-//	GPNode node9 = new StartNewServerC();
-//	GPNode[] childrenOfNode9 = new GPNode[0];
-//	node9.children=childrenOfNode9;
-//	GPNode node10 = new StartNewServerC();
-//	GPNode[] childrenOfNode10 = new GPNode[0];
-//	node10.children=childrenOfNode10;
-//	GPNode[] childrenOfNode8 = new GPNode[2];
-//	childrenOfNode8[0]=node9;
-//	node9.parent=node8;
-//	childrenOfNode8[1]=node10;
-//	node10.parent=node8;
-//	node8.children=childrenOfNode8;
-//	GPNode[] childrenOfNode6 = new GPNode[2];
-//	childrenOfNode6[0]=node7;
-//	node7.parent=node6;
-//	childrenOfNode6[1]=node8;
-//	node8.parent=node6;
-//	node6.children=childrenOfNode6;
-//	GPNode node11 = new SequenceOperator();
-//	GPNode node12 = new StartNewServerB();
-//	GPNode[] childrenOfNode12 = new GPNode[0];
-//	node12.children=childrenOfNode12;
-//	GPNode node13 = new SequenceOperator();
-//	GPNode node14 = new StartNewServerC();
-//	GPNode[] childrenOfNode14 = new GPNode[0];
-//	node14.children=childrenOfNode14;
-//	GPNode node15 = new StartNewServerC();
-//	GPNode[] childrenOfNode15 = new GPNode[0];
-//	node15.children=childrenOfNode15;
-//	GPNode[] childrenOfNode13 = new GPNode[2];
-//	childrenOfNode13[0]=node14;
-//	node14.parent=node13;
-//	childrenOfNode13[1]=node15;
-//	node15.parent=node13;
-//	node13.children=childrenOfNode13;
-//	GPNode[] childrenOfNode11 = new GPNode[2];
-//	childrenOfNode11[0]=node12;
-//	node12.parent=node11;
-//	childrenOfNode11[1]=node13;
-//	node13.parent=node11;
-//	node11.children=childrenOfNode11;
-//	GPNode[] childrenOfNode5 = new GPNode[2];
-//	childrenOfNode5[0]=node6;
-//	node6.parent=node5;
-//	childrenOfNode5[1]=node11;
-//	node11.parent=node5;
-//	node5.children=childrenOfNode5;
-//	GPNode[] childrenOfNode3 = new GPNode[2];
-//	childrenOfNode3[0]=node4;
-//	node4.parent=node3;
-//	childrenOfNode3[1]=node5;
-//	node5.parent=node3;
-//	node3.children=childrenOfNode3;
-//	GPNode[] childrenOfNode1 = new GPNode[2];
-//	childrenOfNode1[0]=node2;
-//	node2.parent=node1;
-//	childrenOfNode1[1]=node3;
-//	node3.parent=node1;
-//	node1.children=childrenOfNode1;
-//	ind.trees[0].child=node1;
-//	node1.parent=ind.trees[0];
-//;
-		
-		
 		 nodeselect.reset();
          
 		 
@@ -477,6 +247,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
          //if (sources[0] instanceof BreedingPipeline)
              // it's already a copy, so just smash the tree in
          //    {
+         /*
              j=ind;
              if (res)  // we're in business
                  {
@@ -490,6 +261,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
        /*      }
          else // need to clone the individual
              {
+             */
              j = (GPIndividual)(ind.lightClone());
              
              // Fill in various tree information that didn't get filled in there
@@ -497,9 +269,9 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
              
              // at this point, p1 or p2, or both, may be null.
              // If not, swap one in.  Else just copy the parent.
-             for(int x=0;x<j.trees.length;x++)
-                 {
-                 if (x==t && res)  // we've got a tree with a kicking cross position!
+           
+             int x = 0;
+                 if (res)  // we've got a tree with a kicking cross position!
                      {
                      j.trees[x] = (GPTree)(ind.trees[x].lightClone());
                      j.trees[x].owner = j;
@@ -516,11 +288,28 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
                      j.trees[x].child.parent = j.trees[x];
                      j.trees[x].child.argposition = 0;                   
                      }
-                 }
-             }*/
+                 
+             
          
          //return the first node; this may be node1
          return j.trees[0].child;
+	}
+
+	private String readPlanFromFile(String fileName) {
+		try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+		    StringBuilder sb = new StringBuilder();
+		    String line = br.readLine();
+		    return "Evaluated: F\n"+
+			"Fitness: d4554802393809453312|3.3430128051926966E-4|i0|\n"+
+			"Tree 0:\n" + line;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
