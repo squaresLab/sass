@@ -453,6 +453,7 @@ public static int getSize(final EvolutionState state,Individual individual) {
 					
             if (doFinal) state.output.println("Subpopulation " + x + ":",statisticslog);
             if (doFinal) state.output.println("Actual profit: "+profit, statisticslog);
+            if (doFinal) bestSoFar[x].printIndividual(state, statisticslog);
             if (doFinal) bestSoFar[x].printIndividualForHumans(state,statisticslog);
             if (doMessage && !silentPrint) state.output.message("Subpop " + x + " best fitness of run: " + bestSoFar[x].fitness.fitnessToStringForHumans());
 
