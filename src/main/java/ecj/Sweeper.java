@@ -49,22 +49,23 @@ public class Sweeper {
 		dbase.setProperty("stat.file", "/dev/null");
 		
 		// print header
-		System.out.println("generations,popSize,crossoverChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
+		System.out.println("generations,popSize,crossoverChance,mutationChance,reproductionChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
 		
-		for (int generations: new int[] {1,10,20,30}){
+		for (int generations: new int[] {30}){
 
-			for(int popSize = 10; popSize <= 1000; popSize *= 10){
+			for(int popSize: new int[] {1000}){
 
-				for (double crossoverChance: new double[] {1,0.9,0.75,0.5,0.25}){
-					double reproductionChance = 1-crossoverChance;
+				for (double crossoverChance = 1; crossoverChance > .5; crossoverChance -= .1){
+					for (double mutationChance = 1-crossoverChance; mutationChance >= 0; mutationChance -= .1){
+						double reproductionChance = 1-crossoverChance-mutationChance;
 
-					for (double killRatio: new double[] {0,.1,.2}){
+					for (double killRatio: new double[] {0}){
 
-						for(double invalidActionPenalty: new double[] {10,1,.1,.01,0}){
+						for(double invalidActionPenalty: new double[] {0}){
 
-							for(double verbosenessPenalty: new double[] {10,1,.1,.01,0}){
+							for(double verbosenessPenalty: new double[] {.1,.01,0}){
 
-								for(double minAcceptedImprovement: new double[] {10,1,.1,.01,.001,.0001,0}){
+								for(double minAcceptedImprovement: new double[] {.001}){
 									
 									// run multiple trials
 									for (int trial = 0; trial < 10; trial++){
@@ -81,7 +82,7 @@ public class Sweeper {
 									// run ECJ with the settings that I asked for
 									EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
 									
-									String line = generations + "," + popSize + "," + crossoverChance + "," + killRatio + "," + invalidActionPenalty +"," + verbosenessPenalty + "," + minAcceptedImprovement + ",";
+									String line = generations + "," + popSize + "," + crossoverChance + "," + mutationChance+","+reproductionChance+"," + killRatio + "," + invalidActionPenalty +"," + verbosenessPenalty + "," + minAcceptedImprovement + ",";
 																	
 									// change the file name so we know where this data came from
 									//copy.setProperty("stat.file", fileString);
@@ -91,6 +92,7 @@ public class Sweeper {
 									copy.setProperty("pop.subpop.0.size", popSize+"");
 									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.0.prob", crossoverChance+"");
 									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.1.prob", reproductionChance+"");
+									copy.setProperty("pop.subpop.0.species.pipe.source.0.source.2.prob", mutationChance+"");
 
 									// these three are all setting up Tarpeian Parsimony pressure
 									copy.setProperty("stat.num-children", "1");
@@ -128,6 +130,7 @@ public class Sweeper {
 
 							}
 
+						}
 						}
 
 					}
