@@ -51,7 +51,7 @@ public class Sweeper {
 		// print header
 		System.out.println("generations,popSize,crossoverChance,mutationChance,reproductionChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
 		
-		for (int generations: new int[] {30}){
+		for (int generations: new int[] {1,10,20,30}){
 
 			for(int popSize: new int[] {1000}){
 
@@ -63,7 +63,7 @@ public class Sweeper {
 
 						for(double invalidActionPenalty: new double[] {0}){
 
-							for(double verbosenessPenalty: new double[] {.1,.01,0}){
+							for(double verbosenessPenalty: new double[] {.01}){
 
 								for(double minAcceptedImprovement: new double[] {.001}){
 									
