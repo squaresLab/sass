@@ -193,11 +193,11 @@ gp.tc.0.init = ecj.MutationBuilder
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
 gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
-gp.koza.initmutate.maxdepth = 21
+gp.koza.initmutate.maxdepth = 20
 gp.koza.initmutate.tries = 100
 
 # custom params that I put in to handle penalties and tree pruning
 invalid_action_penalty = 0
-verboseness_penalty = 0.001
-min_accepted_improvement = 0.0001
+verboseness_penalty = 0.01
+min_accepted_improvement = 0.001
 
