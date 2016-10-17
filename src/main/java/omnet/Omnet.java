@@ -34,7 +34,7 @@ public class Omnet extends SystemState {
 		servers.add(serverFactory.getA());
 		servers.add(serverFactory.getB());
 		servers.add(serverFactory.getC());
-		servers.add(serverFactory.getD());
+		//servers.add(serverFactory.getD());
 		
 	}
 	
