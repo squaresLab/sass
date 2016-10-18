@@ -51,13 +51,16 @@ public class Sweeper {
 		// print header
 		System.out.println("generations,popSize,crossoverChance,mutationChance,reproductionChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
 		
-		for (int generations: new int[] {1,10,20,30}){
+		for (int generations: new int[] {1,10}){
 
-			for(int popSize: new int[] {1000}){
+			for(int popSize: new int[] {1,10,100,1000}){
 
+				/*
 				for (double crossoverChance = 1; crossoverChance > .5; crossoverChance -= .1){
 					for (double mutationChance = 1-crossoverChance; mutationChance >= 0; mutationChance -= .1){
 						double reproductionChance = 1-crossoverChance-mutationChance;
+				 */
+				double crossoverChance = 0.8, mutationChance = 0.1, reproductionChance = 0.1;
 
 					for (double killRatio: new double[] {0}){
 
@@ -137,9 +140,9 @@ public class Sweeper {
 					}
 
 				}
-			}	
+			//}	
 
-		}
+		//}
 	}
 
 }
