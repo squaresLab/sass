@@ -55,6 +55,14 @@ task runParamSweeper(type: JavaExec){
 	maxHeapSize='10g'
 }
 
+task runAdaptor(type: JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+	
+	main = 'ecj.Adaptor'
+	
+	maxHeapSize='10g'
+}
+
 task runSingleOptimization(type: JavaExec){
 	classpath = sourceSets.main.runtimeClasspath
 	

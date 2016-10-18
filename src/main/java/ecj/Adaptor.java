@@ -50,14 +50,14 @@ public class Adaptor {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
 		// set statistics to simplestatistics
-		dbase.setProperty("stat", "ec.simple.SimpleStatistics");
+		dbase.setProperty("stat", "ecj.CustomStats");
 
-		dbase.setProperty("stat.file", "/dev/null");
+		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
 		System.out.println("trial,generation,size,runtime,profit");
