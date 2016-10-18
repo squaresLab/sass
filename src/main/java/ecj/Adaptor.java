@@ -55,7 +55,7 @@ public class Adaptor {
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
 		// set statistics to simplestatistics
-		dbase.setProperty("stat", "ecj.CustomStats");
+		dbase.setProperty("stat", "ec.simple.SimpleStatistics");
 
 		dbase.setProperty("stat.file", "stats.txt");
 
