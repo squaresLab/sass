@@ -60,7 +60,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     
     int maxDepth;
     
-    static MersenneTwisterFast mtf = null;
+   // static MersenneTwisterFast mtf = null;
 
     //if trees must be equal size
     //TODO: make this a parameter later
@@ -119,7 +119,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
                 p,d, GPNodeBuilder.class));
         builder.setup(state,p);
         
-         mtf = new MersenneTwisterFast();
+        // mtf = new MersenneTwisterFast();
     }
 	
 	  protected static GPIndividual loadStartInd(EvolutionState state) {
@@ -130,9 +130,9 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 		  
 		  
 		  
-		  if (mtf.nextBoolean(0.90))
-			  indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
-		  else 
+		 // if (mtf.nextBoolean(0.90))
+			 // indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
+		//  else 
 			  indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
 			
 		//	indString = readPlanFromFile("prismproc.txt");
