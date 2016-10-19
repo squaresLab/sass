@@ -21,6 +21,7 @@ import ec.gp.GPSpecies;
 import ec.gp.GPTree;
 import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
+import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 import ecj.operators.SequenceOperator;
 import ecj.actions.DecreaseDimmerLevel;
@@ -123,8 +124,12 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 					"Fitness: d4554802393809453312|3.3430128051926966E-4|i0|\n"+
 					"Tree 0:\n";
 		  
-		   indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
-		   //indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
+		  MersenneTwisterFast mtf = new MersenneTwisterFast();
+		  
+		  if (mtf.nextBoolean(0.9))
+			  indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
+		  else 
+			  indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
 			
 		//	indString = readPlanFromFile("prismproc.txt");
 			
