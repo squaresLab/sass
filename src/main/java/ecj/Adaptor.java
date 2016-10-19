@@ -39,14 +39,14 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
 public class Adaptor {
 
 	private static double generations = 30;
-	private static double popSize = 1000;
-	private static double crossoverChance = .7;
-	private static double killRatio = 0.1;
+	private static double popSize = 100;
+	private static double crossoverChance = .6;
+	private static double killRatio = 0.0;
 	private static double invalidActionPenalty = 0;
-	private static double verbosenessPenalty = 0.1;
+	private static double verbosenessPenalty = 0.01;
 	private static double minAcceptedImprovement = 0.001;
-	private static double reproductionChance = 0.1;
-	private static double mutationChance = 0.2;
+	private static double reproductionChance = 0.0;
+	private static double mutationChance = 0.4;
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
