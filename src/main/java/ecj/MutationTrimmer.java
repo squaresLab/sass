@@ -34,8 +34,7 @@ import ecj.actions.ServerB;
  * TODO: test the class at runtime and then fix the other todos
  * 
  */
-
-public class MutationBuilder extends ec.gp.GPNodeBuilder {
+public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 
 	
 	public static final String P_MUTATEBUILDER = "initmutate";
@@ -55,6 +54,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     
     // the starting individual
     GPIndividual ind = null;
+    
     
     int numTries;
     
@@ -211,7 +211,6 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
          // pick a node
          
          GPNode p1=null;  // the node we pick
-         GPNode p2=null;
          
          GPInitializer initializer = ((GPInitializer)state.initializer);
          
@@ -225,27 +224,13 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
              // pick a node in individual 1
              p1 = nodeselect.pickNode(state,subpopulation,threadInd,ind,ind.trees[0]);
              
-             // generate a tree swap-compatible with p1's position
-             
-             
-             int size = GPNodeBuilder.NOSIZEGIVEN;
-             if (equalSize) size = p1.numNodes(GPNode.NODESEARCH_ALL);
-
-             p2 = builder.newRootedTree(state,
-                 p1.parentType(initializer),
-                 thread,
-                 p1.parent,
-                 ind.trees[0].constraints(initializer).functionset,
-                 p1.argposition,
-                 size);
-             
-             // check for depth and swap-compatibility limits
-             res = verifyPoints(p2,p1);  // p2 can fit in p1's spot  -- the order is important!
-             
-             // did we get something that had both nodes verified?
-             if (res) break;
+             if (!p1.constraints((GPInitializer) state.initializer).returntype.equals(((GPTree)p1.rootParent()).constraints((GPInitializer) state.initializer).treetype)){
+            	continue; 
+             }else{
+            	 break;
              }
-         
+            }
+           
          GPIndividual j;
 
          //TODO: I think the first if statement will work without 
@@ -279,25 +264,13 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
              // If not, swap one in.  Else just copy the parent.
            
              int x = 0;
-                 if (res)  // we've got a tree with a kicking cross position!
-                     {
-                     j.trees[x] = (GPTree)(ind.trees[x].lightClone());
-                     j.trees[x].owner = j;
-                     j.trees[x].child = ind.trees[x].child.cloneReplacingNoSubclone(p2,p1);
-                     j.trees[x].child.parent = j.trees[x];
-                     j.trees[x].child.argposition = 0;
-                     j.evaluated = false; 
-                     } // it's changed
-                 else 
-                     {
-                     j.trees[x] = (GPTree)(ind.trees[x].lightClone());
-                     j.trees[x].owner = j;
-                     j.trees[x].child = (GPNode)(ind.trees[x].child.clone());
-                     j.trees[x].child.parent = j.trees[x];
-                     j.trees[x].child.argposition = 0;                   
-                     }
-                 
-             
+          
+             j.trees[x] = (GPTree)(ind.trees[x].lightClone());
+             j.trees[x].owner = j;
+             j.trees[x].child = (GPNode) p1.clone();
+             j.trees[x].child.parent = j.trees[x];
+             j.trees[x].child.argposition = 0;
+             j.evaluated = false;  
          
          //return the first node; this may be node1
          return j.trees[0].child;

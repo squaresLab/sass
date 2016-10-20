@@ -188,8 +188,9 @@ stat.do-time = true
 
 #gp.tc.0.init = ec.gp.koza.HalfBuilder
 
-gp.tc.0.init = ecj.MutationBuilder
+#gp.tc.0.init = ecj.MutationBuilder
 
+gp.tc.0.init = ecj.MutationTrimmer
 
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
