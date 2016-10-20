@@ -21,6 +21,7 @@ import ec.gp.GPSpecies;
 import ec.gp.GPTree;
 import ec.gp.GPType;
 import ec.gp.koza.GPKozaDefaults;
+import ec.gp.koza.MutationPipeline;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 import ecj.operators.SequenceOperator;
@@ -36,7 +37,6 @@ import ecj.actions.ServerB;
  */
 public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 
-	
 	public static final String P_MUTATEBUILDER = "initmutate";
 	public static final String P_NODESELECTOR = "ns";
 	public static final String P_NUM_TRIES = "tries";
@@ -54,7 +54,6 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
     
     // the starting individual
     GPIndividual ind = null;
-    
     
     int numTries;
     
@@ -203,7 +202,6 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 	//GPIndividual ind = (GPIndividual) this.ind.clone();
 	
 		 nodeselect.reset();
-         
 		 
 		// validity result...
          boolean res = false;
@@ -240,21 +238,7 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
          //if (sources[0] instanceof BreedingPipeline)
              // it's already a copy, so just smash the tree in
          //    {
-         /*
-             j=ind;
-             if (res)  // we're in business
-                 {
-                 p2.parent = p1.parent;
-                 p2.argposition = p1.argposition;
-                 if (p2.parent instanceof GPNode)
-                     ((GPNode)(p2.parent)).children[p2.argposition] = p2;
-                 else ((GPTree)(p2.parent)).child = p2;
-                 j.evaluated = false;  // we've modified it
-                 }
-       /*      }
-         else // need to clone the individual
-             {
-             */
+
              j = (GPIndividual)(ind.lightClone());
              
              // Fill in various tree information that didn't get filled in there
@@ -271,9 +255,113 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
              j.trees[x].child.parent = j.trees[x];
              j.trees[x].child.argposition = 0;
              j.evaluated = false;  
-         
-         //return the first node; this may be node1
-         return j.trees[0].child;
+             
+         return mutate(state,thread,j).trees[0].child;
+	}
+	
+	private GPIndividual mutate(EvolutionState state,int thread,GPIndividual ind){
+		StateData sd = new StateData();
+		sd.initializeState();
+		
+			 nodeselect.reset();
+	         
+			 
+			// validity result...
+	         boolean res = false;
+			 
+	         // pick a node
+	         
+	         GPNode p1=null;  // the node we pick
+	         GPNode p2=null;
+	         
+	         GPInitializer initializer = ((GPInitializer)state.initializer);
+	         
+	         for(int x=0;x<numTries;x++)
+	             {
+	        	 //subpopulation and indCount are not used in koza node selector so set them to 0
+	        	 int subpopulation = 0;
+	        	 //assuming the 0 thread is always active
+	        	 int threadInd =0;
+	        	 
+	             // pick a node in individual 1
+	             p1 = nodeselect.pickNode(state,subpopulation,threadInd,ind,ind.trees[0]);
+	             
+	             // generate a tree swap-compatible with p1's position
+	             
+	             
+	             int size = GPNodeBuilder.NOSIZEGIVEN;
+	             if (equalSize) size = p1.numNodes(GPNode.NODESEARCH_ALL);
+
+	             p2 = builder.newRootedTree(state,
+	                 p1.parentType(initializer),
+	                 thread,
+	                 p1.parent,
+	                 ind.trees[0].constraints(initializer).functionset,
+	                 p1.argposition,
+	                 size);
+	             
+	             // check for depth and swap-compatibility limits
+	             res = verifyPoints(p2,p1);  // p2 can fit in p1's spot  -- the order is important!
+	             
+	             // did we get something that had both nodes verified?
+	             if (res) break;
+	             }
+	         
+	         GPIndividual j;
+
+	         //TODO: I think the first if statement will work without 
+	         // the check, because it is just checking if the plan
+	         // is a copy that it can alter or if the plan needs
+	         // to be copied before editing.
+	         //if (sources[0] instanceof BreedingPipeline)
+	             // it's already a copy, so just smash the tree in
+	         //    {
+	         /*
+	             j=ind;
+	             if (res)  // we're in business
+	                 {
+	                 p2.parent = p1.parent;
+	                 p2.argposition = p1.argposition;
+	                 if (p2.parent instanceof GPNode)
+	                     ((GPNode)(p2.parent)).children[p2.argposition] = p2;
+	                 else ((GPTree)(p2.parent)).child = p2;
+	                 j.evaluated = false;  // we've modified it
+	                 }
+	       /*      }
+	         else // need to clone the individual
+	             {
+	             */
+	             j = (GPIndividual)(ind.lightClone());
+	             
+	             // Fill in various tree information that didn't get filled in there
+	             j.trees = new GPTree[ind.trees.length];
+	             
+	             // at this point, p1 or p2, or both, may be null.
+	             // If not, swap one in.  Else just copy the parent.
+	           
+	             int x = 0;
+	                 if (res)  // we've got a tree with a kicking cross position!
+	                     {
+	                     j.trees[x] = (GPTree)(ind.trees[x].lightClone());
+	                     j.trees[x].owner = j;
+	                     j.trees[x].child = ind.trees[x].child.cloneReplacingNoSubclone(p2,p1);
+	                     j.trees[x].child.parent = j.trees[x];
+	                     j.trees[x].child.argposition = 0;
+	                     j.evaluated = false; 
+	                     } // it's changed
+	                 else 
+	                     {
+	                     j.trees[x] = (GPTree)(ind.trees[x].lightClone());
+	                     j.trees[x].owner = j;
+	                     j.trees[x].child = (GPNode)(ind.trees[x].child.clone());
+	                     j.trees[x].child.parent = j.trees[x];
+	                     j.trees[x].child.argposition = 0;                   
+	                     }
+	                 
+	             
+	         
+	         //return the first node; this may be node1
+	         return j;
 	}
 
 	private String readPlanFromFile(String fileName) {
