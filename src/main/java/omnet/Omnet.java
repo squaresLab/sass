@@ -56,8 +56,13 @@ public class Omnet extends SystemState {
 				
 				double requestsPerTrafficLevel = ((double)SYSTEM_DEMAND)/sumTrafficLevel;
 				
-				if (!Double.isFinite(requestsPerTrafficLevel))
+				if (!Double.isFinite(requestsPerTrafficLevel)){
 					requestsPerTrafficLevel = 0;
+				}
+				
+				if (requestsPerTrafficLevel == 0){
+					latency += SYSTEM_DEMAND;
+				}
 				
 				Server current;
 				for(int i =0; i < servers.size(); i++){	

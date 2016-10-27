@@ -60,8 +60,12 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,size,runtime,profit");
+		System.out.println("trial,startsize,generation,size,runtime,profit");
 
+		for (int startsize = 2; startsize < 10; startsize++){
+		
+			dbase.setProperty("gp.koza.initmutate.maxdepth", startsize+"");
+			
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
 
@@ -97,7 +101,7 @@ public class Adaptor {
 
 				int size = CustomStats.getSize(evaluatedState, best);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit);
+				System.out.println(trial+","+startsize+","+generation++ +","+size+","+runtime+","+profit);
 				
 				}
 			
@@ -114,6 +118,8 @@ public class Adaptor {
 			// also fixes a resource leak
 			out.close();
 
+		}
+		
 		}
 
 

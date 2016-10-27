@@ -8,6 +8,7 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPNodeConstraints;
+import ec.multiobjective.MultiObjectiveFitness;
 import ec.util.Code;
 import ec.util.DecodeReturn;
 
@@ -25,6 +26,8 @@ public class ForIndex extends ERC {
 		test = (ForIndex) test.readNode(new DecodeReturn("ERC[i3|]"));
 		
 		System.out.println(test);
+		
+		System.out.println(Code.encode(0));
 	}
 	
 	@Override

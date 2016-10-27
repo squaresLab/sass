@@ -14,8 +14,9 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 	
 		public final static String objectivesString  = "objectives";
 
-		private final int INVALID_ACTION_PENALTY = 30;
-		private final int VERBOSENESS_PENALTY = 20;
+		private double INVALID_ACTION_PENALTY = 0;
+		private double VERBOSENESS_PENALTY = 0;
+		private double minAcceptedImprovement = 0;
 		
 		String paramValue;
 
@@ -36,6 +37,11 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 		        if (state.parameters.exists(objectivesParam, null))
 		        {
 		            paramValue = state.parameters.getStringWithDefault(objectivesParam, null, "paqtcrfdil");
+		            
+		            INVALID_ACTION_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("invalid_action_penalty"),null,0);
+					VERBOSENESS_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("verboseness_penalty"),null,0);
+					minAcceptedImprovement = state.parameters.getDoubleWithDefault(new Parameter("min_accepted_improvement"),null,0);
+		            
 		        } else {
 		        	System.err.println("please define the objectives parameter to list what the plans should be evaluated on");
 		        	System.exit(1);
@@ -102,8 +108,9 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, ((GPIndividual)ind), this);
 				
+				((StateData)input).plan.setMinAcceptedImprovment(minAcceptedImprovement);
 				
-				if (((StateData)input).plan.size() < 50){
+				if (((StateData)input).plan.size() < 20){
 				
 					objectives = getObjectives(paramValue,(StateData)input,(GPIndividual)ind);
 				
@@ -113,6 +120,8 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				
 				
 				((MultiObjectiveFitness)ind.fitness).setObjectives(state, objectives);
+				
+				//((MultiObjectiveFitness)ind.fitness).printFitness(state, 0);
 				
 				//System.out.println(((StateData)input).plan);
 				

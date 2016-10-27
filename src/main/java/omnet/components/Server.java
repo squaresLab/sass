@@ -1,5 +1,7 @@
 package omnet.components;
 
+import java.util.Hashtable;
+
 public class Server {
 	
 	// the cost per second
@@ -24,6 +26,9 @@ public class Server {
 	protected double powerPerDimmed;
 	protected double latency;
 	
+	static Hashtable<String,Integer> startTraffic = new Hashtable<String,Integer>();
+	static Hashtable<String,Integer> startDimmer = new Hashtable<String,Integer>();
+	
 	public Server(String name){
 		this.name = name;
 		
@@ -41,6 +46,15 @@ public class Server {
 		latency = 120;
 		
 		validState = true;
+		
+		Integer starting;
+		
+		if( (starting = startDimmer.get(name.charAt(0)+"")) != null ){
+			dimmer = starting;
+		}
+		if( (starting= startTraffic.get(name.charAt(0)+"")) != null ){
+			traffic = starting;
+		}
 	
 	}
 
@@ -61,6 +75,7 @@ public class Server {
 			validState = false;
 		}else{
 			this.dimmer = dimmer;
+			startDimmer.put(name.charAt(0)+"", dimmer);
 		}
 	}
 
@@ -73,6 +88,7 @@ public class Server {
 			validState = false;
 		}else{
 			this.traffic = traffic;
+			startTraffic.put(name.charAt(0)+"", traffic);
 		}
 	}
 
