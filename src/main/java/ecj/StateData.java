@@ -1,6 +1,7 @@
 package ecj;
 
 import ec.gp.GPData;
+import omnet.components.Server;
 import omnet.tactics.OmnetPlan;
 
 public class StateData extends GPData {
@@ -13,6 +14,7 @@ public class StateData extends GPData {
 
 	public void initializeState() {
 		plan = new OmnetPlan();
+		Server.reset();
 	}
 
 }

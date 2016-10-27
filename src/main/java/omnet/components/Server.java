@@ -130,6 +130,11 @@ public class Server {
 		return latency;
 	}
 	
+	public static void reset(){
+		startTraffic = new Hashtable<String,Integer>();
+		startDimmer = new Hashtable<String,Integer>();
+	}
+	
 	
 
 }
