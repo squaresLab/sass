@@ -10,9 +10,9 @@ public class ServerFactory {
 	
 	public Server getA(){
 		Server a = new Server("A"+numServers[0]++);
-		a.setCost(0.5);
-		a.power = 250;
-		a.powerPerNormal = 150.0 / 50.0;
+		a.setCost(1.5);
+		a.power = 400;
+		a.powerPerNormal = 400 / 250;
 		return a;
 	}
 
