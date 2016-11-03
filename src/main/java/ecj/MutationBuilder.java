@@ -133,7 +133,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 		 String indString = 
 				  "Evaluated: F\n"+
 				  "Fitness: [d0|0.0| d0|0.0| d0|0.0| d0|0.0|]\n"+
-				  "Fitness: d4567423964645623803|0.0022887690524564497|\n"+
+			      "Fitness: d4567423964645623803|0.0022887690524564497|\n"+
 				  "Strength: d0|0.0|\n"+
 				  "Distance: d4567423964645623803|0.0022887690524564497|\n"+
 				  "Tree 0:\n";
