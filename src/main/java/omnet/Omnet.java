@@ -14,7 +14,7 @@ public class Omnet extends SystemState {
 	
 	private static final double NORMAL_PROFIT_PER_SECOND = 3;
 
-	private static final double DIMMED_PROFIT_PER_SECOND = 2;
+	private static final double DIMMED_PROFIT_PER_SECOND = 1;
 	
 	private double dimmedResponses,normalResponses,income,cost,latency;
 
