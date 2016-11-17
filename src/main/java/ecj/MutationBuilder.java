@@ -122,13 +122,13 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     }
 	
 	  protected static GPIndividual loadStartInd(EvolutionState state) {
-		  /*
+		  
 		  String indString = 
 					"Evaluated: F\n"+
 					"Fitness: d4554802393809453312|3.3430128051926966E-4|i0|\n"+
 					"Tree 0:\n";
-		  */
 		  
+		  /*
 		  // for multiobjective case
 		 String indString = 
 				  "Evaluated: F\n"+
@@ -137,10 +137,10 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 				  "Strength: d0|0.0|\n"+
 				  "Distance: d4567423964645623803|0.0022887690524564497|\n"+
 				  "Tree 0:\n";
-		  
+		  */
 		  
 		 // if (mtf.nextBoolean(0.90))
-			 //indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
+			 indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
 		//  else 
 			 //indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
 			
