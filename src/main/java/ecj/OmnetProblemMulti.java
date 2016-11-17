@@ -110,7 +110,7 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				
 				((StateData)input).plan.setMinAcceptedImprovment(minAcceptedImprovement);
 				
-				if (((StateData)input).plan.size() < 20){
+				if (((StateData)input).plan.size() <= 10){
 				
 					objectives = getObjectives(paramValue,(StateData)input,(GPIndividual)ind);
 				

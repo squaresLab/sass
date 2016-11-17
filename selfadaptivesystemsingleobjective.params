@@ -144,12 +144,12 @@ gp.nc.6.returns = plan
 gp.nc.6.size = 1
 gp.nc.6.child.0 = plan
 
-gp.koza.xover.maxdepth = 20
-gp.koza.mutate.maxdepth = 20
+gp.koza.xover.maxdepth = 10
+gp.koza.mutate.maxdepth = 10
 gp.koza.grow.min-depth = 1
-gp.koza.grow.max-depth = 20
+gp.koza.grow.max-depth = 10
 gp.koza.half.min-depth = 1
-gp.koza.half.max-depth = 20
+gp.koza.half.max-depth = 5
 
 eval.problem = ecj.OmnetProblemSingle
 eval.problem.data = ecj.StateData
@@ -186,16 +186,16 @@ stat.do-time = true
 #stat.child.0 = ec.parsimony.TarpeianStatistics
 #stat.child.0.kill-proportion = 0.2
 
-#gp.tc.0.init = ec.gp.koza.HalfBuilder
+gp.tc.0.init = ec.gp.koza.HalfBuilder
 
-gp.tc.0.init = ecj.MutationBuilder
+#gp.tc.0.init = ecj.MutationBuilder
 
 #gp.tc.0.init = ecj.MutationTrimmer
 
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
 gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
-gp.koza.initmutate.maxdepth = 20
+gp.koza.initmutate.maxdepth = 10
 gp.koza.initmutate.tries = 100
 
 # custom params that I put in to handle penalties and tree pruning
