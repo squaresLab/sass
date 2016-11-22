@@ -108,11 +108,11 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				
 				((GPIndividual)ind).trees[0].child.eval(state, threadnum, input, stack, ((GPIndividual)ind), this);
 				
-				((StateData)input).plan.setMinAcceptedImprovment(minAcceptedImprovement);
+				((StateData)input).plan.setMinAcceptedImprovment(0);
 				
 				if (((StateData)input).plan.size() <= 10){
 				
-					objectives = getObjectives(paramValue,(StateData)input,(GPIndividual)ind);
+					objectives = getObjectives(paramValue,(StateData)input);
 				
 				}else{
 					objectives = getNonsense(paramValue.length());
@@ -158,7 +158,7 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 			return ans;
 		}
 		
-		private double[] getObjectives(String objString, StateData input,GPIndividual ind) {
+		protected static double[] getObjectives(String objString, StateData input) {
 			
 			OmnetPlan plan = input.plan;
 			
