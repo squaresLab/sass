@@ -209,9 +209,9 @@ stat.do-time = true
 #stat.child.0 = ec.parsimony.TarpeianStatistics
 #stat.child.0.kill-proportion = 0.2
 
-gp.tc.0.init = ec.gp.koza.HalfBuilder
+#gp.tc.0.init = ec.gp.koza.HalfBuilder
 
-#gp.tc.0.init = ecj.MutationBuilder
+gp.tc.0.init = ecj.MutationBuilder
 
 #gp.tc.0.init = ecj.MutationTrimmer
 
