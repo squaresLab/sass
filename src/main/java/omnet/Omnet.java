@@ -10,7 +10,7 @@ import tactics.Tactic;
 public class Omnet extends SystemState {
 	
 	// requests / sec on the system, assumed constant for now
-	public static final int SYSTEM_DEMAND = 10000;
+	public static final int SYSTEM_DEMAND = 1000000;
 	
 	private static final double NORMAL_PROFIT_PER_SECOND = 3;
 
@@ -34,7 +34,19 @@ public class Omnet extends SystemState {
 		servers.add(serverFactory.getA());
 		servers.add(serverFactory.getB());
 		servers.add(serverFactory.getC());
-		//servers.add(serverFactory.getD());
+		servers.add(serverFactory.getD());
+		servers.add(serverFactory.getE());
+		servers.add(serverFactory.getF());
+		servers.add(serverFactory.getG());
+		servers.add(serverFactory.getH());
+		servers.add(serverFactory.getI());
+		servers.add(serverFactory.getJ());
+		servers.add(serverFactory.getK());
+		servers.add(serverFactory.getL());
+		servers.add(serverFactory.getM());
+		servers.add(serverFactory.getN());
+		servers.add(serverFactory.getO());
+		servers.add(serverFactory.getP());
 		
 	}
 	
