@@ -38,6 +38,18 @@ public class StartServer extends FailableTactic {
 				case "B": serv = factory.getB(); break;
 				case "C": serv = factory.getC(); break;
 				case "D": serv = factory.getD(); break;
+				case "E": serv = factory.getE(); break;
+				case "F": serv = factory.getF(); break;
+				case "G": serv = factory.getG(); break;
+				case "H": serv = factory.getH(); break;
+				case "I": serv = factory.getI(); break;
+				case "J": serv = factory.getJ(); break;
+				case "K": serv = factory.getK(); break;
+				case "L": serv = factory.getL(); break;
+				case "M": serv = factory.getM(); break;
+				case "N": serv = factory.getN(); break;
+				case "O": serv = factory.getO(); break;
+				case "P": serv = factory.getP(); break;
 			}
 			
 			latency = serv.getLatency();
