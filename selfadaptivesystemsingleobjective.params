@@ -37,7 +37,7 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 13
+gp.fs.0.size = 26
 gp.fs.0.func.0 = ecj.operators.TryCatchFinally
 gp.fs.0.func.0.nc = nc3
 gp.fs.0.func.1 = ecj.operators.SequenceOperator
@@ -66,9 +66,32 @@ gp.fs.0.func.12 = ecj.operators.ForIndex
 gp.fs.0.func.12.nc = nc5
 gp.fs.0.func.13 = ecj.actions.ServerD
 gp.fs.0.func.13.nc = nc0
-gp.fs.0.func.14 = ecj.operators.Retry
-gp.fs.0.func.14.nc = nc6
-
+gp.fs.0.func.14 = ecj.actions.ServerE
+gp.fs.0.func.14.nc = nc0
+gp.fs.0.func.15 = ecj.actions.ServerF
+gp.fs.0.func.15.nc = nc0
+gp.fs.0.func.16 = ecj.actions.ServerG
+gp.fs.0.func.16.nc = nc0
+gp.fs.0.func.17 = ecj.actions.ServerH
+gp.fs.0.func.17.nc = nc0
+gp.fs.0.func.18 = ecj.actions.ServerI
+gp.fs.0.func.18.nc = nc0
+gp.fs.0.func.19 = ecj.actions.ServerJ
+gp.fs.0.func.19.nc = nc0
+gp.fs.0.func.20 = ecj.actions.ServerK
+gp.fs.0.func.20.nc = nc0
+gp.fs.0.func.21 = ecj.actions.ServerL
+gp.fs.0.func.21.nc = nc0
+gp.fs.0.func.22 = ecj.actions.ServerM
+gp.fs.0.func.22.nc = nc0
+gp.fs.0.func.23 = ecj.actions.ServerN
+gp.fs.0.func.23.nc = nc0
+gp.fs.0.func.24 = ecj.actions.ServerO
+gp.fs.0.func.24.nc = nc0
+gp.fs.0.func.25 = ecj.actions.ServerP
+gp.fs.0.func.25.nc = nc0
+gp.fs.0.func.26 = ecj.operators.Retry
+gp.fs.0.func.26.nc = nc6
 
 # Here we define a single atomic type, "nil", which everyone will use.
 # There are no set types defined.
