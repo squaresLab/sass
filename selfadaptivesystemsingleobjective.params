@@ -181,7 +181,7 @@ pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
 breedthreads = 1
-evalthreads = 8
+evalthreads = 1
 
 
 seed.0 = 123456789
@@ -220,6 +220,8 @@ gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
 gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
 gp.koza.initmutate.maxdepth = 10
 gp.koza.initmutate.tries = 100
+
+#quit-on-run-complete	= false
 
 # custom params that I put in to handle penalties and tree pruning
 invalid_action_penalty = 0
