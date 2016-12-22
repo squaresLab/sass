@@ -18,7 +18,7 @@ public class ServerFactory {
 
 	public Server getB(){
 		Server b = new Server("B"+numServers[1]++);
-		b.setCost(.7);
+		b.setCost(7);
 		b.power = 200;
 		b.powerPerNormal = 200.0 / 130.0;
 		return b;
