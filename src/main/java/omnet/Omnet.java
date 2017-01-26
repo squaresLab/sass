@@ -255,6 +255,8 @@ public class Omnet extends SystemState {
 	public Fitness calculateFitness() {
 		Fitness fit = new Fitness();
 		
+		calculateProfit();
+		
 		fit.put("Cost",getCost()*getProbability());
 		fit.put("DimmedResponses",getDimmedResponses()*getProbability());
 		fit.put("NormalResponses",getNormalResponses()*getProbability());

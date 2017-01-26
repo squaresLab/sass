@@ -15,7 +15,7 @@ public class Fitness {
 	// add them together
 	public Fitness or(Fitness fitness) {
 		// to do this, the types must be the same
-		if (this.objectiveValues.keySet() != fitness.objectiveValues.keySet()){
+		if (!this.objectiveValues.keySet().equals(fitness.objectiveValues.keySet())){
 			return null;
 		}else{
 			Fitness ans = new Fitness();
@@ -29,7 +29,7 @@ public class Fitness {
 	// multiply them together
 	public Fitness and(Fitness fitness){
 		// to do this, the types must be the same
-		if (this.objectiveValues.keySet() != fitness.objectiveValues.keySet()){
+		if (!this.objectiveValues.keySet().equals(fitness.objectiveValues.keySet())){
 			return null;
 		}else{
 			Fitness ans = new Fitness();
