@@ -110,9 +110,9 @@ public abstract class SystemState {
 	
 	public abstract boolean isStateValid();
 
-	public double calculateFitness() {
+	public Fitness calculateFitness() {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 	
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import omnet.Omnet;
+import system.Fitness;
 import system.SystemState;
 
 public abstract class Plan implements Cloneable {
@@ -26,21 +27,21 @@ public abstract class Plan implements Cloneable {
 		this.tactics = new ArrayList<Tactic>(tactics);
 	}
 	
-	public double evaluate(Omnet system){
+	public Fitness evaluate(Omnet system){
 		
 		return evaluate(system, 0);
 	
 	}
 	
-	private double evaluate(SystemState system, int currentStep){
+	private Fitness evaluate(SystemState system, int currentStep){
 
 		if (currentStep == tactics.size()){
-			return system.calculateFitness() * system.getProbability();
+			return system.calculateFitness();
 		}else if (system.getProbability() * EST_MAX_FITNESS < MIN_POSSIBLE_IMPROVEMENT){
-			return MINIMUM_POSSIBLE_FITNESS;
+			return Fitness.MINIMUM_POSSIBLE_FITNESS;
 		}else{
 			
-			double onSuccess,onFail;
+			Fitness onSuccess,onFail;
 			
 			Tactic current = (Tactic) tactics.get(currentStep).clone();
 			
@@ -113,7 +114,7 @@ public abstract class Plan implements Cloneable {
 					
 					}
 					
-					return onSuccess + onFail;
+					return onSuccess.or(onFail);
 					
 				}else{
 					// if the tactic failed, then we do not need to compute the fail branch, since it already failed
