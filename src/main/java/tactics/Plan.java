@@ -8,11 +8,9 @@ import system.SystemState;
 
 public abstract class Plan implements Cloneable {
 	
-	private static final double EST_MAX_FITNESS = 10000;
-	
-	private static double MIN_POSSIBLE_IMPROVEMENT = 0.01;
-	
-	private static final double MINIMUM_POSSIBLE_FITNESS = 0;
+	// TODO these must be defined in the plan implementation
+	private static double estMaxFitness = 10000;
+	private static double minPossibleImprovement = 0.01;
 	
 	protected ArrayList<Tactic> tactics;
 	
@@ -36,7 +34,8 @@ public abstract class Plan implements Cloneable {
 
 		if (currentStep == tactics.size()){
 			return system.calculateFitness();
-		}else if (system.getProbability() * EST_MAX_FITNESS < MIN_POSSIBLE_IMPROVEMENT){
+			// TODO reconsider how branch pruning works, is it really doing the right thing?
+		}else if (system.getProbability() * estMaxFitness < minPossibleImprovement){
 			return Fitness.MINIMUM_POSSIBLE_FITNESS;
 		}else{
 			
@@ -156,7 +155,7 @@ public abstract class Plan implements Cloneable {
 	}
 	
 	public void setMinAcceptedImprovment(double minAcceptedImprovement){
-		this.MIN_POSSIBLE_IMPROVEMENT = minAcceptedImprovement;
+		this.minPossibleImprovement = minAcceptedImprovement;
 	}
 	
 	public abstract Object clone();
