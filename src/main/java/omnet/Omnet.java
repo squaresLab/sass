@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import omnet.components.Server;
 import omnet.components.ServerFactory;
+import system.Fitness;
 import system.SystemState;
 import tactics.Tactic;
 
@@ -248,6 +249,13 @@ public class Omnet extends SystemState {
 		}
 		
 		return ans;
+	}
+
+	@Override
+	public Fitness calculateFitness() {
+		Fitness ans = new Fitness();
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

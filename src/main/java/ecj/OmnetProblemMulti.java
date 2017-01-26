@@ -9,6 +9,7 @@ import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import omnet.Omnet;
 import omnet.tactics.OmnetPlan;
+import system.Fitness;
 
 public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 	
@@ -162,7 +163,7 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 			
 			OmnetPlan plan = input.plan;
 			
-			plan.evaluate(new Omnet());
+			Fitness fit = plan.evaluate(new Omnet());
 			
 			double[] ans = new double[objString.length()];
 			
@@ -171,15 +172,15 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				
 				 switch(cur){
 				 case 't' : ans[count] = plan.getTime(); break;
-				 case 'c' : ans[count] = plan.getCost(); break;
-				 case 'r' : ans[count] = plan.getResponses(); break;
-				 case 'd' : ans[count] = plan.getDimmedResponses(); break;
-				 case 'f' : ans[count] = plan.getNormalResponses(); break;
-				 case 'i' : ans[count] = plan.getIncome(); break;
-				 case 'p' : ans[count] = plan.getProfit(); break;
-				 case 'l' : ans[count] = plan.size(); break;
-				 case 'q' : ans[count] = plan.getNormalResponses() / plan.getResponses(); break;
-				 case 'a' : ans[count] = plan.getLatency(); break;
+				 case 'c' : ans[count] = fit.get("Cost"); break;
+				 case 'r' : ans[count] = fit.get("Responses"); break;
+				 case 'd' : ans[count] = fit.get("DimmedResponses"); break;
+				 case 'f' : ans[count] = fit.get("NormalResponses"); break;
+				 case 'i' : ans[count] = fit.get("Income"); break;
+				 case 'p' : ans[count] = fit.get("Profit"); break;
+				 case 'l' : ans[count] = fit.get("size"); break;
+				 case 'q' : ans[count] = fit.get("NormalResponses") / fit.get("Responses"); break;
+				 case 'a' : ans[count] = fit.get("Latency"); break;
 				}
 				
 			}

@@ -417,7 +417,7 @@ public class CustomStats extends Statistics
 		input.plan.setMinAcceptedImprovment(0);
 		
 		// now compute fitness without any penalties
-		return input.plan.evaluate(new Omnet());
+		return input.plan.evaluate(new Omnet()).get("Profit");
     	
 	}
 

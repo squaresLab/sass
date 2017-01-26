@@ -3,7 +3,6 @@ package tactics;
 import java.util.ArrayList;
 import java.util.List;
 
-import omnet.Omnet;
 import system.Fitness;
 import system.SystemState;
 
@@ -27,7 +26,7 @@ public abstract class Plan implements Cloneable {
 		this.tactics = new ArrayList<Tactic>(tactics);
 	}
 	
-	public Fitness evaluate(Omnet system){
+	public Fitness evaluate(SystemState system){
 		
 		return evaluate(system, 0);
 	
