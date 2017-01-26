@@ -253,9 +253,16 @@ public class Omnet extends SystemState {
 
 	@Override
 	public Fitness calculateFitness() {
-		Fitness ans = new Fitness();
-		// TODO Auto-generated method stub
-		return null;
+		Fitness fit = new Fitness();
+		
+		fit.put("Cost",getCost()*getProbability());
+		fit.put("DimmedResponses",getDimmedResponses()*getProbability());
+		fit.put("NormalResponses",getNormalResponses()*getProbability());
+		fit.put("Income",getIncome()*getProbability());
+		fit.put("Profit",getProfit()*getProbability());
+		fit.put("Latency",getLatency()*getProbability());
+
+		return fit;
 	}
 	
 }

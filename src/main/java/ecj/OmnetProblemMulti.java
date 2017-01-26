@@ -173,12 +173,12 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				 switch(cur){
 				 case 't' : ans[count] = plan.getTime(); break;
 				 case 'c' : ans[count] = fit.get("Cost"); break;
-				 case 'r' : ans[count] = fit.get("Responses"); break;
+				 case 'r' : ans[count] = fit.get("DimmedResponses") + fit.get("NormalResponses"); break;
 				 case 'd' : ans[count] = fit.get("DimmedResponses"); break;
 				 case 'f' : ans[count] = fit.get("NormalResponses"); break;
 				 case 'i' : ans[count] = fit.get("Income"); break;
 				 case 'p' : ans[count] = fit.get("Profit"); break;
-				 case 'l' : ans[count] = fit.get("size"); break;
+				 case 'l' : ans[count] = plan.size(); break;
 				 case 'q' : ans[count] = fit.get("NormalResponses") / fit.get("Responses"); break;
 				 case 'a' : ans[count] = fit.get("Latency"); break;
 				}
