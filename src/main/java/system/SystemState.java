@@ -1,26 +1,38 @@
 package system;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import tactics.FailableTactic;
 import tactics.Tactic;
 
 public abstract class SystemState {
 	
-//	public ArrayList<Attribute> getAttributes();
+	//protected Hashtable<Tactic,Long> historyTime;
+	
+	protected ArrayList<Fitness> aggFitness;
+	
 	protected ArrayList<Tactic> history;
 	
 	protected ArrayList<Double> probabilityHistory;
 	
+	long time;
+	
 	double pathProbability;
+
+	public Fitness MINIMUM_POSSIBLE_FITNESS;
 	
 	public SystemState(){
+		
+		time = 0;
+		
 		history = new ArrayList<Tactic>();
 		probabilityHistory = new ArrayList<Double>();
 		
 		pathProbability = 1;
 		
 		probabilityHistory.add(pathProbability);
+
 	}
 	
 	private void updateProbability(double p){
@@ -33,7 +45,13 @@ public abstract class SystemState {
 	
 	public void accept(Tactic tactic){
 		
+		if(aggFitness == null){
+			aggFitness = new ArrayList<Fitness>();
+			aggFitness.add(calculateInstFitness());
+		}
+		
 		history.add(tactic);
+		//historyTime.put(tactic,time);
 		
 		// only actually execute tactic if it did not fail
 		// (would be set to fail if it was intentional)
@@ -64,6 +82,12 @@ public abstract class SystemState {
 			// no need to adjust probablitity
 			tactic.visit(this);
 		}
+		
+		// regardless of if the tactic succeeds or fails, we have to wait to see what happens
+		time += tactic.getTime();
+		
+		// we must also update the aggregate fitness to reflect the systems quality as we waited
+		aggFitness.add(aggFitness.get(aggFitness.size()-1).or(calculateInstFitness().mult(tactic.getTime())));
 		
 	}
 	
@@ -101,6 +125,10 @@ public abstract class SystemState {
 		}
 		// and now remove the tactic from the history
 		history.remove(last);
+		// we will also forget about the fitness accrued over the latency period
+		aggFitness.remove(aggFitness.size()-1);
+		// and we will of course turn back the clock
+		time -= last.getTime();
 		
 	}
 	
@@ -110,7 +138,13 @@ public abstract class SystemState {
 	
 	public abstract boolean isStateValid();
 
-	public abstract Fitness calculateFitness();
+	// evaluate the fitness of a single instance
+	public abstract Fitness calculateInstFitness();
+	
+	// evaluate the fitness of the system over time
+	public Fitness calculateAggFitness(){
+		return aggFitness.get(aggFitness.size()-1);
+	}
 	
 
 }

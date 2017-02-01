@@ -252,7 +252,7 @@ public class Omnet extends SystemState {
 	}
 
 	@Override
-	public Fitness calculateFitness() {
+	public Fitness calculateInstFitness() {
 		Fitness fit = new Fitness();
 		
 		calculateProfit();

@@ -33,10 +33,10 @@ public abstract class Plan implements Cloneable {
 	private Fitness evaluate(SystemState system, int currentStep){
 
 		if (currentStep == tactics.size()){
-			return system.calculateFitness();
+			return system.calculateAggFitness();
 			// TODO reconsider how branch pruning works, is it really doing the right thing?
-		}else if (system.getProbability() * estMaxFitness < minPossibleImprovement){
-			return Fitness.MINIMUM_POSSIBLE_FITNESS;
+		}else if (system.MINIMUM_POSSIBLE_FITNESS != null && system.getProbability() * estMaxFitness < minPossibleImprovement){
+			return system.MINIMUM_POSSIBLE_FITNESS;
 		}else{
 			
 			Fitness onSuccess,onFail;
@@ -95,7 +95,7 @@ public abstract class Plan implements Cloneable {
 							tactics.add(currentStep+1+count, (Tactic) tcf.getCatch().getTactics().get(count).clone());
 						}
 					}
-					
+
 					onFail = evaluate(system,currentStep + 1);
 					
 					system.undo();

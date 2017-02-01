@@ -40,12 +40,29 @@ public class Fitness {
 		}
 	}
 	
+	// multiply the vector by a constant, useful for computing aggregate utility over time
+	public Fitness mult(long t){
+		Fitness ans = new Fitness();
+		for (String key : this.objectiveValues.keySet()){
+			ans.put(key,this.objectiveValues.get(key) * t);
+		}
+		return ans;
+	}
+	
 	public void put(String s, Double d){
 		objectiveValues.put(s,d);
 	}
 	
 	public Double get(String s){
 		return objectiveValues.get(s);
+	}
+	
+	public String toString(){
+		String out = "";
+		for (String key : this.objectiveValues.keySet()){
+			out += key + ": "+ this.objectiveValues.get(key) + "\n";
+		}
+		return out;
 	}
 
 }
