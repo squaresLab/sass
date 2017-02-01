@@ -10,7 +10,7 @@ public class StartServer extends FailableTactic {
 
 	// set statically for now
 	private static double failChance = 0.1;
-	private static double latency;
+	private static long latency;
 	
 	private String server;
 
@@ -93,7 +93,7 @@ public class StartServer extends FailableTactic {
 		}
 
 	@Override
-	public double getTime() {
+	public long getTime() {
 		return latency;
 	}
 
