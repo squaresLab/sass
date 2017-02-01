@@ -24,7 +24,7 @@ public class Server {
 	
 	protected double powerPerNormal;
 	protected double powerPerDimmed;
-	protected double latency;
+	protected long latency;
 	
 	static Hashtable<String,Integer> startTraffic = new Hashtable<String,Integer>();
 	static Hashtable<String,Integer> startDimmer = new Hashtable<String,Integer>();
@@ -126,7 +126,7 @@ public class Server {
 		return powerPerDimmed;
 	}
 
-	public double getLatency() {
+	public long getLatency() {
 		return latency;
 	}
 	

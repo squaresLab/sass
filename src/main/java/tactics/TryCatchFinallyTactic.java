@@ -51,8 +51,8 @@ public class TryCatchFinallyTactic extends FailableTactic {
 	}
 
 	@Override
-	public double getTime() {
-		return inTry.getTime() + inCatch.getTime() * inTry.getFailChance() + inFinally.getTime() * (1 - inTry.getFailChance());
+	public long getTime() {
+		return (long) (inTry.getTime() + inCatch.getTime() * inTry.getFailChance() + inFinally.getTime() * (1 - inTry.getFailChance()));
 	}
 	
 	public Object clone(){

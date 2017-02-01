@@ -11,7 +11,7 @@ public class IncreaseDimmer extends FailableTactic {
 
 	// set statically for now
 	private static double failChance = 0.05;
-	private static double latency = 1;
+	private static long latency = 1;
 	
 	private String server;
 
@@ -59,7 +59,7 @@ public class IncreaseDimmer extends FailableTactic {
 		}
 
 	@Override
-	public double getTime() {
+	public long getTime() {
 		return latency ;
 	}
 

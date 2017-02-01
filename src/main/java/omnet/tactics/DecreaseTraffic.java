@@ -11,7 +11,7 @@ public class DecreaseTraffic extends FailableTactic {
 
 	// set statically for now
 	private static double failChance = 0.01;
-	private static double latency = 5;
+	private static long latency = 5;
 	
 	private String server;
 
@@ -60,7 +60,7 @@ public class DecreaseTraffic extends FailableTactic {
 		}
 
 	@Override
-	public double getTime() {
+	public long getTime() {
 		return latency;
 	}
 

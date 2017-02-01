@@ -9,7 +9,7 @@ public class ShutdownServer extends FailableTactic {
 
 	// set statically for now
 	private static double failChance = 0.1;
-	private static double latency = 30;
+	private static long latency = 30;
 	
 	private String server;
 	
@@ -72,7 +72,7 @@ public class ShutdownServer extends FailableTactic {
 		}
 
 	@Override
-	public double getTime() {
+	public long getTime() {
 		return latency;
 	}
 
