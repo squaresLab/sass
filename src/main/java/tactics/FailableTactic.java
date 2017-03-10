@@ -1,12 +1,15 @@
 package tactics;
 
-public abstract class FailableTactic implements Tactic {
+public abstract class FailableTactic extends Tactic {
 	
 	private boolean failed;
 	
 	private boolean intentionalFail;
+
+	private Long startTime;
 	
 	public FailableTactic(){
+		startTime = null;
 		failed = false;
 	}
 	
@@ -22,6 +25,14 @@ public abstract class FailableTactic implements Tactic {
 		failed = failstate;
 	}
 	
+	public void setStartTime(long time){
+		this.startTime = time;
+	}
+	
+	public Long getStartTime(){
+		return startTime;
+	}
+	
 	public abstract double getFailChance();
 	
 	// get a failed tactic
@@ -35,16 +46,6 @@ public abstract class FailableTactic implements Tactic {
 			return copy;
 	
 		
-	}
-	
-	public Object clone(){
-		try {
-			return super.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
 	}
 	
 	// default size is 1

@@ -25,7 +25,7 @@ public abstract class Plan implements Cloneable {
 	}
 	
 	public Fitness evaluate(SystemState system){
-		
+
 		return evaluate(system, 0);
 	
 	}
@@ -39,78 +39,36 @@ public abstract class Plan implements Cloneable {
 			return system.MINIMUM_POSSIBLE_FITNESS;
 		}else{
 			
-			Fitness onSuccess,onFail;
+			
 			
 			Tactic current = (Tactic) tactics.get(currentStep).clone();
 			
-			system.accept(current);
-			
-			// first, check for a TryCatchFinally
-			if (current instanceof TryCatchFinallyTactic){
-				
-				TryCatchFinallyTactic tcf = (TryCatchFinallyTactic) current;
-				
-				// if we are one, and the if part suceeded, then we must add the finally part
-				if(!tcf.getFailed()){
-					for (int count = 0; count < tcf.getFinally().getTactics().size(); count++){
-						tactics.add(currentStep+1+count, (Tactic) tcf.getFinally().getTactics().get(count).clone());
-					}
-				}
+			if (current.getStartTime() == null){
+					current.setStartTime(system.getTime());
 			}
 			
-			onSuccess = evaluate(system,currentStep + 1);
 			
-			// first, check for a TryCatchFinally
-						if (current instanceof TryCatchFinallyTactic){
-							
-							TryCatchFinallyTactic tcf = (TryCatchFinallyTactic) current;
-							
-							// if we are one, and the if part suceeded, then we must add the finally part
-							if(!tcf.getFailed()){
-								for (int count = 0; count < tcf.getFinally().getTactics().size(); count++){
-									tactics.remove(currentStep+1);
-								}
-							}
-						}
-			
-			system.undo();
-			
-			// if failable
-			if (current instanceof FailableTactic){
+			// behavior depends on tactic type, if regular tactic, do the regular stuff
+			if(current instanceof FailableTactic){
 				
 				FailableTactic failable = (FailableTactic) current;
-				// and succeeded
+				
+				Fitness onSuccess,onFail;
+				
+				system.accept(current);
+				onSuccess = evaluate(system,currentStep + 1);
+				system.undo();
+				
+				
+				
 				if (!failable.getFailed()){
 					
 					// then also compute the fail branch
 					system.accept(failable.getFail());
-					
-					// first, check for a TryCatchFinally
-					if (failable instanceof TryCatchFinallyTactic){
-						
-						TryCatchFinallyTactic tcf = (TryCatchFinallyTactic) failable;
-						
-						// if we are one, and the if part failed, then we must add the catch part
-						for (int count = 0; count < tcf.getCatch().getTactics().size(); count++){
-							tactics.add(currentStep+1+count, (Tactic) tcf.getCatch().getTactics().get(count).clone());
-						}
-					}
 
 					onFail = evaluate(system,currentStep + 1);
 					
 					system.undo();
-					
-					// first, check for a TryCatchFinally
-					if (failable instanceof TryCatchFinallyTactic){
-						
-						TryCatchFinallyTactic tcf = (TryCatchFinallyTactic) failable;
-						
-						// if we are one, and the if part failed, then we must take away the fail block
-						for (int count = 0; count < tcf.getCatch().getTactics().size(); count++){
-							tactics.remove(currentStep+1);
-						}
-					
-					}
 					
 					return onSuccess.or(onFail);
 					
@@ -119,15 +77,82 @@ public abstract class Plan implements Cloneable {
 					invalidActions++;
 					return onSuccess;
 				}
-			}else{
 				
-				// if the tactic is not failable, then we are also done
-				return onSuccess;
+			}else if (current instanceof TryCatchFinallyTactic){
+				
+				TryCatchFinallyTactic tcf = (TryCatchFinallyTactic) current;
+				
+				// first we try
+				FailableTactic inTry = tcf.inTry;
+				
+				Fitness onSuccess,onFail;
+				onSuccess = null;
+				
+				system.accept(inTry);
+				
+				// now check for success / failure
+				if(!inTry.getFailed()){
+					// not failed, we do the finally
+					
+					for (int count = 0; count < tcf.getFinally().getTactics().size(); count++){
+						tactics.add(currentStep+1+count, (Tactic) tcf.getFinally().getTactics().get(count).clone());
+					}
+					// and continue
+					onSuccess = evaluate(system,currentStep + 1);
+					
+					// then undo
+					for (int count = 0; count < tcf.getFinally().getTactics().size(); count++){
+						tactics.remove(currentStep+1);
+					}
+					system.undo();
+					
+					// add the fail case
+					system.accept(inTry.getFail());
+				}
+				
+				// do the catch
+				for (int count = 0; count < tcf.getCatch().getTactics().size(); count++){
+					tactics.add(currentStep+1+count, (Tactic) tcf.getCatch().getTactics().get(count).clone());
+				}
+				// and continue
+				onFail = evaluate(system,currentStep + 1);
+				system.undo();
+				
+				if(onSuccess != null){
+					return onSuccess.or(onFail);
+				}else{
+					invalidActions++;
+					return onFail;
+				}
+			
+			}else if (current instanceof ParallelTactic){
+				
+				ParallelTactic p = (ParallelTactic) current;
+				
+				// we will annotate the tactics with their revised start times
+				for (int count = 0; count < p.getTactics().size(); count++){
+					Tactic c = (Tactic) p.getTactics().get(count).clone();
+					
+					c.setStartTime(p.getStartTime());
+					
+					tactics.add(currentStep+1+count,c);
+					
+				}
+				
+				// continue evaluation
+				Fitness ans = evaluate(system,currentStep + 1);
+				
+				// clean up
+				for (int count = 0; count < p.getTactics().size(); count++){
+					tactics.remove(currentStep+1);	
+				}
+				
+				return ans;
 				
 			}
-		
-			
+					
 		}
+		return null;
 	}
 	
 	public ArrayList<Tactic> getTactics(){
@@ -146,10 +171,10 @@ public abstract class Plan implements Cloneable {
 		return ans;
 	}
 	
-	public double getTime(){
+	public long getTime(){
 		int ans = 0;
 		for (int count = 0; count < tactics.size(); count++){
-			ans += tactics.get(count).getTime();
+			ans += tactics.get(count).getExecutionTime();
 		}
 		return ans;
 	}

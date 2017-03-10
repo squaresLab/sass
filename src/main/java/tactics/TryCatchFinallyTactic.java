@@ -21,16 +21,13 @@ public class TryCatchFinallyTactic extends FailableTactic {
 		inTry.visit(systemState);
 		if (inTry.getFailed())
 			setFailed(true);
+			
 	}
 	
 	@Override
 	public void undo(SystemState systemState) {
 		inTry.undo(systemState);
 		
-	}
-	@Override
-	public double getFailChance() {
-		return inTry.getFailChance();
 	}
 	
 	public Plan getCatch(){
@@ -51,8 +48,8 @@ public class TryCatchFinallyTactic extends FailableTactic {
 	}
 
 	@Override
-	public long getTime() {
-		return (long) (inTry.getTime() + inCatch.getTime() * inTry.getFailChance() + inFinally.getTime() * (1 - inTry.getFailChance()));
+	public long getExecutionTime() {
+		return inTry.getExecutionTime();
 	}
 	
 	public Object clone(){
@@ -60,6 +57,11 @@ public class TryCatchFinallyTactic extends FailableTactic {
 		TryCatchFinallyTactic ans = new TryCatchFinallyTactic((FailableTactic) inTry.clone(), (Plan) inCatch.clone(),(Plan) inFinally.clone());
 		
 		return ans;
+	}
+
+	@Override
+	public double getFailChance() {
+		return inTry.getFailChance();
 	}
 
 }

@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import tactics.FailableTactic;
+import tactics.ParallelTactic;
+import tactics.Plan;
 import tactics.Tactic;
+import tactics.TryCatchFinallyTactic;
 
 public abstract class SystemState {
 	
-	//protected Hashtable<Tactic,Long> historyTime;
+	protected ArrayList<Event> timeline;
+	
+	protected ArrayList<Tactic> queue;
+	
+	int step;
 	
 	protected ArrayList<Fitness> aggFitness;
 	
@@ -26,8 +33,12 @@ public abstract class SystemState {
 		
 		time = 0;
 		
+		step = 0;
+		
 		history = new ArrayList<Tactic>();
+		queue = new ArrayList<Tactic>();
 		probabilityHistory = new ArrayList<Double>();
+		timeline = new ArrayList<Event>();
 		
 		pathProbability = 1;
 		
@@ -35,6 +46,38 @@ public abstract class SystemState {
 
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Fitness evaluate(Plan plan){
+		
+		queue = ((Plan)plan.clone()).getTactics();
+		
+		return evaluate(0);
+	}
+	
+	private Fitness evaluate(int step) {
+
+		// get the next tactic
+		Tactic current = (Tactic) queue.get(step);
+		
+		if (current instanceof FailableTactic){
+			
+			timeline.add(new Event(time,current,Event.EventType.START));
+			timeline.add(new Event(time+current.getExecutionTime(),current,Event.EventType.END));
+			
+		}else if (current instanceof TryCatchFinallyTactic){
+			
+			timeline.add(new Event(time,current,Event.EventType.START));
+			timeline.add(new Event(time+current.getExecutionTime(),current,Event.EventType.END));
+			
+		}else if (current instanceof ParallelTactic){
+			
+		}
+		
+		
+		
+		return null;
+	}
+
 	private void updateProbability(double p){
 		
 		pathProbability *= p;
@@ -84,10 +127,10 @@ public abstract class SystemState {
 		}
 		
 		// regardless of if the tactic succeeds or fails, we have to wait to see what happens
-		time += tactic.getTime();
+		time += tactic.getExecutionTime();
 		
 		// we must also update the aggregate fitness to reflect the systems quality as we waited
-		aggFitness.add(aggFitness.get(aggFitness.size()-1).or(calculateInstFitness().mult(tactic.getTime())));
+		aggFitness.add(aggFitness.get(aggFitness.size()-1).or(calculateInstFitness().mult(tactic.getExecutionTime())));
 		
 	}
 	
@@ -128,7 +171,7 @@ public abstract class SystemState {
 		// we will also forget about the fitness accrued over the latency period
 		aggFitness.remove(aggFitness.size()-1);
 		// and we will of course turn back the clock
-		time -= last.getTime();
+		time -= last.getExecutionTime();
 		
 	}
 	
@@ -144,6 +187,10 @@ public abstract class SystemState {
 	// evaluate the fitness of the system over time
 	public Fitness calculateAggFitness(){
 		return aggFitness.get(aggFitness.size()-1);
+	}
+
+	public long getTime() {
+		return time;
 	}
 	
 

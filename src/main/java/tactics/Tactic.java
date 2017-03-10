@@ -2,18 +2,43 @@ package tactics;
 
 import system.SystemState;
 
-public interface Tactic extends Cloneable {
+public abstract class Tactic implements Cloneable {
+	
+	Long startTime = null;
 	
 	// apply the changes to the system state
-	public void visit(SystemState systemState);
+	public abstract void visit(SystemState systemState);
 
 	// remove the changes from the system state
-	public void undo(SystemState systemState);
+	public abstract void undo(SystemState systemState);
 	
-	public Object clone();
+	public Object clone(){
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	};
 
-	public int size();
+	public abstract int size();
 
-	public long getTime();
+	public abstract long getExecutionTime();
+
+	public void setStartTime(long time){
+		this.startTime = time;
+	}
+	
+	public Long getStartTime(){
+		return this.startTime;
+	}
+	
+	public Long getEndTime(){
+		if (startTime == null){
+			return null;
+		}
+		return startTime + getExecutionTime();
+	}
 
 }

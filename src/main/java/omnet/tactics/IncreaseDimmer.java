@@ -59,7 +59,7 @@ public class IncreaseDimmer extends FailableTactic {
 		}
 
 	@Override
-	public long getTime() {
+	public long getExecutionTime() {
 		return latency ;
 	}
 

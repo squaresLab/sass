@@ -60,7 +60,7 @@ public class DecreaseTraffic extends FailableTactic {
 		}
 
 	@Override
-	public long getTime() {
+	public long getExecutionTime() {
 		return latency;
 	}
 
