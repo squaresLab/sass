@@ -64,7 +64,7 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,size,runtime,profit");
+		System.out.println("trial,generation,size,runtime,profit,distance,structureDistance,plan,scenario");
 		
 		// for every scenario
 		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.both,Scenario.econ}){
@@ -107,7 +107,10 @@ public class Adaptor {
 
 				int size = CustomStats.getSize(evaluatedState, best);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit);
+				double diff = CustomStats.calcDiversity(evaluatedState, false);
+				double sdiff = CustomStats.calcDiversity(evaluatedState, true);
+				
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString());
 				
 				}
 			

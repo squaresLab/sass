@@ -438,11 +438,11 @@ public class CustomStats extends Statistics
     	System.out.println(calcDiff(convTreeForm(s1),convTreeForm(s2)));
     }
     
-    private double calcDiversity(EvolutionState state) {
+    public static double calcDiversity(EvolutionState state) {
     	return calcDiversity(state,false);
     }
     
-    private double calcDiversity(EvolutionState state,boolean structureOnly) {
+    public static double calcDiversity(EvolutionState state,boolean structureOnly) {
     	
     	ArrayList<String> trees = getTrees(state);
     	
@@ -480,7 +480,7 @@ public class CustomStats extends Statistics
 
 
 
-	private ArrayList<String> getTrees(EvolutionState state) {
+	private static ArrayList<String> getTrees(EvolutionState state) {
 		
 		ArrayList<String> ans = new ArrayList<String>();
 		
@@ -512,12 +512,12 @@ public class CustomStats extends Statistics
 		return ans;
 	}
 	
-	private String structureOnly(String tree){
+	private static String structureOnly(String tree){
 		String ans = tree.replaceAll("[^{}]+", "A");
 		return ans;
 	}
 
-	private String getTree(Individual individual,EvolutionState state) {
+	private static String getTree(Individual individual,EvolutionState state) {
 		GPIndividual gi = (GPIndividual) individual;
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
