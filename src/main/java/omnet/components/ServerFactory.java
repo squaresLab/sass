@@ -13,7 +13,7 @@ public class ServerFactory {
 		numServers = new int[16];
 		scenario = s;
 		
-		if (s.equals(Scenario.Econ)){
+		if (s.equals(Scenario.econ)){
 			mult = 100;
 		}
 	}

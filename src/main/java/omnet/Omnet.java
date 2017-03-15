@@ -11,16 +11,16 @@ import tactics.Tactic;
 public class Omnet extends SystemState {
 	
 	public enum Scenario {
-			Normal,Requests,FourServ,Both,Econ;
+			normal,requests,fourserv,both,econ;
 		public static Scenario fromString(String name){
 			Scenario scenario;
 			
 			switch (name){
-			case "econ": scenario = Scenario.Econ; break;
-			case "requests": scenario = Scenario.Requests; break;
-			case "fourserv": scenario = Scenario.FourServ; break;
-			case "both": scenario = Scenario.Both; break;
-			default: scenario = Scenario.Normal; break;
+			case "econ": scenario = Scenario.econ; break;
+			case "requests": scenario = Scenario.requests; break;
+			case "fourserv": scenario = Scenario.fourserv; break;
+			case "both": scenario = Scenario.both; break;
+			default: scenario = Scenario.normal; break;
 			}
 			
 			return scenario;
@@ -57,10 +57,10 @@ public class Omnet extends SystemState {
 		servers.add(serverFactory.getA());
 		servers.add(serverFactory.getB());
 		servers.add(serverFactory.getC());
-		if (s.equals(Scenario.FourServ) || s.equals(Scenario.Both)){
+		if (s.equals(Scenario.fourserv) || s.equals(Scenario.both)){
 			servers.add(serverFactory.getD());
 		}
-		if (s.equals(Scenario.Requests) || s.equals(Scenario.Both)){
+		if (s.equals(Scenario.requests) || s.equals(Scenario.both)){
 			SYSTEM_DEMAND = 10000;
 		}
 		/*

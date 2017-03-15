@@ -52,7 +52,7 @@ public class Sweeper {
 		// print header
 		System.out.println("generations,popSize,crossoverChance,mutationChance,reproductionChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
 		
-		Scenario scenario = Scenario.Normal;
+		Scenario scenario = Scenario.normal;
 		
 		for (int generations: new int[] {1,5}){
 

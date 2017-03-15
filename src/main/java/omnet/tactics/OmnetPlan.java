@@ -66,7 +66,7 @@ public class OmnetPlan extends Plan {
 		for (int count = 0; count < 6; count++)
 			plan.tactics.add(new ShutdownServer("A"));
 		
-		System.out.println(plan.evaluate(new Omnet(Scenario.Normal)));
+		System.out.println(plan.evaluate(new Omnet(Scenario.normal)));
 		System.out.println(plan.profit);
 		
 	}
