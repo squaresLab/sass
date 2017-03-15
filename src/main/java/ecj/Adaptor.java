@@ -14,6 +14,7 @@ import ec.util.Log;
 import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
+import omnet.Omnet.Scenario;
 
 /*
 Parameters that we are interested in:
@@ -61,7 +62,10 @@ public class Adaptor {
 
 		// print header
 		System.out.println("trial,generation,size,runtime,profit");
-			
+		
+		for (Scenario scenario : new Scenario[] {Scenario.FourServ,Scenario.Requests,Scenario.Both,Scenario.Econ}){
+
+		
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
 
@@ -72,7 +76,7 @@ public class Adaptor {
 			out.getLog(1).silent = true;
 			
 			// copy the database so that we can change the values we are interested in
-			ParameterDatabase copy = setParams(dbase);
+			ParameterDatabase copy = setParams(dbase,scenario);
 					
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
@@ -93,7 +97,7 @@ public class Adaptor {
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
-				double profit = CustomStats.getProfit(evaluatedState, best);
+				double profit = CustomStats.getProfit(evaluatedState, best, scenario);
 
 				int size = CustomStats.getSize(evaluatedState, best);
 				
@@ -115,13 +119,14 @@ public class Adaptor {
 			out.close();
 
 		}
+		}
 		
 		}
 
 
 	
 	
-	private static ParameterDatabase setParams(ParameterDatabase dbase) throws ClassNotFoundException, IOException {
+	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario) throws ClassNotFoundException, IOException {
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
 		// change the file name so we know where this data came from
@@ -144,10 +149,14 @@ public class Adaptor {
 		copy.setProperty("verboseness_penalty", verbosenessPenalty+"");
 		copy.setProperty("min_accepted_improvement", minAcceptedImprovement+"");
 		
+		copy.setProperty("scenario_name", scenario.toString()+"");
+		
 		return copy;
 	}
+	
+	/*
 
-	public void scorePlan(EvolutionState evaluatedState){
+	public void scorePlan(EvolutionState evaluatedState,Scenario scenario){
 		evaluatedState.setup(evaluatedState, null);
 		
 		GPIndividual ind = MutationBuilder.loadStartInd(evaluatedState);
@@ -157,9 +166,10 @@ public class Adaptor {
 		
 		prob.evaluate(evaluatedState, ind, 0, 0);
 		
-		System.out.println(CustomStats.getProfit(evaluatedState, ind));
+		System.out.println(CustomStats.getProfit(evaluatedState, ind, scenario));
 		
 		System.exit(0);
 	}
+	*/
 
 }

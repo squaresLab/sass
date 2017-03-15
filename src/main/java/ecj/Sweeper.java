@@ -13,6 +13,7 @@ import ec.util.DataPipe;
 import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
+import omnet.Omnet.Scenario;
 
 /*
 Parameters that we are interested in:
@@ -50,6 +51,8 @@ public class Sweeper {
 		
 		// print header
 		System.out.println("generations,popSize,crossoverChance,mutationChance,reproductionChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
+		
+		Scenario scenario = Scenario.Normal;
 		
 		for (int generations: new int[] {1,5}){
 
@@ -104,7 +107,8 @@ public class Sweeper {
 									copy.setProperty("invalid_action_penalty", invalidActionPenalty+"");
 									copy.setProperty("verboseness_penalty", verbosenessPenalty+"");
 									copy.setProperty("min_accepted_improvement", minAcceptedImprovement+"");									
-													
+									copy.setProperty("scenario_name", scenario.toString()+"");	
+									
 									long starttime = System.currentTimeMillis();
 									
 									evaluatedState.run(EvolutionState.C_STARTED_FRESH);
@@ -115,7 +119,7 @@ public class Sweeper {
 									
 									GPIndividual best = (GPIndividual) stats.best_of_run[0];
 									
-									double profit = CustomStats.getProfit(evaluatedState, best);
+									double profit = CustomStats.getProfit(evaluatedState, best, scenario);
 									
 									int size = CustomStats.getSize(evaluatedState, best);
 									
@@ -135,8 +139,8 @@ public class Sweeper {
 						}
 
 					}
-					}
-
+					
+				}
 				}
 			}	
 

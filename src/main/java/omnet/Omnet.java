@@ -2,6 +2,7 @@ package omnet;
 
 import java.util.ArrayList;
 
+import omnet.Omnet.Scenario;
 import omnet.components.Server;
 import omnet.components.ServerFactory;
 import system.SystemState;
@@ -9,8 +10,25 @@ import tactics.Tactic;
 
 public class Omnet extends SystemState {
 	
+	public enum Scenario {
+			Normal,Requests,FourServ,Both,Econ;
+		public static Scenario fromString(String name){
+			Scenario scenario;
+			
+			switch (name){
+			case "econ": scenario = Scenario.Econ; break;
+			case "requests": scenario = Scenario.Requests; break;
+			case "fourserv": scenario = Scenario.FourServ; break;
+			case "both": scenario = Scenario.Both; break;
+			default: scenario = Scenario.Normal; break;
+			}
+			
+			return scenario;
+		}
+	}
+
 	// requests / sec on the system, assumed constant for now
-	public static final int SYSTEM_DEMAND = 1000;
+	public static int SYSTEM_DEMAND = 1000;
 	
 	private static final double NORMAL_PROFIT_PER_SECOND = 3;
 
@@ -26,14 +44,25 @@ public class Omnet extends SystemState {
 
 	public static final int MAX_SERVER_COUNT_PER_LOC = 5;
 	
-	public Omnet(){
+	private Scenario scenario;
+	
+	public Omnet(Scenario s){
+		
+		this.scenario = s;
+		
 		servers = new ArrayList<Server>();
-		serverFactory = new ServerFactory();
+		serverFactory = new ServerFactory(s);
 		
 		// we will start with 1 server of each
 		servers.add(serverFactory.getA());
 		servers.add(serverFactory.getB());
 		servers.add(serverFactory.getC());
+		if (s.equals(Scenario.FourServ) || s.equals(Scenario.Both)){
+			servers.add(serverFactory.getD());
+		}
+		if (s.equals(Scenario.Requests) || s.equals(Scenario.Both)){
+			SYSTEM_DEMAND = 10000;
+		}
 		/*
 		servers.add(serverFactory.getD());
 		servers.add(serverFactory.getE());
@@ -186,7 +215,7 @@ public class Omnet extends SystemState {
 	}
 	
 	public Object clone(){
-		Omnet copy = new Omnet();
+		Omnet copy = new Omnet(scenario);
 		
 		for (int count = 0; count < history.size(); count++){
 			copy.history.add((Tactic) history.get(count).clone());

@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import distance.APTED;
 import ec.util.*;
 import omnet.Omnet;
+import omnet.Omnet.Scenario;
 import util.LblTree;
 import ec.eval.*;
 import ec.gp.GPIndividual;
@@ -93,6 +94,9 @@ import ec.simple.SimpleProblemForm;
 
 public class CustomStats extends Statistics
     {
+	
+	private Scenario scenario;
+	
     public static final String P_STATISTICS_MODULUS = "modulus";
     public static final String P_COMPRESS = "gzip";
     public static final String P_FULL = "gather-full";
@@ -131,6 +135,11 @@ public class CustomStats extends Statistics
     public void setup(final EvolutionState state, final Parameter base)
         {
         super.setup(state,base);
+        
+        String scenarioName = state.parameters.getStringWithDefault(new Parameter("scenario_name"), null,"normal");
+		
+		scenario = Scenario.fromString(scenarioName);
+        
         File statisticsFile = state.parameters.getFile(
             base.push(P_STATISTICS_FILE),null);
 
@@ -397,8 +406,8 @@ public class CustomStats extends Statistics
             state.output.print("" + popMeanFitness + " " , statisticslog);                                                                                  // mean fitness of pop this gen
             state.output.print("" + (double)(popBestOfGeneration.fitness.fitness()) + " " , statisticslog);                 // best fitness of pop this gen
             state.output.print("" + (double)(popBestSoFar.fitness.fitness()) + " " , statisticslog);                // best fitness of pop so far
-            state.output.print(""+getProfit(state,popBestOfGeneration)+" ", statisticslog);
-            state.output.print(""+getProfit(state,popBestSoFar)+" ", statisticslog);
+            state.output.print(""+getProfit(state,popBestOfGeneration,scenario)+" ", statisticslog);
+            state.output.print(""+getProfit(state,popBestSoFar,scenario)+" ", statisticslog);
             }
         
         // CUSTOM CODE HERE
@@ -518,7 +527,7 @@ public class CustomStats extends Statistics
 		return ans.split("\n")[3];
 	}
 
-	public static double getProfit(final EvolutionState state,Individual individual) {
+	public static double getProfit(final EvolutionState state,Individual individual,Scenario scenario) {
     	
     	GPIndividual ind = (GPIndividual) individual;
         
@@ -533,7 +542,7 @@ public class CustomStats extends Statistics
 		input.plan.setMinAcceptedImprovment(0);
 		
 		// now compute fitness without any penalties
-		return input.plan.evaluate(new Omnet());
+		return input.plan.evaluate(new Omnet(scenario));
     	
 	}
 
@@ -565,7 +574,7 @@ public static int getSize(final EvolutionState state,Individual individual) {
             {
         	
             // recalculate fitness of the best ind to get the actual fitness
-            double profit = getProfit(state,bestSoFar[x]);
+            double profit = getProfit(state,bestSoFar[x],scenario);
 					
             if (doFinal) state.output.println("Subpopulation " + x + ":",statisticslog);
             if (doFinal) state.output.println("Actual profit: "+profit, statisticslog);
