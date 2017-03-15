@@ -3,6 +3,9 @@ package ecj;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import ec.EvolutionState;
 import ec.Evolve;
@@ -63,9 +66,12 @@ public class Adaptor {
 		// print header
 		System.out.println("trial,generation,size,runtime,profit");
 		
-		for (Scenario scenario : new Scenario[] {Scenario.FourServ,Scenario.Requests,Scenario.Both,Scenario.Econ}){
+		// for every scenario
+		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.both,Scenario.econ}){
 
-		
+		// try every plan
+		for (String plan : getPlans()){
+			
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
 
@@ -76,7 +82,7 @@ public class Adaptor {
 			out.getLog(1).silent = true;
 			
 			// copy the database so that we can change the values we are interested in
-			ParameterDatabase copy = setParams(dbase,scenario);
+			ParameterDatabase copy = setParams(dbase,scenario,plan);
 					
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
@@ -120,13 +126,21 @@ public class Adaptor {
 
 		}
 		}
+		}
 		
 		}
 
 
 	
 	
-	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario) throws ClassNotFoundException, IOException {
+	private static List<String> getPlans() {
+		return Arrays.asList("long","short","poor","scratch");
+	}
+
+
+
+
+	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan) throws ClassNotFoundException, IOException {
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
 		// change the file name so we know where this data came from
@@ -151,7 +165,38 @@ public class Adaptor {
 		
 		copy.setProperty("scenario_name", scenario.toString()+"");
 		
+		// now set the param for the starting plan
+		// if from scratch, special behavior is needed
+		String init;
+		
+		if (plan.equals("scratch")){
+			init = "ec.gp.koza.HalfBuilder";
+		}else{
+			init = "ecj.MutationBuilder";
+		}
+		
+		copy.setProperty("gp.tc.0.init", scenario.toString()+"");
+		
+		copy.setProperty("initial_ind", getPlan(plan));
+		
 		return copy;
+	}
+
+
+
+
+	private static String getPlan(String plan) {
+		
+		String ans;
+		
+		switch(plan){
+			case "poor": ans = "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))"; break;
+			case "long": ans = "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))"; break;
+			case "short": ans = "(; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))"; break;
+			default: ans = "";
+		}
+
+		return ans;
 	}
 	
 	/*
