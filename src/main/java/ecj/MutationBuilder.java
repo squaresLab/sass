@@ -45,6 +45,8 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	public static final String P_MAXDEPTH = "maxdepth";
 	public static final int NO_SIZE_LIMIT = -1;
 	
+	private static String initial = null;
+	
 	Parameter base;
 	
 	/** How to choose a subtree to mutate */
@@ -118,6 +120,8 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
                 p,d, GPNodeBuilder.class));
         builder.setup(state,p);
         
+        initial = state.parameters.getString(new Parameter("initial_ind"), null);
+        
         // mtf = new MersenneTwisterFast();
     }
 	
@@ -145,8 +149,9 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 		//  else 
 		//	 indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
 			
-		indString += "(; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))";
+		//indString += "(; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))";
 
+		  indString += initial;
 			 
 		//	indString = readPlanFromFile("prismproc.txt");
 			
