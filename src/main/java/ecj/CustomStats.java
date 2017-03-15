@@ -8,8 +8,14 @@
 package ecj;
 import ec.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import distance.APTED;
 import ec.util.*;
 import omnet.Omnet;
+import util.LblTree;
 import ec.eval.*;
 import ec.gp.GPIndividual;
 import ec.gp.GPProblem;
@@ -394,6 +400,12 @@ public class CustomStats extends Statistics
             state.output.print(""+getProfit(state,popBestOfGeneration)+" ", statisticslog);
             state.output.print(""+getProfit(state,popBestSoFar)+" ", statisticslog);
             }
+        
+        // CUSTOM CODE HERE
+        // print out diversity info
+        state.output.print("" + calcDiversity(state) + " " , statisticslog);
+        state.output.print(""+ calcDiversity(state,true) + " ", statisticslog);
+        // END CUSTOM CODE
                         
         // hook for KozaShortStatistics etc.
         if (output) printExtraPopStatisticsAfter(state);
@@ -402,7 +414,111 @@ public class CustomStats extends Statistics
         if (output) state.output.println("", statisticslog);
         }
     
-    public static double getProfit(final EvolutionState state,Individual individual) {
+    
+    public static void main(String[] args){
+    	
+    	String s1 = "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
+    	String s2 = "(; (IncreaseTraffic (A)) (; (DecreaseDimmer (B)) (; (DecreaseDimmer (B)) (DecreaseDimmer (B)))))";
+    	//s1 = "(F ERC[i2|] (StartServer B))";
+    	//s2 = "(F (ERC[i2|]) (StartServer (B)))";
+    	
+    	
+    	System.out.println(convTreeForm(s1));
+    	System.out.println(convTreeForm(s2));
+    	
+    	System.out.println(calcDiff(convTreeForm(s1),convTreeForm(s2)));
+    }
+    
+    private double calcDiversity(EvolutionState state) {
+    	return calcDiversity(state,false);
+    }
+    
+    private double calcDiversity(EvolutionState state,boolean structureOnly) {
+    	
+    	ArrayList<String> trees = getTrees(state);
+    	
+    	double sum = 0;
+    	double count = 0;
+    	
+    	for (int i = 0; i < trees.size(); i++){
+    		for (int j = i+1; j < trees.size(); j++){
+    			
+    			if (!structureOnly){
+    				sum += calcDiff(trees.get(i),trees.get(j));
+    			}else{
+    				sum += calcDiff(structureOnly(trees.get(i)),structureOnly(trees.get(j)));
+    			}
+    			
+    			count++;
+    			
+    		}
+    	}
+    	
+    	
+		return sum/count;
+	}
+
+
+	private static double calcDiff(String string, String string2) {
+		// first get the trees in the right data structure
+		LblTree a = LblTree.fromString(string);
+		LblTree b = LblTree.fromString(string2);
+		
+		APTED apted = new APTED(1,1,1);
+		
+		return apted.nonNormalizedTreeDist(a, b);
+	}
+
+
+
+	private ArrayList<String> getTrees(EvolutionState state) {
+		
+		ArrayList<String> ans = new ArrayList<String>();
+		
+		for (int s = 0; s < state.population.subpops.length; s++){
+			for (int i = 0; i < state.population.subpops[s].individuals.length; i++){
+				ans.add(convTreeForm(getTree(state.population.subpops[s].individuals[i],state)));
+			}
+		}
+		
+		return ans;
+	}
+
+	private static String convTreeForm(String tree) {
+		String ans = tree.replace('(','{');
+		ans = ans.replace(')', '}');
+		
+		// in the form provided there is no parens around leaf nodes
+		// we need to identify these leaves and then bracket them correctly
+		
+		Pattern p = Pattern.compile("([^{}] )([^{} ]+)");
+		Matcher m = p.matcher(ans);
+		
+		ans = m.replaceAll("$1{$2}");
+		
+		ans = ans.replaceAll(" ", "");
+		
+		//ans = ans.replaceAll(" [^{}]", "");
+		//ans = ans.replace(" ", "");
+		return ans;
+	}
+	
+	private String structureOnly(String tree){
+		String ans = tree.replaceAll("[^{}]+", "A");
+		return ans;
+	}
+
+	private String getTree(Individual individual,EvolutionState state) {
+		GPIndividual gi = (GPIndividual) individual;
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		gi.printIndividual(state, pw);
+		String ans = sw.toString();
+		// now process the string to just give us the tree
+		return ans.split("\n")[3];
+	}
+
+	public static double getProfit(final EvolutionState state,Individual individual) {
     	
     	GPIndividual ind = (GPIndividual) individual;
         
@@ -463,5 +579,5 @@ public static int getSize(final EvolutionState state,Individual individual) {
                     ((SimpleProblemForm)(state.evaluator.p_problem.clone())).describe(state, bestSoFar[x], x, 0, statisticslog);      
             }
 }
-    
+   
 }
