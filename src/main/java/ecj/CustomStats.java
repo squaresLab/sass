@@ -442,25 +442,107 @@ public class CustomStats extends Statistics
     	return calcDiversity(state,false);
     }
     
+    public static class DistributedDiversity extends Thread {
+    	
+    	private double sum;
+    	private int count;
+    	
+    	private ArrayList<String> i1 = new ArrayList<String>();
+    	private ArrayList<String> i2 = new ArrayList<String>();
+    	
+    	private boolean structureOnly;
+
+    	public DistributedDiversity(ArrayList<String> i1, ArrayList<String> i2,boolean structureOnly){
+    		this.i1 = i1;
+    		this.i2=i2;
+    		this.structureOnly = structureOnly;
+    		this.count = i1.size();
+    		this.sum = 0;
+    	}
+    	
+		@Override
+		public void run() {
+			
+			for (int i = 0; i < i1.size(); i++){
+				if (!structureOnly){
+					sum += calcDiff(i1.remove(0),i2.remove(0));
+				}else{
+					sum += calcDiff(structureOnly(i1.remove(0)),structureOnly(i2.remove(0)));
+				}
+			}
+			
+		}
+		
+		public double getSum(){
+			return sum;
+		}
+		
+		public int getCount(){
+			return count;
+		}
+    	
+    }
+    
     public static double calcDiversity(EvolutionState state,boolean structureOnly) {
     	
     	ArrayList<String> trees = getTrees(state);
     	
     	double sum = 0;
-    	double count = 0;
+    	int count = 0;
+    	
+    	final double CPU_USE_FRACTION = 0.70;
+    	
+    	int cores = (int) Math.round(Runtime.getRuntime().availableProcessors() * CPU_USE_FRACTION);
+    	
+    	int n = trees.size();
+    	int jobs = (n*(n-1)) / 2;
+    	
+    	int jobsPerCore = jobs / cores;
+    	
+    	int core = 0;
+    	
+    	ArrayList<String>[] i1s = new ArrayList[cores];
+    	ArrayList<String>[] i2s = new ArrayList[cores];
     	
     	for (int i = 0; i < trees.size(); i++){
     		for (int j = i+1; j < trees.size(); j++){
     			
-    			if (!structureOnly){
-    				sum += calcDiff(trees.get(i),trees.get(j));
-    			}else{
-    				sum += calcDiff(structureOnly(trees.get(i)),structureOnly(trees.get(j)));
+    			if (i1s[core] == null){
+    				i1s[core] = new ArrayList<String>();
     			}
+    			if (i2s[core] == null){
+    				i2s[core] = new ArrayList<String>();
+    			}
+    			
+    			i1s[core].add(trees.get(i));
+    			i2s[core].add(trees.get(j));
     			
     			count++;
     			
+    			core = count / jobsPerCore;
+    			
     		}
+    	}
+    	
+    	// spin up the solvers
+    	DistributedDiversity[] solvers = new DistributedDiversity[cores];
+    	
+    	for (int x = 0; x < cores; x++){
+    		solvers[x] = new DistributedDiversity(i1s[x],i2s[x],structureOnly);
+    		solvers[x].start();
+    	}
+    	
+    	// wait for solvers to finish
+    	for (int x = 0; x < cores; x++){
+    		try {
+    			
+				solvers[x].join();
+				sum += solvers[x].getSum();
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
     	
     	
