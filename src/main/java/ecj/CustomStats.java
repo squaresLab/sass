@@ -490,7 +490,7 @@ public class CustomStats extends Statistics
     	double sum = 0;
     	int count = 0;
     	
-    	final double CPU_USE_FRACTION = 0.70;
+    	final double CPU_USE_FRACTION = 0.33;
     	
     	int cores = (int) Math.round(Runtime.getRuntime().availableProcessors() * CPU_USE_FRACTION);
     	
