@@ -519,7 +519,7 @@ public class CustomStats extends Statistics
     			
     			count++;
     			
-    			core = count / jobsPerCore;
+    			core = Math.min(count / jobsPerCore,cores-1);
     			
     		}
     	}
