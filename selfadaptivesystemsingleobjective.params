@@ -228,6 +228,8 @@ invalid_action_penalty = 0
 verboseness_penalty = 0.01
 min_accepted_improvement = 0.001
 
+scenario_name = econ
+
 # poor
 initial_ind = (; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))
 # long

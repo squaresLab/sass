@@ -54,7 +54,7 @@ public class Adaptor {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
@@ -178,7 +178,13 @@ public class Adaptor {
 			init = "ecj.MutationBuilder";
 		}
 		
-		copy.setProperty("gp.tc.0.init", scenario.toString()+"");
+		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.both)){
+			copy.setProperty("gp.fs.0.size", "14");
+		}else{
+			copy.setProperty("gp.fs.0.size", "13");
+		}
+		
+		copy.setProperty("gp.tc.0.init",init);
 		
 		copy.setProperty("initial_ind", getPlan(plan));
 		
