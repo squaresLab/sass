@@ -62,6 +62,8 @@ public class Omnet extends SystemState {
 		}
 		if (s.equals(Scenario.requests) || s.equals(Scenario.both)){
 			SYSTEM_DEMAND = 10000;
+		}else{
+			SYSTEM_DEMAND = 1000;
 		}
 		/*
 		servers.add(serverFactory.getD());
