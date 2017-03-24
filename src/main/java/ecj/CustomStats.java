@@ -414,6 +414,7 @@ public class CustomStats extends Statistics
         // print out diversity info
         state.output.print("" + calcDiversity(state) + " " , statisticslog);
         state.output.print(""+ calcDiversity(state,true) + " ", statisticslog);
+        state.output.print("" + calcAvgSize(state) + " ", statisticslog);
         // END CUSTOM CODE
                         
         // hook for KozaShortStatistics etc.
@@ -424,7 +425,21 @@ public class CustomStats extends Statistics
         }
     
     
-    public static void main(String[] args){
+    static double calcAvgSize(EvolutionState state) {
+    	int sum = 0;
+    	int count = 0;
+    	for (int s = 0; s < state.population.subpops.length; s++){
+    		for (int i = 0; i < state.population.subpops[s].individuals.length; i++){
+    			sum += state.population.subpops[s].individuals[i].size();
+    			count++;
+    		}
+    	}
+		return sum/count;
+	}
+
+
+
+	public static void main(String[] args){
     	
     	String s1 = "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
     	String s2 = "(; (IncreaseTraffic (A)) (; (DecreaseDimmer (B)) (; (DecreaseDimmer (B)) (DecreaseDimmer (B)))))";

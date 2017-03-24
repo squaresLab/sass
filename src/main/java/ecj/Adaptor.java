@@ -42,7 +42,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class Adaptor {
 
-	private static double generations = 30;
+	private static double generations = 50;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
@@ -64,10 +64,10 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,size,runtime,profit,distance,structureDistance,plan,scenario");
+		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,scenario,averageSize");
 		
 		// for every scenario
-		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.both,Scenario.econ}){
+		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 
 		// try every plan
 		for (String plan : getPlans()){
@@ -110,7 +110,9 @@ public class Adaptor {
 				double diff = CustomStats.calcDiversity(evaluatedState, false);
 				double sdiff = CustomStats.calcDiversity(evaluatedState, true);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString());
+				double avgSize = CustomStats.calcAvgSize(evaluatedState);
+				
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString()+","+avgSize);
 				
 				}
 			
@@ -178,7 +180,7 @@ public class Adaptor {
 			init = "ecj.MutationBuilder";
 		}
 		
-		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.both)){
+		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
 			copy.setProperty("gp.fs.0.size", "14");
 		}else{
 			copy.setProperty("gp.fs.0.size", "13");

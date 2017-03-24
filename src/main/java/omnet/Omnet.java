@@ -5,21 +5,27 @@ import java.util.ArrayList;
 import omnet.Omnet.Scenario;
 import omnet.components.Server;
 import omnet.components.ServerFactory;
+import omnet.tactics.StartServer;
 import system.SystemState;
+import tactics.FailableTactic;
 import tactics.Tactic;
 
 public class Omnet extends SystemState {
 	
 	public enum Scenario {
-			normal,requests,fourserv,both,econ;
+			normal,requests,fourserv,requestsfourserv,econ,failc,unreliable;
 		public static Scenario fromString(String name){
 			Scenario scenario;
 			
 			switch (name){
+			//TODO
+			case "failc": scenario = Scenario.failc; break;
+			case "unreliable": scenario = Scenario.unreliable; break;
+			//done
 			case "econ": scenario = Scenario.econ; break;
 			case "requests": scenario = Scenario.requests; break;
 			case "fourserv": scenario = Scenario.fourserv; break;
-			case "both": scenario = Scenario.both; break;
+			case "both": scenario = Scenario.requestsfourserv; break;
 			default: scenario = Scenario.normal; break;
 			}
 			
@@ -57,10 +63,10 @@ public class Omnet extends SystemState {
 		servers.add(serverFactory.getA());
 		servers.add(serverFactory.getB());
 		servers.add(serverFactory.getC());
-		if (s.equals(Scenario.fourserv) || s.equals(Scenario.both)){
+		if (s.equals(Scenario.fourserv) || s.equals(Scenario.requestsfourserv)){
 			servers.add(serverFactory.getD());
 		}
-		if (s.equals(Scenario.requests) || s.equals(Scenario.both)){
+		if (s.equals(Scenario.requests) || s.equals(Scenario.requestsfourserv)){
 			SYSTEM_DEMAND = 10000;
 		}else{
 			SYSTEM_DEMAND = 1000;
@@ -81,6 +87,20 @@ public class Omnet extends SystemState {
 		servers.add(serverFactory.getP());
 		*/
 		
+	}
+	
+	@Override
+	public void accept(Tactic tactic){
+
+		if (tactic instanceof StartServer){
+			StartServer s = (StartServer) tactic;
+			if (scenario.equals(Scenario.failc) && s.getServer().equals("C")){
+				s.setFailChance(1);
+			}else if (scenario.equals(Scenario.unreliable)){
+				s.setFailChance(.66);
+			}
+		}
+		super.accept(tactic);
 	}
 	
 		public double calculateProfit(){
@@ -279,6 +299,10 @@ public class Omnet extends SystemState {
 		}
 		
 		return ans;
+	}
+	
+	public Scenario getScenario(){
+		return scenario;
 	}
 	
 }
