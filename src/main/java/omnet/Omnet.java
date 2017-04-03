@@ -25,7 +25,7 @@ public class Omnet extends SystemState {
 			case "econ": scenario = Scenario.econ; break;
 			case "requests": scenario = Scenario.requests; break;
 			case "fourserv": scenario = Scenario.fourserv; break;
-			case "both": scenario = Scenario.requestsfourserv; break;
+			case "requestsfourserv": scenario = Scenario.requestsfourserv; break;
 			default: scenario = Scenario.normal; break;
 			}
 			
@@ -34,7 +34,7 @@ public class Omnet extends SystemState {
 	}
 
 	// requests / sec on the system, assumed constant for now
-	public static int SYSTEM_DEMAND = 1000;
+	public int SYSTEM_DEMAND = 1000;
 	
 	private static final double NORMAL_PROFIT_PER_SECOND = 3;
 
