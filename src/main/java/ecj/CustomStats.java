@@ -563,6 +563,14 @@ public class CustomStats extends Statistics
     	
 		return sum/count;
 	}
+    
+    public static double calcDiff(Individual a,Individual b,EvolutionState state,boolean structureOnly){
+    	if (structureOnly == false){
+    		return calcDiff(convTreeForm(getTree(a,state)),convTreeForm(getTree(b,state)));
+    	}else{
+    		return calcDiff(structureOnly(convTreeForm(getTree(a,state))),structureOnly(convTreeForm(getTree(b,state))));
+    	}
+    }
 
 
 	private static double calcDiff(String string, String string2) {
