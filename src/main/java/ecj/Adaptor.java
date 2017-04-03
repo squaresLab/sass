@@ -67,7 +67,8 @@ public class Adaptor {
 		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,scenario,averageSize");
 		
 		// for every scenario
-		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
+		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
+		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
 
 		// try every plan
 		for (String plan : getPlans()){
