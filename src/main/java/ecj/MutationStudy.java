@@ -43,8 +43,8 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class MutationStudy {
 
-	private static double generations = 50;
-	private static double popSize = 10;
+	private static double generations = 1;
+	private static double popSize = 1000;
 	private static double crossoverChance = 0.6;
 	private static double killRatio = 0.0;
 	private static double invalidActionPenalty = 0;
@@ -67,7 +67,7 @@ public class MutationStudy {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
@@ -77,7 +77,7 @@ public class MutationStudy {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,plan,scenario,dAverageSize,dAverageFitness,dAverageDiff,dAverageTDiff");
+		System.out.println("trial,generation,individual,plan,scenario,dAverageSize,dAverageFitness,dAverageDiff,dAverageTDiff");
 		
 		// for every scenario
 		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
@@ -117,15 +117,16 @@ public class MutationStudy {
 				result = evaluatedState.evolve();
 				long runtime = System.currentTimeMillis() - starttime;
 				
-				double[][] c = loadData(evaluatedState, scenario); 
+				//double[][] c = loadData(evaluatedState, scenario); 
 				
-				double[] d = avgDiff(c);
+				//double[] d = avgDiff(c);
 				
 				// collect some stats
 				SimpleStatistics stats = (SimpleStatistics) evaluatedState.statistics;
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
+				/*
 				double dProfit = d[0];
 
 				int size = (int) Math.round(d[1]);
@@ -133,7 +134,7 @@ public class MutationStudy {
 				double diff = d[2];
 			
 				double sdiff = d[3];
-				
+				*/
 				//double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				if (true || once){
 					once = false;
@@ -148,18 +149,19 @@ public class MutationStudy {
 					for (int i = 0; i < inds.size(); i++){
 						
 						
-						dProfit = CustomStats.getProfit(evaluatedState, inds.get(i), scenario) - pi; 
+						double dProfit = CustomStats.getProfit(evaluatedState, inds.get(i), scenario) - pi; 
 						
-						size = (int) Math.round(((GPIndividual)inds.get(i)).size() - si);
+						int size = (int) Math.round(((GPIndividual)inds.get(i)).size() - si);
 						
-						diff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, false);
-						sdiff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, true);
+						double diff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, false);
+						double sdiff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, true);
 						
-						System.out.println(trial+","+plan+","+scenario.toString()+","+size+","+dProfit+","+diff+","+sdiff);
+						System.out.println(trial+","+generation + ","+i +","+plan+","+scenario.toString()+","+size+","+dProfit+","+diff+","+sdiff);
 					}
 					
 					
 				}
+				generation++;
 				//System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString()+","+avgSize);
 				
 				}
