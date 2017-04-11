@@ -67,7 +67,7 @@ public class MutationStudy {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
