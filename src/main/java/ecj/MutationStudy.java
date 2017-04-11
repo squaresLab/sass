@@ -135,7 +135,7 @@ public class MutationStudy {
 				double sdiff = d[3];
 				
 				//double avgSize = CustomStats.calcAvgSize(evaluatedState);
-				if (once){
+				if (true || once){
 					once = false;
 					
 					GPIndividual ind = MutationBuilder.loadStartInd(evaluatedState);
