@@ -43,7 +43,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class MutationStudy {
 
-	private static double generations = 1;
+	private static double generations = 50;
 	private static double popSize = 10;
 	private static double crossoverChance = 0.6;
 	private static double killRatio = 0.0;
@@ -67,7 +67,7 @@ public class MutationStudy {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
@@ -137,7 +137,28 @@ public class MutationStudy {
 				//double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				if (once){
 					once = false;
-					System.out.println(trial+","+plan+","+scenario.toString()+","+size+","+dProfit+","+diff+","+sdiff);
+					
+					GPIndividual ind = MutationBuilder.loadStartInd(evaluatedState);
+					
+					double pi = CustomStats.getProfit(evaluatedState, ind, scenario);
+					double si = ind.size();
+					
+					ArrayList<Individual> inds = getInds(evaluatedState);	
+					
+					for (int i = 0; i < inds.size(); i++){
+						
+						
+						dProfit = CustomStats.getProfit(evaluatedState, inds.get(i), scenario) - pi; 
+						
+						size = (int) Math.round(((GPIndividual)inds.get(i)).size() - si);
+						
+						diff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, false);
+						sdiff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, true);
+						
+						System.out.println(trial+","+plan+","+scenario.toString()+","+size+","+dProfit+","+diff+","+sdiff);
+					}
+					
+					
 				}
 				//System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString()+","+avgSize);
 				
@@ -161,6 +182,7 @@ public class MutationStudy {
 		}
 		
 		}
+
 
 
 	private static double[][] loadData(EvolutionState evaluatedState, Scenario scenario) {
