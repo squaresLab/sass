@@ -457,6 +457,8 @@ public class CustomStats extends Statistics
     	return calcDiversity(state,false);
     }
     
+    
+    
     public static class DistributedDiversity extends Thread {
     	
     	private double sum;

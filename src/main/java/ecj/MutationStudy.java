@@ -53,6 +53,10 @@ public class MutationStudy {
 	private static double reproductionChance = .2;
 	private static double mutationChance = .2;
 
+	private static GPIndividual ind;
+	private static double pi;
+	private static double si;
+	
 	public static ArrayList<Individual> getInds(EvolutionState state){
 		ArrayList<Individual> ans = new ArrayList<Individual>();
 		
@@ -67,7 +71,7 @@ public class MutationStudy {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
@@ -88,7 +92,9 @@ public class MutationStudy {
 			
 			
 		// run multiple trials
-		for (int trial = 0; trial < 10; trial++){
+		for (int trial = 0; trial < 1; trial++){
+			
+			
 			
 			boolean once = true;
 
@@ -104,9 +110,12 @@ public class MutationStudy {
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
 			
-				
+			evaluatedState.startFresh();
 			
-			evaluatedState.startFresh();								
+			ind = MutationBuilder.loadStartInd(evaluatedState);
+			
+			pi = CustomStats.getProfit(evaluatedState, ind, scenario);
+			si = ind.size();
 			
 			int generation = 0;
 			
@@ -126,7 +135,27 @@ public class MutationStudy {
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
-				/*
+				ArrayList<Individual> inds = getInds(evaluatedState);
+				
+				for (int count = 0; count < inds.size(); count++){
+					
+				Individual i = inds.get(count);
+				
+				
+				double dProfit;
+				if (CustomStats.getSize(evaluatedState, i) > 20){
+					dProfit = 0 - pi;
+				}else{
+					dProfit = CustomStats.getProfit(evaluatedState, i, scenario) - pi; 
+				}
+				
+					
+				int size = (int) Math.round(((GPIndividual) i).size() - si);
+					
+				double diff = CustomStats.calcDiff(ind,i,evaluatedState, false);
+				double sdiff = CustomStats.calcDiff(ind,i,evaluatedState, true);
+				
+				/*	
 				double dProfit = d[0];
 
 				int size = (int) Math.round(d[1]);
@@ -135,31 +164,87 @@ public class MutationStudy {
 			
 				double sdiff = d[3];
 				*/
+				
 				//double avgSize = CustomStats.calcAvgSize(evaluatedState);
+				/*
 				if (true || once){
 					once = false;
 					
-					GPIndividual ind = MutationBuilder.loadStartInd(evaluatedState);
+					ind = MutationBuilder.loadStartInd(evaluatedState);
 					
-					double pi = CustomStats.getProfit(evaluatedState, ind, scenario);
-					double si = ind.size();
+					pi = CustomStats.getProfit(evaluatedState, ind, scenario);
+					si = ind.size();
 					
-					ArrayList<Individual> inds = getInds(evaluatedState);	
+					ArrayList<Individual> inds = getInds(evaluatedState);
 					
-					for (int i = 0; i < inds.size(); i++){
-						
-						
-						double dProfit = CustomStats.getProfit(evaluatedState, inds.get(i), scenario) - pi; 
-						
-						int size = (int) Math.round(((GPIndividual)inds.get(i)).size() - si);
-						
-						double diff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, false);
-						double sdiff = CustomStats.calcDiff(ind,inds.get(i),evaluatedState, true);
-						
-						System.out.println(trial+","+generation + ","+i +","+plan+","+scenario.toString()+","+size+","+dProfit+","+diff+","+sdiff);
-					}
+					// now spin up the threads;
 					
-					
+					final double CPU_USE_FRACTION = 0.75;
+			    	
+			    	int cores = (int) Math.round(Runtime.getRuntime().availableProcessors() * CPU_USE_FRACTION);
+			    	
+			    	DistributedInd[] threads = new DistributedInd[cores];
+			    	
+			    	int done = 0;
+			    	int shipped = 0;
+			    	
+			    	long[] startTime = new long[cores];
+			    	
+			    	final long MAX_TIME = 1000*60*10;
+			    	
+			    	while (done < inds.size()){
+			    		
+			    		// loop through the threads
+			    		for (int t = 0; t < threads.length; t++){
+			    			
+			    			DistributedInd active = threads[t];
+			    			
+			    			// check if this thread is done
+			    			if (active != null && !active.isAlive()){
+			    				
+			    				double[] d = active.getAns();
+			    				
+			    				double dProfit = d[0]; 
+								
+								int size = (int) d[1];
+								
+								double diff = d[2];
+								double sdiff = d[3];
+								
+								System.out.println(trial+","+generation + ","+ done +","+plan+","+scenario.toString()+","+size+","+dProfit+","+diff+","+sdiff);
+	    				
+			    				done++;		
+			    			}else if (active != null && active.isAlive()){
+			    				// if its still running, kill if if its gone for too long
+			    				if ((System.currentTimeMillis() - startTime[t]) > MAX_TIME){
+			    					threads[t] = null;
+			    					active = null;
+								System.out.println(trial+","+generation + ","+ done +","+plan+","+scenario.toString()+",NULL,NULL,NULL,NULL");
+			    				}
+			    			}
+			    			
+			    			// spin up a new job, as long as there are jobs left to ship
+			    			if ((active == null || !active.isAlive()) && shipped < inds.size()){
+			    				threads[t] = new DistributedInd(evaluatedState,inds.get(shipped),scenario);
+			    				threads[t].start();
+			    				shipped++;
+			    				
+			    				startTime[t] = System.currentTimeMillis();
+			    			}
+			    			
+			    			
+
+		    		}
+			    		
+			    	}
+			    	
+
+				}
+				*/
+				
+				
+				System.out.println(trial+","+generation + ","+ count +","+plan+","+scenario.toString()+","+size+","+dProfit+","+diff+","+sdiff);
+
 				}
 				generation++;
 				//System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString()+","+avgSize);
@@ -186,6 +271,50 @@ public class MutationStudy {
 		}
 
 
+	public static class DistributedInd extends Thread {
+		
+		private Individual i;
+		private EvolutionState evaluatedState;
+		private Scenario scenario;
+		
+		private double[] ans;
+		
+		public DistributedInd(EvolutionState state, Individual i, Scenario scenario){
+			this.i = i;
+			this.evaluatedState = state;
+			this.scenario = scenario;
+		}
+		
+		public void run(){
+		
+			try{
+			
+		ans = new double[4];
+    	
+		double dProfit = CustomStats.getProfit(evaluatedState, i, scenario) - pi; 
+	
+		int size = (int) Math.round(((GPIndividual) i).size() - si);
+		
+		double diff = CustomStats.calcDiff(ind,i,evaluatedState, false);
+		double sdiff = CustomStats.calcDiff(ind,i,evaluatedState, true);
+		
+		ans[0] = dProfit;
+		ans[1] = size;
+		ans[2] = diff;
+		ans[3] = sdiff;
+		
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+	
+		}
+    	
+		public double[] getAns(){
+			return ans;
+		}
+		
+    }
+	
 
 	private static double[][] loadData(EvolutionState evaluatedState, Scenario scenario) {
 		
@@ -264,7 +393,7 @@ double[] ans = new double[d.length];
 	}
 
 	private static List<String> getPlans() {
-		return Arrays.asList("long","short","poor","scratch");
+		return Arrays.asList("long","short","poor");
 	}
 
 
