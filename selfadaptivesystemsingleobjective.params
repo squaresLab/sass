@@ -180,8 +180,8 @@ generations = 30
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
-breedthreads = 1
-evalthreads = 1
+breedthreads = 7
+evalthreads = 7
 
 
 seed.0 = 123456789
@@ -195,8 +195,8 @@ seed.7 = 123456782
 
 #print-params = true
 
-#stat =	ec.simple.SimpleStatistics
-stat = ecj.CustomStats
+stat = ec.simple.SimpleStatistics
+#stat = ecj.CustomStats
 
 stat.do-size = true
 stat.do-time = true
@@ -209,9 +209,9 @@ stat.do-time = true
 #stat.child.0 = ec.parsimony.TarpeianStatistics
 #stat.child.0.kill-proportion = 0.2
 
-#gp.tc.0.init = ec.gp.koza.HalfBuilder
+gp.tc.0.init = ec.gp.koza.HalfBuilder
 
-gp.tc.0.init = ecj.MutationBuilder
+#gp.tc.0.init = ecj.MutationBuilder
 
 #gp.tc.0.init = ecj.MutationTrimmer
 
@@ -228,3 +228,11 @@ invalid_action_penalty = 0
 verboseness_penalty = 0.01
 min_accepted_improvement = 0
 
+scenario_name = econ
+
+# poor
+initial_ind = (; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))
+# long
+#initial_ind = (; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))
+# short
+#initial_ind = (; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))

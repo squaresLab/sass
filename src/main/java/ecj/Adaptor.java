@@ -3,6 +3,9 @@ package ecj;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import ec.EvolutionState;
 import ec.Evolve;
@@ -14,6 +17,7 @@ import ec.util.Log;
 import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
+import omnet.Omnet.Scenario;
 
 /*
 Parameters that we are interested in:
@@ -38,7 +42,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class Adaptor {
 
-	private static double generations = 30;
+	private static double generations = 50;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
@@ -60,7 +64,14 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,size,runtime,profit");
+		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,scenario,averageSize");
+		
+		// for every scenario
+		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
+		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
+
+		// try every plan
+		for (String plan : getPlans()){
 			
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
@@ -72,7 +83,7 @@ public class Adaptor {
 			out.getLog(1).silent = true;
 			
 			// copy the database so that we can change the values we are interested in
-			ParameterDatabase copy = setParams(dbase);
+			ParameterDatabase copy = setParams(dbase,scenario,plan);
 					
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
@@ -93,11 +104,16 @@ public class Adaptor {
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
-				double profit = CustomStats.getProfit(evaluatedState, best);
+				double profit = CustomStats.getProfit(evaluatedState, best, scenario);
 
 				int size = CustomStats.getSize(evaluatedState, best);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit);
+				double diff = CustomStats.calcDiversity(evaluatedState, false);
+				double sdiff = CustomStats.calcDiversity(evaluatedState, true);
+				
+				double avgSize = CustomStats.calcAvgSize(evaluatedState);
+				
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString()+","+avgSize);
 				
 				}
 			
@@ -115,13 +131,22 @@ public class Adaptor {
 			out.close();
 
 		}
+		}
+		}
 		
 		}
 
 
 	
 	
-	private static ParameterDatabase setParams(ParameterDatabase dbase) throws ClassNotFoundException, IOException {
+	private static List<String> getPlans() {
+		return Arrays.asList("long","short","poor","scratch");
+	}
+
+
+
+
+	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan) throws ClassNotFoundException, IOException {
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
 		// change the file name so we know where this data came from
@@ -144,10 +169,51 @@ public class Adaptor {
 		copy.setProperty("verboseness_penalty", verbosenessPenalty+"");
 		copy.setProperty("min_accepted_improvement", minAcceptedImprovement+"");
 		
+		copy.setProperty("scenario_name", scenario.toString()+"");
+		
+		// now set the param for the starting plan
+		// if from scratch, special behavior is needed
+		String init;
+		
+		if (plan.equals("scratch")){
+			init = "ec.gp.koza.HalfBuilder";
+		}else{
+			init = "ecj.MutationBuilder";
+		}
+		
+		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
+			copy.setProperty("gp.fs.0.size", "14");
+		}else{
+			copy.setProperty("gp.fs.0.size", "13");
+		}
+		
+		copy.setProperty("gp.tc.0.init",init);
+		
+		copy.setProperty("initial_ind", getPlan(plan));
+		
 		return copy;
 	}
 
-	public void scorePlan(EvolutionState evaluatedState){
+
+
+
+	private static String getPlan(String plan) {
+		
+		String ans;
+		
+		switch(plan){
+			case "poor": ans = "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))"; break;
+			case "long": ans = "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))"; break;
+			case "short": ans = "(; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))"; break;
+			default: ans = "";
+		}
+
+		return ans;
+	}
+	
+	/*
+
+	public void scorePlan(EvolutionState evaluatedState,Scenario scenario){
 		evaluatedState.setup(evaluatedState, null);
 		
 		GPIndividual ind = MutationBuilder.loadStartInd(evaluatedState);
@@ -157,9 +223,10 @@ public class Adaptor {
 		
 		prob.evaluate(evaluatedState, ind, 0, 0);
 		
-		System.out.println(CustomStats.getProfit(evaluatedState, ind));
+		System.out.println(CustomStats.getProfit(evaluatedState, ind, scenario));
 		
 		System.exit(0);
 	}
+	*/
 
 }

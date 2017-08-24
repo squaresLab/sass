@@ -8,6 +8,7 @@ import ec.multiobjective.MultiObjectiveFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import omnet.Omnet;
+import omnet.Omnet.Scenario;
 import omnet.tactics.OmnetPlan;
 import system.Fitness;
 
@@ -20,6 +21,8 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 		private double minAcceptedImprovement = 0;
 		
 		String paramValue;
+
+		private Scenario scenario;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);
@@ -43,6 +46,10 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 					VERBOSENESS_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("verboseness_penalty"),null,0);
 					minAcceptedImprovement = state.parameters.getDoubleWithDefault(new Parameter("min_accepted_improvement"),null,0);
 		            
+					String scenarioName = state.parameters.getStringWithDefault(new Parameter("scenario_name"), null,"normal");
+					
+					scenario = Scenario.fromString(scenarioName);
+					
 		        } else {
 		        	System.err.println("please define the objectives parameter to list what the plans should be evaluated on");
 		        	System.exit(1);
@@ -113,7 +120,7 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 				
 				if (((StateData)input).plan.size() <= 10){
 				
-					objectives = getObjectives(paramValue,(StateData)input);
+					objectives = getObjectives(paramValue,(StateData)input,scenario);
 				
 				}else{
 					objectives = getNonsense(paramValue.length());
@@ -159,11 +166,11 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 			return ans;
 		}
 		
-		protected static double[] getObjectives(String objString, StateData input) {
+		protected static double[] getObjectives(String objString, StateData input, Scenario scenario) {
 			
 			OmnetPlan plan = input.plan;
 			
-			Fitness fit = plan.evaluate(new Omnet());
+			Fitness fit = plan.evaluate(new Omnet(scenario));
 			
 			double[] ans = new double[objString.length()];
 			

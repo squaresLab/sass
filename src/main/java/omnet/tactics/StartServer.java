@@ -1,6 +1,7 @@
 package omnet.tactics;
 
 import omnet.Omnet;
+import omnet.Omnet.Scenario;
 import omnet.components.Server;
 import omnet.components.ServerFactory;
 import system.SystemState;
@@ -8,9 +9,8 @@ import tactics.FailableTactic;
 
 public class StartServer extends FailableTactic {
 
-	// set statically for now
-	private static double failChance = 0.1;
-	private static long latency;
+	private double failChance = 0.1;
+	private long latency;
 	
 	private String server;
 
@@ -51,6 +51,12 @@ public class StartServer extends FailableTactic {
 				case "O": serv = factory.getO(); break;
 				case "P": serv = factory.getP(); break;
 			}
+			/*
+			// change fail chance depending on scenario
+			if (omnet.getScenario().equals(Scenario.failc) && location.equals("C")){
+				failChance
+			}
+			*/
 			
 			latency = serv.getLatency();
 			
@@ -82,7 +88,11 @@ public class StartServer extends FailableTactic {
 		omnet.getServerFactory().getNumServers()[index]--;
 				
 	}
-
+	
+	public void setFailChance(double p){
+		failChance = p;
+	}
+	
 	@Override
 	public double getFailChance() {
 		return failChance;
@@ -92,6 +102,10 @@ public class StartServer extends FailableTactic {
 		 return "StartServer"+server;
 		}
 
+	public String getServer(){
+		return server;
+	}
+	
 	@Override
 	public long getExecutionTime() {
 		return latency;

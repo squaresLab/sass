@@ -2,16 +2,40 @@ package omnet;
 
 import java.util.ArrayList;
 
+import omnet.Omnet.Scenario;
 import omnet.components.Server;
 import omnet.components.ServerFactory;
 import system.Fitness;
+import omnet.tactics.StartServer;
 import system.SystemState;
+import tactics.FailableTactic;
 import tactics.Tactic;
 
 public class Omnet extends SystemState {
 	
+	public enum Scenario {
+			normal,requests,fourserv,requestsfourserv,econ,failc,unreliable;
+		public static Scenario fromString(String name){
+			Scenario scenario;
+			
+			switch (name){
+			//TODO
+			case "failc": scenario = Scenario.failc; break;
+			case "unreliable": scenario = Scenario.unreliable; break;
+			//done
+			case "econ": scenario = Scenario.econ; break;
+			case "requests": scenario = Scenario.requests; break;
+			case "fourserv": scenario = Scenario.fourserv; break;
+			case "requestsfourserv": scenario = Scenario.requestsfourserv; break;
+			default: scenario = Scenario.normal; break;
+			}
+			
+			return scenario;
+		}
+	}
+
 	// requests / sec on the system, assumed constant for now
-	public static final int SYSTEM_DEMAND = 1000;
+	public int SYSTEM_DEMAND = 1000;
 	
 	private static final double NORMAL_PROFIT_PER_SECOND = 3;
 
@@ -27,14 +51,27 @@ public class Omnet extends SystemState {
 
 	public static final int MAX_SERVER_COUNT_PER_LOC = 5;
 	
-	public Omnet(){
+	private Scenario scenario;
+	
+	public Omnet(Scenario s){
+		
+		this.scenario = s;
+		
 		servers = new ArrayList<Server>();
-		serverFactory = new ServerFactory();
+		serverFactory = new ServerFactory(s);
 		
 		// we will start with 1 server of each
 		servers.add(serverFactory.getA());
 		servers.add(serverFactory.getB());
 		servers.add(serverFactory.getC());
+		if (s.equals(Scenario.fourserv) || s.equals(Scenario.requestsfourserv)){
+			servers.add(serverFactory.getD());
+		}
+		if (s.equals(Scenario.requests) || s.equals(Scenario.requestsfourserv)){
+			SYSTEM_DEMAND = 10000;
+		}else{
+			SYSTEM_DEMAND = 1000;
+		}
 		/*
 		servers.add(serverFactory.getD());
 		servers.add(serverFactory.getE());
@@ -51,6 +88,20 @@ public class Omnet extends SystemState {
 		servers.add(serverFactory.getP());
 		*/
 		
+	}
+	
+	@Override
+	public void accept(Tactic tactic){
+
+		if (tactic instanceof StartServer){
+			StartServer s = (StartServer) tactic;
+			if (scenario.equals(Scenario.failc) && s.getServer().equals("C")){
+				s.setFailChance(1);
+			}else if (scenario.equals(Scenario.unreliable)){
+				s.setFailChance(.66);
+			}
+		}
+		super.accept(tactic);
 	}
 	
 		public double calculateProfit(){
@@ -187,7 +238,7 @@ public class Omnet extends SystemState {
 	}
 	
 	public Object clone(){
-		Omnet copy = new Omnet();
+		Omnet copy = new Omnet(scenario);
 		
 		for (int count = 0; count < history.size(); count++){
 			copy.history.add((Tactic) history.get(count).clone());
@@ -265,6 +316,10 @@ public class Omnet extends SystemState {
 		fit.put("Latency",getLatency()*getProbability());
 
 		return fit;
+	}
+	
+	public Scenario getScenario(){
+		return scenario;
 	}
 	
 }

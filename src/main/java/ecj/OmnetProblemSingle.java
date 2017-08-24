@@ -8,12 +8,14 @@ import ec.gp.koza.KozaFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import omnet.Omnet;
+import omnet.Omnet.Scenario;
 
 public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 
 		private double INVALID_ACTION_PENALTY = 0;
 		private double VERBOSENESS_PENALTY = 0;
 		private double minAcceptedImprovement = 0;
+		private Scenario scenario;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);
@@ -29,6 +31,10 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				INVALID_ACTION_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("invalid_action_penalty"),null,0);
 				VERBOSENESS_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("verboseness_penalty"),null,0);
 				minAcceptedImprovement = state.parameters.getDoubleWithDefault(new Parameter("min_accepted_improvement"),null,0);
+				String scenarioName = state.parameters.getStringWithDefault(new Parameter("scenario_name"), null,"normal");
+				
+				scenario = Scenario.fromString(scenarioName);
+				
 			}
 		}
 
@@ -72,7 +78,9 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				double fitnessValue;
 				
 				if(((StateData)input).plan.size() <= 20){
-					fitnessValue = ((StateData)input).plan.evaluate(new Omnet()).get("Profit");
+
+					fitnessValue = ((StateData)input).plan.evaluate(new Omnet(scenario)).get("Profit");
+
 				}else{
 					fitnessValue = 0;
 				}
