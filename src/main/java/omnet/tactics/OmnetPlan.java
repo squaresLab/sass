@@ -5,6 +5,7 @@ import java.util.List;
 
 import omnet.Omnet;
 import omnet.Omnet.Scenario;
+import system.Fitness;
 import tactics.FailableTactic;
 import tactics.Plan;
 import tactics.Tactic;
@@ -40,16 +41,20 @@ public class OmnetPlan extends Plan {
 			plan.tactics.add(new StartServer("C"));
 	*/
 		
-		for (int count = 0; count < 4; count++)
+		for (int count = 0; count < 1; count++)
 			plan.tactics.add(new StartServer("C"));
 		
-		for (int count = 0; count < 10; count++)
+		for (int count = 0; count < 1; count++)
 			plan.tactics.add(new StartServer("B"));
 		
-		for (int count = 0; count < 6; count++)
+		for (int count = 0; count < 1; count++)
 			plan.tactics.add(new ShutdownServer("A"));
 		
-		System.out.println(plan.evaluate(new Omnet(Scenario.normal)).get("profit"));
+		
+		
+		Fitness f = plan.evaluate(new Omnet(Scenario.normal));
+		
+		System.out.println(f.get("Profit"));
 		
 	}
 	

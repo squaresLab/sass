@@ -308,12 +308,12 @@ public class Omnet extends SystemState {
 		
 		calculateProfit();
 		
-		fit.put("Cost",getCost()*getProbability());
-		fit.put("DimmedResponses",getDimmedResponses()*getProbability());
-		fit.put("NormalResponses",getNormalResponses()*getProbability());
-		fit.put("Income",getIncome()*getProbability());
-		fit.put("Profit",getProfit()*getProbability());
-		fit.put("Latency",getLatency()*getProbability());
+		fit.put("Cost",getCost());
+		fit.put("DimmedResponses",getDimmedResponses());
+		fit.put("NormalResponses",getNormalResponses());
+		fit.put("Income",getIncome());
+		fit.put("Profit",getProfit());
+		fit.put("Latency",getLatency());
 
 		return fit;
 	}

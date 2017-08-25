@@ -41,10 +41,10 @@ public class Fitness {
 	}
 	
 	// multiply the vector by a constant, useful for computing aggregate utility over time
-	public Fitness mult(long t){
+	public Fitness mult(double probability2){
 		Fitness ans = new Fitness();
 		for (String key : this.objectiveValues.keySet()){
-			ans.put(key,this.objectiveValues.get(key) * t);
+			ans.put(key,this.objectiveValues.get(key) * probability2);
 		}
 		return ans;
 	}

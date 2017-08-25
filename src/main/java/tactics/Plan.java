@@ -1,8 +1,11 @@
 package tactics;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
+import system.Event;
 import system.Fitness;
 import system.SystemState;
 
@@ -24,16 +27,39 @@ public abstract class Plan implements Cloneable {
 		this.tactics = new ArrayList<Tactic>(tactics);
 	}
 	
+	
+	
 	public Fitness evaluate(SystemState system){
 
-		return evaluate(system, 0);
+		ArrayList<Event> events = system.getEvents();
+		
+		// convert tactics to events
+		for (int i = 0; i < tactics.size(); i++){
+			
+			Tactic t = tactics.get(i);
+			
+			Event s = new Event((FailableTactic) t);
+			
+			events.add(s);
+			
+		}
+		
+		Hashtable<Long,Fitness> record = system.runSim();
+		
+		ArrayList<Long> times = new ArrayList<Long>(record.keySet());
+		
+		Collections.sort(times);
+		
+		return record.get(times.get(times.size()-1)); 
+		
+		//return evaluate(system, 0);
 	
 	}
 	
 	private Fitness evaluate(SystemState system, int currentStep){
 
 		if (currentStep == tactics.size()){
-			return system.calculateAggFitness();
+			return system.calculateInstFitness();
 			// TODO reconsider how branch pruning works, is it really doing the right thing?
 		}else if (system.MINIMUM_POSSIBLE_FITNESS != null && system.getProbability() * estMaxFitness < minPossibleImprovement){
 			return system.MINIMUM_POSSIBLE_FITNESS;

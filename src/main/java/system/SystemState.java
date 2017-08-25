@@ -9,7 +9,7 @@ import tactics.Plan;
 import tactics.Tactic;
 import tactics.TryCatchFinallyTactic;
 
-public abstract class SystemState {
+public abstract class SystemState extends Simulator {
 	
 	protected ArrayList<Event> timeline;
 	
@@ -44,38 +44,6 @@ public abstract class SystemState {
 		
 		probabilityHistory.add(pathProbability);
 
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Fitness evaluate(Plan plan){
-		
-		queue = ((Plan)plan.clone()).getTactics();
-		
-		return evaluate(0);
-	}
-	
-	private Fitness evaluate(int step) {
-
-		// get the next tactic
-		Tactic current = (Tactic) queue.get(step);
-		
-		if (current instanceof FailableTactic){
-			
-			timeline.add(new Event(time,current,Event.EventType.START));
-			timeline.add(new Event(time+current.getExecutionTime(),current,Event.EventType.END));
-			
-		}else if (current instanceof TryCatchFinallyTactic){
-			
-			timeline.add(new Event(time,current,Event.EventType.START));
-			timeline.add(new Event(time+current.getExecutionTime(),current,Event.EventType.END));
-			
-		}else if (current instanceof ParallelTactic){
-			
-		}
-		
-		
-		
-		return null;
 	}
 
 	private void updateProbability(double p){
@@ -184,11 +152,6 @@ public abstract class SystemState {
 	// evaluate the fitness of a single instance
 	public abstract Fitness calculateInstFitness();
 	
-	// evaluate the fitness of the system over time
-	public Fitness calculateAggFitness(){
-		return aggFitness.get(aggFitness.size()-1);
-	}
-
 	public long getTime() {
 		return time;
 	}
