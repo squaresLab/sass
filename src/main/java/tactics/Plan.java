@@ -43,9 +43,12 @@ public abstract class Plan implements Cloneable {
 			events.add(s);
 			
 		}
+
 		
 		Hashtable<Long,Fitness> record = system.runSim();
 		
+		return aggregate(record);
+		/*
 		ArrayList<Long> times = new ArrayList<Long>(record.keySet());
 		
 		Collections.sort(times);
@@ -53,9 +56,51 @@ public abstract class Plan implements Cloneable {
 		return record.get(times.get(times.size()-1)); 
 		
 		//return evaluate(system, 0);
+		 * 
+		 */
 	
 	}
 	
+	private Fitness aggregate(Hashtable<Long, Fitness> record) {
+		
+		Fitness ans = new Fitness();
+		
+		ArrayList<Long> times = new ArrayList<Long>(record.keySet());
+		
+		Collections.sort(times);
+		
+		// first copy time 0
+		Fitness cur = null;
+		long lastTime = 1;
+		for (int count = 0; count < times.size(); count++){
+			
+			if (count == 0){
+				
+				cur = record.get(0l);
+				
+				ans = cur;
+
+			}else{
+				long time = times.get(count);
+				
+				long duration = time - lastTime;
+				
+				cur = cur.mult(duration);
+				
+				ans = ans.or(cur);
+				
+				cur = record.get(time);
+				
+				lastTime = time;
+				
+			}
+			
+		}
+		
+		
+		return ans;
+	}
+
 	private Fitness evaluate(SystemState system, int currentStep){
 
 		if (currentStep == tactics.size()){

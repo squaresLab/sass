@@ -36,7 +36,7 @@ public abstract class FailableTactic extends Tactic {
 	public abstract double getFailChance();
 	
 	// get a failed tactic
-	public Tactic getFail() {
+	public FailableTactic getFail() {
 		
 		FailableTactic copy = (FailableTactic) clone();
 			

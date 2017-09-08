@@ -1,5 +1,7 @@
 package system;
 
+import java.util.ArrayList;
+
 import tactics.FailableTactic;
 import tactics.Tactic;
 
@@ -13,12 +15,16 @@ public class Event implements Comparable<Event>{
 	
 	double probability;
 	
+	ArrayList<Event> linked;
+	
 	public Event(long time, FailableTactic tactic, EventType type){
 		this.time = time;
 		this.tactic = tactic;
 		this.type = type;
 
 		probability = tactic.getFailChance();
+		
+		linked = new ArrayList<Event>();
 	
 	}
 	
@@ -26,6 +32,7 @@ public class Event implements Comparable<Event>{
 		this.tactic = t;
 		this.type = EventType.START;
 		probability = tactic.getFailChance();
+		linked = new ArrayList<Event>();
 	}
 
 	public long getTime() {
@@ -70,6 +77,24 @@ public class Event implements Comparable<Event>{
 		
 		return clone;
 		
+	}
+	
+	public void setLinked(ArrayList<Event> e){
+		this.linked = e;
+	}
+
+	public ArrayList<Event> getLinked() {
+		return linked;
+	}
+	
+	public String toString(){
+		String ans = "";
+		
+			ans += type;
+			ans += " " + tactic;
+			
+		
+		return ans;
 	}
 	
 }

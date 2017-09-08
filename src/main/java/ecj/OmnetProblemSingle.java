@@ -100,6 +100,10 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 					fitnessValue = 1 / fitnessValue;
 				}
 				
+				if (fitnessValue == 0){
+					System.out.println("wtf?");
+				}
+				
 				//System.out.println("Score: "+((GPIndividual)ind).size()+" "+1.0/fitnessValue + " " + ((StateData)input).plan);
 				
 				/*

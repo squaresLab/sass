@@ -6,13 +6,14 @@ import java.util.Hashtable;
 
 import tactics.FailableTactic;
 import tactics.Tactic;
+import tactics.TryCatchFinallyTactic;
 
 public abstract class Simulator {
 	
-	long time;
+	long time,step;
 	
 	double probability;
-	
+		
 	ArrayList<Event> events;
 	
 	Hashtable<Long,Fitness> fitnessLog;
@@ -20,6 +21,7 @@ public abstract class Simulator {
 	ArrayList<Double> probabilityLog;
 	
 	public Simulator(){
+		
 		time = 0;
 		probability = 1;
 		events = new ArrayList<Event>();
@@ -32,27 +34,26 @@ public abstract class Simulator {
 	public Hashtable<Long, Fitness> runSim(){
 		
 		Collections.sort(events);
-		
+				
 		return runSim(0, new Hashtable<Long,Fitness>());
 		
 	}
 	
 	public Hashtable<Long, Fitness> runSim(int eventIndex, Hashtable<Long, Fitness> fitnessLog){
 		
+		
 		if (!(eventIndex < events.size())){
 			return mult(fitnessLog,probability);
 		}
 		
-			
+		
+			long timeBackup = time;
+		
 			Event e = events.get(eventIndex);
 			
-			accept(e.getTactic());
-			
-			time += e.tactic.getExecutionTime();
-			
-			probability *= 1.0 - e.probability;
-			
-			probabilityLog.add(probability);
+		    procEvent(e);
+		    
+		    boolean failed = e.tactic.getFailed();
 			
 			fitnessLog.put(time, calculateInstFitness());
 			
@@ -60,37 +61,155 @@ public abstract class Simulator {
 			Hashtable<Long, Fitness> onSuccess = runSim(eventIndex+1,fitnessLog);
 			
 			// undo the event
-			undo();
+			undo(e);
 			
-			time -= e.tactic.getExecutionTime();
+			time = timeBackup;
 			
-			probabilityLog.remove(probabilityLog.size()-1);
+			if (e.type != Event.EventType.START && 1 - e.probability < 1.0 && !failed){
 			
-			probability = probabilityLog.get(probabilityLog.size()-1);
+				procFail(e);
+
+				fitnessLog.put(time, calculateInstFitness());
 			
-			accept(e.tactic.getFail());
+				// finish the rest of the timeline after this event fails
+				Hashtable<Long, Fitness> onFail = runSim(eventIndex+1,fitnessLog);
 			
-			time += e.tactic.getExecutionTime();
+				undo(e);
+				
+				time = timeBackup;
+						
+				return add(onSuccess,onFail);
 			
-			probability *= e.probability;
+			}else{
+				
+				return onSuccess;
+			}
+		
+	}
+
+	private void procEvent(Event e){
+		procEvent(e,false);
+	}
+
+	private void procFail(Event e) {
+		
+		procEvent(e,true);
+		
+	}
+
+	private void undo(Event e) {
+		// if start, put an end event on the timeline
+				if (e.type == Event.EventType.START){
+					
+					// if this is a start event, then we have to remove the generated end event
+					recursiveRemove(e.getLinked());
+					//events.remove(e.getLinked());
+					
+				}else{
+					
+					if (e.tactic instanceof TryCatchFinallyTactic){
+						recursiveRemove(e.getLinked());
+					}
+					
+					undo();
+					//time -= e.tactic.getExecutionTime();
+				}
+		
+				probabilityLog.remove(probabilityLog.size()-1);
+				
+				probability = probabilityLog.get(probabilityLog.size()-1);
+				
+	}
+
+	private void recursiveRemove(ArrayList<Event> linked) {
+		
+		events.removeAll(linked);
+		
+		for (int count = 0; count < linked.size(); count++){
+			//recursiveRemove(linked.get(count).getLinked());
+		}
+		
+	}
+
+	private void procEvent(Event e, boolean forceFail) {
+		
+		time = e.time;
+		
+		// if start, put an end event on the timeline
+		if (e.type == Event.EventType.START){
+			
+			Event end = new Event(time + e.tactic.getExecutionTime(),e.tactic,Event.EventType.END);
+			
+			e.getLinked().add(end);
+						
+			events.add(end);
+			
+			Collections.sort(events);
+			
+			// trying a tactic always works
+			probability *= 1.0;
 			
 			probabilityLog.add(probability);
 			
-			fitnessLog.put(time, calculateInstFitness());
+		}else{
+			// if an end, then execute the tactic
 			
-			// finish the rest of the timeline after this event fails
-			Hashtable<Long, Fitness> onFail = runSim(eventIndex+1,fitnessLog);
+			FailableTactic acceptedTactic = null;
 			
-			undo();
+			if (forceFail){
+				acceptedTactic = ((FailableTactic)e.getTactic()).getFail();
+			}else{
+				acceptedTactic = (FailableTactic) e.getTactic();
+			}
 			
-			probabilityLog.remove(probabilityLog.size()-1);
+			accept(acceptedTactic);
+			//time += e.tactic.getExecutionTime();
 			
-			probability = probabilityLog.get(probabilityLog.size()-1);
+			if (!acceptedTactic.getFailed()){
 			
-			time -= e.tactic.getExecutionTime();
+				probability *= 1.0 - e.probability;
+
+			}else if (forceFail){
+				
+				probability *= e.probability;
+			}
 			
-			return add(onSuccess,onFail);
-		
+			probabilityLog.add(probability);
+			
+			// if try catch finally, special behavior for adding new events to the timeline
+			if(acceptedTactic instanceof TryCatchFinallyTactic){
+				
+				TryCatchFinallyTactic tcf = (TryCatchFinallyTactic) acceptedTactic;
+				
+				// determine if the try failed or not
+				if (tcf.getFailed()){
+					// if it did fail, then we need to add the catch tactics
+					ArrayList<Tactic> tactics = tcf.getCatch().getTactics();
+					for (int count = 0; count < tactics.size(); count++){
+						FailableTactic t = (FailableTactic) tactics.get(count).clone();
+						Event c = new Event(time,t,Event.EventType.START);
+						events.add(c);
+						
+						e.getLinked().add(c);
+					}
+				}else{
+					ArrayList<Tactic> tactics = tcf.getFinally().getTactics();
+					for (int count = 0; count < tactics.size(); count++){
+						FailableTactic t = (FailableTactic) tactics.get(count).clone();
+						Event c = new Event(time,t,Event.EventType.START);	
+					    events.add(c);
+						
+						e.getLinked().add(c);
+					}
+				}
+				
+				Collections.sort(events);
+				
+							
+			}
+			
+		}
+				
 	}
 
 	abstract void accept(Tactic fail);
