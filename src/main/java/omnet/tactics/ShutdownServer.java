@@ -57,8 +57,12 @@ public class ShutdownServer extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 			
-		// re-add the server from the servers list
-		omnet.getServers().add(removed);
+		if (removed != null){
+			// re-add the server from the servers list
+			omnet.getServers().add(removed);
+		}else{
+			System.out.println("bug");
+		}
 		
 		// update the count in the factory
 		int index = omnet.getServerFactory().getIndex(server);

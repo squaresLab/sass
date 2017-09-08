@@ -108,7 +108,12 @@ public class StartServer extends FailableTactic {
 	
 	@Override
 	public long getExecutionTime() {
-		return latency;
+		switch (server) {
+			case "A": case "B": case "C":
+			return 120;
+			case "D": return 60;
+			default: return 30;
+		}
 	}
 
 }
