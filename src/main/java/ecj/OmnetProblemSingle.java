@@ -7,6 +7,7 @@ import ec.gp.GPProblem;
 import ec.gp.koza.KozaFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
+import omnet.FitnessSanity;
 import omnet.Omnet;
 import omnet.Omnet.Scenario;
 
@@ -42,6 +43,11 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 		 * TODO - check this is in the correct final form*/
 		@Override
 		public void evaluate(EvolutionState state, Individual ind, int subpopulation, int threadnum) {
+			
+			// DEBUG ONLY
+			///ind = MutationBuilder.ind;
+			// END DEBUG
+			
 			// TODO Auto-generated method stub
 			boolean feasible=true;
 			if(!ind.evaluated) //don't reevaluate it again
@@ -74,6 +80,9 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				
 				
 				((StateData)input).plan.setMinAcceptedImprovment(minAcceptedImprovement);
+				
+				// NEXT LINE DEBUG ONLY
+				//FitnessSanity.testInd(((StateData)input).plan);
 				
 				double fitnessValue;
 				

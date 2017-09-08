@@ -6,6 +6,10 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import ec.EvolutionState;
+import ec.gp.GPIndividual;
+import ec.util.Parameter;
+import ecj.MutationBuilder;
 import omnet.Omnet.Scenario;
 import omnet.tactics.DecreaseDimmer;
 import omnet.tactics.IncreaseDimmer;
@@ -18,8 +22,57 @@ import tactics.TryCatchFinallyTactic;
 
 public class FitnessSanity {
 
+	public static void testInd(OmnetPlan plan){
+		
+		Fitness fitnessBest = plan.evaluate(new Omnet(Scenario.normal));
+		
+		// compare to some other plans
+		OmnetPlan hplan = new OmnetPlan();
+		
+		//TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new ShutdownServer("A"), new OmnetPlan(Arrays.asList(new ShutdownServer("A"),new StartServer("C"),new StartServer("C"),new StartServer("C"),new StartServer("C"),new StartServer("C"),new StartServer("B"),new StartServer("B"),new StartServer("B"),new StartServer("B"))),new OmnetPlan(Arrays.asList(new ShutdownServer("A"))));
+		
+		//plan.tactics.add(tcf);
+		
+		/*
+		for (int count = 0; count < 3; count++)
+			plan.tactics.add(new ShutdownServer("A"));
+		
+
+		
+		for (int count = 0; count < 5; count++)
+			plan.tactics.add(new StartServer("B"));
+			
+		for (int count = 0; count < 4; count++)
+			plan.tactics.add(new StartServer("C"));
+	*/
+		
+		for (int count = 0; count < 5; count++)
+			hplan.getTactics().add(new StartServer("C"));
+		
+		for (int count = 0; count < 5; count++)
+			hplan.getTactics().add(new StartServer("B"));
+		
+		for (int count = 0; count < 5; count++)
+			hplan.getTactics().add(new ShutdownServer("A"));
+		
+		
+		
+		Fitness human = hplan.evaluate(new Omnet(Scenario.normal));
+		
+		
+	}
+	
 	@Test
 	public void shutdownServerPointerBug() {
+		/*
+		EvolutionState state = new EvolutionState();
+		state.setup(state, new Parameter("selfadaptivesystemsingleobjective.params"));
+		
+		
+		GPIndividual ind = MutationBuilder.loadStartInd(state);
+		
+		OmnetProblemSingle
+		
 		OmnetPlan plan = new OmnetPlan();
 
 		TryCatchFinallyTactic tcf = new TryCatchFinallyTactic(new StartServer("C"), new OmnetPlan(Arrays.asList(new IncreaseTraffic("A"))), new OmnetPlan(Arrays.asList(new StartServer("B"),new StartServer("B"),new StartServer("B"),new StartServer("B"))));
@@ -29,6 +82,8 @@ public class FitnessSanity {
 		
 		System.out.println(f.get("Profit"));
 		assert f.get("Profit") == 1607.7200000000003;
+		
+		*/
 	}
 	
 	

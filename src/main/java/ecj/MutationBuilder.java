@@ -24,6 +24,7 @@ import ec.gp.koza.GPKozaDefaults;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 import ecj.operators.SequenceOperator;
+import omnet.FitnessSanity;
 import ecj.actions.DecreaseDimmerLevel;
 import ecj.actions.IncreaseTrafficLevel;
 import ecj.actions.ServerA;
@@ -56,7 +57,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     public GPNodeBuilder builder;
     
     // the starting individual
-    GPIndividual ind = null;
+    public static GPIndividual ind = null;
     
     int numTries;
     
@@ -125,7 +126,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
         // mtf = new MersenneTwisterFast();
     }
 	
-	  protected static GPIndividual loadStartInd(EvolutionState state) {
+	  public static GPIndividual loadStartInd(EvolutionState state) {
 		  
 		  String indString = 
 					"Evaluated: F\n"+
@@ -171,6 +172,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 			}
 			
 		//	ind.printIndividualForHumans(state, 0);
+			
 			
 		return ind;
 	}

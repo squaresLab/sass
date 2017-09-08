@@ -101,11 +101,20 @@ public abstract class Plan implements Cloneable {
 		long last = times.get(times.size()-1);
 		
 		cur = record.get(last);
-		
+		/*
 		// weight each by 50%
 		ans = ans.mult(0.5*(1.0/last));
 		cur = cur.mult(0.5);
 		
+		ans = ans.or(cur);
+		
+		*/
+		
+		// assume that the system runs for 10000 
+		long remaining = 10000 - last;
+		
+		// add this profit
+		cur = cur.mult(remaining);
 		ans = ans.or(cur);
 		
 		return ans;
