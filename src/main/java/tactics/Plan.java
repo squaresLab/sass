@@ -97,6 +97,16 @@ public abstract class Plan implements Cloneable {
 			
 		}
 		
+		// give extra weight to the last state
+		long last = times.get(times.size()-1);
+		
+		cur = record.get(last);
+		
+		// weight each by 50%
+		ans = ans.mult(0.5*(1.0/last));
+		cur = cur.mult(0.5);
+		
+		ans = ans.or(cur);
 		
 		return ans;
 	}
