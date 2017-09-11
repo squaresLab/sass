@@ -42,7 +42,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class Adaptor {
 
-	private static double generations = 100;
+	private static double generations = 30;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
@@ -74,7 +74,7 @@ public class Adaptor {
 		for (String plan : getPlans()){
 			
 		// run multiple trials
-		for (int trial = 0; trial < 10; trial++){
+		for (int trial = 0; trial < 1; trial++){
 
 			Output out = Evolve.buildOutput();
 
