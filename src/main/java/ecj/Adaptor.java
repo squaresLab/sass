@@ -42,7 +42,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class Adaptor {
 
-	private static double generations = 50;
+	private static double generations = 100;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
@@ -140,7 +140,7 @@ public class Adaptor {
 	
 	
 	private static List<String> getPlans() {
-		return Arrays.asList("long","short","poor","scratch");
+		return Arrays.asList("long","scratch");//,"short","poor","scratch");
 	}
 
 
@@ -202,9 +202,10 @@ public class Adaptor {
 		String ans;
 		
 		switch(plan){
-			case "poor": ans = "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))"; break;
-			case "long": ans = "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))"; break;
-			case "short": ans = "(; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))"; break;
+			case "long": ans = "(; (F ERC[i3|] (; (StartServer B) (; (DecreaseTraffic A) (T (StartServer C) (StartServer C) (StartServer B))))) (T (; (; (StartServer B) (; (T (StartServer B) (StartServer B) (IncreaseDimmer C)) (T (StartServer B) (T (StartServer B) (StartServer B) (StartServer C)) (DecreaseTraffic B)))) (StartServer B)) (ShutdownServer A) (StartServer B)))"; break;
+			//case "poor": ans = "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))"; break;
+			//case "long": ans = "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))"; break;
+			//case "short": ans = "(; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))"; break;
 			default: ans = "";
 		}
 
