@@ -176,7 +176,7 @@ gp.koza.half.max-depth = 5
 
 eval.problem = ecj.OmnetProblemSingle
 eval.problem.data = ecj.StateData
-generations = 100
+generations = 30
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
@@ -209,11 +209,11 @@ stat.do-time = true
 #stat.child.0 = ec.parsimony.TarpeianStatistics
 #stat.child.0.kill-proportion = 0.2
 
-gp.tc.0.init = ec.gp.koza.HalfBuilder
+#gp.tc.0.init = ec.gp.koza.HalfBuilder
 
 #gp.tc.0.init = ecj.MutationBuilder
 
-#gp.tc.0.init = ecj.MutationTrimmer
+gp.tc.0.init = ecj.MutationTrimmer
 
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector

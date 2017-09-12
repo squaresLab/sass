@@ -64,6 +64,7 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
     //if trees must be equal size
     //TODO: make this a parameter later
     boolean equalSize=false;
+private static String initial;
     
 	@Override
     public Parameter defaultBase()
@@ -117,6 +118,7 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
                 p,d, GPNodeBuilder.class));
         builder.setup(state,p);
         
+        initial = state.parameters.getString(new Parameter("initial_ind"), null);
         // mtf = new MersenneTwisterFast();
     }
 	
@@ -127,11 +129,12 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 					"Tree 0:\n";
 		  
 		  
+		  indString += initial;
 		  
 		 // if (mtf.nextBoolean(0.90))
 			 //indString += "(; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))";
 		//  else 
-			 indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
+			 //indString += "(; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))";
 			
 		//	indString = readPlanFromFile("prismproc.txt");
 			
@@ -256,7 +259,9 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
              j.trees[x].child.argposition = 0;
              j.evaluated = false;  
              
-         return mutate(state,thread,j).trees[0].child;
+             return j.trees[0].child;
+             
+         //return mutate(state,thread,j).trees[0].child;
 	}
 	
 	private GPIndividual mutate(EvolutionState state,int thread,GPIndividual ind){
