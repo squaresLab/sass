@@ -51,6 +51,8 @@ public class Adaptor {
 	private static double minAcceptedImprovement = 0.001;
 	private static double reproductionChance = 0.2;
 	private static double mutationChance = 0.2;
+	
+	
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
@@ -64,7 +66,7 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,scenario,averageSize");
+		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,scenario,averageSize");
 		
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
@@ -72,6 +74,9 @@ public class Adaptor {
 
 		// try every plan
 		for (String plan : getPlans()){
+			
+		// try differant start strategies
+		for (String init : getInits(plan)){
 			
 		// run multiple trials
 		for (int trial = 0; trial < 1; trial++){
@@ -83,7 +88,7 @@ public class Adaptor {
 			out.getLog(1).silent = true;
 			
 			// copy the database so that we can change the values we are interested in
-			ParameterDatabase copy = setParams(dbase,scenario,plan);
+			ParameterDatabase copy = setParams(dbase,scenario,plan,init);
 					
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
@@ -113,7 +118,7 @@ public class Adaptor {
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+","+scenario.toString()+","+avgSize);
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+","+scenario.toString()+","+avgSize);
 				
 				}
 			
@@ -133,12 +138,29 @@ public class Adaptor {
 		}
 		}
 		}
+		}
 		
 		}
 
 
 	
 	
+	private static String[] getInits(String plan) {
+		if (plan.equals("scratch")){
+			
+			return new String[] {"scratch"};
+			
+		}else{
+			
+			return new String[] {"trimmer","mutator"};
+			
+		}
+		
+	}
+
+
+
+
 	private static List<String> getPlans() {
 		return Arrays.asList("long","scratch");//,"short","poor","scratch");
 	}
@@ -146,7 +168,7 @@ public class Adaptor {
 
 
 
-	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan) throws ClassNotFoundException, IOException {
+	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan,String initializer) throws ClassNotFoundException, IOException {
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
 		// change the file name so we know where this data came from
@@ -173,12 +195,14 @@ public class Adaptor {
 		
 		// now set the param for the starting plan
 		// if from scratch, special behavior is needed
-		String init;
+		String init = "";
 		
-		if (plan.equals("scratch")){
+		if (initializer.equals("scratch")){
 			init = "ec.gp.koza.HalfBuilder";
-		}else{
+		}else if (initializer.equals("trimmer")){
 			init = "ecj.MutationTrimmer";
+		}else if (initializer.equals("mutator")){
+			init = "ecj.MutationBuilder";
 		}
 		
 		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
