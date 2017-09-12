@@ -412,8 +412,8 @@ public class CustomStats extends Statistics
         
         // CUSTOM CODE HERE
         // print out diversity info
-        state.output.print("" + calcDiversity(state) + " " , statisticslog);
-        state.output.print(""+ calcDiversity(state,true) + " ", statisticslog);
+        //state.output.print("" + calcDiversity(state) + " " , statisticslog);
+        //state.output.print(""+ calcDiversity(state,true) + " ", statisticslog);
         state.output.print("" + calcAvgSize(state) + " ", statisticslog);
         // END CUSTOM CODE
                         

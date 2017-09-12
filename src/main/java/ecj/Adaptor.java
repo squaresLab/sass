@@ -108,8 +108,8 @@ public class Adaptor {
 
 				int size = CustomStats.getSize(evaluatedState, best);
 				
-				double diff = CustomStats.calcDiversity(evaluatedState, false);
-				double sdiff = CustomStats.calcDiversity(evaluatedState, true);
+				double diff = -1; // CustomStats.calcDiversity(evaluatedState, false);
+				double sdiff = -1; //CustomStats.calcDiversity(evaluatedState, true);
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
