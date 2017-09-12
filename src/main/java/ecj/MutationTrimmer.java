@@ -45,7 +45,7 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 	public static final String P_MAXDEPTH = "maxdepth";
 	public static final int NO_SIZE_LIMIT = -1;
 	
-	private static final double BUILDPROB = 0.75;
+	private static final double BUILDPROB = 0.95;
 	
 	Parameter base;
 	
@@ -57,6 +57,8 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
     
     // the starting individual
     GPIndividual ind = null;
+    
+    
     
     int numTries;
     

@@ -152,7 +152,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new String[] {"trimmer","mutator"};
+			return new String[] {"trimmer"};//,"mutator"};
 			
 		}
 		
@@ -162,7 +162,7 @@ public class Adaptor {
 
 
 	private static List<String> getPlans() {
-		return Arrays.asList("long","scratch");//,"short","poor","scratch");
+		return Arrays.asList("long");//,"scratch");//,"short","poor","scratch");
 	}
 
 
