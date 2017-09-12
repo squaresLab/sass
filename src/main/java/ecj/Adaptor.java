@@ -178,7 +178,7 @@ public class Adaptor {
 		if (plan.equals("scratch")){
 			init = "ec.gp.koza.HalfBuilder";
 		}else{
-			init = "ecj.MutationBuilder";
+			init = "ecj.MutationTrimmer";
 		}
 		
 		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
