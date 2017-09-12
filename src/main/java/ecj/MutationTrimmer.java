@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Random;
 
 import ec.EvolutionState;
 import ec.Species;
@@ -43,6 +44,8 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 	public static final String P_BUILDER = "build";
 	public static final String P_MAXDEPTH = "maxdepth";
 	public static final int NO_SIZE_LIMIT = -1;
+	
+	private static final double BUILDPROB = 0.75;
 	
 	Parameter base;
 	
@@ -205,6 +208,12 @@ private static String initial;
 	//GPIndividual ind = (GPIndividual) this.ind.clone();
 	
 		 nodeselect.reset();
+		 
+		 Random rand = new Random();
+		 
+		 if (rand.nextDouble() > BUILDPROB){
+			 return builder.newRootedTree(state, type, thread, parent, set, argposition, requestedSize);
+		 }
 		 
 		// validity result...
          boolean res = false;
