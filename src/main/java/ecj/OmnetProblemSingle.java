@@ -20,6 +20,8 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 		private double INVALID_ACTION_PENALTY = 0;
 		private double VERBOSENESS_PENALTY = 0;
 		private double minAcceptedImprovement = 0;
+		private double killratio;
+		
 		private Scenario scenario;
 
 		public void setup(final EvolutionState state, final Parameter base){
@@ -37,6 +39,8 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				VERBOSENESS_PENALTY = state.parameters.getDoubleWithDefault(new Parameter("verboseness_penalty"),null,0);
 				minAcceptedImprovement = state.parameters.getDoubleWithDefault(new Parameter("min_accepted_improvement"),null,0);
 				String scenarioName = state.parameters.getStringWithDefault(new Parameter("scenario_name"), null,"normal");
+				
+				killratio = state.parameters.getDouble(new Parameter("runtime_kill_ratio"), null);
 				
 				scenario = Scenario.fromString(scenarioName);
 				
@@ -173,7 +177,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 					done++;
 				}
 				
-				if (done > popsize * 0.9)
+				if (done > popsize * killratio)
 					return true;
 			}
 			

@@ -69,10 +69,12 @@ public class Adaptor {
 		// print header
 		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,buildProb,runtimeKill,scenario,averageSize");
 		
-		for (boolean enableRuntimeKill : new boolean[]{true,false}){
+		
 		
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
+			
+		for (double enableRuntimeKill : new double[]{0.5,0.75,0.9,1.0}){
 		
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
@@ -94,9 +96,9 @@ public class Adaptor {
 			out.getLog(1).silent = true;
 			
 			// copy the database so that we can change the values we are interested in
-			ParameterDatabase copy = setParams(dbase,scenario,plan,init,buildprob);
+			ParameterDatabase copy = setParams(dbase,scenario,plan,init,buildprob,enableRuntimeKill);
 			
-			Simulator.setRuntimeKillEnable(enableRuntimeKill);
+			Simulator.setRuntimeKillEnable(enableRuntimeKill < 1 ? true : false);
 					
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
@@ -162,7 +164,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new double[] {0,0.25,0.50,0.75,0.90};
+			return new double[] {0.0,0.25,0.50,0.75,0.90};
 			
 		}
 	}
@@ -193,7 +195,7 @@ public class Adaptor {
 
 
 
-	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan,String initializer, double buildprob) throws ClassNotFoundException, IOException {
+	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan,String initializer, double buildprob, double enableRuntimeKill) throws ClassNotFoundException, IOException {
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
 		// change the file name so we know where this data came from
@@ -219,6 +221,8 @@ public class Adaptor {
 		copy.setProperty("scenario_name", scenario.toString()+"");
 		
 		copy.setProperty("build_prob", buildprob+"");
+		
+		copy.setProperty("runtime_kill_ratio", enableRuntimeKill+"");
 		
 		// now set the param for the starting plan
 		// if from scratch, special behavior is needed
