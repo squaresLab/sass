@@ -45,7 +45,7 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 	public static final String P_MAXDEPTH = "maxdepth";
 	public static final int NO_SIZE_LIMIT = -1;
 	
-	private static final double BUILDPROB = 0.0;
+	private static double buildprob;
 	
 	Parameter base;
 	
@@ -125,6 +125,8 @@ private static String initial;
         
         initial = state.parameters.getString(new Parameter("initial_ind"), null);
         // mtf = new MersenneTwisterFast();
+        
+        buildprob = state.parameters.getDouble(new Parameter("build_prob"), null);
     }
 	
 	  protected static GPIndividual loadStartInd(EvolutionState state) {
@@ -213,7 +215,7 @@ private static String initial;
 		 
 		 Random rand = new Random();
 		 
-		 if (rand.nextDouble() < BUILDPROB){
+		 if (rand.nextDouble() < buildprob){
 			 return builder.newRootedTree(state, type, thread, parent, set, argposition, requestedSize);
 		 }
 		 

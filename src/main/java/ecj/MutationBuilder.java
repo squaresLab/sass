@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Random;
 
 import ec.EvolutionState;
 import ec.Species;
@@ -68,6 +69,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     //if trees must be equal size
     //TODO: make this a parameter later
     boolean equalSize=false;
+private double buildprob;
     
 	@Override
     public Parameter defaultBase()
@@ -122,6 +124,8 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
         builder.setup(state,p);
         
         initial = state.parameters.getString(new Parameter("initial_ind"), null);
+        
+        buildprob = state.parameters.getDouble(new Parameter("build_prob"), null);
         
         // mtf = new MersenneTwisterFast();
     }
@@ -227,6 +231,12 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	//GPIndividual ind = (GPIndividual) this.ind.clone();
 	
 		 nodeselect.reset();
+		 
+		 Random rand = new Random();
+		 
+		 if (rand.nextDouble() < buildprob){
+			 return builder.newRootedTree(state, type, thread, parent, set, argposition, requestedSize);
+		 }
          
 		 
 		// validity result...
