@@ -173,7 +173,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 					done++;
 				}
 				
-				if (done > popsize / 2.0)
+				if (done > popsize * 0.9)
 					return true;
 			}
 			
