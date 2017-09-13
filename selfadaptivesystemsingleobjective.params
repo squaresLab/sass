@@ -252,6 +252,8 @@ min_accepted_improvement = 0
 
 scenario_name = normal
 
+build_prob = 0.0
+
 #latencytest
 initial_ind = (T (F ERC[i2|] (F ERC[i2|] (T (StartServer B) (ShutdownServer A) (StartServer C)))) (ShutdownServer C) (T (StartServer C) (StartServer A) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer B) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer C) (StartServer C) (StartServer B)))) (; (StartServer C) (T (F ERC[i5|] (StartServer B)) (ShutdownServer A) (StartServer C))))))))
 

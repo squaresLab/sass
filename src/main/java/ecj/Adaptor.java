@@ -18,6 +18,7 @@ import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
 import omnet.Omnet.Scenario;
+import system.Simulator;
 
 /*
 Parameters that we are interested in:
@@ -66,7 +67,12 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,scenario,averageSize");
+		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,buildProb,runtimeKill,scenario,averageSize");
+		
+		for (boolean enableRuntimeKill : new boolean[]{true,false}){
+		
+		// run multiple trials
+		for (int trial = 0; trial < 10; trial++){
 		
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
@@ -78,8 +84,8 @@ public class Adaptor {
 		// try differant start strategies
 		for (String init : getInits(plan)){
 			
-		// run multiple trials
-		for (int trial = 0; trial < 10; trial++){
+		//adjust the amount of plans from scratch vs seeded plans in the population
+		for (double buildprob : getBuildProbs(plan)){
 
 			Output out = Evolve.buildOutput();
 
@@ -88,7 +94,9 @@ public class Adaptor {
 			out.getLog(1).silent = true;
 			
 			// copy the database so that we can change the values we are interested in
-			ParameterDatabase copy = setParams(dbase,scenario,plan,init);
+			ParameterDatabase copy = setParams(dbase,scenario,plan,init,buildprob);
+			
+			Simulator.setRuntimeKillEnable(enableRuntimeKill);
 					
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
@@ -118,7 +126,7 @@ public class Adaptor {
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+","+scenario.toString()+","+avgSize);
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+","+ buildprob+","+ enableRuntimeKill+","+scenario.toString()+","+avgSize);
 				
 				}
 			
@@ -139,12 +147,28 @@ public class Adaptor {
 		}
 		}
 		}
-		
+		}
+		}
 		}
 
+	
+	
+	private static double[] getBuildProbs(String plan) {
+		
+		if (plan.equals("scratch")){
+			
+			return new double[] {0};
+			
+		}else{
+			
+			return new double[] {0,0.25,0.50,0.75,0.90};
+			
+		}
+	}
 
-	
-	
+
+
+
 	private static String[] getInits(String plan) {
 		if (plan.equals("scratch")){
 			
@@ -168,7 +192,7 @@ public class Adaptor {
 
 
 
-	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan,String initializer) throws ClassNotFoundException, IOException {
+	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan,String initializer, double buildprob) throws ClassNotFoundException, IOException {
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
 		// change the file name so we know where this data came from
@@ -192,6 +216,8 @@ public class Adaptor {
 		copy.setProperty("min_accepted_improvement", minAcceptedImprovement+"");
 		
 		copy.setProperty("scenario_name", scenario.toString()+"");
+		
+		copy.setProperty("build_prob", buildprob+"");
 		
 		// now set the param for the starting plan
 		// if from scratch, special behavior is needed
