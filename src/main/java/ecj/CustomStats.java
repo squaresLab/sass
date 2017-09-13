@@ -16,6 +16,7 @@ import distance.APTED;
 import ec.util.*;
 import omnet.Omnet;
 import omnet.Omnet.Scenario;
+import system.Simulator;
 import util.LblTree;
 import ec.eval.*;
 import ec.gp.GPIndividual;
@@ -648,9 +649,20 @@ public class CustomStats extends Statistics
 		// disable the pruning feature
 		input.plan.setMinAcceptedImprovment(0);
 		
-		// now compute fitness without any penalties
+		boolean needToReenable = false;
 		
+		if (Simulator.getRuntimeKillEnabled()){
+			needToReenable = true;
+			// disable the runtime kill feature
+			Simulator.setRuntimeKillEnable(false);
+		
+		}
+		// now compute fitness without any penalties
 		system.Fitness f = input.plan.evaluate(new Omnet(scenario));
+		
+		if (needToReenable){
+			Simulator.setRuntimeKillEnable(true);
+		}
 		
 		if (f != null){
 			return f.get("Profit");

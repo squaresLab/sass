@@ -107,6 +107,7 @@ public class Adaptor {
 			
 			int result = EvolutionState.R_NOTDONE;
 			while( result == EvolutionState.R_NOTDONE ){
+				
 				// do one generation
 				long starttime = System.currentTimeMillis();
 				result = evaluatedState.evolve();

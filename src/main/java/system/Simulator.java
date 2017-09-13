@@ -341,4 +341,8 @@ public abstract class Simulator {
 		
 	}
 
+	public static boolean getRuntimeKillEnabled() {
+		return killFeatureEnabled;
+	}
+
 }
