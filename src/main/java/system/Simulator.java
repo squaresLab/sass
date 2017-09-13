@@ -20,6 +20,10 @@ public abstract class Simulator {
 	
 	ArrayList<Double> probabilityLog;
 	
+	private static boolean kill;
+
+	private static boolean killFeatureEnabled = true;
+	
 	public Simulator(){
 		
 		time = 0;
@@ -41,10 +45,17 @@ public abstract class Simulator {
 	
 	public Hashtable<Long, Fitness> runSim(int eventIndex, Hashtable<Long, Fitness> fitnessLog){
 		
+		Hashtable<Long, Fitness> ans;
 		
-		if (!(eventIndex < events.size())){
-			return mult(fitnessLog,probability);
-		}
+		if(getKill()){
+			
+			ans = null;
+		
+		}else if (!(eventIndex < events.size())){
+			
+			ans = mult(fitnessLog,probability);
+			
+		}else{
 		
 		
 			long timeBackup = time;
@@ -78,13 +89,25 @@ public abstract class Simulator {
 				
 				time = timeBackup;
 						
-				return add(onSuccess,onFail);
+				ans = add(onSuccess,onFail);
 			
 			}else{
 				
-				return onSuccess;
+				ans = onSuccess;
 			}
+			
+		}
 		
+		if (getKill()){
+			return null;
+		}else{
+			return ans;
+		}
+		
+	}
+
+	private static synchronized boolean getKill() {
+		return kill && killFeatureEnabled;
 	}
 
 	private void procEvent(Event e){
@@ -221,6 +244,10 @@ public abstract class Simulator {
 	private Hashtable<Long, Fitness> add(Hashtable<Long, Fitness> onSuccess, Hashtable<Long, Fitness> onFail) {
 		// first, fill in missing values
 		
+		if (onSuccess == null || onFail == null){
+			return null;
+		}
+		
 		Hashtable<Long,Fitness> ans = new Hashtable<Long,Fitness>();
 		
 		ArrayList<Long> timesA = new ArrayList<Long>(onSuccess.keySet());
@@ -302,6 +329,16 @@ public abstract class Simulator {
 	
 	public ArrayList<Event> getEvents(){
 		return events;
+	}
+
+	public synchronized static void kill(boolean b) {
+		kill = b;
+	}
+
+	public static void setRuntimeKillEnable(boolean enableRuntimeKill) {
+		
+		killFeatureEnabled = enableRuntimeKill;
+		
 	}
 
 }

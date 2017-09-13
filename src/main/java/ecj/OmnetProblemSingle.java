@@ -2,14 +2,18 @@ package ecj;
 
 import ec.EvolutionState;
 import ec.Individual;
+import ec.Population;
 import ec.gp.GPIndividual;
 import ec.gp.GPProblem;
 import ec.gp.koza.KozaFitness;
+import ec.simple.SimpleEvaluator;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import omnet.FitnessSanity;
 import omnet.Omnet;
 import omnet.Omnet.Scenario;
+import system.Fitness;
+import system.Simulator;
 
 public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 
@@ -43,6 +47,12 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 		 * TODO - check this is in the correct final form*/
 		@Override
 		public void evaluate(EvolutionState state, Individual ind, int subpopulation, int threadnum) {
+			
+			if (moreThanHalf(state)){
+				Simulator.kill(true);
+			}else{
+				Simulator.kill(false);
+			}
 			
 			// DEBUG ONLY
 			///ind = MutationBuilder.ind;
@@ -87,8 +97,17 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				double fitnessValue;
 				
 				if(((StateData)input).plan.size() <= 20){
+					
+					Fitness fitness = ((StateData)input).plan.evaluate(new Omnet(scenario));
+					
+					if (fitness == null){
+						
+						fitnessValue = 0;
+						
+					}else{
 
-					fitnessValue = ((StateData)input).plan.evaluate(new Omnet(scenario)).get("Profit");
+						fitnessValue = fitness.get("Profit");
+					}					
 
 				}else{
 					fitnessValue = 0;
@@ -128,7 +147,41 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				f.hits = 0 ;
 				
 				ind.evaluated=true;
+				
+				
 			} 
+		}
+
+		private boolean moreThanHalf(EvolutionState state) {
+			
+			if (state == null){
+				return false;
+			}
+			
+			Population p = state.population;
+			
+			if (p != null && p.subpops[0] != null && p.subpops[0].individuals != null){
+			
+			int popsize = p.subpops[0].individuals.length;
+			
+			int done = 0;
+			for (int i = 0; i < popsize; i++){
+				
+				Individual ind = p.subpops[0].individuals[i];
+				
+				if (ind != null && p.subpops[0].individuals[i].evaluated){
+					done++;
+				}
+				
+				if (done > popsize / 2.0)
+					return true;
+			}
+			
+			return false;
+			
+			}else{
+				return false;
+			}
 		}
 
 

@@ -47,7 +47,15 @@ public abstract class Plan implements Cloneable {
 		
 		Hashtable<Long,Fitness> record = system.runSim();
 		
-		return aggregate(record);
+		if (record != null){
+		
+			return aggregate(record);
+		
+		}else{
+			
+			return null;
+			
+		}
 		/*
 		ArrayList<Long> times = new ArrayList<Long>(record.keySet());
 		

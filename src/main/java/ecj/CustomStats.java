@@ -649,7 +649,15 @@ public class CustomStats extends Statistics
 		input.plan.setMinAcceptedImprovment(0);
 		
 		// now compute fitness without any penalties
-		return input.plan.evaluate(new Omnet(scenario)).get("Profit");
+		
+		system.Fitness f = input.plan.evaluate(new Omnet(scenario));
+		
+		if (f != null){
+			return f.get("Profit");
+		}else{
+			return 0;
+		}
+		
 
     	
 	}
