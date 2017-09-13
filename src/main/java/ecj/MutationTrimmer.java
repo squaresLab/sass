@@ -45,7 +45,7 @@ public class MutationTrimmer extends ec.gp.GPNodeBuilder {
 	public static final String P_MAXDEPTH = "maxdepth";
 	public static final int NO_SIZE_LIMIT = -1;
 	
-	private static final double BUILDPROB = 0.95;
+	private static final double BUILDPROB = 0.0;
 	
 	Parameter base;
 	
@@ -213,7 +213,7 @@ private static String initial;
 		 
 		 Random rand = new Random();
 		 
-		 if (rand.nextDouble() > BUILDPROB){
+		 if (rand.nextDouble() < BUILDPROB){
 			 return builder.newRootedTree(state, type, thread, parent, set, argposition, requestedSize);
 		 }
 		 
