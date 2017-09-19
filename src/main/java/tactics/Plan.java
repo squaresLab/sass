@@ -95,7 +95,14 @@ public abstract class Plan implements Cloneable {
 				
 				cur = record.get(0l);
 				
-				cur = cur.mult(planningTime);
+				if (effectiveWindow < 0){
+					cur = cur.mult(window);
+					break;
+				}else{
+
+					cur = cur.mult(planningTime);
+				
+				}
 				
 				ans = cur;
 
