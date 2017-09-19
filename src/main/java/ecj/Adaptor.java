@@ -113,6 +113,9 @@ public class Adaptor {
 			int generation = 0;
 			
 			int result = EvolutionState.R_NOTDONE;
+			
+			long totaltime = 0;
+			
 			while( result == EvolutionState.R_NOTDONE ){
 				
 				// do one generation
@@ -120,12 +123,14 @@ public class Adaptor {
 				result = evaluatedState.evolve();
 				long runtime = System.currentTimeMillis() - starttime;
 				
+				totaltime += runtime;
+				
 				// collect some stats
 				SimpleStatistics stats = (SimpleStatistics) evaluatedState.statistics;
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
-				double profit = CustomStats.getProfit(evaluatedState, best, scenario);
+				double profit = CustomStats.getProfit(evaluatedState, best, scenario,(long) Math.ceil(totaltime/1000.0));
 
 				int size = CustomStats.getSize(evaluatedState, best);
 				

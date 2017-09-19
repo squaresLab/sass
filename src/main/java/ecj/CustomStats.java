@@ -635,7 +635,11 @@ public class CustomStats extends Statistics
 		return ans.split("\n")[3];
 	}
 
-	public static double getProfit(final EvolutionState state,Individual individual,Scenario scenario) {
+	public static double getProfit(final EvolutionState state,Individual individual,Scenario scenario){
+		return getProfit(state, individual, scenario, 0l);
+	}
+	
+	public static double getProfit(final EvolutionState state,Individual individual,Scenario scenario, long runtime) {
     	
     	GPIndividual ind = (GPIndividual) individual;
         
@@ -658,7 +662,7 @@ public class CustomStats extends Statistics
 		
 		}
 		// now compute fitness without any penalties
-		system.Fitness f = input.plan.evaluate(new Omnet(scenario));
+		system.Fitness f = input.plan.evaluate(new Omnet(scenario),runtime);
 		
 		if (needToReenable){
 			Simulator.setRuntimeKillEnable(true);

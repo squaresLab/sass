@@ -29,8 +29,11 @@ public abstract class Plan implements Cloneable {
 	}
 	
 	
-	
 	public Fitness evaluate(SystemState system){
+		return evaluate(system,0l);
+	}
+	
+	public Fitness evaluate(SystemState system, long planningTime){
 
 		ArrayList<Event> events = system.getEvents();
 		
@@ -51,7 +54,7 @@ public abstract class Plan implements Cloneable {
 		
 		if (record != null){
 		
-			return aggregate(record,duration);
+			return aggregate(record,planningTime);
 		
 		}else{
 			
