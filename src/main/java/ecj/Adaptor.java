@@ -68,7 +68,7 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,buildProb,runtimeKill,scenario,averageSize");
+		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,scenario,averageSize");
 		
 		
 		
@@ -134,7 +134,7 @@ public class Adaptor {
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+","+ buildprob+","+ enableRuntimeKill+","+scenario.toString()+","+avgSize);
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+scenario.toString()+","+avgSize);
 				
 				}
 			
