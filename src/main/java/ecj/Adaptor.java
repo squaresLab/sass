@@ -19,6 +19,7 @@ import ec.util.Parameter;
 import ec.util.ParameterDatabase;
 import omnet.Omnet.Scenario;
 import system.Simulator;
+import tactics.Plan;
 
 /*
 Parameters that we are interested in:
@@ -74,7 +75,7 @@ public class Adaptor {
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
 			
-		for (double enableRuntimeKill : new double[]{0.5,0.75,0.9,1.0}){
+		for (double enableRuntimeKill : new double[]{0.5,0.75,1.0}){
 		
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
@@ -88,7 +89,11 @@ public class Adaptor {
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
 		for (double buildprob : getBuildProbs(plan)){
+			
+		for (long window : new long[] {10,100,1000,10000}){
 
+			Plan.window = window;
+			
 			Output out = Evolve.buildOutput();
 
 			//disable output
@@ -153,6 +158,7 @@ public class Adaptor {
 		}
 		}
 		}
+		}
 
 	
 	
@@ -164,7 +170,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new double[] {0.0,0.25,0.50,0.75,0.90};
+			return new double[] {0.0,0.50,0.75,0.90};
 			
 		}
 	}

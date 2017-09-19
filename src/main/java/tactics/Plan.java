@@ -14,6 +14,7 @@ public abstract class Plan implements Cloneable {
 	// TODO these must be defined in the plan implementation
 	private static double estMaxFitness = 10000;
 	private static double minPossibleImprovement = 0.01;
+	public static long window = 10000;
 	
 	protected ArrayList<Tactic> tactics;
 	
@@ -44,12 +45,13 @@ public abstract class Plan implements Cloneable {
 			
 		}
 
-		
+		long start = System.currentTimeMillis();
 		Hashtable<Long,Fitness> record = system.runSim();
+		long duration = (long) Math.ceil((System.currentTimeMillis() - start) / 1000.0);
 		
 		if (record != null){
 		
-			return aggregate(record);
+			return aggregate(record,duration);
 		
 		}else{
 			
@@ -69,7 +71,10 @@ public abstract class Plan implements Cloneable {
 	
 	}
 	
-	private Fitness aggregate(Hashtable<Long, Fitness> record) {
+	private Fitness aggregate(Hashtable<Long, Fitness> record, long planningTime) {
+		
+		// subtract time from window based on how long planning took
+		long effectiveWindow = window - planningTime;
 		
 		Fitness ans = new Fitness();
 		
@@ -79,6 +84,7 @@ public abstract class Plan implements Cloneable {
 		
 		// first copy time 0
 		Fitness cur = null;
+		long time = 0;
 		long lastTime = 1;
 		for (int count = 0; count < times.size(); count++){
 			
@@ -86,10 +92,16 @@ public abstract class Plan implements Cloneable {
 				
 				cur = record.get(0l);
 				
+				cur = cur.mult(planningTime);
+				
 				ans = cur;
 
 			}else{
-				long time = times.get(count);
+				time = times.get(count);
+				
+				if (time > effectiveWindow){
+					time = effectiveWindow;
+				}
 				
 				long duration = time - lastTime;
 				
@@ -101,14 +113,18 @@ public abstract class Plan implements Cloneable {
 				
 				lastTime = time;
 				
+				if (time == effectiveWindow){
+					break;
+				}
+				
 			}
 			
 		}
 		
 		// give extra weight to the last state
-		long last = times.get(times.size()-1);
+		//long last = times.get(times.size()-1);
 		
-		cur = record.get(last);
+		//cur = record.get(last);
 		/*
 		// weight each by 50%
 		ans = ans.mult(0.5*(1.0/last));
@@ -119,11 +135,15 @@ public abstract class Plan implements Cloneable {
 		*/
 		
 		// assume that the system runs for 10000 
-		long remaining = 10000 - last;
+		long remaining = effectiveWindow - time;
 		
-		// add this profit
-		cur = cur.mult(remaining);
-		ans = ans.or(cur);
+		if (remaining > 0){
+		
+			// add this profit
+			cur = cur.mult(remaining);
+			ans = ans.or(cur);
+		
+		}
 		
 		return ans;
 	}

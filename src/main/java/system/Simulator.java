@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Hashtable;
 
 import tactics.FailableTactic;
+import tactics.Plan;
 import tactics.Tactic;
 import tactics.TryCatchFinallyTactic;
 
@@ -24,6 +25,8 @@ public abstract class Simulator {
 
 	private static boolean killFeatureEnabled = true;
 	
+	private long start;
+	
 	public Simulator(){
 		
 		time = 0;
@@ -36,6 +39,8 @@ public abstract class Simulator {
 	}
 	
 	public Hashtable<Long, Fitness> runSim(){
+		
+		start = System.currentTimeMillis();
 		
 		Collections.sort(events);
 				
@@ -106,8 +111,8 @@ public abstract class Simulator {
 		
 	}
 
-	private static synchronized boolean getKill() {
-		return kill && killFeatureEnabled;
+	private synchronized boolean getKill() {
+		return (kill && killFeatureEnabled) || (System.currentTimeMillis() - start)/1000.0 > Plan.window;
 	}
 
 	private void procEvent(Event e){

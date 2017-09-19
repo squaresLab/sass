@@ -15,13 +15,15 @@ pop.subpop.0.species.pipe.source.0 = ec.breed.MultiBreedingPipeline
 # Koza's decision here was odd...
 pop.subpop.0.species.pipe.generate-max = false
 # Subsidiary pipelines:
-pop.subpop.0.species.pipe.source.0.num-sources = 3
+pop.subpop.0.species.pipe.source.0.num-sources = 4
 pop.subpop.0.species.pipe.source.0.source.0 = ec.gp.koza.CrossoverPipeline
-pop.subpop.0.species.pipe.source.0.source.0.prob = 0.6
+pop.subpop.0.species.pipe.source.0.source.0.prob = 0.4
 pop.subpop.0.species.pipe.source.0.source.1 = ec.breed.ReproductionPipeline
 pop.subpop.0.species.pipe.source.0.source.1.prob = 0.2
 pop.subpop.0.species.pipe.source.0.source.2 = ec.gp.koza.MutationPipeline
 pop.subpop.0.species.pipe.source.0.source.2.prob = 0.2
+pop.subpop.0.species.pipe.source.0.source.3 = ecj.MutationTrimmerPipe
+pop.subpop.0.species.pipe.source.0.source.3.prob = 0.2
 
 pop.subpop.0.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
 
@@ -253,6 +255,7 @@ min_accepted_improvement = 0
 scenario_name = normal
 
 build_prob = 0.0
+runtime_kill_ratio = 1.0
 
 #latencytest
 initial_ind = (T (F ERC[i2|] (F ERC[i2|] (T (StartServer B) (ShutdownServer A) (StartServer C)))) (ShutdownServer C) (T (StartServer C) (StartServer A) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer B) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer C) (StartServer C) (StartServer B)))) (; (StartServer C) (T (F ERC[i5|] (StartServer B)) (ShutdownServer A) (StartServer C))))))))
