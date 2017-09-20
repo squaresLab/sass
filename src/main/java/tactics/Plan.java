@@ -105,6 +105,8 @@ public abstract class Plan implements Cloneable {
 				}
 				
 				ans = cur;
+				cur = record.get(0l);
+				
 
 			}else{
 				time = times.get(count);
@@ -153,6 +155,10 @@ public abstract class Plan implements Cloneable {
 			cur = cur.mult(remaining);
 			ans = ans.or(cur);
 		
+		}
+		
+		if (ans.get("Profit") > 60000000){
+			System.out.println("too high");
 		}
 		
 		return ans;
