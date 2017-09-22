@@ -44,7 +44,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class Adaptor {
 
-	private static double generations = 30;
+	private static double generations = 20;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
@@ -53,7 +53,6 @@ public class Adaptor {
 	private static double minAcceptedImprovement = 0.001;
 	private static double reproductionChance = 0.2;
 	private static double mutationChance = 0.2;
-	
 	
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
@@ -68,18 +67,19 @@ public class Adaptor {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,scenario,averageSize");
+		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize");
 		
 		
 		
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
 			
+		for (double trimmerChance : new double[]{0,0.1,0.2}){
+			
 		for (double enableRuntimeKill : new double[]{0.5,0.75,1.0}){
-		
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
-		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
+		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 
 		// try every plan
 		for (String plan : getPlans()){
@@ -89,8 +89,8 @@ public class Adaptor {
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
 		for (double buildprob : getBuildProbs(plan)){
-			
-		for (long window : new long[] {10,100,1000,10000}){
+			//10,100,1000,
+		for (long window : new long[] {100,1000,10000}){
 
 			Plan.window = window;
 			
@@ -101,7 +101,7 @@ public class Adaptor {
 			out.getLog(1).silent = true;
 			
 			// copy the database so that we can change the values we are interested in
-			ParameterDatabase copy = setParams(dbase,scenario,plan,init,buildprob,enableRuntimeKill);
+			ParameterDatabase copy = setParams(dbase,scenario,plan,init,buildprob,enableRuntimeKill,trimmerChance);
 			
 			Simulator.setRuntimeKillEnable(enableRuntimeKill < 1 ? true : false);
 					
@@ -139,7 +139,7 @@ public class Adaptor {
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+scenario.toString()+","+avgSize);
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
 				
 				}
 			
@@ -164,6 +164,7 @@ public class Adaptor {
 		}
 		}
 		}
+		}
 
 	
 	
@@ -175,7 +176,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new double[] {0.0,0.50,0.75,0.90};
+			return new double[] {0.0,0.25,0.50,0.75,0.90};
 			
 		}
 	}
@@ -206,18 +207,24 @@ public class Adaptor {
 
 
 
-	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan,String initializer, double buildprob, double enableRuntimeKill) throws ClassNotFoundException, IOException {
+	private static ParameterDatabase setParams(ParameterDatabase dbase,Scenario scenario, String plan,String initializer, double buildprob, double enableRuntimeKill, double trimmerChance) throws ClassNotFoundException, IOException {
 		ParameterDatabase copy = (ParameterDatabase) (DataPipe.copy(dbase));
 		
 		// change the file name so we know where this data came from
 		//copy.setProperty("stat.file", fileString);
 
+		double remaining = 1 - trimmerChance;
+		
+		double crossover = remaining * crossoverChance;
+		double reproduction = (remaining - crossover) / 2;
+		
 		// params in the ecj params file that we want to vary
 		copy.setProperty("generations", generations+"");
 		copy.setProperty("pop.subpop.0.size", popSize+"");
-		copy.setProperty("pop.subpop.0.species.pipe.source.0.source.0.prob", crossoverChance+"");
-		copy.setProperty("pop.subpop.0.species.pipe.source.0.source.1.prob", reproductionChance+"");
-		copy.setProperty("pop.subpop.0.species.pipe.source.0.source.2.prob", mutationChance+"");
+		copy.setProperty("pop.subpop.0.species.pipe.source.0.source.0.prob", crossover+"");
+		copy.setProperty("pop.subpop.0.species.pipe.source.0.source.1.prob", reproduction+"");
+		copy.setProperty("pop.subpop.0.species.pipe.source.0.source.2.prob", reproduction+"");
+		copy.setProperty("pop.subpop.0.species.pipe.source.0.source.3.prob", trimmerChance+"");
 
 		// these three are all setting up Tarpeian Parsimony pressure
 		copy.setProperty("stat.num-children", "1");
