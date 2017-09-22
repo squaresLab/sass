@@ -45,7 +45,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
 public class Adaptor {
 
 	private static double generations = 20;
-	private static double popSize = 1000;
+	private static double popSize = 500;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
 	private static double invalidActionPenalty = 0;
