@@ -79,7 +79,7 @@ public class Adaptor {
 		for (double enableRuntimeKill : new double[]{0.5,0.75,1.0}){
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
-		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
+		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
 
 		// try every plan
 		for (String plan : getPlans()){
