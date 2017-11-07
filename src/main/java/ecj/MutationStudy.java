@@ -60,9 +60,9 @@ public class MutationStudy {
 	public static ArrayList<Individual> getInds(EvolutionState state){
 		ArrayList<Individual> ans = new ArrayList<Individual>();
 		
-		for (int i = 0; i < state.population.subpops.length; i++){
-			for (int j = 0; j < state.population.subpops[i].individuals.length; j++){
-				ans.add((Individual) state.population.subpops[i].individuals[j].clone());
+		for (int i = 0; i < state.population.subpops.size(); i++){
+			for (int j = 0; j < state.population.subpops.get(i).individuals.size(); j++){
+				ans.add((Individual) state.population.subpops.get(i).individuals.get(j).clone());
 			}
 		}
 		
