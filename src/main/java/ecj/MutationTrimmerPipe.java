@@ -221,15 +221,15 @@ public class MutationTrimmerPipe extends GPBreedingPipeline
 
 
 
-    public int produce(int min, int max, int start, int subpopulation, Individual[] inds, EvolutionState state,
-			int thread)
+    public int produce(int min, int max, int subpopulation, ArrayList<Individual> inds, EvolutionState state,
+			int thread, HashMap<String,Object> misc)
         {
     	
-        //int start = inds.length;
+        int start = inds.size();
                 
         // grab individuals from our source and stick 'em right into inds.
         // we'll modify them from there
-        int n = sources[0].produce(min,max,start,subpopulation,inds, state,thread);
+        int n = sources[0].produce(min,max,subpopulation,inds, state,thread,misc);
 
         // should we bother?
         if (!state.random[thread].nextBoolean(likelihood))
@@ -242,7 +242,7 @@ public class MutationTrimmerPipe extends GPBreedingPipeline
         // now let's mutate 'em
         for(int q=start; q < n+start; q++)
             {
-            GPIndividual i = (GPIndividual)inds[q];
+            GPIndividual i = (GPIndividual)inds.get(q);
 
             if (tree!=TREE_UNFIXED && (tree<0 || tree >= i.trees.length))
                 // uh oh
@@ -306,8 +306,10 @@ public class MutationTrimmerPipe extends GPBreedingPipeline
                  j.trees[x].child.argposition = 0;
                  j.evaluated = false;  
                  
-                 inds[q] = j;
+                 //inds[q] = j;
                  
+                 inds.set(q, j);
+    
                  return n;
         }
 		return n;
