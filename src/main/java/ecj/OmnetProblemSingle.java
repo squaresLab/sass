@@ -164,16 +164,16 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 			
 			Population p = state.population;
 			
-			if (p != null && p.subpops[0] != null && p.subpops[0].individuals != null){
+			if (p != null && p.subpops.get(0) != null && p.subpops.get(0).individuals != null){
 			
-			int popsize = p.subpops[0].individuals.length;
+			int popsize = p.subpops.get(0).individuals.size();
 			
 			int done = 0;
 			for (int i = 0; i < popsize; i++){
 				
-				Individual ind = p.subpops[0].individuals[i];
+				Individual ind = p.subpops.get(0).individuals.get(i);
 				
-				if (ind != null && p.subpops[0].individuals[i].evaluated){
+				if (ind != null && p.subpops.get(0).individuals.get(i).evaluated){
 					done++;
 				}
 				
