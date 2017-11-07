@@ -3,6 +3,8 @@ package omnet;
 import java.util.ArrayList;
 
 import omnet.Omnet.Scenario;
+import omnet.components.Datacenter;
+import omnet.components.DatacenterFactory;
 import omnet.components.Server;
 import omnet.components.ServerFactory;
 import system.Fitness;
@@ -45,9 +47,9 @@ public class Omnet extends SystemState {
 
 	private static final double MAX_LATENCY_PER_SERVER = 1000;
 	
-	private ArrayList<Server> servers;
+	private ArrayList<Datacenter> datacenters;
 	
-	private ServerFactory serverFactory;
+	DatacenterFactory datacenterFactory;
 
 	public static final int MAX_SERVER_COUNT_PER_LOC = 5;
 	
@@ -57,15 +59,18 @@ public class Omnet extends SystemState {
 		
 		this.scenario = s;
 		
-		servers = new ArrayList<Server>();
-		serverFactory = new ServerFactory(s);
+		datacenters = new ArrayList<Datacenter>();
 		
-		// we will start with 1 server of each
-		servers.add(serverFactory.getA());
-		servers.add(serverFactory.getB());
-		servers.add(serverFactory.getC());
+		datacenterFactory = new DatacenterFactory(s);
+		
+		// we will start with 1 datacenter of A, B, and C
+		// each datacenter starts with one server, this is handeled by the datacenter factory
+		datacenters.add(datacenterFactory.getA());
+		datacenters.add(datacenterFactory.getB());
+		datacenters.add(datacenterFactory.getC());
+		
 		if (s.equals(Scenario.fourserv) || s.equals(Scenario.requestsfourserv)){
-			servers.add(serverFactory.getD());
+			datacenters.add(datacenterFactory.getD());
 		}
 		if (s.equals(Scenario.requests) || s.equals(Scenario.requestsfourserv)){
 			SYSTEM_DEMAND = 10000;
@@ -115,11 +120,12 @@ public class Omnet extends SystemState {
 
 				int sumTrafficLevel = 0;
 				
-				// take sum of traffic level over all servers
-				for(int i = 0; i < servers.size(); i++){
-					sumTrafficLevel += servers.get(i).getTraffic();
+				// take sum of traffic level over all centers
+				for(int i = 0; i < datacenters.size(); i++){
+					sumTrafficLevel += datacenters.get(i).getTraffic();
 				}
 				
+				// the requests that go to each datacenter per traffic level
 				double requestsPerTrafficLevel = ((double)SYSTEM_DEMAND)/sumTrafficLevel;
 				
 				if (!Double.isFinite(requestsPerTrafficLevel)){
@@ -130,9 +136,9 @@ public class Omnet extends SystemState {
 					latency += SYSTEM_DEMAND;
 				}
 				
-				Server current;
-				for(int i =0; i < servers.size(); i++){	
-					current = servers.get(i);
+				Datacenter current;
+				for(int i =0; i < datacenters.size(); i++){	
+					current = datacenters.get(i);
 					
 						double currentDimmerPercentage = ((double)current.getDimmer())
 								/current.MAX_DIMMER_LVL;
@@ -168,8 +174,6 @@ public class Omnet extends SystemState {
 								dimmedReplys = currentRequests - fullReplys;
 							}
 							
-							
-							
 						}
 		
 						totalProfit += NORMAL_PROFIT_PER_SECOND * fullReplys + 
@@ -182,7 +186,6 @@ public class Omnet extends SystemState {
 						cost += current.getCost();
 						income += NORMAL_PROFIT_PER_SECOND * fullReplys + 
 								DIMMED_PROFIT_PER_SECOND * dimmedReplys;
-						
 						/*
 						double calcLatency = 1 / (handleable - requests);
 						
@@ -194,8 +197,7 @@ public class Omnet extends SystemState {
 						*/
 						
 						latency += currentRequests - fullReplys - dimmedReplys;
-						
-					
+							
 				}
 				return totalProfit;
 			}
@@ -205,10 +207,10 @@ public class Omnet extends SystemState {
 			}
 		}
 	
-	public Server getServer(String name){
-		Server server;
-		for (int count = 0; count < servers.size(); count++){
-			server = servers.get(count);
+	public Datacenter getServer(String name){
+		Datacenter server;
+		for (int count = 0; count < datacenters.size(); count++){
+			server = datacenters.get(count);
 			
 			if (server.getName().equals(name)){
 				return server;
@@ -219,19 +221,19 @@ public class Omnet extends SystemState {
 		return null;
 	}
 	
-	public ArrayList<Server> getServers() {
-		return servers;
+	public ArrayList<Datacenter> getDatacenters() {
+		return datacenters;
 	}
 
-	public void setServers(ArrayList<Server> servers) {
-		this.servers = servers;
+	public void setServers(ArrayList<Datacenter> datacenters) {
+		this.datacenters = datacenters;
 	}
 
 	@Override
 	public boolean isStateValid() {
 		// to determine if the system is valid, check to see that each server is valid
-		for (int count = 0; count < servers.size(); count++){
-			if (!servers.get(count).isValid())
+		for (int count = 0; count < datacenters.size(); count++){
+			if (!datacenters.get(count).isValid())
 				return false;
 		}
 		return true;
@@ -244,8 +246,8 @@ public class Omnet extends SystemState {
 			copy.history.add((Tactic) history.get(count).clone());
 		}
 		
-		for (int count = 0; count < servers.size(); count++){
-			copy.servers.add((Server) servers.get(count).clone());
+		for (int count = 0; count < datacenters.size(); count++){
+			copy.datacenters.add((Datacenter) datacenters.get(count).clone());
 		}
 		
 		return copy;
@@ -275,31 +277,9 @@ public class Omnet extends SystemState {
 		return latency;
 	}
 
-	public int serversUp(String location) {
-		
-		int index = serverFactory.getIndex(location);
-		
-		return serverFactory.getNumServers()[index];
-		
-	}
 	
-	public ServerFactory getServerFactory(){
-		return serverFactory;
-	}
-
-	public ArrayList<Server> getServers(String server) {
-		
-		ArrayList<Server> ans = new ArrayList<Server>();
-		
-		int num = serversUp(server);
-		
-		for (int count = 0; count < num; count++){
-			
-			ans.add(getServer(server+count));
-			
-		}
-		
-		return ans;
+	public DatacenterFactory getServerFactory(){
+		return datacenterFactory;
 	}
 
 	@Override

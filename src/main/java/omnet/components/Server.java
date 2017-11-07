@@ -4,37 +4,24 @@ import java.util.Hashtable;
 
 public class Server {
 	
-	// the cost per second
-	protected double cost;
-	// the computational power
-	protected double power;
-	// the dimmer settings
-	public static final int MAX_DIMMER_LVL = 4;
-	public static final int MIN_DIMMER_LVL = 0;
-	private int dimmer;
-	// the requested traffic ratio
-	public static final int MAX_TRAFFIC_LVL = 4;
-	public static final int MIN_TRAFFIC_LVL = 0;
-	private int traffic;
-	
 	// server name to keep track of multiple servers
 	private String name;
 	
 	private boolean validState;
 	
-	protected double powerPerNormal;
-	protected double powerPerDimmed;
-	protected long latency;
+	// the cost per second
+	protected double cost;
+	// the computational power
+	protected double power;
 	
-	static Hashtable<String,Integer> startTraffic = new Hashtable<String,Integer>();
-	static Hashtable<String,Integer> startDimmer = new Hashtable<String,Integer>();
+	protected double powerPerNormal;
+	
+	protected double powerPerDimmed;
+	
+	protected long latency;
 	
 	public Server(String name){
 		this.name = name;
-		
-		// provide default values
-		dimmer = 0;
-		traffic = 4;
 		
 		powerPerNormal = 2;
 		powerPerDimmed = 1;
@@ -46,15 +33,6 @@ public class Server {
 		latency = 120;
 		
 		validState = true;
-		
-		Integer starting;
-		
-		if( (starting = startDimmer.get(name.charAt(0)+"")) != null ){
-			dimmer = starting;
-		}
-		if( (starting= startTraffic.get(name.charAt(0)+"")) != null ){
-			traffic = starting;
-		}
 	
 	}
 
@@ -64,32 +42,6 @@ public class Server {
 
 	public void setCost(double cost) {
 		this.cost = cost;
-	}
-
-	public int getDimmer() {
-		return dimmer;
-	}
-
-	public void setDimmer(int dimmer) {
-		if (dimmer > MAX_DIMMER_LVL || dimmer < MIN_DIMMER_LVL){
-			validState = false;
-		}else{
-			this.dimmer = dimmer;
-			startDimmer.put(name.charAt(0)+"", dimmer);
-		}
-	}
-
-	public int getTraffic() {
-		return traffic;
-	}
-
-	public void setTraffic(int traffic) {
-		if (traffic > MAX_TRAFFIC_LVL || traffic < MIN_TRAFFIC_LVL){
-			validState = false;
-		}else{
-			this.traffic = traffic;
-			startTraffic.put(name.charAt(0)+"", traffic);
-		}
 	}
 
 	public String getName() {
@@ -129,12 +81,6 @@ public class Server {
 	public long getLatency() {
 		return latency;
 	}
-	
-	public static void reset(){
-		startTraffic = new Hashtable<String,Integer>();
-		startDimmer = new Hashtable<String,Integer>();
-	}
-	
 	
 
 }

@@ -12,12 +12,9 @@ public class ShutdownServer extends FailableTactic {
 	private static long latency = 30;
 	
 	private String server;
-	
-	private Server removed;
 
 	public ShutdownServer(String serverName){
 		server = serverName;
-		removed = null;
 	}
 	
 	@Override
@@ -25,20 +22,12 @@ public class ShutdownServer extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 		
-		int running = omnet.serversUp(server);
+		int running = omnet.getServer(server).getServers();
 		
 		if (running > 0){
 		
-			String serverInstance = server + (running - 1);
-		
-			removed = omnet.getServer(serverInstance);
-		
-			// remove the server from the servers list
-			omnet.getServers().remove(removed);
-		
-			// now update the count in the factory
-			int index = omnet.getServerFactory().getIndex(server);
-			omnet.getServerFactory().getNumServers()[index]--;
+			omnet.getServer(server).setServers(running - 1);
+			
 		
 		}else{
 			setFailed(true);
@@ -56,21 +45,13 @@ public class ShutdownServer extends FailableTactic {
 	public void undo(SystemState systemState) {
 		
 		Omnet omnet = (Omnet) systemState;
-			
-		if (removed != null){
-			// re-add the server from the servers list
-			omnet.getServers().add(removed);
-		}else{
-			System.out.println("bug");
-		}
 		
-		// update the count in the factory
-		int index = omnet.getServerFactory().getIndex(server);
-		omnet.getServerFactory().getNumServers()[index]++;
+		int running = omnet.getServer(server).getServers();
 		
-		removed = null;
+		omnet.getServer(server).setServers(running + 1);
 		
 	}
+	
 	public String toString() {
 		 return "ShutdownServer"+server;
 		}

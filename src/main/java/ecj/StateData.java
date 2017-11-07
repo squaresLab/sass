@@ -14,7 +14,6 @@ public class StateData extends GPData {
 
 	public void initializeState() {
 		plan = new OmnetPlan();
-		Server.reset();
 	}
 
 }

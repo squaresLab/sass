@@ -26,31 +26,10 @@ public class StartServer extends FailableTactic {
 		String location = server;
 		
 		// figure out how many servers at that location are running
-		int running = omnet.serversUp(location);
+		int running = omnet.getServer(location).getServers();
 		
 		if (running < omnet.MAX_SERVER_COUNT_PER_LOC){
 			
-			ServerFactory factory = omnet.getServerFactory();
-			Server serv = null;
-			
-			switch(location){
-				case "A": serv = factory.getA(); break;
-				case "B": serv = factory.getB(); break;
-				case "C": serv = factory.getC(); break;
-				case "D": serv = factory.getD(); break;
-				case "E": serv = factory.getE(); break;
-				case "F": serv = factory.getF(); break;
-				case "G": serv = factory.getG(); break;
-				case "H": serv = factory.getH(); break;
-				case "I": serv = factory.getI(); break;
-				case "J": serv = factory.getJ(); break;
-				case "K": serv = factory.getK(); break;
-				case "L": serv = factory.getL(); break;
-				case "M": serv = factory.getM(); break;
-				case "N": serv = factory.getN(); break;
-				case "O": serv = factory.getO(); break;
-				case "P": serv = factory.getP(); break;
-			}
 			/*
 			// change fail chance depending on scenario
 			if (omnet.getScenario().equals(Scenario.failc) && location.equals("C")){
@@ -58,10 +37,11 @@ public class StartServer extends FailableTactic {
 			}
 			*/
 			
-			latency = serv.getLatency();
+			latency = omnet.getServer(location).getLatency();
 			
 			// add it to the list
-			omnet.getServers().add(serv);
+			omnet.getServer(location).setServers(running+1);
+			
 		}else{
 			setFailed(true);
 			return;
@@ -74,19 +54,10 @@ public class StartServer extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 		
-		int running = omnet.serversUp(server);
+		int running = omnet.getServer(server).getServers();
 		
-		String serverInstance = server + (running - 1);
+		omnet.getServer(server).setServers(running - 1);
 		
-		Server removed = omnet.getServer(serverInstance);
-		
-		// remove the server from the servers list
-		omnet.getServers().remove(removed);
-		
-		// now update the count in the factory
-		int index = omnet.getServerFactory().getIndex(server);
-		omnet.getServerFactory().getNumServers()[index]--;
-				
 	}
 	
 	public void setFailChance(double p){

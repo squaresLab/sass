@@ -3,6 +3,7 @@ package omnet.tactics;
 import java.util.ArrayList;
 
 import omnet.Omnet;
+import omnet.components.Datacenter;
 import omnet.components.Server;
 import system.SystemState;
 import tactics.FailableTactic;
@@ -24,13 +25,12 @@ public class IncreaseDimmer extends FailableTactic {
 		
 		Omnet omnet = (Omnet) systemState;
 		
-		ArrayList<Server> targets = omnet.getServers(server);
+		Datacenter center = omnet.getServer(server);
 		
-		if (targets.size() > 0){
+		if (center.getDimmer() < center.MAX_DIMMER_LVL){
 			
-			for (Server t : targets){
-				t.setDimmer(t.getDimmer()+1);
-			}
+			center.setDimmer(center.getDimmer()+1);
+			
 		}else{
 			this.setFailed(true);
 		}
@@ -44,13 +44,10 @@ public class IncreaseDimmer extends FailableTactic {
 
 	@Override
 	public void undo(SystemState systemState) {
+		
 		Omnet omnet = (Omnet) systemState;
 		
-		ArrayList<Server> targets = omnet.getServers(server);
-		
-			for (Server t : targets){
-				t.setDimmer(t.getDimmer()-1);
-			}
+		omnet.getServer(server).setDimmer(omnet.getServer(server).getDimmer()-1);
 		
 	}
 	
