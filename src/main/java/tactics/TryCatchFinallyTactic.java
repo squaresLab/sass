@@ -30,6 +30,10 @@ public class TryCatchFinallyTactic extends FailableTactic {
 		
 	}
 	
+	public FailableTactic getTry() {
+		return inTry;
+	}
+	
 	public Plan getCatch(){
 		return inCatch;
 	}

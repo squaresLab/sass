@@ -20,6 +20,10 @@ public class DecreaseDimmer extends FailableTactic {
 		server = serverName;
 	}
 	
+	public String getServer() {
+		return server;
+	}
+	
 	@Override
 	public void visit(SystemState systemState) {
 		

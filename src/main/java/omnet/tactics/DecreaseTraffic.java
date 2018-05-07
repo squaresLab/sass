@@ -60,4 +60,8 @@ public class DecreaseTraffic extends FailableTactic {
 		return latency;
 	}
 
+	public String getServer() {
+		return server;
+	}
+
 }

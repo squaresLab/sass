@@ -61,4 +61,8 @@ public class ShutdownServer extends FailableTactic {
 		return latency;
 	}
 
+	public String getServer() {
+		return server;
+	}
+
 }
