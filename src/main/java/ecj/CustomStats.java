@@ -652,9 +652,11 @@ public class CustomStats extends Statistics
 		
 		// generate java code for deckard to work its magic
 		JavaRep java = new JavaRep();
-		java.addLine("public class Plan { ", null);
+		java.addLine("public class Plan1 extends Plan { ", null);
+		java.addLine("public static void main(String[] args) { ", null);
 		((JavaGenerator) ((GPIndividual)ind).trees[0].child).generateJava(java);
 		java.newLine();
+		java.addLine("}", null);
 		java.addLine("}", null);
 		
 		// disable the pruning feature

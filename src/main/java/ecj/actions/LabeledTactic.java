@@ -45,10 +45,9 @@ public abstract class LabeledTactic<T extends FailableTactic> extends GPNode imp
 	
 	public JavaRep generateJava(JavaRep java) {
 		java.appendLine(tactic.getSimpleName(), this);
-		java.appendLine("(");
+		java.appendLine("(\"");
 		((JavaGenerator) children[0]).generateJava(java);
-		java.appendLine(");");
-		java.newLine();
+		java.appendLine("\");");
 		return java;
 	}
 	

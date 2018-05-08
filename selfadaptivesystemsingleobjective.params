@@ -98,11 +98,17 @@ gp.fs.0.func.26.nc = nc6
 # Here we define a single atomic type, "nil", which everyone will use.
 # There are no set types defined.
 
-gp.type.a.size = 3
+gp.type.a.size = 4
 gp.type.a.0.name = server
 gp.type.a.1.name = plan
 gp.type.a.2.name = int
-gp.type.s.size = 0
+gp.type.a.3.name = tactic
+
+gp.type.s.size = 1
+gp.type.s.0.name = tactic-or-plan
+gp.type.s.0.size = 2
+gp.type.s.0.member.0 = plan
+gp.type.s.0.member.1 = tactic
 
 # Here we define one GPTreeConstraints object, "tc0",
 # which uses ec.gp.koza.HalfBuilder to create nodes,
@@ -132,7 +138,7 @@ gp.nc.0.size = 0
 
 gp.nc.1 = ec.gp.GPNodeConstraints
 gp.nc.1.name = nc1
-gp.nc.1.returns = plan
+gp.nc.1.returns = tactic
 gp.nc.1.size = 1
 gp.nc.1.child.0 = server
 
@@ -140,23 +146,23 @@ gp.nc.2 = ec.gp.GPNodeConstraints
 gp.nc.2.name = nc2
 gp.nc.2.returns = plan
 gp.nc.2.size = 2
-gp.nc.2.child.0 = plan
-gp.nc.2.child.1 = plan
+gp.nc.2.child.0 = tactic-or-plan
+gp.nc.2.child.1 = tactic-or-plan
 
 gp.nc.3 = ec.gp.GPNodeConstraints
 gp.nc.3.name = nc3
 gp.nc.3.returns = plan
 gp.nc.3.size = 3
-gp.nc.3.child.0 = plan
-gp.nc.3.child.1 = plan
-gp.nc.3.child.2 = plan
+gp.nc.3.child.0 = tactic
+gp.nc.3.child.1 = tactic-or-plan
+gp.nc.3.child.2 = tactic-or-plan
 
 gp.nc.4 = ec.gp.GPNodeConstraints
 gp.nc.4.name = nc4
 gp.nc.4.returns = plan
 gp.nc.4.size = 2
 gp.nc.4.child.0 = int
-gp.nc.4.child.1 = plan
+gp.nc.4.child.1 = tactic-or-plan
 
 gp.nc.5 = ec.gp.GPNodeConstraints
 gp.nc.5.name = nc5
@@ -182,8 +188,8 @@ generations = 30
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
-breedthreads = 30
-evalthreads = 30
+breedthreads = 1
+evalthreads = 1
 
 
 seed.0 = 123456789
