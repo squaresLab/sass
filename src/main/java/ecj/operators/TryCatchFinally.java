@@ -7,12 +7,13 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.JavaGenerator;
+import ecj.JavaRep;
 import ecj.StateData;
 import omnet.tactics.OmnetPlan;
 import tactics.FailableTactic;
 import tactics.TryCatchFinallyTactic;
 
-public class TryCatchFinally extends JavaGenerator  {
+public class TryCatchFinally extends GPNode implements JavaGenerator  {
 	
 	public String toString() { return "T"; }
 
@@ -65,15 +66,15 @@ public class TryCatchFinally extends JavaGenerator  {
 		
 		java.appendLine("if ( ");
 		((JavaGenerator) children[0]).generateJava(java);
-		java.appendLine(" ) {");
+		java.appendLine(" ) {",this);
 		java.newLine();
 		
-		((JavaGenerator) children[1]).generateJava(java);
+		((JavaGenerator) children[2]).generateJava(java);
 		
 		java.newLine();
 		java.addLine("} else {", null);
 		
-		((JavaGenerator) children[2]).generateJava(java);
+		((JavaGenerator) children[1]).generateJava(java);
 		
 		java.newLine();
 		java.addLine("}", null);

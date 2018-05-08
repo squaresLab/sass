@@ -7,11 +7,12 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.JavaGenerator;
+import ecj.JavaRep;
 import ecj.StateData;
 import tactics.FailableTactic;
 import tactics.TryCatchFinallyTactic;
 
-public class For extends JavaGenerator {
+public class For extends GPNode implements JavaGenerator {
 	
 	public String toString() { return "F"; }
 
@@ -40,8 +41,14 @@ public class For extends JavaGenerator {
 
 	@Override
 	public JavaRep generateJava(JavaRep java) {
-		// TODO Auto-generated method stub
-		return null;
+		java.appendLine("for (int i = 0; i < ");
+		((JavaGenerator) children[0]).generateJava(java);
+		java.appendLine(" ; i++) {",this);
+		java.newLine();
+		((JavaGenerator) children[1]).generateJava(java);
+		java.newLine();
+		java.addLine("}", null);
+		return java;
 	}
 
 }

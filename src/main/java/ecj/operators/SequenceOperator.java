@@ -7,9 +7,10 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ecj.JavaGenerator;
+import ecj.JavaRep;
 import ecj.StateData;
 
-public class SequenceOperator extends JavaGenerator {
+public class SequenceOperator extends GPNode implements JavaGenerator {
 
 	public String toString() { return ";"; }
 
@@ -48,7 +49,7 @@ public class SequenceOperator extends JavaGenerator {
 	public JavaRep generateJava(JavaRep java) {
 		((JavaGenerator) children[0]).generateJava(java);
 		java.newLine();
-		((JavaGenerator) children[0]).generateJava(java);
+		((JavaGenerator) children[1]).generateJava(java);
 		java.newLine();
 		return java;
 	}

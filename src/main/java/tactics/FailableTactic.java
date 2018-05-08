@@ -45,7 +45,6 @@ public abstract class FailableTactic extends Tactic {
 			
 			return copy;
 	
-		
 	}
 	
 	// default size is 1

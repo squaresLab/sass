@@ -7,11 +7,13 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.util.Parameter;
+import ecj.JavaGenerator;
+import ecj.JavaRep;
 import ecj.StateData;
 import ecj.TacticFactory;
 import tactics.FailableTactic;
 
-public abstract class LabeledTactic<T extends FailableTactic> extends GPNode {
+public abstract class LabeledTactic<T extends FailableTactic> extends GPNode implements JavaGenerator {
 	
 	Class<T> tactic;
 	
@@ -39,6 +41,15 @@ public abstract class LabeledTactic<T extends FailableTactic> extends GPNode {
 		
 		o.plan.getTactics().add(tacticInstance);
 		
+	}
+	
+	public JavaRep generateJava(JavaRep java) {
+		java.appendLine(tactic.getSimpleName(), this);
+		java.appendLine("(");
+		((JavaGenerator) children[0]).generateJava(java);
+		java.appendLine(");");
+		java.newLine();
+		return java;
 	}
 	
 	public int expectedChildren(){return 1;};

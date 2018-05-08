@@ -650,6 +650,13 @@ public class CustomStats extends Statistics
         ((StateData)input).initializeState();
 		((GPIndividual)ind).trees[0].child.eval(state, 0, input, problem.stack, ((GPIndividual)ind), problem);
 		
+		// generate java code for deckard to work its magic
+		JavaRep java = new JavaRep();
+		java.addLine("public class Plan { ", null);
+		((JavaGenerator) ((GPIndividual)ind).trees[0].child).generateJava(java);
+		java.newLine();
+		java.addLine("}", null);
+		
 		// disable the pruning feature
 		input.plan.setMinAcceptedImprovment(0);
 		

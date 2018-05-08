@@ -11,8 +11,10 @@ import ec.gp.GPNodeConstraints;
 import ec.multiobjective.MultiObjectiveFitness;
 import ec.util.Code;
 import ec.util.DecodeReturn;
+import ecj.JavaGenerator;
+import ecj.JavaRep;
 
-public class ForIndex extends ERC {
+public class ForIndex extends ERC implements JavaGenerator {
 
 	int value;
 
@@ -90,6 +92,12 @@ public class ForIndex extends ERC {
 	
 	public String toStringForHumans(){
 		return "" + value;
+	}
+
+	@Override
+	public JavaRep generateJava(JavaRep java) {
+		java.appendLine(""+value, this);
+		return java;
 	}
 
 }

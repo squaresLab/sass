@@ -7,11 +7,13 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.util.Parameter;
+import ecj.JavaGenerator;
+import ecj.JavaRep;
 import ecj.StateData;
 import ecj.TacticFactory;
 import tactics.FailableTactic;
 
-public abstract class TacticLabel extends GPNode {
+public abstract class TacticLabel extends GPNode implements JavaGenerator {
 	
 	String label;
 	
@@ -39,6 +41,11 @@ public abstract class TacticLabel extends GPNode {
 	@Override
 	public String toString(){
 		return label;
+	}
+	
+	public JavaRep generateJava(JavaRep java) {
+		java.appendLine(label);
+		return java;
 	}
 
 }
