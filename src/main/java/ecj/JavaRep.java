@@ -1,8 +1,9 @@
 package ecj;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class JavaRep {
+public class JavaRep implements Serializable {
 	
 	private HashMap<Integer,Object> objMap;
 	private HashMap<Integer,String> stringMap;

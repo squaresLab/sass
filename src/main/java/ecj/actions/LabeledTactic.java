@@ -1,5 +1,7 @@
 package ecj.actions;
 
+import java.io.Serializable;
+
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;

@@ -1,8 +1,10 @@
 package tactics;
 
+import java.io.Serializable;
+
 import system.SystemState;
 
-public abstract class Tactic implements Cloneable {
+public abstract class Tactic implements Cloneable, Serializable {
 	
 	Long startTime = null;
 	
