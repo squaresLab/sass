@@ -6,11 +6,12 @@ import ec.gp.ADFStack;
 import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
+import ecj.JavaGenerator;
 import ecj.StateData;
 import tactics.FailableTactic;
 import tactics.TryCatchFinallyTactic;
 
-public class For extends GPNode {
+public class For extends JavaGenerator {
 	
 	public String toString() { return "F"; }
 
@@ -35,6 +36,12 @@ public class For extends GPNode {
 			children[1].eval(state,thread,input,stack,individual,problem);
 		}
 
+	}
+
+	@Override
+	public JavaRep generateJava(JavaRep java) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

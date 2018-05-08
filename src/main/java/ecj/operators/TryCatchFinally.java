@@ -6,11 +6,13 @@ import ec.gp.ADFStack;
 import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
+import ecj.JavaGenerator;
 import ecj.StateData;
+import omnet.tactics.OmnetPlan;
 import tactics.FailableTactic;
 import tactics.TryCatchFinallyTactic;
 
-public class TryCatchFinally extends GPNode {
+public class TryCatchFinally extends JavaGenerator  {
 	
 	public String toString() { return "T"; }
 
@@ -54,9 +56,31 @@ public class TryCatchFinally extends GPNode {
 //		children[1].eval(state,thread,input,stack,individual,problem);
 		//System.out.println("after: "+sd.toString()+"\n");
 		//the result information should now be held in input
-		
 
 
 	}
+
+	@Override
+	public JavaRep generateJava(JavaRep java) {
+		
+		java.appendLine("if ( ");
+		((JavaGenerator) children[0]).generateJava(java);
+		java.appendLine(" ) {");
+		java.newLine();
+		
+		((JavaGenerator) children[1]).generateJava(java);
+		
+		java.newLine();
+		java.addLine("} else {", null);
+		
+		((JavaGenerator) children[2]).generateJava(java);
+		
+		java.newLine();
+		java.addLine("}", null);
+		
+		
+		return java;
+	}
+
 
 }
