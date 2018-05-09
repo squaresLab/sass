@@ -44,8 +44,8 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class Adaptor {
 
-	private static double generations = 3;
-	private static double popSize = 100;
+	private static double generations = 30;
+	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
 	private static double invalidActionPenalty = 0;
@@ -69,18 +69,16 @@ public class Adaptor {
 		// print header
 		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize");
 		
-		
-		
 		// run multiple trials
 		for (int trial = 0; trial < 10; trial++){
 			
-		for (double trimmerChance : new double[]{0,0.1}){
+		for (double trimmerChance : new double[]{0.1}){
 			
 			//0.5,0.75,1.0
 		for (double enableRuntimeKill : new double[]{0.75}){
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
-		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
+		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
 
 		// try every plan
 		for (String plan : getPlans()){
@@ -90,8 +88,8 @@ public class Adaptor {
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
 		for (double buildprob : getBuildProbs(plan)){
-			//10,100,1000,
-		for (long window : new long[] {1000,10000}){
+			//10,100,1000,10000
+		for (long window : new long[] {10000}){
 
 			Plan.window = window;
 			
@@ -177,7 +175,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new double[] {0,0.50,0.90};
+			return new double[] {0.90};
 			
 		}
 	}
@@ -192,7 +190,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new String[] {"deckard","trimmer","mutator"};
+			return new String[] {"deckard","trimmer"};
 			
 		}
 		
@@ -202,7 +200,7 @@ public class Adaptor {
 
 
 	private static List<String> getPlans() {
-		return Arrays.asList("long","scratch");//,"short","poor","scratch","long");
+		return Arrays.asList("short","scratch");//,"short","poor","scratch","long");
 	}
 
 

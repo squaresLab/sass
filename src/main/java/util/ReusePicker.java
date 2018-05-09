@@ -47,12 +47,6 @@ public class ReusePicker {
 		ArrayList<Object> snippets = new ArrayList<Object>();
 		
 		
-		
-		while (snippets.size() < desiredSnippets){
-	
-			
-			
-		}
 	}
 	
 	public GPNode getNode(){

@@ -650,6 +650,10 @@ public class CustomStats extends Statistics
         ((StateData)input).initializeState();
 		((GPIndividual)ind).trees[0].child.eval(state, 0, input, problem.stack, ((GPIndividual)ind), problem);
 		
+		boolean writeJavaRep = false;
+		
+		 if (writeJavaRep){
+		
 		long time = System.currentTimeMillis();
 		String filename = "javagen/Plan"+time+".java";
 		
@@ -662,6 +666,8 @@ public class CustomStats extends Statistics
 		    if (! directory.exists()){
 		        directory.mkdir();
 		    }
+		    
+		   
 		    
 		// generate java code for deckard to work its magic
 		JavaRep java = new JavaRep();
@@ -693,7 +699,8 @@ public class CustomStats extends Statistics
 	        } catch (Exception ex) {
 	            ex.printStackTrace();
 	        }
-
+	        
+		    }
 		
 		// disable the pruning feature
 		input.plan.setMinAcceptedImprovment(0);
