@@ -57,7 +57,7 @@ public class Adaptor {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/ckinneer/research/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/ckinneer/research/analysis-code/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
@@ -192,7 +192,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new String[] {"trimmer","mutator"};
+			return new String[] {"deckard","trimmer","mutator"};
 			
 		}
 		
@@ -202,7 +202,7 @@ public class Adaptor {
 
 
 	private static List<String> getPlans() {
-		return Arrays.asList("long","scratch");//,"short","poor","scratch");
+		return Arrays.asList("long","scratch");//,"short","poor","scratch","long");
 	}
 
 
@@ -253,6 +253,8 @@ public class Adaptor {
 			init = "ecj.MutationTrimmer";
 		}else if (initializer.equals("mutator")){
 			init = "ecj.MutationBuilder";
+		}else if (initializer.equals("deckard")){
+			init = "ecj.DeckardBuilder";
 		}
 		
 		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){

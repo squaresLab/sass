@@ -25,6 +25,8 @@ pop.subpop.0.species.pipe.source.0.source.2.prob = 0.2
 pop.subpop.0.species.pipe.source.0.source.3 = ecj.MutationTrimmerPipe
 pop.subpop.0.species.pipe.source.0.source.3.prob = 0.2
 
+pop.subpop.0.species.pipe.source.0.source.3.tries = 100
+
 pop.subpop.0.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
 
 gp.breed.mutate-one-node.source.0 = ec.select.TournamentSelection
@@ -243,7 +245,9 @@ stat.do-time = true
 
 #gp.tc.0.init = ecj.MutationBuilder
 
-gp.tc.0.init = ecj.MutationTrimmer
+#gp.tc.0.init = ecj.MutationTrimmer
+
+gp.tc.0.init = ecj.DeckardBuilder
 
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
