@@ -10,7 +10,9 @@ import java.util.List;
 import ec.EvolutionState;
 import ec.Evolve;
 import ec.gp.GPIndividual;
+import ec.gp.GPInitializer;
 import ec.simple.SimpleEvaluator;
+import ec.simple.SimpleInitializer;
 import ec.simple.SimpleStatistics;
 import ec.util.DataPipe;
 import ec.util.Log;
@@ -57,7 +59,7 @@ public class Adaptor {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File("/home/cody/analysis-code/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File( System.getProperty("user.dir")+"/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 

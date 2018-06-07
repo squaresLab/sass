@@ -59,7 +59,7 @@ public class DeckardBuilder extends ec.gp.GPNodeBuilder {
     // the starting individual
     GPIndividual ind = null;
     
-    ReusePicker picker = new ReusePicker("/home/cody/analysis-code/clusters/post_cluster_vdb_50_0_allg_0.95_30");
+    ReusePicker picker = new ReusePicker(System.getProperty("user.dir")+"/clusters/post_cluster_vdb_50_0_allg_0.95_30");
     
     int numTries;
     
