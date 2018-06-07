@@ -3,7 +3,9 @@ package util;
 import java.io.*;
 import java.util.*;
 
+import ec.gp.GPIndividual;
 import ec.gp.GPNode;
+import ec.gp.GPTree;
 import ecj.JavaRep;
 
 public class ReusePicker {
@@ -46,6 +48,16 @@ public class ReusePicker {
 		
 		ArrayList<Object> snippets = new ArrayList<Object>();
 		
+		ReusePicker picker = new ReusePicker(deckardFile);
+		
+		for (int count = 0; count < 100; count++){
+			GPNode node = picker.getNode();
+			if (node != null){
+				System.out.println(node.parent);
+			}
+				
+		}
+		
 		
 	}
 	
@@ -68,7 +80,41 @@ public class ReusePicker {
 		Object node = java.getObjMap().get(sourceLineNumber);
 		if (node != null){
 			//System.out.println(java.getStringMap().get(sourceLineNumber));
-			return (GPNode) node;
+			
+			 GPIndividual j;
+			GPNode gpNode = (GPNode) node;
+			
+			 GPTree tree = (GPTree) gpNode.rootParent();
+			 
+			 GPIndividual ind = tree.owner;
+			
+	         //TODO: I think the first if statement will work without 
+	         // the check, because it is just checking if the plan
+	         // is a copy that it can alter or if the plan needs
+	         // to be copied before editing.
+	         //if (sources[0] instanceof BreedingPipeline)
+	             // it's already a copy, so just smash the tree in
+	         //    {
+
+	             j = (GPIndividual)(ind.lightClone());
+	             
+	             // Fill in various tree information that didn't get filled in there
+	             j.trees = new GPTree[ind.trees.length];
+	             
+	             // at this point, p1 or p2, or both, may be null.
+	             // If not, swap one in.  Else just copy the parent.
+	           
+	             int x = 0;
+	          
+	             j.trees[x] = (GPTree)(ind.trees[x].lightClone());
+	             j.trees[x].owner = j;
+	             j.trees[x].child = (GPNode) ((GPNode) node).clone();
+	             j.trees[x].child.parent = j.trees[x];
+	             j.trees[x].child.argposition = 0;
+	             j.evaluated = false;  
+	             
+	             return j.trees[0].child;
+			
 		}else{
 			return null;
 		}
