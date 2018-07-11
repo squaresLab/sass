@@ -6,6 +6,7 @@ import ec.gp.ADFStack;
 import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
+import ecj.DartStateData;
 import ecj.JavaGenerator;
 import ecj.JavaRep;
 import ecj.StateData;
@@ -26,7 +27,7 @@ public class SequenceOperator extends GPNode implements JavaGenerator {
 		//double result;
 
 		//now handling with a runtime exception
-		StateData o = (StateData)input;
+		DartStateData o = (DartStateData)input;
 		
 		children[0].eval(state,thread,input,stack,individual,problem);
 		
