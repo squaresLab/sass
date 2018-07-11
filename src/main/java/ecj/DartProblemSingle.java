@@ -21,8 +21,8 @@ public class DartProblemSingle extends GPProblem implements SimpleProblemForm {
 		
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);
-			if (!(input instanceof StateData)){
-				state.output.fatal("GPData class must subclass from " + StateData.class
+			if (!(input instanceof DartStateData)){
+				state.output.fatal("GPData class must subclass from " + DartStateData.class
 						+" instead given "+ input.getClass().toString(), base.push("data"),null);
 			}
 			else{
@@ -87,14 +87,14 @@ public class DartProblemSingle extends GPProblem implements SimpleProblemForm {
 //				System.exit(0);
 				
 				
-				((StateData)input).plan.setMinAcceptedImprovment(minAcceptedImprovement);
+				((DartStateData)input).plan.setMinAcceptedImprovment(minAcceptedImprovement);
 				
 				// NEXT LINE DEBUG ONLY
 				//FitnessSanity.testInd(((StateData)input).plan);
 				
 				double fitnessValue;
 				
-				if(((StateData)input).plan.size() <= 20){
+				if(((DartStateData)input).plan.size() <= 20){
 					
 					Fitness fitness = ((DartStateData)input).plan.evaluate(new Dart());
 					
@@ -112,9 +112,9 @@ public class DartProblemSingle extends GPProblem implements SimpleProblemForm {
 				}
 			
 				//take off a penalty for invalid actions
-				fitnessValue -= ((StateData)input).plan.invalidActions * INVALID_ACTION_PENALTY;
+				fitnessValue -= ((DartStateData)input).plan.invalidActions * INVALID_ACTION_PENALTY;
 				//take off a penalty for plan length
-				fitnessValue -= ((StateData)input).plan.size() * VERBOSENESS_PENALTY;
+				fitnessValue -= ((DartStateData)input).plan.size() * VERBOSENESS_PENALTY;
 				// and tree size
 				//fitnessValue -= ((GPIndividual)ind).size() * VERBOSENESS_PENALTY;
 				
