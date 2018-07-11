@@ -3,9 +3,11 @@ package dart.tactics;
 import java.util.Arrays;
 import java.util.List;
 
+import dart.Dart;
 import omnet.Omnet;
 import omnet.Omnet.Scenario;
 import system.Fitness;
+import system.SystemState;
 import tactics.FailableTactic;
 import tactics.Plan;
 import tactics.Tactic;
@@ -19,6 +21,11 @@ public class DartPlan extends Plan {
 	
 	public DartPlan(List<Tactic> asList) {
 		super(asList);
+	}
+	
+	// TODO Warning, this is not right, must be updated to properly use the given plan!
+	public Fitness evaluate(SystemState system){
+		return (new Dart()).calculateInstFitness();
 	}
 
 	public String toString(){
