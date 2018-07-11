@@ -8,8 +8,12 @@ import system.Fitness;
 import system.SystemState;
 
 public class Dart extends SystemState {
-	
-	static final String FITNESS_CMD_STRING = "./runDartFitness";
+	static final String PLA_DIR = "/home/ckinneer/research/pladapt";
+//	static final String FITNESS_CMD_STRING = "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:"+PLA_DIR+"/examples/dart/dartam/build/src/.libs "+PLA_DIR+"/examples/dart/dartfitness/dartfitness";
+//  static final String FITNESS_CMD_STRING = "/home/ckinneer/research/pladapt/examples/dart/dartfitness/test.sh";
+    static final String FITNESS_CMD_STRING = "/home/ckinneer/research/pladapt/examples/dart/dartfitness/run.sh";
+//	static final String FITNESS_CMD_STRING = "echo \"test\"";
+
 
 	@Override
 	public boolean isStateValid() {
@@ -34,17 +38,19 @@ public class Dart extends SystemState {
 			Process pr = rt.exec(cmd);
 			BufferedReader stdInput = new BufferedReader(new 
 				     InputStreamReader(pr.getInputStream()));
-			
+			String lastline = "";
 			while ((s = stdInput.readLine()) != null) {
+				lastline = s;
 			}
+			s = lastline;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		Fitness ans = new Fitness();
-		
-		ans.put("Profit", (double) Integer.parseInt(s));
+		s = s.split(",")[s.split(",").length-1];
+		ans.put("Profit", Double.parseDouble(s));
 		
 		return ans;
 	}
