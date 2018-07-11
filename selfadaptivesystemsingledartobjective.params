@@ -1,0 +1,277 @@
+parent.0 = koza.params
+
+# the next four items are already defined in koza.params, but we
+# put them here to be clear.
+
+pop.subpop.0.species.ind.tree.0.print-style = dot
+
+pop.subpop.0.species.pipe = ec.gp.breed.MutateERCPipeline
+
+pop.subpop.0.species.pipe.source.0 = ec.breed.MultiBreedingPipeline
+
+#pop.subpop.0.species.pipe = ec.breed.ReproductionPipeline
+#pop.subpop.0.species.pipe.source.0 = ec.select.FirstSelection
+
+# Koza's decision here was odd...
+pop.subpop.0.species.pipe.generate-max = false
+# Subsidiary pipelines:
+pop.subpop.0.species.pipe.source.0.num-sources = 4
+pop.subpop.0.species.pipe.source.0.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0.prob = 0.4
+pop.subpop.0.species.pipe.source.0.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.0.species.pipe.source.0.source.1.prob = 0.2
+pop.subpop.0.species.pipe.source.0.source.2 = ec.gp.koza.MutationPipeline
+pop.subpop.0.species.pipe.source.0.source.2.prob = 0.2
+pop.subpop.0.species.pipe.source.0.source.3 = ecj.MutationTrimmerPipe
+pop.subpop.0.species.pipe.source.0.source.3.prob = 0.2
+
+pop.subpop.0.species.pipe.source.0.source.3.tries = 100
+
+pop.subpop.0.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
+
+gp.breed.mutate-one-node.source.0 = ec.select.TournamentSelection
+gp.breed.mutate-one-node.ns.0 = ec.gp.koza.KozaNodeSelector
+
+
+# We have one function set, of class GPFunctionSet
+gp.fs.size = 1
+gp.fs.0 = ec.gp.GPFunctionSet
+# We'll call the function set "f0".
+gp.fs.0.name = f0
+
+# We have these functions in the function set.  They are:
+# We have these functions in the function set.  They are:
+gp.fs.0.size = 5
+gp.fs.0.func.0 = ecj.operators.SequenceOperator
+gp.fs.0.func.0.nc = nc1
+gp.fs.0.func.1 = ecj.actions.GoLoose
+gp.fs.0.func.1.nc = nc0
+gp.fs.0.func.2 = ecj.actions.GoTight
+gp.fs.0.func.2.nc = nc0
+gp.fs.0.func.3 = ecj.actions.IncAlt
+gp.fs.0.func.3.nc = nc0
+gp.fs.0.func.4 = ecj.actions.DecAlt
+gp.fs.0.func.4.nc = nc0
+gp.fs.0.func.5 = ecj.actions.IncreaseTrafficLevel
+gp.fs.0.func.5.nc = nc1
+gp.fs.0.func.6 = ecj.actions.DecreaseTrafficLevel
+gp.fs.0.func.6.nc = nc1
+gp.fs.0.func.7 = ecj.actions.ShutdownServerNode
+gp.fs.0.func.7.nc = nc1
+gp.fs.0.func.8 = ecj.actions.ServerA
+gp.fs.0.func.8.nc = nc0
+gp.fs.0.func.9 = ecj.actions.ServerB
+gp.fs.0.func.9.nc = nc0
+gp.fs.0.func.10 = ecj.actions.ServerC
+gp.fs.0.func.10.nc = nc0
+gp.fs.0.func.11 = ecj.operators.For
+gp.fs.0.func.11.nc = nc4
+gp.fs.0.func.12 = ecj.operators.ForIndex
+gp.fs.0.func.12.nc = nc5
+gp.fs.0.func.13 = ecj.actions.ServerD
+gp.fs.0.func.13.nc = nc0
+gp.fs.0.func.14 = ecj.actions.ServerE
+gp.fs.0.func.14.nc = nc0
+gp.fs.0.func.15 = ecj.actions.ServerF
+gp.fs.0.func.15.nc = nc0
+gp.fs.0.func.16 = ecj.actions.ServerG
+gp.fs.0.func.16.nc = nc0
+gp.fs.0.func.17 = ecj.actions.ServerH
+gp.fs.0.func.17.nc = nc0
+gp.fs.0.func.18 = ecj.actions.ServerI
+gp.fs.0.func.18.nc = nc0
+gp.fs.0.func.19 = ecj.actions.ServerJ
+gp.fs.0.func.19.nc = nc0
+gp.fs.0.func.20 = ecj.actions.ServerK
+gp.fs.0.func.20.nc = nc0
+gp.fs.0.func.21 = ecj.actions.ServerL
+gp.fs.0.func.21.nc = nc0
+gp.fs.0.func.22 = ecj.actions.ServerM
+gp.fs.0.func.22.nc = nc0
+gp.fs.0.func.23 = ecj.actions.ServerN
+gp.fs.0.func.23.nc = nc0
+gp.fs.0.func.24 = ecj.actions.ServerO
+gp.fs.0.func.24.nc = nc0
+gp.fs.0.func.25 = ecj.actions.ServerP
+gp.fs.0.func.25.nc = nc0
+gp.fs.0.func.26 = ecj.operators.Retry
+gp.fs.0.func.26.nc = nc6
+
+# Here we define a single atomic type, "nil", which everyone will use.
+# There are no set types defined.
+
+gp.type.a.size = 2
+gp.type.a.0.name = tactic
+gp.type.a.1.name = plan
+
+gp.type.s.size = 1
+gp.type.s.0.name = tactic-or-plan
+gp.type.s.0.size = 2
+gp.type.s.0.member.0 = plan
+gp.type.s.0.member.1 = tactic
+
+# Here we define one GPTreeConstraints object, "tc0",
+# which uses ec.gp.koza.HalfBuilder to create nodes,
+# only allows nodes from the GPFunctionSet "fset",
+# and has the single type "nil" as its tree type.
+# You don't need to include the class declaration here,
+# but it quiets warnings.
+
+gp.tc.size = 1
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+gp.tc.0.fset = f0
+gp.tc.0.returns = plan
+
+# Here we define 7 GPNodeConstraints, nc0...nc6, which
+# describe nodes with 0...6 children respectively, which only
+# use a single type, "nil", for their argument and return types
+# You don't need to include the class declarations with everything
+# else below, but it quiets warnings
+
+gp.nc.size = 2
+
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = nc0
+gp.nc.0.returns = tactic
+gp.nc.0.size = 0
+
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = nc1
+gp.nc.1.returns = plan
+gp.nc.1.size = 2
+gp.nc.1.child.0 = tactic-or-plan
+gp.nc.1.child.1 = tactic-or-plan
+
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = nc2
+gp.nc.2.returns = plan
+gp.nc.2.size = 2
+gp.nc.2.child.0 = tactic-or-plan
+gp.nc.2.child.1 = tactic-or-plan
+
+gp.nc.3 = ec.gp.GPNodeConstraints
+gp.nc.3.name = nc3
+gp.nc.3.returns = plan
+gp.nc.3.size = 3
+gp.nc.3.child.0 = tactic
+gp.nc.3.child.1 = tactic-or-plan
+gp.nc.3.child.2 = tactic-or-plan
+
+gp.nc.4 = ec.gp.GPNodeConstraints
+gp.nc.4.name = nc4
+gp.nc.4.returns = plan
+gp.nc.4.size = 2
+gp.nc.4.child.0 = int
+gp.nc.4.child.1 = tactic-or-plan
+
+gp.nc.5 = ec.gp.GPNodeConstraints
+gp.nc.5.name = nc5
+gp.nc.5.returns = int
+gp.nc.5.size = 0
+
+gp.nc.6 = ec.gp.GPNodeConstraints
+gp.nc.6.name = nc6
+gp.nc.6.returns = plan
+gp.nc.6.size = 1
+gp.nc.6.child.0 = plan
+
+gp.koza.xover.maxdepth = 10
+gp.koza.mutate.maxdepth = 10
+gp.koza.grow.min-depth = 1
+gp.koza.grow.max-depth = 10
+gp.koza.half.min-depth = 1
+gp.koza.half.max-depth = 5
+
+eval.problem = ecj.DartProblemSingle
+eval.problem.data = ecj.DartStateData
+generations = 30
+pop.subpop.0.size =	1000
+
+#allow ECJ to figure out the number of cores
+breedthreads = 1
+evalthreads = 1
+
+
+seed.0 = 123456789
+seed.1 = 123456788
+seed.2 = 123456787
+seed.3 = 123456786
+seed.4 = 123456785
+seed.5 = 123456784
+seed.6 = 123456783
+seed.7 = 123456782
+seed.8 = 123456781
+seed.9 = 123456780
+seed.10 = 123456779
+seed.11 = 123456778
+seed.12 = 123456777
+seed.13 = 123456776
+seed.14 = 123456775
+seed.15 = 123456774
+seed.16 = 123456773
+seed.17 = 123456772
+seed.18 = 123456771
+seed.19 = 123456770
+seed.20 = 123456769
+seed.21 = 123456768
+seed.22 = 123456767
+seed.23 = 123456766
+seed.24 = 123456765
+seed.25 = 123456764
+seed.26 = 123456763
+seed.27 = 123456762
+seed.28 = 123456761
+seed.29 = 123456760
+
+#print-params = true
+
+#stat = ec.simple.SimpleStatistics
+stat = ecj.CustomStats
+
+stat.do-size = true
+stat.do-time = true
+
+#breed.elite.0=2
+
+# use TarpeianStatistics parsimony pressure
+# picks individuals that are bigger than average, then kill a proportion of them
+#stat.num-children = 1
+#stat.child.0 = ec.parsimony.TarpeianStatistics
+#stat.child.0.kill-proportion = 0.2
+
+gp.tc.0.init = ec.gp.koza.HalfBuilder
+
+#gp.tc.0.init = ecj.MutationBuilder
+
+#gp.tc.0.init = ecj.MutationTrimmer
+
+#gp.tc.0.init = ecj.DeckardBuilder
+
+#come back and adjust this later when you know exactly what you need
+gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
+gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
+gp.koza.initmutate.maxdepth = 10
+gp.koza.initmutate.tries = 100
+
+#quit-on-run-complete	= false
+
+# custom params that I put in to handle penalties and tree pruning
+invalid_action_penalty = 0
+verboseness_penalty = 0.01
+min_accepted_improvement = 0
+
+scenario_name = normal
+
+build_prob = 0.0
+runtime_kill_ratio = 1.0
+
+#latencytest
+initial_ind = (T (F ERC[i2|] (F ERC[i2|] (T (StartServer B) (ShutdownServer A) (StartServer C)))) (ShutdownServer C) (T (StartServer C) (StartServer A) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer B) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer C) (StartServer C) (StartServer B)))) (; (StartServer C) (T (F ERC[i5|] (StartServer B)) (ShutdownServer A) (StartServer C))))))))
+
+# poor
+#initial_ind = (; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))
+# long
+#initial_ind = (; (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (StartServer C)) (; (StartServer C) (; (StartServer C) (ShutdownServer A)))) (StartServer C)) (; (F ERC[i4|] (; (StartServer C) (ShutdownServer A))) (; (T (StartServer B) (T (StartServer B) (T (StartServer B) (T (StartServer B) (StartServer B) (ShutdownServer A)) (ShutdownServer A)) (; (StartServer C) (ShutdownServer A))) (; (StartServer C) (; (; (StartServer C) (ShutdownServer A)) (ShutdownServer A)))) (StartServer C))))
+# short
+#initial_ind = (; (; (; (StartServer C) (; (StartServer C) (; (; (F ERC[i4|] (ShutdownServer A)) (; (StartServer B) (F ERC[i2|] (StartServer B)))) (F ERC[i4|] (StartServer C))))) (StartServer B)) (StartServer B))
