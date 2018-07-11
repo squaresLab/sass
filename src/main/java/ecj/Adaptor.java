@@ -59,7 +59,7 @@ public class Adaptor {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
-		File parameterFile = new File( System.getProperty("user.dir")+"/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File( System.getProperty("user.dir")+"/selfadaptivesystemsingledartobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
@@ -105,7 +105,7 @@ public class Adaptor {
 			ParameterDatabase copy = setParams(dbase,scenario,plan,init,buildprob,enableRuntimeKill,trimmerChance);
 			
 			Simulator.setRuntimeKillEnable(enableRuntimeKill < 1 ? true : false);
-					
+			
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
 			
@@ -202,7 +202,7 @@ public class Adaptor {
 
 
 	private static List<String> getPlans() {
-		return Arrays.asList("short","scratch");//,"short","poor","scratch","long");
+		return Arrays.asList("scratch");//,"short","poor","scratch","long");
 	}
 
 
@@ -256,12 +256,13 @@ public class Adaptor {
 		}else if (initializer.equals("deckard")){
 			init = "ecj.DeckardBuilder";
 		}
-		
+		/*
 		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
 			copy.setProperty("gp.fs.0.size", "14");
 		}else{
 			copy.setProperty("gp.fs.0.size", "13");
 		}
+		*/
 		
 		copy.setProperty("gp.tc.0.init",init);
 		
