@@ -21,25 +21,23 @@ public class Dart extends SystemState {
 		return true;
 	}
 
-	@Override
-	public Fitness calculateInstFitness() {
+	public Fitness calculateInstFitness(String plan) {
 		
 		// call the dart fitness simulator for fitness calculation
 		Runtime rt = Runtime.getRuntime();
-		String [] args = {};
 		String cmd = FITNESS_CMD_STRING;
-		for (int i = 0; i < args.length; i++) {
-			cmd += " " + args[i];
-		}
-		
+		cmd += " --plan " + plan.trim().replace(' ', '_') + "  --adapt-mgr sass";
 		String s = "";
-		
+		//System.out.println(cmd);
 		try {
 			Process pr = rt.exec(cmd);
+			
 			BufferedReader stdInput = new BufferedReader(new 
 				     InputStreamReader(pr.getInputStream()));
+			
 			String lastline = "";
 			while ((s = stdInput.readLine()) != null) {
+				//System.out.println(s);
 				lastline = s;
 			}
 			s = lastline;
@@ -48,11 +46,30 @@ public class Dart extends SystemState {
 			e.printStackTrace();
 		}
 		
+		if (s.equals("impossible")) {
+			System.out.println("impossible");
+		}
+		
 		Fitness ans = new Fitness();
 		s = s.split(",")[s.split(",").length-1];
-		ans.put("Profit", Double.parseDouble(s));
+		
+		double fitness = 0;
+		
+		try {
+			fitness = Double.parseDouble(s);
+		}catch(java.lang.NumberFormatException e) {
+			fitness = 0;
+		}
+		
+		ans.put("Profit", fitness);
 		
 		return ans;
+	}
+
+	@Override
+	public Fitness calculateInstFitness() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
