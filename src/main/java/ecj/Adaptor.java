@@ -2,15 +2,21 @@ package ecj;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import ec.EvolutionState;
 import ec.Evolve;
 import ec.gp.GPIndividual;
 import ec.gp.GPInitializer;
+import ec.gp.GPProblem;
 import ec.simple.SimpleEvaluator;
 import ec.simple.SimpleInitializer;
 import ec.simple.SimpleStatistics;
@@ -47,7 +53,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
 public class Adaptor {
 
 	private static double generations = 10;
-	private static double popSize = 100;
+	private static double popSize = 50;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
 	private static double invalidActionPenalty = 0;
@@ -56,23 +62,42 @@ public class Adaptor {
 	private static double reproductionChance = 0.2;
 	private static double mutationChance = 0.2;
 	
+	public static String monitoringInfo = "";
+	
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
+		File file = new File("data.csv");
+		boolean exists = file.exists();
+		
+		FileWriter fr = new FileWriter(file, true);
+		
+		long numOfLines = 0;
+		try (Stream<String> lines = Files.lines(Paths.get("data.csv"), Charset.defaultCharset())) {
+			  numOfLines = lines.count();
+		}
+		
+		if (!exists) {
+			fr.write("timestep,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize\n");
+		}
+		
 		File parameterFile = new File( System.getProperty("user.dir")+"/selfadaptivesystemsingledartobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
+		// load monitoring info from file
+		monitoringInfo = loadMonitoringInfo("/home/ckinneer/research/drew/pladapt/examples/dart/darteval/monitoring.ser");
+		
 		// set statistics to simplestatistics
 		dbase.setProperty("stat", "ec.simple.SimpleStatistics");
 
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize");
+		//System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize");
 		
 		// run multiple trials
-		for (int trial = 0; trial < 10; trial++){
+		for (int trial = 0; trial < 1; trial++){
 			
 		for (double trimmerChance : new double[]{0.1}){
 			
@@ -131,8 +156,10 @@ public class Adaptor {
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
-				double profit = CustomStats.getProfit(evaluatedState, best, scenario,(long) Math.ceil(totaltime/1000.0));
+				//double profit = CustomStats.getProfit(evaluatedState, best, scenario);//,(long) Math.ceil(totaltime/1000.0));
 
+				double profit = best.fitness.fitness();
+				
 				int size = CustomStats.getSize(evaluatedState, best);
 				
 				double diff = -1; // CustomStats.calcDiversity(evaluatedState, false);
@@ -140,13 +167,24 @@ public class Adaptor {
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
-				
+				trial = (int) (numOfLines / (generations));
+				//System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
+				fr.write(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize+"\n");
+
 				}
 			
 			SimpleStatistics stats = (SimpleStatistics) evaluatedState.statistics;
 
 			GPIndividual best = (GPIndividual) stats.best_of_run[0];
+	        
+	        GPProblem problem = new OmnetProblemSingle();           
+	                    
+	        DartStateData input = new DartStateData();
+	        
+	        ((DartStateData)input).initializeState();
+			((GPIndividual)best).trees[0].child.eval(evaluatedState, 0, input, problem.stack, ((GPIndividual)best), problem);
+			
+			System.out.println(input.plan.toString().split(" ")[0]);
 					
 			// We have to do this in order to fix a memory leak
 			// otherwise, ECJ will keep making threads forever until we run out of memory to track them all
@@ -165,10 +203,24 @@ public class Adaptor {
 		}
 		}
 		}
+			fr.close();
 		}
 
 	
 	
+	private static String loadMonitoringInfo(String path) {
+		try {
+			byte[] encoded = Files.readAllBytes(Paths.get(path));
+			return new String(encoded);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+
 	private static double[] getBuildProbs(String plan) {
 		
 		if (plan.equals("scratch")){
