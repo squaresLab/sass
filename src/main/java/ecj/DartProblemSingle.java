@@ -112,9 +112,9 @@ public class DartProblemSingle extends GPProblem implements SimpleProblemForm {
 				}
 			
 				//take off a penalty for invalid actions
-				fitnessValue -= ((DartStateData)input).plan.invalidActions * INVALID_ACTION_PENALTY;
+				//fitnessValue -= ((DartStateData)input).plan.invalidActions * INVALID_ACTION_PENALTY;
 				//take off a penalty for plan length
-				fitnessValue -= ((DartStateData)input).plan.size() * VERBOSENESS_PENALTY;
+				//fitnessValue -= ((DartStateData)input).plan.size() * VERBOSENESS_PENALTY;
 				// and tree size
 				//fitnessValue -= ((GPIndividual)ind).size() * VERBOSENESS_PENALTY;
 				
