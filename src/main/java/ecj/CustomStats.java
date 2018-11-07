@@ -645,9 +645,9 @@ public class CustomStats extends Statistics
         
         GPProblem problem = new OmnetProblemSingle();           
                     
-        StateData input = new StateData();
+        DartStateData input = new DartStateData();
         
-        ((StateData)input).initializeState();
+        ((DartStateData)input).initializeState();
 		((GPIndividual)ind).trees[0].child.eval(state, 0, input, problem.stack, ((GPIndividual)ind), problem);
 		
 		boolean writeJavaRep = false;
@@ -736,9 +736,9 @@ public static int getSize(final EvolutionState state,Individual individual) {
         
         GPProblem problem = new OmnetProblemSingle();           
                     
-        StateData input = new StateData();
+        DartStateData input = new DartStateData();
         
-        ((StateData)input).initializeState();
+        ((DartStateData)input).initializeState();
 		((GPIndividual)ind).trees[0].child.eval(state, 0, input, problem.stack, ((GPIndividual)ind), problem);
 		
 		return input.plan.size();
