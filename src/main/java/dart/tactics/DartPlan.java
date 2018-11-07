@@ -25,17 +25,19 @@ public class DartPlan extends Plan {
 	
 	// TODO Warning, this is not right, must be updated to properly use the given plan!
 	public Fitness evaluate(SystemState system){
-		return (new Dart()).calculateInstFitness();
+		return (new Dart()).calculateInstFitness(this.toString());
 	}
 
 	public String toString(){
+		
 		String ans = "";
 		
 		for (int count = 0; count < tactics.size(); count++)
-			ans = ans + tactics.get(count) + " ";
+			ans = ans + tactics.get(count).getClass().getSimpleName() + " ";
 		
 		return ans;
 		
+		//return tactics.get(0).getClass().getSimpleName();
 	}
 	
 	public Object clone(){
