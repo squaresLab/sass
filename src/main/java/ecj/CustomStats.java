@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import dart.Dart;
 import distance.APTED;
 import ec.util.*;
 import omnet.Omnet;
@@ -643,64 +644,12 @@ public class CustomStats extends Statistics
     	
     	GPIndividual ind = (GPIndividual) individual;
         
-        GPProblem problem = new OmnetProblemSingle();           
+        GPProblem problem = new DartProblemSingle();           
                     
         DartStateData input = new DartStateData();
         
         ((DartStateData)input).initializeState();
 		((GPIndividual)ind).trees[0].child.eval(state, 0, input, problem.stack, ((GPIndividual)ind), problem);
-		
-		boolean writeJavaRep = false;
-		
-		 if (writeJavaRep){
-		
-		long time = System.currentTimeMillis();
-		String filename = "javagen/Plan"+time+".java";
-		
-		 File directory = new File("javagen");
-		    if (! directory.exists()){
-		        directory.mkdir();
-		    }
-		
-		 directory = new File("objectgen");
-		    if (! directory.exists()){
-		        directory.mkdir();
-		    }
-		    
-		   
-		    
-		// generate java code for deckard to work its magic
-		JavaRep java = new JavaRep();
-		java.addLine("public class Plan"+time+" extends Plan { ", null);
-		java.addLine("public static void main(String[] args) { ", null);
-		((JavaGenerator) ((GPIndividual)ind).trees[0].child).generateJava(java);
-		java.newLine();
-		java.addLine("}", null);
-		java.addLine("}", null);
-		
-		 try{
-			    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-			    writer.write(java.toString());
-			    writer.close();
-			}catch (IOException e) {
-				e.printStackTrace();
-			}
-		 
-		 // write the objects to the file
-		 filename = "objectgen/Plan"+time+".ser";
-	        FileOutputStream fos = null;
-	        ObjectOutputStream out = null;
-	        try {
-	            fos = new FileOutputStream(filename);
-	            out = new ObjectOutputStream(fos);
-	            out.writeObject(java);
-
-	            out.close();
-	        } catch (Exception ex) {
-	            ex.printStackTrace();
-	        }
-	        
-		    }
 		
 		// disable the pruning feature
 		input.plan.setMinAcceptedImprovment(0);
@@ -714,7 +663,7 @@ public class CustomStats extends Statistics
 		
 		}
 		// now compute fitness without any penalties
-		system.Fitness f = input.plan.evaluate(new Omnet(scenario),runtime);
+		system.Fitness f = ((DartStateData)input).plan.evaluate(new Dart());		
 		
 		if (needToReenable){
 			Simulator.setRuntimeKillEnable(true);
@@ -734,7 +683,7 @@ public static int getSize(final EvolutionState state,Individual individual) {
     	
     	GPIndividual ind = (GPIndividual) individual;
         
-        GPProblem problem = new OmnetProblemSingle();           
+        GPProblem problem = new DartProblemSingle();           
                     
         DartStateData input = new DartStateData();
         
