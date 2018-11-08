@@ -8,10 +8,10 @@ import system.Fitness;
 import system.SystemState;
 
 public class Dart extends SystemState {
-	static final String PLA_DIR = "/home/ckinneer/research/drew/pladapt";
+	static final String PLA_DIR = "/home/cody/taas/pladapt";
 //	static final String FITNESS_CMD_STRING = "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:"+PLA_DIR+"/examples/dart/dartam/build/src/.libs "+PLA_DIR+"/examples/dart/dartfitness/dartfitness";
 //  static final String FITNESS_CMD_STRING = "/home/ckinneer/research/pladapt/examples/dart/dartfitness/test.sh";
-    static final String FITNESS_CMD_STRING = "/home/ckinneer/research/drew/pladapt/examples/dart/dartfitness/run.sh";
+    static final String FITNESS_CMD_STRING = "/home/cody/taas/pladapt/examples/dart/dartfitness/run.sh";
 //	static final String FITNESS_CMD_STRING = "echo \"test\"";
 
 

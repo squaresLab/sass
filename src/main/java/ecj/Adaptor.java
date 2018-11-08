@@ -53,7 +53,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
 public class Adaptor {
 
 	private static double generations = 10;
-	private static double popSize = 50;
+	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
 	private static double invalidActionPenalty = 0;
@@ -86,7 +86,7 @@ public class Adaptor {
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
 		// load monitoring info from file
-		monitoringInfo = loadMonitoringInfo("/home/ckinneer/research/drew/pladapt/examples/dart/darteval/monitoring.ser");
+		//monitoringInfo = loadMonitoringInfo("/home/ckinneer/research/drew/pladapt/examples/dart/darteval/monitoring.ser");
 		
 		// set statistics to simplestatistics
 		dbase.setProperty("stat", "ec.simple.SimpleStatistics");
