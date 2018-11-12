@@ -41,7 +41,7 @@ gp.fs.0.name = f0
 
 # We have these functions in the function set.  They are:
 # We have these functions in the function set.  They are:
-gp.fs.0.size = 5
+gp.fs.0.size = 9
 gp.fs.0.func.0 = ecj.operators.SequenceOperator
 gp.fs.0.func.0.nc = nc1
 gp.fs.0.func.1 = ecj.actions.GoLoose

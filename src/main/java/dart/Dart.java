@@ -26,7 +26,7 @@ public class Dart extends SystemState {
 		// call the dart fitness simulator for fitness calculation
 		Runtime rt = Runtime.getRuntime();
 		String cmd = FITNESS_CMD_STRING;
-		cmd += " --plan " + plan.trim().replace(' ', '_') + "  --adapt-mgr sass";
+		cmd += " --plan " + plan.trim().replace(' ', '_') + "  --lookahead-horizon 20 --ecm --altitude-levels 4 --map-size 40 --two-level-tactics --num-targets 20 --num-threats 10 --adapt-mgr sass";
 		String s = "";
 		//System.out.println(cmd);
 		try {

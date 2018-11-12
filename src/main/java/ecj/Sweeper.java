@@ -40,7 +40,7 @@ public class Sweeper {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 		
-		File parameterFile = new File("/home/cody/AdaptiveSystemsGeneticProgrammingPlanner/selfadaptivesystemsingleobjective.params");
+		File parameterFile = new File("/home/cody/taas/analysis-code/selfadaptivesystemsingledartobjective.params");
 		
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 
@@ -54,7 +54,7 @@ public class Sweeper {
 		
 		Scenario scenario = Scenario.normal;
 		
-		for (int generations: new int[] {1,5}){
+		for (int generations: new int[] {1,10,100}){
 
 			for(int popSize: new int[] {1,10,100,1000}){
 
@@ -63,13 +63,13 @@ public class Sweeper {
 					for (double mutationChance = 1-crossoverChance; mutationChance >= 0; mutationChance -= .1){
 						double reproductionChance = 1-crossoverChance-mutationChance;
 
-					for (double killRatio: new double[] {0,.1,.2}){
+					for (double killRatio: new double[] {0}){
 
 						for(double invalidActionPenalty: new double[] {0}){
 
-							for(double verbosenessPenalty: new double[] {.01,.1,1,10}){
+							for(double verbosenessPenalty: new double[] {0}){
 
-								for(double minAcceptedImprovement: new double[] {.001,.01,.1,1}){
+								for(double minAcceptedImprovement: new double[] {0}){
 									
 									// run multiple trials
 									for (int trial = 0; trial < 10; trial++){
@@ -119,9 +119,9 @@ public class Sweeper {
 									
 									GPIndividual best = (GPIndividual) stats.best_of_run[0];
 									
-									double profit = CustomStats.getProfit(evaluatedState, best, scenario);
+									double profit = CustomStats.getProfit(evaluatedState,best,scenario);
 									
-									int size = CustomStats.getSize(evaluatedState, best);
+									int size = CustomStats.getSize(evaluatedState,best);
 									
 									System.out.println(line+size+","+runtime+","+profit);
 									
