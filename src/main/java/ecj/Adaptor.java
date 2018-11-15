@@ -108,10 +108,10 @@ public class Adaptor {
 		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
 
 		// try every plan
-		for (String plan : getPlans()){
+		for (String plan : new String[] {"repertoire"}){
 			
 		// try differant start strategies
-		for (String init : getInits(plan)){
+		for (String init : new String[] {"repertoire"}){
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
 		for (double buildprob : getBuildProbs(plan)){
@@ -229,7 +229,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new double[] {0.90};
+			return new double[] {0.75};
 			
 		}
 	}
@@ -307,6 +307,8 @@ public class Adaptor {
 			init = "ecj.MutationBuilder";
 		}else if (initializer.equals("deckard")){
 			init = "ecj.DeckardBuilder";
+		}else if (initializer.equals("repertoire")) {
+			init = "ecj.RepertoireBuilder";
 		}
 		/*
 		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
