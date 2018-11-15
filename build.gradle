@@ -58,6 +58,14 @@ task runParamSweeper(type: JavaExec){
 	maxHeapSize='10g'
 }
 
+task runSeeder(type: JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+	
+	main = 'ecj.PopulationSeeder'
+	
+	maxHeapSize='10g'
+}
+
 task runAdaptor(type: JavaExec){
 	classpath = sourceSets.main.runtimeClasspath
 	
