@@ -179,9 +179,9 @@ gp.nc.6.child.0 = plan
 gp.koza.xover.maxdepth = 10
 gp.koza.mutate.maxdepth = 10
 gp.koza.grow.min-depth = 1
-gp.koza.grow.max-depth = 10
+gp.koza.grow.max-depth = 20
 gp.koza.half.min-depth = 1
-gp.koza.half.max-depth = 5
+gp.koza.half.max-depth = 10
 
 eval.problem = ecj.DartProblemSingle
 eval.problem.data = ecj.DartStateData
@@ -240,7 +240,7 @@ stat.do-time = true
 #stat.child.0 = ec.parsimony.TarpeianStatistics
 #stat.child.0.kill-proportion = 0.2
 
-gp.tc.0.init = ec.gp.koza.HalfBuilder
+gp.tc.0.init = ec.gp.koza.GrowBuilder
 
 #gp.tc.0.init = ecj.MutationBuilder
 
@@ -251,7 +251,7 @@ gp.tc.0.init = ec.gp.koza.HalfBuilder
 #come back and adjust this later when you know exactly what you need
 gp.koza.initmutate.ns = ec.gp.koza.KozaNodeSelector
 gp.koza.initmutate.build = ec.gp.koza.GrowBuilder
-gp.koza.initmutate.maxdepth = 10
+gp.koza.initmutate.maxdepth = 20
 gp.koza.initmutate.tries = 100
 
 #quit-on-run-complete	= false

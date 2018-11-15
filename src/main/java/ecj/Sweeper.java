@@ -54,13 +54,13 @@ public class Sweeper {
 		
 		Scenario scenario = Scenario.normal;
 		
-		for (int generations: new int[] {1,10,100}){
+		for (int generations: new int[] {1,10,25,75,100}){
 
-			for(int popSize: new int[] {1,10,100,1000}){
+			for(int popSize: new int[] {1,10,100,1000,10000}){
 
 				
-				for (double crossoverChance = 1; crossoverChance > .5; crossoverChance -= .1){
-					for (double mutationChance = 1-crossoverChance; mutationChance >= 0; mutationChance -= .1){
+				for (double crossoverChance = 0.6; crossoverChance >= 0.6; crossoverChance -= .1){
+					for (double mutationChance = 0.2; mutationChance >= 0.2; mutationChance -= .1){
 						double reproductionChance = 1-crossoverChance-mutationChance;
 
 					for (double killRatio: new double[] {0}){

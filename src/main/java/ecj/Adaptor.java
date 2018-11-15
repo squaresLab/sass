@@ -156,9 +156,9 @@ public class Adaptor {
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
-				//double profit = CustomStats.getProfit(evaluatedState, best, scenario);//,(long) Math.ceil(totaltime/1000.0));
+				double profit = CustomStats.getProfit(evaluatedState, best, scenario);//,(long) Math.ceil(totaltime/1000.0));
 
-				double profit = best.fitness.fitness();
+				//double profit = best.fitness.fitness();
 				
 				int size = CustomStats.getSize(evaluatedState, best);
 				
@@ -168,7 +168,7 @@ public class Adaptor {
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
 				trial = (int) (numOfLines / (generations));
-				//System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
+				System.out.println(trial+","+generation +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
 				fr.write(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize+"\n");
 
 				}
