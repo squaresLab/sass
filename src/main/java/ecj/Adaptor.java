@@ -108,10 +108,11 @@ public class Adaptor {
 		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
 
 		// try every plan
-		for (String plan : new String[] {"repertoire"}){
+		for (String plan : new String[] {"scratch","repertoire"}){ //scratch
 			
 		// try differant start strategies
-		for (String init : new String[] {"repertoire"}){
+		//for (String init : new String[] {"repertoire"}){
+		String init = plan;
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
 		for (double buildprob : getBuildProbs(plan)){
@@ -201,7 +202,7 @@ public class Adaptor {
 		}
 		}
 		}
-		}
+		//}
 		}
 			fr.close();
 		}

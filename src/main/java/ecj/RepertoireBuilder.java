@@ -165,7 +165,7 @@ private static String initial;
 	@Override
 	public GPNode newRootedTree(EvolutionState state, GPType type, int thread, GPNodeParent parent, GPFunctionSet set,
 			int argposition, int requestedSize) {
-		
+
 		GPNode node = null;
 		
 		File dir = new File("repertoire");
