@@ -52,7 +52,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class Adaptor {
 
-	private static double generations = 10;
+	private static double generations = 30;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
 	private static double killRatio = 0.0;
@@ -108,7 +108,7 @@ public class Adaptor {
 		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
 
 		// try every plan
-		for (String plan : new String[] {"scratch","repertoire"}){ //scratch
+		for (String plan : new String[] {"repertoire"}){ //scratch
 			
 		// try differant start strategies
 		//for (String init : new String[] {"repertoire"}){
@@ -132,10 +132,15 @@ public class Adaptor {
 			
 			Simulator.setRuntimeKillEnable(enableRuntimeKill < 1 ? true : false);
 			
+			//System.out.println("Starting init");
+			//long timer = System.currentTimeMillis();
+			
 			// run ECJ with the settings that I asked for
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
 			
 			evaluatedState.startFresh();
+			
+			//System.out.println("Starting evolves "+(System.currentTimeMillis()-timer)/1000);
 			
 			int generation = 0;
 			
@@ -230,7 +235,7 @@ public class Adaptor {
 			
 		}else{
 			
-			return new double[] {0.75};
+			return new double[] {0.9};
 			
 		}
 	}
