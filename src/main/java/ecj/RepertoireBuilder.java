@@ -166,13 +166,17 @@ private static String initial;
 	public GPNode newRootedTree(EvolutionState state, GPType type, int thread, GPNodeParent parent, GPFunctionSet set,
 			int argposition, int requestedSize) {
 
+		Random rand = new Random();
+		
 		GPNode node = null;
+		
+		if (rand.nextDouble() < buildprob){
+			 return builder.newRootedTree(state, type, thread, parent, set, argposition, requestedSize);
+		 }
 		
 		File dir = new File("repertoire");
 		
 		File[] files = dir.listFiles();
-
-		Random rand = new Random();
 
 		File file = files[rand.nextInt(files.length)];
 		
