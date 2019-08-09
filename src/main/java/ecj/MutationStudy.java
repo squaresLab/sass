@@ -18,7 +18,9 @@ import ec.util.Log;
 import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario;
+import omnet.ScenarioFactory;
 
 /*
 Parameters that we are interested in:
@@ -84,8 +86,8 @@ public class MutationStudy {
 		System.out.println("trial,generation,individual,plan,scenario,dAverageSize,dAverageFitness,dAverageDiff,dAverageTDiff");
 		
 		// for every scenario
-		for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
-
+		for (Seams2018Scenario seams2018Scenario : new Seams2018Scenario[] {Seams2018Scenario.fourserv,Seams2018Scenario.requests,Seams2018Scenario.requestsfourserv,Seams2018Scenario.econ,Seams2018Scenario.unreliable,Seams2018Scenario.failc}){
+		Scenario scenario = ScenarioFactory.getScenario(seams2018Scenario);
 		// try every plan
 		for (String plan : getPlans()){
 			
@@ -440,7 +442,7 @@ double[] ans = new double[d.length];
 			init = "ecj.MutationBuilder";
 		}
 		
-		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
+		if (scenario.isFourservEnabled()){
 			copy.setProperty("gp.fs.0.size", "14");
 		}else{
 			copy.setProperty("gp.fs.0.size", "13");

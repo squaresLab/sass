@@ -10,7 +10,7 @@ import ec.EvolutionState;
 import ec.gp.GPIndividual;
 import ec.util.Parameter;
 import ecj.MutationBuilder;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
 import omnet.tactics.DecreaseDimmer;
 import omnet.tactics.IncreaseDimmer;
 import omnet.tactics.IncreaseTraffic;
@@ -24,7 +24,7 @@ public class FitnessSanity {
 
 	public static void testInd(OmnetPlan plan){
 		
-		Fitness fitnessBest = plan.evaluate(new Omnet(Scenario.normal));
+		Fitness fitnessBest = plan.evaluate(new Omnet(new Scenario()));
 		
 		// compare to some other plans
 		OmnetPlan hplan = new OmnetPlan();
@@ -57,7 +57,7 @@ public class FitnessSanity {
 		
 		
 		
-		Fitness human = hplan.evaluate(new Omnet(Scenario.normal));
+		Fitness human = hplan.evaluate(new Omnet(new Scenario()));
 		
 		
 	}
@@ -119,7 +119,7 @@ public class FitnessSanity {
 		
 		
 		
-		Fitness f = plan.evaluate(new Omnet(Scenario.normal));
+		Fitness f = plan.evaluate(new Omnet(new Scenario()));
 		
 		System.out.println(f.get("Profit"));
 		assert f.get("Profit") == 1607.7200000000003;
@@ -155,7 +155,7 @@ public class FitnessSanity {
 		*/
 		
 		
-		Fitness f = plan.evaluate(new Omnet(Scenario.normal));
+		Fitness f = plan.evaluate(new Omnet(new Scenario()));
 		
 		System.out.println(f.get("Profit"));
 		assert f.get("Profit") == 1607.7200000000003;
@@ -195,9 +195,9 @@ public class FitnessSanity {
 		*/
 		
 		
-		Fitness f = plan.evaluate(new Omnet(Scenario.normal));
+		Fitness f = plan.evaluate(new Omnet(new Scenario()));
 		
-		Fitness f2 = plan2.evaluate(new Omnet(Scenario.normal));
+		Fitness f2 = plan2.evaluate(new Omnet(new Scenario()));
 		
 		System.out.println(f.get("Profit"));
 		System.out.println(f2.get("Profit"));

@@ -1,7 +1,7 @@
 package omnet.tactics;
 
 import omnet.Omnet;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
 import omnet.components.Server;
 import omnet.components.ServerFactory;
 import system.SystemState;

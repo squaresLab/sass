@@ -11,7 +11,9 @@ import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import omnet.FitnessSanity;
 import omnet.Omnet;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario;
+import omnet.ScenarioFactory;
 import system.Fitness;
 import system.Simulator;
 
@@ -42,7 +44,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				
 				killratio = state.parameters.getDouble(new Parameter("runtime_kill_ratio"), null);
 				
-				scenario = Scenario.fromString(scenarioName);
+				scenario = ScenarioFactory.fromString(scenarioName);
 				
 			}
 		}

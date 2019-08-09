@@ -2,7 +2,7 @@ package omnet;
 
 import java.util.ArrayList;
 
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
 import omnet.components.Datacenter;
 import omnet.components.DatacenterFactory;
 import omnet.components.Server;
@@ -12,24 +12,25 @@ import omnet.tactics.StartServer;
 import system.SystemState;
 import tactics.FailableTactic;
 import tactics.Tactic;
+import omnet.Scenario;
 
 public class Omnet extends SystemState {
 	
-	public enum Scenario {
+	public enum Seams2018Scenario {
 			normal,requests,fourserv,requestsfourserv,econ,failc,unreliable;
-		public static Scenario fromString(String name){
-			Scenario scenario;
+		public static Seams2018Scenario fromString(String name){
+			Seams2018Scenario scenario;
 			
 			switch (name){
 			//TODO
-			case "failc": scenario = Scenario.failc; break;
-			case "unreliable": scenario = Scenario.unreliable; break;
+			case "failc": scenario = Seams2018Scenario.failc; break;
+			case "unreliable": scenario = Seams2018Scenario.unreliable; break;
 			//done
-			case "econ": scenario = Scenario.econ; break;
-			case "requests": scenario = Scenario.requests; break;
-			case "fourserv": scenario = Scenario.fourserv; break;
-			case "requestsfourserv": scenario = Scenario.requestsfourserv; break;
-			default: scenario = Scenario.normal; break;
+			case "econ": scenario = Seams2018Scenario.econ; break;
+			case "requests": scenario = Seams2018Scenario.requests; break;
+			case "fourserv": scenario = Seams2018Scenario.fourserv; break;
+			case "requestsfourserv": scenario = Seams2018Scenario.requestsfourserv; break;
+			default: scenario = Seams2018Scenario.normal; break;
 			}
 			
 			return scenario;
@@ -39,13 +40,13 @@ public class Omnet extends SystemState {
 	// requests / sec on the system, assumed constant for now
 	public int SYSTEM_DEMAND = 1000;
 	
-	private static final double NORMAL_PROFIT_PER_SECOND = 3;
+	static double NORMAL_PROFIT_PER_SECOND = 3;
 
-	private static final double DIMMED_PROFIT_PER_SECOND = 1;
+	static double DIMMED_PROFIT_PER_SECOND = 1;
 	
 	private double dimmedResponses,normalResponses,income,cost,latency;
 
-	private static final double MAX_LATENCY_PER_SERVER = 1000;
+	private static double MAX_LATENCY_PER_SERVER = 1000;
 	
 	private ArrayList<Datacenter> datacenters;
 	
@@ -69,14 +70,8 @@ public class Omnet extends SystemState {
 		datacenters.add(datacenterFactory.getB());
 		datacenters.add(datacenterFactory.getC());
 		
-		if (s.equals(Scenario.fourserv) || s.equals(Scenario.requestsfourserv)){
-			datacenters.add(datacenterFactory.getD());
-		}
-		if (s.equals(Scenario.requests) || s.equals(Scenario.requestsfourserv)){
-			SYSTEM_DEMAND = 10000;
-		}else{
-			SYSTEM_DEMAND = 1000;
-		}
+		s.applyTo(this);
+		
 		/*
 		servers.add(serverFactory.getD());
 		servers.add(serverFactory.getE());
@@ -97,15 +92,8 @@ public class Omnet extends SystemState {
 	
 	@Override
 	public void accept(Tactic tactic){
-
-		if (tactic instanceof StartServer){
-			StartServer s = (StartServer) tactic;
-			if (scenario.equals(Scenario.failc) && s.getServer().equals("C")){
-				s.setFailChance(1);
-			}else if (scenario.equals(Scenario.unreliable)){
-				s.setFailChance(.66);
-			}
-		}
+		
+		scenario.acceptTactic(tactic);
 		super.accept(tactic);
 	}
 	

@@ -4,7 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import omnet.Omnet;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario;
 import system.Fitness;
 import tactics.FailableTactic;
 import tactics.Plan;
@@ -52,7 +53,7 @@ public class OmnetPlan extends Plan {
 		
 		
 		
-		Fitness f = plan.evaluate(new Omnet(Scenario.normal));
+		Fitness f = plan.evaluate(new Omnet(new Scenario()));
 		
 		System.out.println(f.get("Profit"));
 		

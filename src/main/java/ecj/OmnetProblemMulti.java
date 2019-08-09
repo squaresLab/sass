@@ -8,7 +8,9 @@ import ec.multiobjective.MultiObjectiveFitness;
 import ec.simple.SimpleProblemForm;
 import ec.util.Parameter;
 import omnet.Omnet;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario;
+import omnet.ScenarioFactory;
 import omnet.tactics.OmnetPlan;
 import system.Fitness;
 
@@ -48,7 +50,7 @@ public class OmnetProblemMulti extends GPProblem implements SimpleProblemForm {
 		            
 					String scenarioName = state.parameters.getStringWithDefault(new Parameter("scenario_name"), null,"normal");
 					
-					scenario = Scenario.fromString(scenarioName);
+					scenario = ScenarioFactory.fromString(scenarioName);
 					
 		        } else {
 		        	System.err.println("please define the objectives parameter to list what the plans should be evaluated on");

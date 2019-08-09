@@ -15,13 +15,16 @@ import java.util.regex.Pattern;
 import distance.APTED;
 import ec.util.*;
 import omnet.Omnet;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario;
+import omnet.ScenarioFactory;
 import system.Simulator;
 import util.LblTree;
 import ec.eval.*;
 import ec.gp.GPIndividual;
 import ec.gp.GPProblem;
 import ec.simple.SimpleProblemForm;
+
 
 /* 
  * SimpleShortStatistics.java
@@ -139,7 +142,7 @@ public class CustomStats extends Statistics
         
         String scenarioName = state.parameters.getStringWithDefault(new Parameter("scenario_name"), null,"normal");
 		
-		scenario = Scenario.fromString(scenarioName);
+		scenario = ScenarioFactory.fromString(scenarioName);
         
         File statisticsFile = state.parameters.getFile(
             base.push(P_STATISTICS_FILE),null);

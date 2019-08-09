@@ -1,19 +1,19 @@
 package omnet.components;
 
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
 
 public class ServerFactory {
 	
 	int[] numServers;
-	Scenario scenario;
+	Seams2018Scenario scenario;
 	
 	int mult = 1;
 	
-	public ServerFactory(Scenario s){
+	public ServerFactory(Seams2018Scenario s){
 		numServers = new int[16];
 		scenario = s;
 		
-		if (s.equals(Scenario.econ)){
+		if (s.equals(Seams2018Scenario.econ)){
 			mult = 100;
 		}
 	}

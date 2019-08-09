@@ -13,7 +13,8 @@ import ec.util.DataPipe;
 import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario;
 
 /*
 Parameters that we are interested in:
@@ -52,7 +53,7 @@ public class Sweeper {
 		// print header
 		System.out.println("generations,popSize,crossoverChance,mutationChance,reproductionChance,killRatio,invalidActionPenalty,verbosenessPenalty,minAcceptedImprovement,size,runtime,profit");
 		
-		Scenario scenario = Scenario.normal;
+		Scenario scenario = new Scenario();
 		
 		for (int generations: new int[] {1,5}){
 

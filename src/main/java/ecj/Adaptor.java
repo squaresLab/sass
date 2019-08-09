@@ -19,7 +19,9 @@ import ec.util.Log;
 import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
-import omnet.Omnet.Scenario;
+import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario;
+import omnet.ScenarioFactory;
 import system.Simulator;
 import tactics.Plan;
 
@@ -80,8 +82,8 @@ public class Adaptor {
 		for (double enableRuntimeKill : new double[]{0.75}){
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
-		for (Scenario scenario : new Scenario[] {Scenario.requestsfourserv}){
-
+		for (Seams2018Scenario seams2018Scenario : new Seams2018Scenario[] {Seams2018Scenario.requestsfourserv}){
+		Scenario scenario = ScenarioFactory.getScenario(seams2018Scenario);
 		// try every plan
 		for (String plan : getPlans()){
 			
@@ -257,7 +259,7 @@ public class Adaptor {
 			init = "ecj.DeckardBuilder";
 		}
 		
-		if (scenario.equals(Scenario.fourserv) || scenario.equals(Scenario.requestsfourserv)){
+		if (scenario.isFourservEnabled()){
 			copy.setProperty("gp.fs.0.size", "14");
 		}else{
 			copy.setProperty("gp.fs.0.size", "13");

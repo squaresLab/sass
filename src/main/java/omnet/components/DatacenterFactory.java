@@ -1,6 +1,8 @@
 package omnet.components;
 
-import omnet.Omnet.Scenario;
+import java.util.Arrays;
+
+import omnet.Scenario;
 
 public class DatacenterFactory {
 
@@ -8,11 +10,26 @@ public class DatacenterFactory {
 	
 	double mult = 1;
 	
+	String[] serverLabels = {"A","B","C","D"};
+	
 	public DatacenterFactory(Scenario s){
 		this.s = s;
-		if (s.equals(Scenario.econ)){
-			mult = 100;
-		}
+	}
+	
+	public Datacenter getDatacenter(String label) {
+		int index = Arrays.asList(serverLabels).indexOf(label);
+		Datacenter ans = new Datacenter(label);
+		
+		ans.cost = s.getCost()[index];
+		ans.power = s.getPower()[index];
+		ans.powerPerNormal = s.getPowerPerNormal()[index];
+		ans.latency = s.getLatency()[index];
+		
+		return ans;
+	}
+	
+	public Datacenter getDatacenter(int index) {
+		return getDatacenter(serverLabels[index]);
 	}
 	
 	public Datacenter getA() {
