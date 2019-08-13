@@ -31,10 +31,10 @@ public class Scenario {
 	double[] powerPerNormal = {150.0/50.0, 200.0/130.0, 300.0/150.0, 80.0 / 25.0};
 	long[] latency = {120,120,120,60};
 	
-	// constants for each tactic
+	// constants for each tactic, note that these aren't applied yet
 	// DD, DT, ID, IT, ShS, StS
-	double[] failChance = {0.05,0.01,0.05,0.05,0.1,0.1};
-	long[] executionTime = {1,5,1,5,30};
+	//double[] failChance = {0.05,0.01,0.05,0.05,0.1,0.1};
+	//long[] executionTime = {1,5,1,5,30};
 	
 	interface TacticHandler {
 		void acceptTactic(Tactic tactic);
@@ -92,13 +92,13 @@ public class Scenario {
 		return latency;
 	}
 
-	public double[] getFailChance() {
-		return failChance;
-	}
-
-	public long[] getExecutionTime() {
-		return executionTime;
-	}
+//	public double[] getFailChance() {
+//		return failChance;
+//	}
+//
+//	public long[] getExecutionTime() {
+//		return executionTime;
+//	}
 
 	// allow for arbitrary modifications to tactics
 	public void acceptTactic(Tactic tactic) {

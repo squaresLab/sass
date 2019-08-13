@@ -4,6 +4,10 @@ import omnet.Omnet.Seams2018Scenario;
 import omnet.tactics.StartServer;
 
 public class ScenarioFactory {
+	
+	public enum ScenarioType {
+		newDataCenter, lossOfTactic, changeToConstants;
+	}
 
 	public static Scenario fromString(String scenarioName) {
 		return getScenario(Seams2018Scenario.fromString(scenarioName));
