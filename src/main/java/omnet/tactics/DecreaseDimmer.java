@@ -11,13 +11,14 @@ import tactics.FailableTactic;
 public class DecreaseDimmer extends FailableTactic {
 
 	// set statically for now
-	private static double failChance = 0.05;
+	//private static double failChance = 0.05;
 	private static long latency = 1;
 	
 	private String server;
 	
 	public DecreaseDimmer(String serverName){
 		server = serverName;
+		failChance = 0.05;
 	}
 	
 	public String getServer() {
@@ -39,11 +40,6 @@ public class DecreaseDimmer extends FailableTactic {
 			this.setFailed(true);
 		}
 		
-	}
-
-	@Override
-	public double getFailChance() {
-		return failChance;
 	}
 
 	@Override

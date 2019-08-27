@@ -5,6 +5,7 @@ import java.util.List;
 
 import omnet.components.Datacenter;
 import omnet.components.DatacenterFactory;
+import tactics.FailableTactic;
 import tactics.Tactic;
 
 public class Scenario {

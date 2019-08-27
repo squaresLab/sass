@@ -11,13 +11,14 @@ import tactics.FailableTactic;
 public class DecreaseTraffic extends FailableTactic {
 
 	// set statically for now
-	private static double failChance = 0.01;
+	//private static double failChance = 0.01;
 	private static long latency = 5;
 	
 	private String server;
 
 	public DecreaseTraffic(String serverName){
 		server = serverName;
+		failChance = 0.01;
 	}
 	
 	@Override
@@ -35,11 +36,6 @@ public class DecreaseTraffic extends FailableTactic {
 			this.setFailed(true);
 		}
 		
-	}
-
-	@Override
-	public double getFailChance() {
-		return failChance;
 	}
 
 	@Override

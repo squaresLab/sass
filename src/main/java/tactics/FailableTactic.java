@@ -5,6 +5,8 @@ public abstract class FailableTactic extends Tactic {
 	private boolean failed;
 	
 	private boolean intentionalFail;
+	
+	protected double failChance;
 
 	private Long startTime;
 	
@@ -33,8 +35,14 @@ public abstract class FailableTactic extends Tactic {
 		return startTime;
 	}
 	
-	public abstract double getFailChance();
+	public double getFailChance() {
+		return failChance;
+	}
 	
+	public void setFailChance(double failChance) {
+		this.failChance = failChance;
+	}
+		
 	// get a failed tactic
 	public FailableTactic getFail() {
 		

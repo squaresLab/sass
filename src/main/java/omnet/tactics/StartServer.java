@@ -9,13 +9,14 @@ import tactics.FailableTactic;
 
 public class StartServer extends FailableTactic {
 
-	private double failChance = 0.1;
+	//private double failChance = 0.1;
 	private long latency;
 	
 	private String server;
 
 	public StartServer(String serverName){
 		server = serverName;
+		failChance = 0.1;
 	}
 	
 	@Override
@@ -62,11 +63,6 @@ public class StartServer extends FailableTactic {
 	
 	public void setFailChance(double p){
 		failChance = p;
-	}
-	
-	@Override
-	public double getFailChance() {
-		return failChance;
 	}
 	
 	public String toString() {

@@ -1,7 +1,9 @@
 package omnet;
 
 import omnet.Omnet.Seams2018Scenario;
+import omnet.Scenario.TacticHandler;
 import omnet.tactics.StartServer;
+import tactics.FailableTactic;
 
 public class ScenarioFactory {
 	
@@ -23,6 +25,18 @@ public class ScenarioFactory {
 				s.setFailChance(.66);
 			}
 	 */
+	
+	private TacticHandler getFailchanceHandler(Class c, double failchance) {
+		return (tactic)->{
+			if (tactic instanceof FailableTactic) {
+				FailableTactic ft = (FailableTactic) tactic;
+				if (c.isInstance(tactic)){
+					StartServer s = (StartServer) tactic;
+					ft.setFailChance(1);
+				}
+			}
+		};
+	}
 	
 	//normal,requests,fourserv,requestsfourserv,econ,failc,unreliable;
 	public static Scenario getScenario(Seams2018Scenario seams2018Scenario) {

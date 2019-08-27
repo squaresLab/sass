@@ -8,13 +8,14 @@ import tactics.FailableTactic;
 public class ShutdownServer extends FailableTactic {
 
 	// set statically for now
-	private static double failChance = 0.1;
+	//private static double failChance = 0.1;
 	private static long latency = 30;
 	
 	private String server;
 
 	public ShutdownServer(String serverName){
 		server = serverName;
+		failChance = 0.1;
 	}
 	
 	@Override
@@ -34,11 +35,6 @@ public class ShutdownServer extends FailableTactic {
 			return;
 		}
 				
-	}
-
-	@Override
-	public double getFailChance() {
-		return failChance;
 	}
 
 	@Override
