@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -157,7 +159,7 @@ public class RepertoireBuilder {
 			GPIndividual best = (GPIndividual) stats.best_of_run[0];
 			
 			long time = System.currentTimeMillis();
-			String filename = "repertoireBuilder/Plan"+time+".java";
+			String filename = "repertoireBuilder/Plan"+time+".txt";
 			
 			 File directory = new File("repertoireBuilder");
 			 if (! directory.exists()){
@@ -166,7 +168,12 @@ public class RepertoireBuilder {
 			
 			 try{
 			    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-			    writer.write(best.genotypeToString());
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				best.printIndividual(evaluatedState, pw);
+				String ans = sw.toString();
+				ans = ans.split("\n")[3];
+			    writer.write(ans);
 			    writer.close();
 			}catch (IOException e) {
 				e.printStackTrace();
