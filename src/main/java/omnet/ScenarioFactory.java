@@ -14,9 +14,9 @@ import java.util.Random;
 
 public class ScenarioFactory {
 	
-	private Class[] tacticClasses = {DecreaseDimmer.class, IncreaseDimmer.class, DecreaseTraffic.class, IncreaseTraffic.class, ShutdownServer.class, StartServer.class};
+	private static Class[] tacticClasses = {DecreaseDimmer.class, IncreaseDimmer.class, DecreaseTraffic.class, IncreaseTraffic.class, ShutdownServer.class, StartServer.class};
 	
-	private Random random = new Random();
+	private static Random random = new Random();
 	
 	public enum ScenarioType {
 		newDataCenter, lossOfTactic, changeToConstants;
@@ -32,7 +32,7 @@ public class ScenarioFactory {
 	
 	// This method will take a scenario and perform a change operation on it
 	// used to get a new scenario, can be used multiple times for more changes
-	public void mutateScenario(Scenario scenario) {
+	public static void mutateScenario(Scenario scenario) {
 		double roll = random.nextDouble();
 		
 		// 10% flip the bit, 20% tactic failrate change
@@ -72,7 +72,7 @@ public class ScenarioFactory {
 	}
 	
 	// pick a random element of array, plus or minus by a uniform random value up to maxChange
-	private <T> void mutateArray(T[] a, int maxChange) {
+	private static <T> void mutateArray(T[] a, int maxChange) {
 		int index = random.nextInt(a.length);
 		if (a instanceof Double[]) {
 			double change = random.nextInt(maxChange+1);
@@ -103,7 +103,7 @@ public class ScenarioFactory {
 			}
 	 */
 	// add a handler to multiply the tactic by a coefficient
-	private TacticHandler getFailchanceHandler(Class c, double failchancecoeff) {
+	private static TacticHandler getFailchanceHandler(Class c, double failchancecoeff) {
 		return (tactic)->{
 			if (tactic instanceof FailableTactic) {
 				FailableTactic ft = (FailableTactic) tactic;
@@ -159,7 +159,7 @@ public class ScenarioFactory {
 		}
 	}
 	
-	private Double[] toObjectArray(double[] array) {
+	private static Double[] toObjectArray(double[] array) {
 		Double[] ans = new Double[array.length];
 		for (int i = 0; i < array.length; i++) {
 			ans[i] = (Double) array[i];
