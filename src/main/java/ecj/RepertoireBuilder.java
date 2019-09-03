@@ -105,6 +105,8 @@ public class RepertoireBuilder {
 		for (int i = 0; i < mutations; i++) {
 			ScenarioFactory.mutateScenario(scenario);
 		}
+		
+		OmnetProblemSingle.scenario = scenario;
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
 		for (double buildprob : getBuildProbs(plan)){

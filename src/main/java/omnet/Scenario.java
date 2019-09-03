@@ -141,7 +141,6 @@ public class Scenario {
 			if (tactic instanceof FailableTactic) {
 				FailableTactic ft = (FailableTactic) tactic;
 				if (c.isInstance(tactic)){
-					StartServer s = (StartServer) tactic;
 					ft.setFailChance(failchance);
 				}
 			}

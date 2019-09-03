@@ -24,7 +24,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 		private double minAcceptedImprovement = 0;
 		private double killratio;
 		
-		private Scenario scenario;
+		public static Scenario scenario;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);

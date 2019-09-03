@@ -73,7 +73,10 @@ public class ScenarioFactory {
 	private static <T> void mutateArray(T[] a, int maxChange) {
 		int index = random.nextInt(a.length);
 		if (a instanceof Double[]) {
-			double change = random.nextInt(maxChange-1);
+			double change = 0;
+			if (maxChange > 1) {
+				change = random.nextInt(maxChange-1);
+			}
 			change += random.nextDouble();
 			if (random.nextBoolean()) {
 				change *= -1;
