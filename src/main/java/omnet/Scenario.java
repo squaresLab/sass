@@ -18,7 +18,7 @@ import tactics.Tactic;
 
 public class Scenario {
 
-	private static Class[] tacticClasses = {DecreaseDimmer.class, DecreaseTraffic.class, IncreaseDimmer.class, IncreaseTraffic.class, ShutdownServer.class, StartServer.class};
+	public static Class[] tacticClasses = {DecreaseDimmer.class, DecreaseTraffic.class, IncreaseDimmer.class, IncreaseTraffic.class, ShutdownServer.class, StartServer.class};
 	
 	// omnet constant parameters
 	int SYSTEM_DEMAND = 1000;

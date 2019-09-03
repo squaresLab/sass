@@ -13,9 +13,7 @@ import tactics.FailableTactic;
 import java.util.Random;
 
 public class ScenarioFactory {
-	
-	private static Class[] tacticClasses = {DecreaseDimmer.class, IncreaseDimmer.class, DecreaseTraffic.class, IncreaseTraffic.class, ShutdownServer.class, StartServer.class};
-	
+		
 	private static Random random = new Random();
 	
 	public enum ScenarioType {
@@ -41,9 +39,9 @@ public class ScenarioFactory {
 			scenario.fourservEnabled = Boolean.logicalXor(scenario.fourservEnabled, true);
 		}else if (roll < .3) {
 			// pick a tactic to change
-			int index = random.nextInt(tacticClasses.length);
+			int index = random.nextInt(Scenario.tacticClasses.length);
 			double failchance = random.nextDouble();
-			TacticHandler th = getFailchanceHandler(tacticClasses[index],failchance);
+			scenario.failChance[index] *= failchance;
 		}else {
 			// pick a paramter to change
 			// ignoreing latency for now
@@ -75,7 +73,7 @@ public class ScenarioFactory {
 	private static <T> void mutateArray(T[] a, int maxChange) {
 		int index = random.nextInt(a.length);
 		if (a instanceof Double[]) {
-			double change = random.nextInt(maxChange+1);
+			double change = random.nextInt(maxChange-1);
 			change += random.nextDouble();
 			if (random.nextBoolean()) {
 				change *= -1;
@@ -83,7 +81,7 @@ public class ScenarioFactory {
 			Double[] aDouble = (Double[]) a;
 			aDouble[index] += change;
 		} else if (a instanceof Long[]) {
-			Long change = (long) random.nextInt(a.length);
+			Long change = (long) random.nextInt(maxChange);
 			if (random.nextBoolean()) {
 				change *= -1;
 			}
@@ -102,18 +100,6 @@ public class ScenarioFactory {
 				s.setFailChance(.66);
 			}
 	 */
-	// add a handler to multiply the tactic by a coefficient
-	private static TacticHandler getFailchanceHandler(Class c, double failchancecoeff) {
-		return (tactic)->{
-			if (tactic instanceof FailableTactic) {
-				FailableTactic ft = (FailableTactic) tactic;
-				if (c.isInstance(tactic)){
-					StartServer s = (StartServer) tactic;
-					ft.setFailChance(ft.getFailChance()*failchancecoeff);
-				}
-			}
-		};
-	}
 	
 	//normal,requests,fourserv,requestsfourserv,econ,failc,unreliable;
 	public static Scenario getScenario(Seams2018Scenario seams2018Scenario) {
