@@ -65,13 +65,23 @@ public class RepertoireBuilder {
 	
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
-
+		
+		String plan = "scratch";
+		String init = "repertoire";
+		
+		boolean savePlans = false;
+		
+		if (args.length > 0 && Boolean.parseBoolean(args[0])) {
+			init = "scratch";
+			savePlans = true;
+		}
+		
 		Random random = new Random();
 		
 		File parameterFile = new File( System.getProperty("user.dir")+"/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
-
+		
 		// set statistics to simplestatistics
 		dbase.setProperty("stat", "ec.simple.SimpleStatistics");
 
@@ -95,12 +105,6 @@ public class RepertoireBuilder {
 		for (int i = 0; i < mutations; i++) {
 			ScenarioFactory.mutateScenario(scenario);
 		}
-
-		// try every plan
-		for (String plan : getPlans()){
-			
-		// try differant start strategies
-		for (String init : getInits(plan)){
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
 		for (double buildprob : getBuildProbs(plan)){
@@ -154,7 +158,7 @@ public class RepertoireBuilder {
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+",\""+scenario.toString()+"\","+avgSize);
 				
 				}
 			
@@ -163,24 +167,27 @@ public class RepertoireBuilder {
 			GPIndividual best = (GPIndividual) stats.best_of_run[0];
 			
 			long time = System.currentTimeMillis();
-			String filename = "repertoireBuilder/Plan"+time+".txt";
 			
-			 File directory = new File("repertoireBuilder");
-			 if (! directory.exists()){
-			        directory.mkdir();
-			 }
-			
-			 try{
-			    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-				StringWriter sw = new StringWriter();
-				PrintWriter pw = new PrintWriter(sw);
-				best.printIndividual(evaluatedState, pw);
-				String ans = sw.toString();
-				ans = ans.split("\n")[3];
-			    writer.write(ans);
-			    writer.close();
-			}catch (IOException e) {
-				e.printStackTrace();
+			if (savePlans) {
+				String filename = "repertoireBuilder/Plan"+time+".txt";
+				
+				 File directory = new File("repertoireBuilder");
+				 if (! directory.exists()){
+				        directory.mkdir();
+				 }
+				
+				 try{
+				    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+					StringWriter sw = new StringWriter();
+					PrintWriter pw = new PrintWriter(sw);
+					best.printIndividual(evaluatedState, pw);
+					String ans = sw.toString();
+					ans = ans.split("\n")[3];
+				    writer.write(ans);
+				    writer.close();
+				}catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 
 			// We have to do this in order to fix a memory leak
@@ -192,8 +199,6 @@ public class RepertoireBuilder {
 			// also fixes a resource leak
 			out.close();
 
-		}
-		}
 		}
 		}
 		}
@@ -290,6 +295,8 @@ public class RepertoireBuilder {
 			init = "ecj.MutationBuilder";
 		}else if (initializer.equals("deckard")){
 			init = "ecj.DeckardBuilder";
+		}else if (initializer.equals("repertoire")) {
+			init = "ecj.PopFromRepertoireBuilder";
 		}
 		
 		if (scenario.isFourservEnabled()){
