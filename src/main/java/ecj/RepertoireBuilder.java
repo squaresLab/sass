@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import ec.EvolutionState;
 import ec.Evolve;
@@ -65,6 +66,8 @@ public class RepertoireBuilder {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 
+		Random random = new Random();
+		
 		File parameterFile = new File( System.getProperty("user.dir")+"/selfadaptivesystemsingleobjective.params");
 
 		ParameterDatabase dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
@@ -78,7 +81,7 @@ public class RepertoireBuilder {
 		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize");
 		
 		// run multiple trials
-		for (int trial = 0; trial < 10; trial++){
+		for (int trial = 0; trial < 1; trial++){
 			
 		for (double trimmerChance : new double[]{0.1}){
 			
@@ -88,7 +91,8 @@ public class RepertoireBuilder {
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 		for (int scenarios = 0; scenarios < 100; scenarios++){
 		Scenario scenario = ScenarioFactory.getDefault();
-		for (int mutations = 0; mutations < 5; mutations++) {
+		int mutations = random.nextInt(5);
+		for (int i = 0; i < mutations; i++) {
 			ScenarioFactory.mutateScenario(scenario);
 		}
 
