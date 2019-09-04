@@ -54,43 +54,37 @@ public class ScenarioFactory {
 				int maxChange = 0;
 				switch(paramRoll) {
 				case 1:
-					a = toObjectArray(scenario.cost);
-					maxChange = 1; break;
+					mutateArray(scenario.cost,1); break;
 				case 2: 
-					a = toObjectArray(scenario.power);
-					maxChange = 300; break;
+					mutateArray(scenario.power,300); break;
 				case 3:
-					a = toObjectArray(scenario.powerPerNormal);
-					maxChange = 3; break;
+					mutateArray(scenario.powerPerNormal,3); break;
 				}
-				mutateArray(a,maxChange);
 			}
 		}
 		
 	}
 	
-	// pick a random element of array, plus or minus by a uniform random value up to maxChange
-	private static <T> void mutateArray(T[] a, int maxChange) {
+	private static void mutateArray(double[] a, int maxChange) {
 		int index = random.nextInt(a.length);
-		if (a instanceof Double[]) {
-			double change = 0;
-			if (maxChange > 1) {
-				change = random.nextInt(maxChange-1);
-			}
-			change += random.nextDouble();
-			if (random.nextBoolean()) {
-				change *= -1;
-			}
-			Double[] aDouble = (Double[]) a;
-			aDouble[index] += change;
-		} else if (a instanceof Long[]) {
-			Long change = (long) random.nextInt(maxChange);
-			if (random.nextBoolean()) {
-				change *= -1;
-			}
-			Long[] aLong = (Long[]) a;
-			aLong[index] += change;
+		double change = 0;
+		if (maxChange > 1) {
+			change = random.nextInt(maxChange-1);
 		}
+		change += random.nextDouble();
+		if (random.nextBoolean()) {
+			change *= -1;
+		}
+		a[index] += change;
+	}
+	
+	private static void mutateArray(long[] a, int maxChange) {
+		int index = random.nextInt(a.length);
+		Long change = (long) random.nextInt(maxChange);
+		if (random.nextBoolean()) {
+			change *= -1;
+		}
+		a[index] += change;
 	}
 
 	/*
