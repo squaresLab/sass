@@ -134,7 +134,8 @@ public class Scenario {
 
 	// allow for arbitrary modifications to tactics
 	public void acceptTactic(Tactic tactic) {
-		for (TacticHandler f : tacticHandlers) {
+		for (int count = 0; count < tacticHandlers.size(); count++) {
+			TacticHandler f = tacticHandlers.get(count);
 			f.acceptTactic(tactic);
 		}
 	}
