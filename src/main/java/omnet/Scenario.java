@@ -123,6 +123,10 @@ public class Scenario {
 	public double[] getFailChance() {
 		return failChance;
 	}
+	
+	public void setFourservEnabled(boolean b) {
+		fourservEnabled = b;
+	}
 //
 //	public long[] getExecutionTime() {
 //		return executionTime;
