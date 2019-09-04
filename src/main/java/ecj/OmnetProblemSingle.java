@@ -24,7 +24,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 		private double minAcceptedImprovement = 0;
 		private double killratio;
 		
-		public static Scenario scenario;
+		public Scenario scenario;
 
 		public void setup(final EvolutionState state, final Parameter base){
 			super.setup(state, base);
@@ -44,7 +44,8 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				
 				killratio = state.parameters.getDouble(new Parameter("runtime_kill_ratio"), null);
 				
-				scenario = ScenarioFactory.fromString(scenarioName);
+				//scenario = ScenarioFactory.fromString(scenarioName);
+				scenario = (Scenario) RepertoireBuilder.scenario.clone();
 				
 			}
 		}
@@ -104,7 +105,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 				
 				if(((StateData)input).plan.size() <= 20){
 					
-					Fitness fitness = ((StateData)input).plan.evaluate(new Omnet(scenario));
+					Fitness fitness = ((StateData)input).plan.evaluate(new Omnet((Scenario) scenario.clone()));
 					
 					if (fitness == null){
 						

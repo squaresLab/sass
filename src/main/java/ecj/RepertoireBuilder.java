@@ -63,6 +63,7 @@ public class RepertoireBuilder {
 	private static double reproductionChance = 0.2;
 	private static double mutationChance = 0.2;
 	
+	public static Scenario scenario;
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 		
@@ -100,7 +101,7 @@ public class RepertoireBuilder {
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 		for (int scenarios = 0; scenarios < 100; scenarios++){
-		Scenario scenario = ScenarioFactory.getDefault();
+		scenario = ScenarioFactory.getDefault();
 		int mutations = random.nextInt(5);
 		for (int i = 0; i < mutations; i++) {
 			ScenarioFactory.mutateScenario(scenario);
@@ -129,8 +130,6 @@ public class RepertoireBuilder {
 			EvolutionState evaluatedState = Evolve.initialize(copy,trial,out);
 			
 			evaluatedState.startFresh();
-			
-			OmnetProblemSingle.scenario = scenario;
 			
 			int generation = 0;
 			

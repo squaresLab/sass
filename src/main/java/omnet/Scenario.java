@@ -1,6 +1,7 @@
 package omnet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -177,6 +178,25 @@ public class Scenario {
 			}
 			ans += array[i].toString();
 		}
+		return ans;
+	}
+	
+	public Object clone() {
+		Scenario ans = new Scenario();
+		ans.SYSTEM_DEMAND = this.SYSTEM_DEMAND;
+		ans.NORMAL_PROFIT_PER_SECOND = this.NORMAL_PROFIT_PER_SECOND;
+		ans.DIMMED_PROFIT_PER_SECOND = this.DIMMED_PROFIT_PER_SECOND;
+		ans.MAX_SERVER_COUNT_PER_LOC = this.MAX_SERVER_COUNT_PER_LOC;
+		ans.fourservEnabled = this.fourservEnabled;
+		ans.cost = Arrays.copyOf(this.cost, cost.length);
+		ans.power = Arrays.copyOf(this.power, power.length);
+		ans.powerPerNormal = Arrays.copyOf(this.powerPerNormal, powerPerNormal.length);
+		ans.latency = Arrays.copyOf(this.latency, latency.length);
+		ans.failChance = Arrays.copyOf(this.failChance, failChance.length);
+		
+		ans.tacticHandlers = new ArrayList<TacticHandler>(this.tacticHandlers);
+		ans.tacticFailrateHandlers = (HashMap<Class, TacticHandler>) this.tacticFailrateHandlers.clone();
+		
 		return ans;
 	}
 
