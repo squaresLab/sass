@@ -63,6 +63,14 @@ task runAdaptor(type: JavaExec){
 	maxHeapSize='10g'
 }
 
+task runRepertoire(type: JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+	
+	main = 'ecj.RepertoireBuilder'
+	
+	maxHeapSize='10g'
+}
+
 task runMutationStudy(type: JavaExec){
 	classpath = sourceSets.main.runtimeClasspath
 	
