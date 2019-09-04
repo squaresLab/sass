@@ -190,10 +190,8 @@ generations = 30
 pop.subpop.0.size =	1000
 
 #allow ECJ to figure out the number of cores
-#breedthreads = 30
-#evalthreads = 30
-breedthreads = 1
-evalthreads = 1
+breedthreads = 30
+evalthreads = 30
 
 seed.0 = 123456789
 seed.1 = 123456788
