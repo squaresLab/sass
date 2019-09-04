@@ -171,7 +171,7 @@ public class RepertoireBuilder {
 			long time = System.currentTimeMillis();
 			
 			if (savePlans) {
-				String filename = "repertoireBuilder/Plan"+time+".txt";
+				String filename = "repertoireBuilder/Plan"+time+","+scenario.toString()+".txt";
 				
 				 File directory = new File("repertoireBuilder");
 				 if (! directory.exists()){
