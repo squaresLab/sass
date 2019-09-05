@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -67,6 +68,8 @@ public class RepertoireBuilder {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 		
+		int numTrials = 10;
+		
 		String plan = "scratch";
 		String init = "repertoire";
 		
@@ -75,6 +78,7 @@ public class RepertoireBuilder {
 		if (args.length > 0 && Boolean.parseBoolean(args[0])) {
 			init = "scratch";
 			savePlans = true;
+			numTrials = 1;
 		}
 		
 		Random random = new Random();
@@ -92,7 +96,7 @@ public class RepertoireBuilder {
 		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize");
 		
 		// run multiple trials
-		for (int trial = 0; trial < 1; trial++){
+		for (int trial = 0; trial < numTrials; trial++){
 			
 		for (double trimmerChance : new double[]{0.1}){
 			
