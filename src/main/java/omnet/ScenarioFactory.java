@@ -33,11 +33,27 @@ public class ScenarioFactory {
 	public static void mutateScenario(Scenario scenario) {
 		double roll = random.nextDouble();
 		
-		// 10% flip the bit, 20% tactic failrate change
+		// 10% flip the bit
+		// 10% objective coeff change
+		// 20% tactic failrate change
+		// 60% param change
 		if (roll < .1) {
 			// flip the bit on 4 serv enabled
 			scenario.fourservEnabled = Boolean.logicalXor(scenario.fourservEnabled, true);
-		}else if (roll < .3) {
+		}else if (roll < .2) {
+			int maxChange = 2;
+			double change = random.nextInt(maxChange-1);
+			change += random.nextDouble();
+			if (random.nextBoolean()) {
+				change *= -1;
+			}
+			
+			if (random.nextBoolean()) {
+				scenario.profitCoef += change;
+			}else {
+				scenario.latencyCoef += change;
+			}
+		}else if (roll < .4) {
 			// pick a tactic to change
 			int index = random.nextInt(Scenario.tacticClasses.length);
 			double failchance = random.nextDouble();

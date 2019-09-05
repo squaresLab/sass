@@ -57,6 +57,9 @@ public class Scenario {
 	List<TacticHandler> tacticHandlers;
 	
 	HashMap<Class,TacticHandler> tacticFailrateHandlers;
+
+	public double profitCoef = 1.0;
+	public double latencyCoef = 0.0;
 	
 	public Scenario() {
 		tacticHandlers = new ArrayList<TacticHandler>();
