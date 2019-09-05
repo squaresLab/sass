@@ -49,9 +49,9 @@ public class ScenarioFactory {
 			}
 			
 			if (random.nextBoolean()) {
-				scenario.profitCoef += change;
+				scenario.profitCoef = Math.max(scenario.profitCoef + change,0);
 			}else {
-				scenario.latencyCoef += change;
+				scenario.latencyCoef = Math.max(scenario.latencyCoef + change,0);
 			}
 		}else if (roll < .4) {
 			// pick a tactic to change
