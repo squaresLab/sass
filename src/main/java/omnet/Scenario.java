@@ -202,6 +202,9 @@ public class Scenario {
 		ans.tacticHandlers = new ArrayList<TacticHandler>(this.tacticHandlers);
 		ans.tacticFailrateHandlers = (HashMap<Class, TacticHandler>) this.tacticFailrateHandlers.clone();
 		
+		ans.profitCoef = this.profitCoef;
+		ans.latencyCoef = this.latencyCoef;
+		
 		return ans;
 	}
 
