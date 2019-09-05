@@ -161,7 +161,9 @@ public class Scenario {
 		ans += arrayToString(toObjectArray(cost)) + ",";
 		ans += arrayToString(toObjectArray(power)) + ",";
 		ans += arrayToString(toObjectArray(powerPerNormal)) + ",";
-		ans += arrayToString(toObjectArray(failChance));
+		ans += arrayToString(toObjectArray(failChance)) + ",";
+		ans += profitCoef + ",";
+		ans += latencyCoef;
 		return ans;
 	}
 	
