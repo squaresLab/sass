@@ -74,6 +74,8 @@ public class PopFromRepertoireBuilder extends ec.gp.GPNodeBuilder {
     
     EvolutionState state;
     
+    GPSpecies species;
+    
    // static MersenneTwisterFast mtf = null;
 
     //if trees must be equal size
@@ -301,8 +303,6 @@ private static String initial;
 	             p1 = nodeselect.pickNode(state,subpopulation,threadInd,ind,ind.trees[0]);
 	             
 	             // generate a tree swap-compatible with p1's position
-	             
-	             
 	             int size = GPNodeBuilder.NOSIZEGIVEN;
 	             if (equalSize) size = p1.numNodes(GPNode.NODESEARCH_ALL);
 
@@ -388,9 +388,10 @@ private static String initial;
 		    
 			LineNumberReader lnr = new LineNumberReader(new StringReader(indString));
 			
-			GPSpecies species = new GPSpecies();
-			
-			species.setup(state, new Parameter("pop.subpop.0.species"));
+			if (species == null) {
+				species = new GPSpecies();
+				species.setup(state, new Parameter("pop.subpop.0.species"));
+			}
 			
 			GPIndividual ind = null;
 			
