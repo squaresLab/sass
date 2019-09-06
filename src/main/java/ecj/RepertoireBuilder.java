@@ -69,16 +69,20 @@ public class RepertoireBuilder {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException{
 		
 		int numTrials = 10;
+		int numScenarios = 1; // per trial that is
+		
+		String[] inits = {"repertoire","scratch"};
 		
 		String plan = "scratch";
-		String init = "repertoire";
 		
 		boolean savePlans = false;
 		
 		if (args.length > 0 && Boolean.parseBoolean(args[0])) {
-			init = "scratch";
 			savePlans = true;
 			numTrials = 1;
+			inits = new String[1];
+			inits[0] = "scratch";
+			numScenarios = 100;
 		}
 		
 		Random random = new Random();
@@ -104,7 +108,7 @@ public class RepertoireBuilder {
 		for (double enableRuntimeKill : new double[]{0.75}){
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
-		for (int scenarios = 0; scenarios < 100; scenarios++){
+		for (int scenarios = 0; scenarios < numScenarios; scenarios++){
 		scenario = ScenarioFactory.getDefault();
 		int mutations = random.nextInt(5);
 		for (int i = 0; i < mutations; i++) {
@@ -116,6 +120,11 @@ public class RepertoireBuilder {
 		for (double buildprob : getBuildProbs(plan)){
 			//10,100,1000,10000
 		for (long window : new long[] {10000}){
+			
+		Result repertoire = new Result();
+		Result scratch = new Result();
+			
+		for (String init : inits) {
 
 			Plan.window = window;
 			
@@ -155,7 +164,7 @@ public class RepertoireBuilder {
 
 				GPIndividual best = (GPIndividual) stats.best_of_run[0];
 
-				double profit = CustomStats.getProfit(evaluatedState, best, scenario,(long) Math.ceil(totaltime/1000.0));
+				double profit = CustomStats.getFitness(evaluatedState, best, scenario,(long) Math.ceil(totaltime/1000.0));
 
 				int size = CustomStats.getSize(evaluatedState, best);
 				
@@ -163,6 +172,12 @@ public class RepertoireBuilder {
 				double sdiff = -1; //CustomStats.calcDiversity(evaluatedState, true);
 				
 				double avgSize = CustomStats.calcAvgSize(evaluatedState);
+				
+				if (init.equals("scratch")) {
+					scratch.add(runtime, profit);
+				}else {
+					repertoire.add(runtime, profit);
+				}
 				
 				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+",\""+scenario.toString()+"\","+avgSize);
 				
@@ -205,6 +220,10 @@ public class RepertoireBuilder {
 			// also fixes a resource leak
 			out.close();
 
+		}
+		
+		System.out.println("High Level Compare: "+trial+" Time Ahead: "+repertoire.findTimeDominates(scratch)+" Area Diff: "+(repertoire.findArea()-scratch.findArea()));
+		
 		}
 		}
 		}

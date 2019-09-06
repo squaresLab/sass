@@ -717,7 +717,7 @@ public class CustomStats extends Statistics
 		
 		}
 		// now compute fitness without any penalties
-		system.Fitness f = input.plan.evaluate(new Omnet(scenario),runtime);
+		system.Fitness f = input.plan.evaluate(new Omnet((Scenario) scenario.clone()),runtime);
 		
 		if (needToReenable){
 			Simulator.setRuntimeKillEnable(true);
@@ -725,6 +725,97 @@ public class CustomStats extends Statistics
 		
 		if (f != null){
 			return f.get("Profit");
+		}else{
+			return 0;
+		}
+		
+
+    	
+	}
+	
+public static double getFitness(final EvolutionState state,Individual individual,Scenario scenario, long runtime) {
+    	
+    	GPIndividual ind = (GPIndividual) individual;
+        
+        GPProblem problem = new OmnetProblemSingle();           
+                    
+        StateData input = new StateData();
+        
+        ((StateData)input).initializeState();
+		((GPIndividual)ind).trees[0].child.eval(state, 0, input, problem.stack, ((GPIndividual)ind), problem);
+		
+		boolean writeJavaRep = false;
+		
+		 if (writeJavaRep){
+		
+		long time = System.currentTimeMillis();
+		String filename = "javagen/Plan"+time+".java";
+		
+		 File directory = new File("javagen");
+		    if (! directory.exists()){
+		        directory.mkdir();
+		    }
+		
+		 directory = new File("objectgen");
+		    if (! directory.exists()){
+		        directory.mkdir();
+		    }
+		    
+		   
+		    
+		// generate java code for deckard to work its magic
+		JavaRep java = new JavaRep();
+		java.addLine("public class Plan"+time+" extends Plan { ", null);
+		java.addLine("public static void main(String[] args) { ", null);
+		((JavaGenerator) ((GPIndividual)ind).trees[0].child).generateJava(java);
+		java.newLine();
+		java.addLine("}", null);
+		java.addLine("}", null);
+		
+		 try{
+			    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+			    writer.write(java.toString());
+			    writer.close();
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		 
+		 // write the objects to the file
+		 filename = "objectgen/Plan"+time+".ser";
+	        FileOutputStream fos = null;
+	        ObjectOutputStream out = null;
+	        try {
+	            fos = new FileOutputStream(filename);
+	            out = new ObjectOutputStream(fos);
+	            out.writeObject(java);
+
+	            out.close();
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	        
+		    }
+		
+		// disable the pruning feature
+		input.plan.setMinAcceptedImprovment(0);
+		
+		boolean needToReenable = false;
+		
+		if (Simulator.getRuntimeKillEnabled()){
+			needToReenable = true;
+			// disable the runtime kill feature
+			Simulator.setRuntimeKillEnable(false);
+		
+		}
+		// now compute fitness without any penalties
+		system.Fitness f = input.plan.evaluate(new Omnet((Scenario) scenario.clone()),runtime);
+		
+		if (needToReenable){
+			Simulator.setRuntimeKillEnable(true);
+		}
+		
+		if (f != null){
+			return f.get("Profit")*scenario.profitCoef - f.get("Latency")*scenario.latencyCoef;
 		}else{
 			return 0;
 		}
