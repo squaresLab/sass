@@ -180,6 +180,12 @@ private static String initial;
 		
 		GPNode node = null;
 		
+		Random rand = new Random();
+		 
+		if (rand.nextDouble() < buildprob){
+			 return builder.newRootedTree(state, type, thread, parent, set, argposition, requestedSize);
+		}
+		
 		for (int i = 0; i < numTries; i++){
 			int index = random.nextInt(planFiles.length);
 			File planFile = planFiles[index];

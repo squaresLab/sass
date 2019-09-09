@@ -238,7 +238,7 @@ public class RepertoireBuilder {
 		
 		if (plan.equals("scratch")){
 			
-			return new double[] {0};
+			return new double[] {0.9};
 			
 		}else{
 			
