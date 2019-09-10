@@ -226,8 +226,9 @@ public class RepertoireBuilder {
 
 		}
 		
-		System.out.println("High Level Compare: "+trial+" Time Ahead: "+repertoire.findTimeDominates(scratch)+" Area Diff: "+(repertoire.findArea()-scratch.findArea()));
-		
+		if (!savePlans) {
+			System.out.println("High Level Compare: "+trial+" Time Ahead: "+repertoire.findTimeDominates(scratch)+" Area Diff: "+(repertoire.findArea()-scratch.findArea()));
+		}
 		}
 		}
 		}
