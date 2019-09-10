@@ -109,11 +109,15 @@ public class RepertoireBuilder {
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 		for (int scenarios = 0; scenarios < numScenarios; scenarios++){
-		scenario = ScenarioFactory.getDefault();
-		int mutations = random.nextInt(5);
-		for (int i = 0; i < mutations; i++) {
-			ScenarioFactory.mutateScenario(scenario);
-		}
+		do {
+			scenario = ScenarioFactory.getDefault();
+			int mutations = random.nextInt(5);
+			for (int i = 0; i < mutations; i++) {
+				ScenarioFactory.mutateScenario(scenario);
+			}
+		}while(scenario.isFourservEnabled()); // do while to reroll if 4 serv enabled
+		// TODO remember to turn this off!
+		
 		//scenario.setFourservEnabled(false);
 			
 		//adjust the amount of plans from scratch vs seeded plans in the population
