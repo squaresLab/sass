@@ -1,1 +1,0 @@
- (F ERC[i4|] (; (StartServer B) (T (StartServer C) (; (DecreaseTraffic A) (StartServer C)) (T (DecreaseTraffic A) (StartServer A) (T (StartServer B) (StartServer A) (StartServer A))))))
