@@ -1,0 +1,5 @@
+where 
+rewrite :[num] { "3" -> "2" },
+rewrite :[num] { "4" -> "3" },
+rewrite :[num] { "5" -> "4" },
+rewrite :[num] { "6" -> "5" }
