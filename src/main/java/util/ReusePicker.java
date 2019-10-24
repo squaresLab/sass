@@ -3,10 +3,16 @@ package util;
 import java.io.*;
 import java.util.*;
 
+import ec.EvolutionState;
+import ec.Evolve;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.gp.GPTree;
+import ec.util.Output;
+import ec.util.ParameterDatabase;
 import ecj.JavaRep;
+import ecj.RepertoireBuilder;
+import omnet.Scenario;
 
 public class ReusePicker {
 	
@@ -38,16 +44,43 @@ public class ReusePicker {
 	
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		
-		String deckardFile = "/home/ckinneer/class/ckinneer/project/Deckard/javagen/clusters/post_cluster_vdb_50_0_allg_0.95_30";
+		RepertoireBuilder.scenario = new Scenario();
+		
+		File parameterFile = new File( System.getProperty("user.dir")+"/selfadaptivesystemsingleobjective.params");
+
+		ParameterDatabase dbase;
+		
+		EvolutionState state = null;
+		
+		try {
+			dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
+			
+			dbase.setProperty("gp.tc.0.init","ec.gp.koza.HalfBuilder");
+			
+			Output out = Evolve.buildOutput();
+
+			//disable output
+			out.getLog(0).silent = true;
+			out.getLog(1).silent = true;
+			
+			state = Evolve.initialize(dbase,0,out);
+			
+			state.startFresh();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String deckardFile = "/home/ckinneer/git/sass/clusters/cluster_vdb_30_0_allg_0.95_30";
 		
 		int desiredSnippets = 100;
 		
-		ArrayList<DeckardCluster> clusters = slurpClusterFile("/home/ckinneer/class/ckinneer/project/Deckard/javagen/clusters/post_cluster_vdb_50_0_allg_0.95_30");
+		ArrayList<DeckardCluster> clusters = slurpClusterFile("/home/ckinneer/git/sass/clusters/cluster_vdb_50_0_allg_0.95_30");
 		
 		Map<String,JavaRep> objMap = slurpObjsMethods("objectgen");
 		
 		ArrayList<Object> snippets = new ArrayList<Object>();
-		
+		/*
 		ReusePicker picker = new ReusePicker(deckardFile);
 		
 		for (int count = 0; count < 100; count++){
@@ -57,8 +90,53 @@ public class ReusePicker {
 			}
 				
 		}
+		*/
 		
-		
+		for (int count = 0; count < clusters.size(); count++) {
+			DeckardCluster cluster = clusters.get(count);
+			//System.out.println(cluster.getLines().size());
+			
+			System.out.println("*******************");
+			
+			// now choose line to get a snippet from
+			
+			for (int j = 0; j < cluster.getLines().size(); j++) {
+			
+				String deckardline = cluster.lines.get(j);
+				// we need to know the filename and line number
+				// first manage the whitespace
+				deckardline = deckardline.trim().replaceAll("\\s+", " ");
+				String[] csv = deckardline.split(" ");
+				
+				String filename = csv[3].split("/")[6].replaceAll( ".java",".ser");
+				int sourceLineNumber = Integer.parseInt(csv[4].split(":")[1]);
+				
+				// now lookup the snippet from the map
+				JavaRep java = objMap.get(filename);
+				// pull the object from the rep
+				if (java != null) {
+				Object node = java.getObjMap().get(sourceLineNumber);
+				if (node != null){
+					//System.out.println(java.getStringMap().get(sourceLineNumber));
+					
+					GPNode gpNode = (GPNode) node;
+					
+					 GPTree tree = (GPTree) gpNode.rootParent();
+					 
+					 GPIndividual ind = tree.owner;
+					 
+					 StringWriter sw = new StringWriter();
+					 PrintWriter pw = new PrintWriter(sw);
+					 ind.printIndividual(state, pw);
+					 
+					 String ans = sw.toString();
+					 
+					 System.out.println(ans);
+			}
+			}
+			}
+		}
+		System.out.println("num clusters: "+clusters.size());
 	}
 	
 	public GPNode getNode(){
@@ -71,7 +149,7 @@ public class ReusePicker {
 		deckardline = deckardline.trim().replaceAll("\\s+", " ");
 		String[] csv = deckardline.split(" ");
 		
-		String filename = csv[3].split("/")[1].replaceAll( ".java",".ser");
+		String filename = csv[3].split("/")[6].replaceAll( ".java",".ser");
 		int sourceLineNumber = Integer.parseInt(csv[4].split(":")[1]);
 		
 		// now lookup the snippet from the map
@@ -179,8 +257,11 @@ public class ReusePicker {
 		  
 		  while ((line = br.readLine()) != null) {
 			  if (!line.isEmpty()){
+				  //System.out.println("* "+line);
 				  curCluster.addLine(line);
 			  }else{
+				  //System.out.println("  "+line);
+				  //System.out.println(curCluster.getLines().size());
 				  clusters.add(curCluster);
 				  curCluster = new DeckardCluster();
 			  }
