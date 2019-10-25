@@ -71,7 +71,7 @@ public class RepertoireBuilder {
 		int numTrials = 10;
 		int numScenarios = 1; // per trial that is
 		
-		String[] inits = {"repertoire","scratch"};
+		String[] inits = {"repertoire"};
 		
 		String plan = "scratch";
 		
@@ -82,7 +82,7 @@ public class RepertoireBuilder {
 			numTrials = 1;
 			inits = new String[1];
 			inits[0] = "scratch";
-			numScenarios = 100;
+			numScenarios = 1000;
 		}
 		
 		Random random = new Random();
@@ -226,9 +226,9 @@ public class RepertoireBuilder {
 
 		}
 		
-		if (!savePlans) {
-			System.out.println("High Level Compare: "+trial+" Time Ahead: "+repertoire.findTimeDominates(scratch)+" Area Diff: "+(repertoire.findArea()-scratch.findArea()));
-		}
+//		if (!savePlans) {
+//			System.out.println("High Level Compare: "+trial+" Time Ahead: "+repertoire.findTimeDominates(scratch)+" Area Diff: "+(repertoire.findArea()-scratch.findArea()));
+//		}
 		}
 		}
 		}
