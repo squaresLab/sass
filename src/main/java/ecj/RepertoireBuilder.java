@@ -83,6 +83,8 @@ public class RepertoireBuilder {
 			inits = new String[1];
 			inits[0] = "scratch";
 			numScenarios = 1000;
+		}else {
+			inits[0] = "deckard";
 		}
 		
 		Random random = new Random();
