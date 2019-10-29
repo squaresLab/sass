@@ -12,7 +12,7 @@ StartServer("C");
 
 } else {
 StartServer("A");
-
+IncreaseTraffic("B");
 
 }
 
@@ -23,7 +23,7 @@ StartServer("A");
 } else {
 for (int i = 0; i < 3 ; i++) {
 StartServer("B");
-if (  ) {
+if ( IncreaseTraffic("A") ) {
 IncreaseDimmer("B");
 } else {
 StartServer("C");

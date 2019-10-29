@@ -3,7 +3,7 @@ public static void main(String[] args) {
 for (int i = 0; i < 3 ; i++) {
 if ( StartServer("C") ) {
 if ( StartServer("B") ) {
-if (  ) {
+if ( IncreaseTraffic("C") ) {
 StartServer("C");
 } else {
 StartServer("A");

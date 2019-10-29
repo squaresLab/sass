@@ -4,12 +4,12 @@ if ( StartServer("A") ) {
 if ( DecreaseDimmer("A") ) {
 IncreaseDimmer("C");
 } else {
-
+IncreaseTraffic("A");
 }
 
 } else {
 for (int i = 0; i < 6 ; i++) {
-
+IncreaseTraffic("B");
 }
 
 }

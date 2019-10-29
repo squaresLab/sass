@@ -7,7 +7,7 @@ StartServer("A");
 if ( StartServer("B") ) {
 StartServer("A");
 } else {
-
+IncreaseTraffic("B");
 }
 
 

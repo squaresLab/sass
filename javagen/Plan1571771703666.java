@@ -3,7 +3,7 @@ public static void main(String[] args) {
 if ( DecreaseTraffic("B") ) {
 IncreaseDimmer("B");
 } else {
-
+IncreaseTraffic("A");
 }
 
 }

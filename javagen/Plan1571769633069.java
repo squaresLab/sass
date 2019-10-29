@@ -9,8 +9,8 @@ StartServer("B");
 for (int i = 0; i < 3 ; i++) {
 StartServer("B");
 StartServer("A");
-if (  ) {
-
+if ( IncreaseTraffic("C") ) {
+IncreaseTraffic("A");
 } else {
 DecreaseTraffic("A");
 }

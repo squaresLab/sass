@@ -14,9 +14,9 @@ DecreaseTraffic("A");
 
 }
 
-
+IncreaseTraffic("B");
 DecreaseDimmer("C");
-if (  ) {
+if ( IncreaseTraffic("B") ) {
 DecreaseTraffic("A");
 } else {
 ShutdownServer("A");
@@ -25,7 +25,7 @@ ShutdownServer("A");
 
 
 
-
+IncreaseTraffic("B");
 DecreaseDimmer("A");
 
 

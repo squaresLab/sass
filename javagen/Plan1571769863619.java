@@ -11,7 +11,7 @@ StartServer("A");
 
 } else {
 DecreaseDimmer("C");
-
+IncreaseTraffic("A");
 
 }
 

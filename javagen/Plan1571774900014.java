@@ -9,18 +9,18 @@ DecreaseDimmer("A");
 } else {
 if ( StartServer("A") ) {
 for (int i = 0; i < 4 ; i++) {
-
+IncreaseTraffic("A");
 }
 
 } else {
 IncreaseDimmer("C");
 }
 
-if (  ) {
-
+if ( IncreaseTraffic("B") ) {
+IncreaseTraffic("A");
 } else {
 for (int i = 0; i < 2 ; i++) {
-
+IncreaseTraffic("B");
 }
 
 }

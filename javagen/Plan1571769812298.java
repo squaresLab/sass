@@ -19,7 +19,7 @@ DecreaseDimmer("A");
 }
 
 StartServer("C");
-if (  ) {
+if ( IncreaseTraffic("B") ) {
 DecreaseDimmer("C");
 } else {
 StartServer("C");

@@ -5,7 +5,7 @@ if ( DecreaseTraffic("A") ) {
 StartServer("B");
 StartServer("B");
 
-
+IncreaseTraffic("B");
 for (int i = 0; i < 2 ; i++) {
 StartServer("C");
 StartServer("A");

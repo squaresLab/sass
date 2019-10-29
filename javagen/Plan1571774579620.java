@@ -8,7 +8,7 @@ StartServer("A");
 }
 
 } else {
-
+IncreaseTraffic("B");
 }
 
 } else {

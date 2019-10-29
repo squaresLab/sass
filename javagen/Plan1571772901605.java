@@ -13,7 +13,7 @@ StartServer("A");
 StartServer("C");
 }
 
-
+IncreaseTraffic("B");
 
 StartServer("B");
 

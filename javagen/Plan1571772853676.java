@@ -1,7 +1,7 @@
 public class Plan1571772853676 extends Plan { 
 public static void main(String[] args) { 
 if ( DecreaseDimmer("C") ) {
-
+IncreaseTraffic("A");
 IncreaseDimmer("B");
 
 } else {

@@ -12,7 +12,7 @@ StartServer("B");
 
 
 
-if (  ) {
+if ( IncreaseTraffic("B") ) {
 ShutdownServer("C");
 } else {
 DecreaseTraffic("A");

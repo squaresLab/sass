@@ -9,7 +9,7 @@ StartServer("A");
 
 StartServer("A");
 if ( StartServer("A") ) {
-
+IncreaseTraffic("C");
 DecreaseDimmer("A");
 StartServer("B");
 

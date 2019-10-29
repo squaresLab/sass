@@ -17,7 +17,7 @@ StartServer("B");
 StartServer("B");
 }
 
-
+IncreaseTraffic("B");
 
 }
 

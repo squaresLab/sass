@@ -21,7 +21,7 @@ StartServer("C");
 StartServer("B");
 
 StartServer("B");
-if (  ) {
+if ( IncreaseTraffic("B") ) {
 for (int i = 0; i < 2 ; i++) {
 StartServer("C");
 }
@@ -30,7 +30,7 @@ StartServer("C");
 if ( StartServer("B") ) {
 StartServer("C");
 } else {
-
+IncreaseTraffic("C");
 }
 
 }

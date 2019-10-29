@@ -4,7 +4,7 @@ for (int i = 0; i < 3 ; i++) {
 if ( DecreaseTraffic("A") ) {
 StartServer("C");
 } else {
-
+IncreaseTraffic("C");
 }
 
 }

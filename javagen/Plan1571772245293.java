@@ -11,7 +11,7 @@ StartServer("C");
 StartServer("B");
 
 } else {
-if (  ) {
+if ( IncreaseTraffic("C") ) {
 if ( DecreaseTraffic("C") ) {
 for (int i = 0; i < 3 ; i++) {
 ShutdownServer("A");

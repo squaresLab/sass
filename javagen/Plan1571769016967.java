@@ -1,6 +1,6 @@
 public class Plan1571769016967 extends Plan { 
 public static void main(String[] args) { 
-
+IncreaseTraffic("B");
 DecreaseTraffic("A");
 DecreaseTraffic("A");
 

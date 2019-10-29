@@ -11,7 +11,7 @@ StartServer("B");
 StartServer("B");
 
 
-
+IncreaseTraffic("C");
 for (int i = 0; i < 4 ; i++) {
 StartServer("C");
 StartServer("A");

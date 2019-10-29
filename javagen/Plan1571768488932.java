@@ -29,7 +29,7 @@ DecreaseDimmer("C");
 }
 
 } else {
-
+IncreaseTraffic("B");
 }
 
 

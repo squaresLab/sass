@@ -20,7 +20,7 @@ DecreaseDimmer("A");
 
 } else {
 for (int i = 0; i < 3 ; i++) {
-
+IncreaseTraffic("B");
 }
 
 }

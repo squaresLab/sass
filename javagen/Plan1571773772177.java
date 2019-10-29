@@ -8,7 +8,7 @@ StartServer("A");
 
 }
 
-if (  ) {
+if ( IncreaseTraffic("B") ) {
 DecreaseDimmer("B");
 } else {
 StartServer("C");
@@ -22,7 +22,7 @@ StartServer("B");
 StartServer("C");
 
 } else {
-
+IncreaseTraffic("B");
 StartServer("A");
 
 }

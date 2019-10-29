@@ -22,7 +22,7 @@ DecreaseDimmer("B");
 }
 
 } else {
-
+IncreaseTraffic("C");
 }
 
 for (int i = 0; i < 3 ; i++) {

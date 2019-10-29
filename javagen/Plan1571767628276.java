@@ -33,7 +33,7 @@ if ( IncreaseDimmer("A") ) {
 StartServer("C");
 StartServer("C");
 
-
+IncreaseTraffic("C");
 
 DecreaseDimmer("A");
 

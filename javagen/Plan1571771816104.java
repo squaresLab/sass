@@ -1,6 +1,6 @@
 public class Plan1571771816104 extends Plan { 
 public static void main(String[] args) { 
-
+IncreaseTraffic("B");
 StartServer("C");
 StartServer("A");
 
@@ -11,7 +11,7 @@ StartServer("B");
 }
 
 } else {
-
+IncreaseTraffic("B");
 }
 
 if ( StartServer("C") ) {

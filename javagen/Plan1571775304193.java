@@ -26,7 +26,7 @@ ShutdownServer("C");
 StartServer("B");
 }
 
-
+IncreaseTraffic("C");
 
 } else {
 ShutdownServer("B");

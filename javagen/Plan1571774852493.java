@@ -10,7 +10,7 @@ DecreaseDimmer("C");
 if ( StartServer("B") ) {
 if ( StartServer("A") ) {
 for (int i = 0; i < 4 ; i++) {
-
+IncreaseTraffic("A");
 }
 
 } else {

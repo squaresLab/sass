@@ -15,7 +15,7 @@ for (int i = 0; i < 3 ; i++) {
 if ( DecreaseTraffic("A") ) {
 DecreaseTraffic("A");
 } else {
-
+IncreaseTraffic("B");
 }
 
 }

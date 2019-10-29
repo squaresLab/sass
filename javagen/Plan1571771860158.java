@@ -10,10 +10,10 @@ StartServer("A");
 }
 
 if ( StartServer("A") ) {
-
+IncreaseTraffic("B");
 } else {
 if ( StartServer("A") ) {
-
+IncreaseTraffic("B");
 } else {
 DecreaseDimmer("A");
 }

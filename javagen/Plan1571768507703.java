@@ -12,7 +12,7 @@ StartServer("C");
 
 
 } else {
-
+IncreaseTraffic("A");
 }
 
 for (int i = 0; i < 2 ; i++) {

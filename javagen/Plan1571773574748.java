@@ -12,7 +12,7 @@ StartServer("A");
 }
 
 } else {
-
+IncreaseTraffic("C");
 }
 
 
@@ -25,7 +25,7 @@ StartServer("A");
 }
 
 } else {
-
+IncreaseTraffic("C");
 }
 
 }
@@ -33,7 +33,7 @@ StartServer("A");
 if ( StartServer("A") ) {
 StartServer("A");
 } else {
-
+IncreaseTraffic("B");
 }
 
 StartServer("C");

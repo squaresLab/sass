@@ -13,7 +13,7 @@ DecreaseTraffic("B");
 }
 
 } else {
-
+IncreaseTraffic("A");
 }
 
 

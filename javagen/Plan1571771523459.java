@@ -5,11 +5,11 @@ for (int i = 0; i < 3 ; i++) {
 StartServer("B");
 }
 
-if (  ) {
+if ( IncreaseTraffic("A") ) {
 StartServer("C");
 } else {
 if ( DecreaseTraffic("A") ) {
-
+IncreaseTraffic("C");
 DecreaseTraffic("A");
 for (int i = 0; i < 3 ; i++) {
 StartServer("C");
@@ -19,7 +19,7 @@ StartServer("C");
 
 } else {
 if ( DecreaseTraffic("A") ) {
-
+IncreaseTraffic("C");
 DecreaseTraffic("A");
 for (int i = 0; i < 2 ; i++) {
 StartServer("C");
@@ -28,7 +28,7 @@ StartServer("C");
 
 
 } else {
-
+IncreaseTraffic("A");
 }
 
 }

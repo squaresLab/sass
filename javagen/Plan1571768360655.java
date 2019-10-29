@@ -5,7 +5,7 @@ if ( DecreaseTraffic("A") ) {
 DecreaseDimmer("B");
 } else {
 if ( DecreaseTraffic("A") ) {
-
+IncreaseTraffic("B");
 } else {
 DecreaseTraffic("A");
 }

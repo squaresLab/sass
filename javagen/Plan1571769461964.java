@@ -2,7 +2,7 @@ public class Plan1571769461964 extends Plan {
 public static void main(String[] args) { 
 for (int i = 0; i < 2 ; i++) {
 DecreaseTraffic("A");
-if (  ) {
+if ( IncreaseTraffic("B") ) {
 ShutdownServer("C");
 } else {
 if ( StartServer("B") ) {

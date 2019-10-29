@@ -6,13 +6,13 @@ if ( StartServer("C") ) {
 if ( DecreaseTraffic("A") ) {
 StartServer("C");
 } else {
-
+IncreaseTraffic("C");
 }
 
 StartServer("A");
 
 } else {
-
+IncreaseTraffic("B");
 }
 
 if ( StartServer("B") ) {

@@ -5,7 +5,7 @@ for (int i = 0; i < 2 ; i++) {
 DecreaseTraffic("A");
 }
 
-
+IncreaseTraffic("A");
 for (int i = 0; i < 4 ; i++) {
 StartServer("B");
 if ( StartServer("C") ) {
@@ -18,7 +18,7 @@ DecreaseDimmer("A");
 }
 
 
-if (  ) {
+if ( IncreaseTraffic("B") ) {
 ShutdownServer("C");
 } else {
 if ( StartServer("B") ) {

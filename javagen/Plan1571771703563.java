@@ -1,11 +1,11 @@
 public class Plan1571771703563 extends Plan { 
 public static void main(String[] args) { 
-if (  ) {
+if ( IncreaseTraffic("A") ) {
 StartServer("B");
 } else {
 for (int i = 0; i < 2 ; i++) {
 DecreaseTraffic("A");
-
+IncreaseTraffic("B");
 
 }
 

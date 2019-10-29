@@ -25,7 +25,7 @@ for (int i = 0; i < 3 ; i++) {
 if ( StartServer("C") ) {
 StartServer("C");
 } else {
-
+IncreaseTraffic("B");
 }
 
 StartServer("A");

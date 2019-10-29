@@ -5,11 +5,11 @@ if ( StartServer("A") ) {
 if ( StartServer("A") ) {
 StartServer("A");
 } else {
-
+IncreaseTraffic("C");
 }
 
 } else {
-
+IncreaseTraffic("C");
 }
 
 }

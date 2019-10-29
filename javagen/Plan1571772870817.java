@@ -9,7 +9,7 @@ for (int i = 0; i < 3 ; i++) {
 if ( StartServer("A") ) {
 StartServer("C");
 } else {
-
+IncreaseTraffic("C");
 }
 
 StartServer("B");

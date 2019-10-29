@@ -9,7 +9,7 @@ DecreaseTraffic("A");
 
 }
 
-
+IncreaseTraffic("B");
 for (int i = 0; i < 4 ; i++) {
 StartServer("C");
 DecreaseDimmer("C");

@@ -6,7 +6,7 @@ StartServer("A");
 StartServer("C");
 StartServer("B");
 StartServer("C");
-
+IncreaseTraffic("B");
 DecreaseTraffic("A");
 
 
