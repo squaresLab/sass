@@ -71,11 +71,11 @@ public class ReusePicker {
 			e.printStackTrace();
 		}
 		
-		String deckardFile = "/home/ckinneer/git/sass/clusters/cluster_vdb_30_0_allg_0.95_30";
+		String deckardFile = "/home/ckinneer/git/sass/clusters/post_cluster_vdb_30_0_allg_0.95_30";
 		
 		int desiredSnippets = 100;
 		
-		ArrayList<DeckardCluster> clusters = slurpClusterFile("/home/ckinneer/git/sass/clusters/cluster_vdb_50_0_allg_0.95_30");
+		ArrayList<DeckardCluster> clusters = slurpClusterFile(deckardFile);
 		
 		Map<String,JavaRep> objMap = slurpObjsMethods("objectgen");
 		
