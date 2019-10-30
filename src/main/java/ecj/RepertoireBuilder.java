@@ -84,7 +84,7 @@ public class RepertoireBuilder {
 			inits[0] = "scratch";
 			numScenarios = 1000;
 		}else if (args.length >  0) {
-			inits = new String[] {"deckard","scratch","repertoire"};
+			inits = new String[] {"deckard","scratch","repertoire","trimmer"};
 		}
 		
 		Random random = new Random();
@@ -111,9 +111,11 @@ public class RepertoireBuilder {
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 		for (int scenarios = 0; scenarios < numScenarios; scenarios++){
+		for (int mutations : new int[]{1,5,10,20}) {// num mutations fixed during evaluation
 		do {
 			scenario = ScenarioFactory.getDefault();
-			int mutations = random.nextInt(5);
+			// this proceedure was used to generate the starting plans
+			//int mutations = random.nextInt(5);
 			for (int i = 0; i < mutations; i++) {
 				ScenarioFactory.mutateScenario(scenario);
 			}
@@ -122,8 +124,6 @@ public class RepertoireBuilder {
 		
 		//scenario.setFourservEnabled(false);
 			
-		//adjust the amount of plans from scratch vs seeded plans in the population
-		for (double buildprob : getBuildProbs(plan)){
 			//10,100,1000,10000
 		for (long window : new long[] {10000}){
 			
@@ -131,6 +131,9 @@ public class RepertoireBuilder {
 		Result scratch = new Result();
 			
 		for (String init : inits) {
+			
+		//adjust the amount of plans from scratch vs seeded plans in the population
+		for (double buildprob : getBuildProbs(init)){
 
 			Plan.window = window;
 			
@@ -238,18 +241,19 @@ public class RepertoireBuilder {
 		}
 		}
 		}
+		}
 
 	
 	
-	private static double[] getBuildProbs(String plan) {
+	private static double[] getBuildProbs(String init) {
 		
-		if (plan.equals("scratch")){
+		if (!init.equals("repertoire")){
 			
 			return new double[] {0.9};
 			
 		}else{
 			
-			return new double[] {0.90};
+			return new double[] {0.90,0.0};
 			
 		}
 	}
@@ -339,7 +343,8 @@ public class RepertoireBuilder {
 		
 		copy.setProperty("gp.tc.0.init",init);
 		
-		copy.setProperty("initial_ind", getPlan(plan));
+		//copy.setProperty("initial_ind", getPlan(plan));
+		copy.setProperty("initial_ind", "(F ERC[i4|] (; (StartServer B) (T (StartServer C) (DecreaseTraffic A) (T (DecreaseTraffic A) (StartServer C) (StartServer B)))))");
 		
 		return copy;
 	}
