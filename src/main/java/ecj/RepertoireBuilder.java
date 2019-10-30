@@ -99,7 +99,7 @@ public class RepertoireBuilder {
 		dbase.setProperty("stat.file", "stats.txt");
 
 		// print header
-		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize");
+		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize,scenarioMutations");
 		
 		// run multiple trials
 		for (int trial = 0; trial < numTrials; trial++){
@@ -188,7 +188,7 @@ public class RepertoireBuilder {
 					repertoire.add(runtime, profit);
 				}
 				
-				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+",\""+scenario.toString()+"\","+avgSize);
+				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+",\""+scenario.toString()+"\","+avgSize+","+mutations);
 				
 				}
 			
