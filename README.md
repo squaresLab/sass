@@ -39,3 +39,18 @@ takes into account the fact that the system's utility depends on the planning
 time (i.e., currently I am getting 5 utility per second, it takes me 10 seconds
 to figure out a plan that will give me 10 utility per second, if I get this
 utility for another 10 seconds, my total utility is 5x10 + 10x10).
+
+
+## Useful commands
+
+Filter and view `trial,runtime,utility`
+
+```
+stdbuf -oL tail -F out.csv | awk -F ',' '{print $1,$4,$5}'
+```
+
+Print highest utility for trial `T=0`. Set `T=` highest utility for all trials.
+
+```
+T=0; cat out.csv | grep "^${T}" | awk -F ',' '{print $5}' | grep "E" | sort | tail -n 1
+```
