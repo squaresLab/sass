@@ -273,7 +273,11 @@ public class MutationTrimmerPipe extends GPBreedingPipeline
                 p1 = nodeselect.pickNode(state,subpopulation,thread,i,i.trees[t]);
                 
                 if (!p1.constraints((GPInitializer) state.initializer).returntype.equals(((GPTree)p1.rootParent()).constraints((GPInitializer) state.initializer).treetype)){
-                	continue; 
+                	if (x == numTries-1) {
+                		return n;
+                	} else {
+                		continue;
+                	}
                  }else{
                 	 break;
                  }
