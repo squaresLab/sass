@@ -123,7 +123,7 @@ gp.tc.size = 1
 gp.tc.0 = ec.gp.GPTreeConstraints
 gp.tc.0.name = tc0
 gp.tc.0.fset = f0
-gp.tc.0.returns = plan
+gp.tc.0.returns = tactic-or-plan
 
 # Here we define 7 GPNodeConstraints, nc0...nc6, which
 # describe nodes with 0...6 children respectively, which only
