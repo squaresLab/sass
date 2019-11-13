@@ -1,6 +1,8 @@
 package ecj.actions;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import ec.EvolutionState;
 import ec.Problem;
@@ -50,7 +52,16 @@ public abstract class LabeledTactic<T extends FailableTactic> extends GPNode imp
 		java.appendLine("(\"");
 		((JavaGenerator) children[0]).generateJava(java);
 		java.appendLine("\");");
+		
+		java.appendVector(generateVector());
+		
 		return java;
+	}
+	
+	public HashMap<String,Integer> generateVector(){
+		HashMap<String,Integer> hMap = ((JavaGenerator) children[0]).generateVector();
+		hMap.put(tactic.getSimpleName(), hMap.getOrDefault(tactic.getSimpleName(), 0)+1);
+		return hMap;
 	}
 	
 	public int expectedChildren(){return 1;};

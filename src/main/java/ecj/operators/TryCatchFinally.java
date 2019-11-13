@@ -1,5 +1,7 @@
 package ecj.operators;
 
+import java.util.HashMap;
+
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -75,20 +77,37 @@ public class TryCatchFinally extends GPNode implements JavaGenerator  {
 		java.getStringMap().put(java.getCursor(), cond);
 		
 		java.appendLine(" ) {",this);
+		
+		java.appendVector(generateVector());
+	
 		java.newLine();
 		
 		((JavaGenerator) children[2]).generateJava(java);
 		
+		java.appendVector(((JavaGenerator) children[2]).generateVector());
+		
 		java.newLine();
+		
 		java.addLine("} else {", null);
 		
 		((JavaGenerator) children[1]).generateJava(java);
+		java.appendVector(((JavaGenerator) children[1]).generateVector());
 		
 		java.newLine();
 		java.addLine("}", null);
 		
 		
 		return java;
+	}
+
+	@Override
+	public HashMap<String, Integer> generateVector() {
+		HashMap<String, Integer> ans = JavaRep.vectorAdd(((JavaGenerator) children[0]).generateVector(), ((JavaGenerator) children[1]).generateVector());
+		ans = JavaRep.vectorAdd(ans, ((JavaGenerator) children[2]).generateVector());
+		
+		ans.put("TryCatchFinally", ans.getOrDefault("TryCatchFinally", 0)+1);
+		
+		return ans;
 	}
 
 

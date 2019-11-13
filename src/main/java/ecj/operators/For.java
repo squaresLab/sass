@@ -1,5 +1,7 @@
 package ecj.operators;
 
+import java.util.HashMap;
+
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -44,11 +46,20 @@ public class For extends GPNode implements JavaGenerator {
 		java.appendLine("for (int i = 0; i < ");
 		((JavaGenerator) children[0]).generateJava(java);
 		java.appendLine(" ; i++) {",this);
+		java.appendVector(generateVector());
 		java.newLine();
 		((JavaGenerator) children[1]).generateJava(java);
+		java.appendVector(((JavaGenerator) children[1]).generateVector());
 		java.newLine();
 		java.addLine("}", null);
 		return java;
+	}
+
+	@Override
+	public HashMap<String, Integer> generateVector() {
+		HashMap<String, Integer> ans = JavaRep.vectorAdd(((JavaGenerator) children[0]).generateVector(), ((JavaGenerator) children[1]).generateVector());
+		ans.put("For", ans.getOrDefault("For", 0)+1);
+		return ans;
 	}
 
 }

@@ -1,5 +1,8 @@
 package ecj.actions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -46,6 +49,13 @@ public abstract class TacticLabel extends GPNode implements JavaGenerator {
 	public JavaRep generateJava(JavaRep java) {
 		java.appendLine(label);
 		return java;
+	}
+	
+	public HashMap<String,Integer> generateVector(){
+		
+		HashMap<String,Integer> hMap = new HashMap<String,Integer>();
+		hMap.put(label, 1);
+		return hMap;
 	}
 
 }

@@ -1,5 +1,7 @@
 package ecj.operators;
 
+import java.util.HashMap;
+
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -48,10 +50,19 @@ public class SequenceOperator extends GPNode implements JavaGenerator {
 	@Override
 	public JavaRep generateJava(JavaRep java) {
 		((JavaGenerator) children[0]).generateJava(java);
+		java.appendVector(((JavaGenerator) children[0]).generateVector());
 		java.newLine();
 		((JavaGenerator) children[1]).generateJava(java);
+		java.appendVector(((JavaGenerator) children[1]).generateVector());
 		java.newLine();
 		return java;
+	}
+
+	@Override
+	public HashMap<String, Integer> generateVector() {
+		HashMap<String, Integer> ans = JavaRep.vectorAdd(((JavaGenerator) children[0]).generateVector(), ((JavaGenerator) children[1]).generateVector());
+		ans.put("SequenceOperator", ans.getOrDefault("SequenceOperator", 0)+1);
+		return ans;
 	}
 
 
