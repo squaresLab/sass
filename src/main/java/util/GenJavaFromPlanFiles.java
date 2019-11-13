@@ -51,7 +51,7 @@ public class GenJavaFromPlanFiles {
 		
 		GenJavaFromPlanFiles gen = new GenJavaFromPlanFiles();
 		
-		File folder = new File("repertoireBuilder15Gen");
+		File folder = new File("repertoireBuilder25Gen");
 		File[] files = folder.listFiles();
 		
 		folder = new File("objectgen");
@@ -60,6 +60,11 @@ public class GenJavaFromPlanFiles {
 		}
 		
 		folder = new File("javagen");
+		for (File f : folder.listFiles()) {
+			f.delete();
+		}
+		
+		folder = new File("vectorgen");
 		for (File f : folder.listFiles()) {
 			f.delete();
 		}
@@ -99,6 +104,14 @@ public class GenJavaFromPlanFiles {
 
 			oos.close();
 			fos.close();
+			
+			// write out the charactaristic vectors to file
+			fileName = "vectorgen/"+planName+".vdb";
+			fileWriter = new FileWriter(fileName);
+		    printWriter = new PrintWriter(fileWriter);
+		    
+		    printWriter.print(javaRep.getVectorString(fileName));
+		    printWriter.close();
 			
 		}
 	}
