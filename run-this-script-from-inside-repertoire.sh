@@ -5,7 +5,7 @@ TRIAL_TIME_LIMIT=1h
 for i in `seq 1000`; do
     TRIAL_ID=`uuidgen`
     TRIAL_DIR=../rijnards-experiments/$TRIAL_ID
-    mkdir -p $TRIAL_ID/repertoire
+    mkdir -p $TRIAL_DIR/repertoire
     # modify this repertoire. save what we did to it in the trial dir
     ../scripts/generate-in-place.sh ../templates/semantics-altering &> $TRIAL_ID/stats.txt
     # copy it for reference
