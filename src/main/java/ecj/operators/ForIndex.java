@@ -1,5 +1,7 @@
 package ecj.operators;
 
+import java.util.HashMap;
+
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -99,5 +101,14 @@ public class ForIndex extends ERC implements JavaGenerator {
 		java.appendLine(""+value, this);
 		return java;
 	}
+
+	@Override
+	public HashMap<String, Integer> generateVector() {
+		HashMap<String, Integer> vector = new HashMap<String, Integer>();
+		vector.put(value+"", 1);
+		return vector;
+	}
+	
+	
 
 }
