@@ -15,3 +15,9 @@ for i in `seq 1000`; do
     cd repertoire
     git checkout -- .
 done
+
+# Live updates:
+# stdbuf -oL tail -F rijnards-experiments/scratch/out.csv | awk -F ',' '{print $1,$4,$5}'
+
+# Inspect values 
+# T=0; cat rijnards-experiments/prune-sequence-take-first/out.csv | grep "^${T}" | awk -F ',' '{print $5}' | grep "E" | sort | tail -n 1
