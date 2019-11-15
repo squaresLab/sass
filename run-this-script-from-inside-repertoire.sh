@@ -1,8 +1,9 @@
 #!/bin/bash
 
-TRIAL_TIME_LIMIT=20m
+TRIAL_TIME_LIMIT=2m
 
 for i in `seq 1000`; do
+    echo $i
     TRIAL_ID=`uuidgen`
     TRIAL_DIR=../rijnards-experiments/$TRIAL_ID
     mkdir -p $TRIAL_DIR/repertoire
@@ -11,7 +12,7 @@ for i in `seq 1000`; do
     # copy it for reference
     cp * $TRIAL_DIR/repertoire
     cd ..
-    timeout $TRIAL_TIME_LIMIT ./gradlew runRepertoire > rijnards-experiments/$TRIAL_ID/out.csv
+    timeout $TRIAL_TIME_LIMIT ./gradlew runRepertoire # > rijnards-experiments/$TRIAL_ID/out.csv
     cd repertoire
     git checkout -- .
 done
