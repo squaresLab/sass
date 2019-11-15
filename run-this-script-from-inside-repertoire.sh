@@ -9,7 +9,7 @@ for i in `seq 1000`; do
     # modify this repertoire. save what we did to it in the trial dir
     ../scripts/generate-in-place.sh ../templates/semantics-altering &> $TRIAL_ID/stats.txt
     # copy it for reference
-    cp * $TRIAL_ID/repertoire
+    cp * $TRIAL_DIR/repertoire
     cd ..
     timeout $TRIAL_TIME_LIMIT ./gradlew runRepertoire > rijnards-experiments/$TRIAL_ID/out.csv
     cd repertoire
