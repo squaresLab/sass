@@ -1,0 +1,6 @@
+-=-=-=-=-=-=-=-=
+1: applying 1 templates
+-=-=-=-=-=-=-=-=
+Applying ../templates/semantics-altering/decrement-for
+---------------------
+GENERATING NEXT VARIANT

@@ -1,0 +1,8 @@
+-=-=-=-=-=-=-=-=
+1: applying 2 templates
+-=-=-=-=-=-=-=-=
+Applying ../templates/semantics-altering/prune-for
+---------------------
+Applying ../templates/semantics-altering/prune-try-take-second
+---------------------
+GENERATING NEXT VARIANT
