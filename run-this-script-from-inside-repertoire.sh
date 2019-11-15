@@ -7,7 +7,7 @@ for i in `seq 1000`; do
     TRIAL_DIR=../rijnards-experiments/$TRIAL_ID
     mkdir -p $TRIAL_DIR/repertoire
     # modify this repertoire. save what we did to it in the trial dir
-    ../scripts/generate-in-place.sh ../templates/semantics-altering &> $TRIAL_ID/stats.txt
+    ../scripts/generate-in-place.sh ../templates/semantics-altering &> $TRIAL_DIR/stats.txt
     # copy it for reference
     cp * $TRIAL_DIR/repertoire
     cd ..
