@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TRIAL_TIME_LIMIT=1h
+TRIAL_TIME_LIMIT=20m
 
 for i in `seq 1000`; do
     TRIAL_ID=`uuidgen`
