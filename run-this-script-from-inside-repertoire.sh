@@ -2,6 +2,10 @@
 
 TRIAL_TIME_LIMIT=2m
 
+git checkout -- .
+
+doalarm() { perl -e 'alarm shift; exec @ARGV' -- "$@"; }
+
 for i in `seq 1000`; do
     echo $i
     TRIAL_ID=`uuidgen`
@@ -12,7 +16,11 @@ for i in `seq 1000`; do
     # copy it for reference
     cp * $TRIAL_DIR/repertoire
     cd ..
-    timeout $TRIAL_TIME_LIMIT ./gradlew runRepertoire # > rijnards-experiments/$TRIAL_ID/out.csv
+    # timeout $TRIAL_TIME_LIMIT ./gradlew runRepertoire # > rijnards-experiments/$TRIAL_ID/out.csv
+    # ./gradlew runRepertoire # > rijnards-experiments/$TRIAL_ID/out.csv
+    # ./gradlew runRepertoire > rijnards-experiments/$TRIAL_ID/out.csv
+    # 20 minutes
+    doalarm 1200 ./gradlew runRepertoire > rijnards-experiments/$TRIAL_ID/out.csv
     cd repertoire
     git checkout -- .
 done
