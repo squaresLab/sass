@@ -103,6 +103,7 @@ public class RepertoireBuilder {
 		
 		// run multiple trials
 		for (int trial = 0; trial < numTrials; trial++){
+			ScenarioFactory scenarioFactory = new ScenarioFactory(trial);
 			
 		for (double trimmerChance : new double[]{0.1}){
 			
@@ -114,16 +115,16 @@ public class RepertoireBuilder {
 		for (int mutations : new int[]{1,5,10,20}) {// num mutations fixed during evaluation
 		do {
 			scenario = ScenarioFactory.getDefault();
+			
 			// this proceedure was used to generate the starting plans
 			//int mutations = random.nextInt(5);
 			for (int i = 0; i < mutations; i++) {
-				ScenarioFactory.mutateScenario(scenario);
+				scenarioFactory.mutateScenario(scenario);
 			}
 		}while(scenario.isFourservEnabled()); // do while to reroll if 4 serv enabled
 		// TODO remember to turn this off!
 		
 		//scenario.setFourservEnabled(false);
-			
 			//10,100,1000,10000
 		for (long window : new long[] {10000}){
 			
@@ -253,7 +254,7 @@ public class RepertoireBuilder {
 			
 		}else{
 			
-			return new double[] {0.90,0.0};
+			return new double[] {0.9};
 			
 		}
 	}
