@@ -122,6 +122,7 @@ public class JavaRep implements Serializable {
 		
 		Collections.sort(keys);
 		
+		/* debug only
 		ans += "#";
 		for (String key : keys) {
 			ans += key;
@@ -129,6 +130,7 @@ public class JavaRep implements Serializable {
 		}
 		
 		ans += "\n";
+		*/
 		
 		for (int line = 0; line < cursor; line++) {
 			HashMap<String,Integer> vector = charVectorMap.get(line);
