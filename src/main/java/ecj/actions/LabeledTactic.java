@@ -59,8 +59,9 @@ public abstract class LabeledTactic<T extends FailableTactic> extends GPNode imp
 	}
 	
 	public HashMap<String,Integer> generateVector(){
-		HashMap<String,Integer> hMap = ((JavaGenerator) children[0]).generateVector();
-		hMap.put(tactic.getSimpleName(), hMap.getOrDefault(tactic.getSimpleName(), 0)+1);
+		HashMap<String,Integer> hMap = new HashMap<String,Integer>();
+		String name = tactic.getSimpleName()+children[0].getClass().getSimpleName();
+		hMap.put(name, hMap.getOrDefault(name, 0)+1);
 		return hMap;
 	}
 	
