@@ -1,0 +1,621 @@
++ perl -e 'alarm shift; exec @ARGV' -- 1200 ./gradlew runRepertoire
+> Task :compileJava UP-TO-DATE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :runRepertoire
+trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize,scenarioMutations
+0,0,13,2038,2.9437033635819912E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",14.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+0,1,15,5018,2.952436280840526E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",18.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+0,2,15,8025,2.950844113044059E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",20.0,1
+0,3,15,11127,2.9486548823239166E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",22.0,1
+0,4,15,16055,2.945470546730982E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",23.0,1
+0,5,15,23181,2.940893064316139E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",24.0,1
+0,6,15,35724,2.9337283092320368E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",25.0,1
+0,7,15,33699,2.9271606170716092E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",25.0,1
+0,8,15,37627,2.91959782003839E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",26.0,1
+0,9,15,38308,2.912035023005171E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",27.0,1
+0,10,15,39827,2.904074184022835E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",28.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+0,11,15,36870,2.8967104079641744E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",28.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+0,12,15,34879,2.8897446738546304E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",28.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+0,13,15,34709,2.8827789397450864E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",27.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,14,15,29783,2.8770073314828925E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",25.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,15,15,18210,2.873225932966283E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",24.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,16,15,14961,2.870240618347907E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",23.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,17,15,10921,2.868250408602323E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,18,15,6891,2.8668572617804144E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",20.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,19,15,3079,2.866260198856739E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",19.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,20,15,1957,2.865862156907622E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",19.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,21,15,3010,2.8652650939839467E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",18.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,22,15,1235,2.8648670520348303E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",18.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,23,15,367,2.8648670520348303E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",17.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,24,15,483,2.8648670520348303E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",16.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,25,15,471,2.8646680310602717E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",16.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,26,15,356,2.8646680310602717E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",15.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,27,15,2997,2.8640709681365967E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",15.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,28,15,910,2.863871947162038E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",14.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,29,15,262,2.863871947162038E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",14.0,1
+0,0,14,1861,2.9520668464078583E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",20.0,1
+java.lang.NullPointerException
+java.lang.NullPointerException
+java.lang.NullPointerException
+0,1,15,6528,2.9522372598659676E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",23.0,1
+0,2,15,16000,2.9490529242730334E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",25.0,1
+0,3,15,24402,2.9442764208836317E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",25.0,1
+0,4,15,31602,2.937907749697763E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",26.0,1
+0,5,15,38226,2.9303449526645437E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",27.0,1
+0,6,15,38148,2.9227821556313246E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",26.0,1
+0,7,15,38975,2.915020337623547E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",25.0,1
+0,8,15,40745,2.9068604776666526E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",24.0,1
+0,9,15,41391,2.898700617709758E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",22.0,1
+0,10,15,39466,2.8907397787274223E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+0,11,15,44312,2.8819828558468524E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+0,12,15,63094,2.869444534449673E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+0,13,15,56306,2.8581003388998445E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+0,14,15,59710,2.8463581014008988E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+0,15,18,55423,2.8353721402694404E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",20.0,1
+0,16,18,59183,2.823628621465588E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+0,17,18,62090,2.8112879745869625E7,-1.0,-1.0,scratch,repertoire,10000,0.0,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,0.9874821088699692,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1
+../run-this-script-from-inside-repertoire.sh: line 7: 97770 Alarm clock: 14         perl -e 'alarm shift; exec @ARGV' -- "$@"

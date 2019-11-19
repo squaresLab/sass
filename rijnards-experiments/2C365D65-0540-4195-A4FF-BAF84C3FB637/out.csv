@@ -1,0 +1,92 @@
++ perl -e 'alarm shift; exec @ARGV' -- 1200 ./gradlew runRepertoire
+> Task :compileJava UP-TO-DATE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+
+> Task :runRepertoire
+trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize,scenarioMutations
+0,0,15,4432,2.947578711982392E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",20.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+0,1,19,6155,2.9594738286569975E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",23.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+0,2,19,12049,2.9570759836301874E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",23.0,1
+java.lang.NullPointerException
+	at tactics.Plan.aggregate(Plan.java:155)
+	at tactics.Plan.evaluate(Plan.java:57)
+	at tactics.Plan.evaluate(Plan.java:33)
+	at ecj.OmnetProblemSingle.evaluate(OmnetProblemSingle.java:108)
+	at ec.simple.SimpleEvaluator.evalPopChunk(SimpleEvaluator.java:264)
+	at ec.simple.SimpleEvaluator$SimpleEvaluatorThread.run(SimpleEvaluator.java:347)
+	at ec.util.ThreadPool$Node.run(ThreadPool.java:341)
+	at java.base/java.lang.Thread.run(Thread.java:830)
+0,3,18,20227,2.9549924830267914E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",23.0,1
+0,4,18,29819,2.9489915724107664E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",23.0,1
+0,5,20,42212,2.941000445039426E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",24.0,1
+0,6,20,57865,2.9293965326866195E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",25.0,1
+0,7,20,111635,2.9075678855667487E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",26.0,1
+0,8,19,141015,2.8797426726656046E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",26.0,1
+0,9,19,182367,2.8433121820928812E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",27.0,1
+0,10,19,213134,2.8006764980709575E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",27.0,1
+0,11,19,277504,2.7450299245587755E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,-0.4052480116413021,150.0,200.0,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",28.0,1
+../run-this-script-from-inside-repertoire.sh: line 7: 95713 Alarm clock: 14         perl -e 'alarm shift; exec @ARGV' -- "$@"

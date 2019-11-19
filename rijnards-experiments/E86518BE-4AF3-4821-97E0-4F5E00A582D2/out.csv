@@ -1,0 +1,1 @@
++ perl -e 'alarm shift; exec @ARGV' -- 1200 ./gradlew runRepertoire

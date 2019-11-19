@@ -1,0 +1,12 @@
+-=-=-=-=-=-=-=-=
+1: applying 4 templates
+-=-=-=-=-=-=-=-=
+Applying ../templates/semantics-altering/prune-try-take-first
+---------------------
+Applying ../templates/semantics-altering/prune-try-take-third
+---------------------
+Applying ../templates/semantics-altering/prune-try-take-first
+---------------------
+Applying ../templates/semantics-altering/decrement-for
+---------------------
+GENERATING NEXT VARIANT
