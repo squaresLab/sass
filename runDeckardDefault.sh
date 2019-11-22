@@ -4,11 +4,9 @@
 # this script
 
 # need to give the location of Deckard
-DECKARDDIR=/home/ckinneer/research/DeckardPostproc/Deckard
+DECKARDDIR=/home/cody/repertoirework/Deckard
 
 CLONEDETECTCMD="$DECKARDDIR/scripts/clonedetect/deckard.sh"
-
-# first copy the generated vectors to the proper location
 
 # clean up
 rm vectors/*

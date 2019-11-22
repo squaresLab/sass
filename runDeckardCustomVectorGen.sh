@@ -4,7 +4,7 @@
 # this script
 
 # need to give the location of Deckard
-DECKARDDIR=/home/ckinneer/research/DeckardPostproc/Deckard
+DECKARDDIR=/home/cody/repertoirework/Deckard
 
 CLONEDETECTCMD="$DECKARDDIR/scripts/clonedetect/vertical-param-batch"
 
