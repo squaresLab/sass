@@ -1,0 +1,12 @@
+(executable
+ (name main)
+ (modules main)
+ (libraries sexplib))
+
+(alias
+ (name DEFAULT)
+  (deps main.exe))
+
+(install
+ (section bin)
+ (files (main.exe as main)))

@@ -1,0 +1,13 @@
+opam-version: "2.0"
+version: ""
+maintainer: "rvantonder@gmail.com"
+authors: "Rijnard van Tonder"
+homepage: "https://github.com/rvantonder/sass"
+bug-reports: "https://github.com/rvantonder/sass/issues"
+dev-repo: "https://github.com/rvantonder/sass.git"
+license: "MIT"
+build: [["dune" "build" "-p" name "-j" jobs "@install"]]
+build-test: [["dune" "runtest" "-p" name "-j" jobs]]
+depends: [
+  "sexplib"
+]
