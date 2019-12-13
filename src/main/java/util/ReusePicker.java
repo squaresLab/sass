@@ -71,7 +71,7 @@ public class ReusePicker {
 			e.printStackTrace();
 		}
 		
-		String deckardFile = "/home/ckinneer/git/sass/clusters/post_cluster_vdb_30_0_allg_0.95_30";
+		String deckardFile = "/home/ckinneer/git/sass/clusters/post_cluster_vdb_30_0_allg_1.0_30";
 		
 		int desiredSnippets = 100;
 		
@@ -108,7 +108,7 @@ public class ReusePicker {
 				deckardline = deckardline.trim().replaceAll("\\s+", " ");
 				String[] csv = deckardline.split(" ");
 				
-				String filename = csv[3].split("/")[6].replaceAll( ".java",".ser");
+				String filename = csv[3].split("/")[1].replaceAll( ".java",".ser");
 				int sourceLineNumber = Integer.parseInt(csv[4].split(":")[1]);
 				
 				// now lookup the snippet from the map

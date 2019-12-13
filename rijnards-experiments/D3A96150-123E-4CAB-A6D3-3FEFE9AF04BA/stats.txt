@@ -1,0 +1,10 @@
+-=-=-=-=-=-=-=-=
+1: applying 3 templates
+-=-=-=-=-=-=-=-=
+Applying ../templates/semantics-altering/prune-for
+---------------------
+Applying ../templates/semantics-altering/prune-for
+---------------------
+Applying ../templates/semantics-altering/prune-try-when-similarly-nested
+---------------------
+GENERATING NEXT VARIANT

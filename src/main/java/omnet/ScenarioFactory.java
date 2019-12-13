@@ -14,10 +14,14 @@ import java.util.Random;
 
 public class ScenarioFactory {
 		
-	private static Random random = new Random();
+	private Random random;
 	
 	public enum ScenarioType {
 		newDataCenter, lossOfTactic, changeToConstants;
+	}
+	
+	public ScenarioFactory(long seed) {
+		random = new Random(seed);
 	}
 
 	public static Scenario getDefault() {
@@ -30,7 +34,7 @@ public class ScenarioFactory {
 	
 	// This method will take a scenario and perform a change operation on it
 	// used to get a new scenario, can be used multiple times for more changes
-	public static void mutateScenario(Scenario scenario) {
+	public void mutateScenario(Scenario scenario) {
 		double roll = random.nextDouble();
 		
 		// 10% flip the bit
@@ -81,7 +85,7 @@ public class ScenarioFactory {
 		
 	}
 	
-	private static void mutateArray(double[] a, int maxChange) {
+	private void mutateArray(double[] a, int maxChange) {
 		int index = random.nextInt(a.length);
 		double change = 0;
 		if (maxChange > 1) {
@@ -94,7 +98,7 @@ public class ScenarioFactory {
 		a[index] += change;
 	}
 	
-	private static void mutateArray(long[] a, int maxChange) {
+	private void mutateArray(long[] a, int maxChange) {
 		int index = random.nextInt(a.length);
 		Long change = (long) random.nextInt(maxChange);
 		if (random.nextBoolean()) {

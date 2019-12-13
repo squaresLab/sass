@@ -90,6 +90,7 @@ public class GenJavaFromPlanFiles {
 			//System.out.println(javaRep);	
 			
 			String fileName = "javagen/"+planName + ".java";
+			String javaFileName = fileName;
 			FileWriter fileWriter = new FileWriter(fileName);
 		    PrintWriter printWriter = new PrintWriter(fileWriter);
 		    printWriter.print(javaRep.toString());
@@ -110,7 +111,7 @@ public class GenJavaFromPlanFiles {
 			fileWriter = new FileWriter(fileName);
 		    printWriter = new PrintWriter(fileWriter);
 		    
-		    printWriter.print(javaRep.getVectorString(fileName));
+		    printWriter.print(javaRep.getVectorString(javaFileName));
 		    printWriter.close();
 			
 		}
