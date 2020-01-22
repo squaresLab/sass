@@ -43,6 +43,12 @@ public class Scenario {
 	double[] powerPerNormal = {150.0/50.0, 200.0/130.0, 300.0/150.0, 80.0 / 25.0,150.0/50.0, 200.0/130.0, 300.0/150.0, 80.0 / 25.0,150.0/50.0, 200.0/130.0, 300.0/150.0, 80.0 / 25.0,150.0/50.0, 200.0/130.0, 300.0/150.0, 80.0 / 25.0};
 	long[] latency = {120,120,120,60,120,120,120,60,120,120,120,60,120,120,120,60};
 	
+	double[] regionCost = {0.0001502580449,0.0001431959624,0.0001666704614,0.0001666704614,0.0001584547662,0.0001577868852,0.0001735883424,0.0002167501518,0.0001557680631,
+			0.0001615664845,0.0001793260474,0.0001607088646,0.0001422282939,0.0001422282939,0.0001724954463,0.0001422282939};
+	double[] regionPower = {1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000};
+	double[] regionPowerPerNormal = {1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500,1000/500};
+	double[] regionLatency = {120,120,120,120,120,120,120,120,120,120,120,120,120,120,120,120};
+	
 	// constants for each tactic
 	// DD, DT, ID, IT, ShS, StS
 	double[] failChance = {0.05,0.01,0.05,0.05,0.1,0.1};
@@ -66,8 +72,37 @@ public class Scenario {
 		tacticFailrateHandlers = new HashMap<Class,TacticHandler>();
 		// initialize handlers w/ defaults
 		updateHandlers();
+		
+		cost = getDefaultByRegion(regionCost);
+		power = getDefaultByRegion(regionPower);
+		powerPerNormal = getDefaultByRegion(regionPowerPerNormal);
+		double[] latencyDub = getDefaultByRegion(regionLatency);
+		
+		latency = new long[latencyDub.length];
+		for (int i = 0; i < latencyDub.length; i++) {
+			latency[i] = (long) latencyDub[i];
+		}
 	}
 	
+	public double[] getDefaultByRegion(double[] regionArr) {
+		int size = DatacenterFactory.serverLabels.length;
+		double[] ans = new double[size];
+		
+		for (int i = 0; i < size; i++) {
+			String label = DatacenterFactory.serverLabels[i];
+			String region = getRegionFromLabel(label);
+			int index = Arrays.asList(DatacenterFactory.regionLabels).indexOf(region);
+			ans[i] = regionArr[index];
+		}
+		
+		return ans;
+	}
+	
+	private String getRegionFromLabel(String label){
+		return label.substring(0,label.length()-1);
+	}
+	
+
 	// warning, currently this overwrites all of the existing tactic handlers
 	public void updateHandlers() {
 		for (int count = 0; count < tacticClasses.length; count++) {
