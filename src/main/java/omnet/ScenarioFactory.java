@@ -169,5 +169,23 @@ public class ScenarioFactory {
 		}
 		return ans;
 	}
+	
+	public static void main(String[] args) {
+		Scenario start = new Scenario();
+		ScenarioFactory factory = new ScenarioFactory(10);
+		
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		factory.mutateScenario(start);
+		
+		System.out.println(start);
+	}
 
 }

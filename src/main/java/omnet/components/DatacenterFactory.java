@@ -10,7 +10,7 @@ public class DatacenterFactory {
 	
 	double mult = 1;
 	
-	String[] serverLabels = {"A","B","C","D"};
+	String[] serverLabels = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"};
 	
 	public DatacenterFactory(Scenario s){
 		this.s = s;
