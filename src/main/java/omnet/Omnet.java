@@ -38,11 +38,11 @@ public class Omnet extends SystemState {
 	}
 
 	// requests / sec on the system, assumed constant for now
-	public int SYSTEM_DEMAND = 1000;
+	public int SYSTEM_DEMAND = 3000;
 	
-	static double NORMAL_PROFIT_PER_SECOND = 3;
+	static double NORMAL_PROFIT_PER_SECOND = .005;
 
-	static double DIMMED_PROFIT_PER_SECOND = 1;
+	static double DIMMED_PROFIT_PER_SECOND = .001;
 	
 	private double dimmedResponses,normalResponses,income,cost,latency;
 
@@ -60,15 +60,17 @@ public class Omnet extends SystemState {
 		
 		this.scenario = s;
 		
-		datacenters = new ArrayList<Datacenter>();
-		
 		datacenterFactory = new DatacenterFactory(s);
+		datacenters = datacenterFactory.initializeDatacenters();
 		
 		// we will start with 1 datacenter of A, B, and C
 		// each datacenter starts with one server, this is handeled by the datacenter factory
+		/*
 		datacenters.add(datacenterFactory.getA());
 		datacenters.add(datacenterFactory.getB());
 		datacenters.add(datacenterFactory.getC());
+		*/
+		
 		
 		s.applyTo(this);
 		
