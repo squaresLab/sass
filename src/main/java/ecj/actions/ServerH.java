@@ -3,7 +3,7 @@ package ecj.actions;
 public class ServerH extends TacticLabel {
 
 	public ServerH() {
-		super("H");
+		super("eu-west-3b");
 	}
 	
 }

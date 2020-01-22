@@ -3,7 +3,7 @@ package ecj.actions;
 public class ServerD extends TacticLabel {
 
 	public ServerD() {
-		super("D");
+		super("ap-south-1a");
 	}
 	
 }
