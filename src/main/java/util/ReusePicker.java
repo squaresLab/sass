@@ -149,9 +149,10 @@ public class ReusePicker {
 		deckardline = deckardline.trim().replaceAll("\\s+", " ");
 		String[] csv = deckardline.split(" ");
 		
-		String filename = csv[3].split("/")[6].replaceAll( ".java",".ser");
+		// split on 6 for deckard default and 1 for custom?
+		String filename = csv[3].split("/")[1].replaceAll( ".java",".ser");
 		int sourceLineNumber = Integer.parseInt(csv[4].split(":")[1]);
-		
+		//System.out.println(filename);
 		// now lookup the snippet from the map
 		JavaRep java = objMap.get(filename);
 		// pull the object from the rep
