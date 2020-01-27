@@ -38,7 +38,7 @@ public class Datacenter {
 			this.name = name;
 			
 			// default values
-			servers = 1;
+			servers = 0;
 			
 			dimmer = 0;
 			traffic = 4;
