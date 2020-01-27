@@ -101,6 +101,8 @@ public class RepertoireBuilder {
 		// print header
 		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize,scenarioMutations");
 		
+		Random rand = new Random();
+		
 		// run multiple trials
 		for (int trial = 0; trial < numTrials; trial++){
 			ScenarioFactory scenarioFactory = new ScenarioFactory(trial);
@@ -112,7 +114,8 @@ public class RepertoireBuilder {
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 		for (int scenarios = 0; scenarios < numScenarios; scenarios++){
-		for (int mutations : new int[]{1,5,10,20}) {// num mutations fixed during evaluation
+		//for (int mutations : new int[]{1,5,10}) {// num mutations fixed during evaluation
+		for (int mutations = 0; mutations < rand.nextInt(5)+1; mutations++) {// num mutations fixed during evaluation
 		do {
 			scenario = ScenarioFactory.getDefault();
 			
@@ -335,12 +338,13 @@ public class RepertoireBuilder {
 		}else if (initializer.equals("repertoire")) {
 			init = "ecj.PopFromRepertoireBuilder";
 		}
-		
+		/*
 		if (scenario.isFourservEnabled()){
 			copy.setProperty("gp.fs.0.size", "14");
 		}else{
 			copy.setProperty("gp.fs.0.size", "13");
 		}
+		*/
 		
 		copy.setProperty("gp.tc.0.init",init);
 		
