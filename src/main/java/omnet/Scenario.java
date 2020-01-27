@@ -118,9 +118,13 @@ public class Scenario {
 		Omnet.NORMAL_PROFIT_PER_SECOND = NORMAL_PROFIT_PER_SECOND;
 		Omnet.DIMMED_PROFIT_PER_SECOND = DIMMED_PROFIT_PER_SECOND;
 		
+		/*
 		if (fourservEnabled) {
 			omnet.getDatacenters().add((omnet.datacenterFactory.getD()));
 		}
+		*/
+		// start with one running server
+		omnet.getDatacenters().get(omnet.getDatacenters().size()-1).setServers(1);
 	}
 	
 	public int getSYSTEM_DEMAND() {
