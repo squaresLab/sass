@@ -19,6 +19,10 @@ public class ScenarioFactory {
 	public enum ScenarioType {
 		newDataCenter, lossOfTactic, changeToConstants;
 	}
+
+	public ScenarioFactory(){
+		random = new Random();
+	}	
 	
 	public ScenarioFactory(long seed) {
 		random = new Random(seed);
