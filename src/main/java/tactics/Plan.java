@@ -158,7 +158,7 @@ public abstract class Plan implements Cloneable {
 		}
 		
 		if (ans.get("Profit") > 60000000){
-			System.out.println("too high");
+			//System.out.println("too high");
 		}
 		
 		return ans;
