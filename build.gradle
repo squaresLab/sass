@@ -71,6 +71,14 @@ task runRepertoire(type: JavaExec){
 	maxHeapSize='10g'
 }
 
+task runJavaGen(type: JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+
+        main = 'util.GenJavaFromPlanFiles'
+
+        maxHeapSize='10g'
+}
+
 task runMutationStudy(type: JavaExec){
 	classpath = sourceSets.main.runtimeClasspath
 	
