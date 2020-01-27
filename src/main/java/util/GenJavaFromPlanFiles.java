@@ -51,7 +51,7 @@ public class GenJavaFromPlanFiles {
 		
 		GenJavaFromPlanFiles gen = new GenJavaFromPlanFiles();
 		
-		File folder = new File("repertoireBuilder25Gen");
+		File folder = new File("repertoire");
 		File[] files = folder.listFiles();
 		
 		folder = new File("objectgen");
