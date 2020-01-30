@@ -54,6 +54,7 @@ pop.subpop.0.species.pipe.source.1.prob = 0.2
  */
 public class RepertoireBuilder {
 
+	private static final long TIMEOUT =  2000*1000;
 	private static double generations = 30;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
@@ -199,6 +200,10 @@ public class RepertoireBuilder {
 				}
 				
 				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+",\""+scenario.toString()+"\","+avgSize+","+mutations);
+				
+				if (totaltime >= TIMEOUT) {
+					break;
+				}
 				
 				}
 			
