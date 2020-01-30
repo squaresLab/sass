@@ -57,7 +57,7 @@ public class RepertoireBuilder {
 	private static double generations = 30;
 	private static double popSize = 1000;
 	private static double crossoverChance = .6;
-	private static double killRatio = 0.0;
+	private static double killRatio = 0.00; // 0.05 for repertoire generation
 	private static double invalidActionPenalty = 0;
 	private static double verbosenessPenalty = 0.01;
 	private static double minAcceptedImprovement = 0.001;
@@ -102,10 +102,16 @@ public class RepertoireBuilder {
 		System.out.println("trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize,scenarioMutations");
 		
 		Random rand = new Random();
-		
+
+		// used for making the repertoire
+		//int nonce = 54651;
+
+		int nonce = 8643;
+
 		// run multiple trials
 		for (int trial = 0; trial < numTrials; trial++){
-			ScenarioFactory scenarioFactory = new ScenarioFactory(trial);
+			ScenarioFactory scenarioFactory = new ScenarioFactory(trial*nonce+nonce);
+			//ScenarioFactory scenarioFactory = new ScenarioFactory();
 			
 		for (double trimmerChance : new double[]{0.1}){
 			
@@ -114,8 +120,8 @@ public class RepertoireBuilder {
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 		for (int scenarios = 0; scenarios < numScenarios; scenarios++){
-		//for (int mutations : new int[]{1,5,10}) {// num mutations fixed during evaluation
-		for (int mutations = 0; mutations < rand.nextInt(5)+1; mutations++) {// num mutations fixed during evaluation
+		for (int mutations : new int[]{1,5,10}) {// num mutations fixed during evaluation
+		//for (int mutations = 0; mutations < rand.nextInt(5)+1; mutations++) {// num mutations fixed during evaluation
 		do {
 			scenario = ScenarioFactory.getDefault();
 			
@@ -203,7 +209,7 @@ public class RepertoireBuilder {
 			long time = System.currentTimeMillis();
 			
 			if (savePlans) {
-				String filename = "repertoireBuilder/Plan"+time+","+scenario.toString()+".txt";
+				String filename = "repertoireBuilder/Plan"+time+".txt";
 				
 				 File directory = new File("repertoireBuilder");
 				 if (! directory.exists()){
