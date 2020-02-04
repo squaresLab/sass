@@ -1,1 +1,0 @@
- (; (; (F ERC[i2|] (DecreaseTraffic A)) (; (T (DecreaseTraffic A) (DecreaseTraffic A) (F ERC[i4|] (StartServer A))) (F ERC[i5|] (StartServer C)))) (F ERC[i4|] (T (StartServer B) (StartServer B) (StartServer C))))

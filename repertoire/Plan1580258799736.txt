@@ -1,0 +1,1 @@
+ (T (IncreaseDimmer sa-east-1c) (DecreaseDimmer eu-north-1c) (DecreaseDimmer us-east-2b))

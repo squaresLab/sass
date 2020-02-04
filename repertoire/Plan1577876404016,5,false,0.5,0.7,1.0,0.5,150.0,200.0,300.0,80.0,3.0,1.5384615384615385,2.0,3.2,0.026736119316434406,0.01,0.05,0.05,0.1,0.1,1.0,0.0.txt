@@ -1,1 +1,0 @@
- (F ERC[i2|] (; (; (F ERC[i3|] (DecreaseTraffic C)) (T (IncreaseTraffic A) (DecreaseTraffic C) (DecreaseTraffic C))) (T (ShutdownServer C) (DecreaseTraffic C) (T (DecreaseDimmer B) (DecreaseTraffic A) (IncreaseTraffic B)))))
