@@ -238,7 +238,10 @@ private static String initial;
              // pick a node in individual 1
              p1 = nodeselect.pickNode(state,subpopulation,threadInd,ind,ind.trees[0]);
              
-             if (!p1.constraints((GPInitializer) state.initializer).returntype.equals(((GPTree)p1.rootParent()).constraints((GPInitializer) state.initializer).treetype)){
+             GPType returnType = p1.constraints((GPInitializer) state.initializer).returntype;
+             GPType treeType = ((GPTree)p1.rootParent()).constraints((GPInitializer) state.initializer).treetype;
+             
+             if (!treeType.compatibleWith(initializer, returnType)){
             	continue; 
              }else{
             	 break;
