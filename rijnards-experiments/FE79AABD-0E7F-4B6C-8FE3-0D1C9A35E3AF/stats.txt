@@ -1,7 +1,0 @@
--=-=-=-=-=-=-=-=
-1: applying 4 templates
--=-=-=-=-=-=-=-=
-Applying ../templates/semantics-altering/prune-try-take-second
----------------------
-Applying ../templates/semantics-altering/prune-try-take-second
----------------------

@@ -1,9 +1,0 @@
-> Task :compileJava UP-TO-DATE
-> Task :processResources NO-SOURCE
-> Task :classes UP-TO-DATE
-
-> Task :runRepertoire
-trial,generation,bestSize,runtime,profit,distance,structureDistance,plan,init,window,buildProb,runtimeKill,trimmerChance,scenario,averageSize,scenarioMutations
-0,0,8,512,2.614954192361191E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,471.243979698818,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",13.0,1
-0,1,11,672,2.647820181835368E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,471.243979698818,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",17.0,1
-0,2,10,1192,2.7070205481747005E7,-1.0,-1.0,scratch,repertoire,10000,0.9,0.75,0.1,"1000,false,0.5,0.7,1.0,0.5,150.0,471.243979698818,300.0,80.0,3.0,1.5384615384615385,2.0,3.2,0.05,0.01,0.05,0.05,0.1,0.1,1.0,0.0",21.0,1

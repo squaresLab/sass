@@ -1,8 +1,0 @@
--=-=-=-=-=-=-=-=
-1: applying 2 templates
--=-=-=-=-=-=-=-=
-Applying ../templates/semantics-altering/decrement-for
----------------------
-Applying ../templates/semantics-altering/prune-try-take-first
----------------------
-GENERATING NEXT VARIANT

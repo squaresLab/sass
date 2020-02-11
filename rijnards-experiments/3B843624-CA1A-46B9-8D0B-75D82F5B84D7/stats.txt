@@ -1,6 +1,0 @@
--=-=-=-=-=-=-=-=
-1: applying 1 templates
--=-=-=-=-=-=-=-=
-Applying ../templates/semantics-altering/prune-for
----------------------
-GENERATING NEXT VARIANT
