@@ -72,7 +72,7 @@ public class RepertoireBuilder {
 		int numTrials = 10;
 		int numScenarios = 1; // per trial that is
 		
-		String[] inits = {"repertoire"};
+		String[] inits = {"trimmer"};
 		
 		String plan = "scratch";
 		
@@ -360,7 +360,7 @@ public class RepertoireBuilder {
 		copy.setProperty("gp.tc.0.init",init);
 		
 		//copy.setProperty("initial_ind", getPlan(plan));
-		copy.setProperty("initial_ind", "(F ERC[i4|] (; (StartServer B) (T (StartServer C) (DecreaseTraffic A) (T (DecreaseTraffic A) (StartServer C) (StartServer B)))))");
+		copy.setProperty("initial_ind", "(; (; (StartServer us-west-2a) (; (T (ShutdownServer ap-southeast-2c) (; (; (T (StartServer us-east-1f) (StartServer eu-west-1a) (StartServer ca-central-1a)) (; (StartServer ap-south-1b) (T (StartServer us-east-1e) (IncreaseDimmer ap-south-1a) (StartServer eu-west-3b)))) (; (StartServer us-west-2c) (StartServer ap-southeast-2b))) (IncreaseDimmer us-east-2c)) (; (; (T (StartServer eu-west-3c) (StartServer eu-west-1a) (; (StartServer eu-north-1b) (F ERC[i2|] (StartServer eu-north-1a)))) (; (; (StartServer eu-west-1a) (StartServer ap-southeast-1a)) (T (StartServer ap-southeast-1b) (IncreaseTraffic ap-southeast-1a) (StartServer us-west-2b)))) (StartServer eu-north-1c)))) (StartServer sa-east-1a))");
 		
 		return copy;
 	}
