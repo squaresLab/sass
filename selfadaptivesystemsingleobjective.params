@@ -334,8 +334,11 @@ scenario_name = normal
 build_prob = 0.0
 runtime_kill_ratio = 1.0
 
+#aws
+initial_ind = (; (; (StartServer us-west-2a) (; (T (ShutdownServer ap-southeast-2c) (; (; (T (StartServer us-east-1f) (StartServer eu-west-1a) (StartServer ca-central-1a)) (; (StartServer ap-south-1b) (T (StartServer us-east-1e) (IncreaseDimmer ap-south-1a) (StartServer eu-west-3b)))) (; (StartServer us-west-2c) (StartServer ap-southeast-2b))) (IncreaseDimmer us-east-2c)) (; (; (T (StartServer eu-west-3c) (StartServer eu-west-1a) (; (StartServer eu-north-1b) (F ERC[i2|] (StartServer eu-north-1a)))) (; (; (StartServer eu-west-1a) (StartServer ap-southeast-1a)) (T (StartServer ap-southeast-1b) (IncreaseTraffic ap-southeast-1a) (StartServer us-west-2b)))) (StartServer eu-north-1c)))) (StartServer sa-east-1a))
+
 #latencytest
-initial_ind = (T (F ERC[i2|] (F ERC[i2|] (T (StartServer B) (ShutdownServer A) (StartServer C)))) (ShutdownServer C) (T (StartServer C) (StartServer A) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer B) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer C) (StartServer C) (StartServer B)))) (; (StartServer C) (T (F ERC[i5|] (StartServer B)) (ShutdownServer A) (StartServer C))))))))
+#initial_ind = (T (F ERC[i2|] (F ERC[i2|] (T (StartServer B) (ShutdownServer A) (StartServer C)))) (ShutdownServer C) (T (StartServer C) (StartServer A) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer B) (T (StartServer B) (ShutdownServer A) (T (StartServer C) (StartServer A) (T (StartServer C) (StartServer C) (StartServer B)))) (; (StartServer C) (T (F ERC[i5|] (StartServer B)) (ShutdownServer A) (StartServer C))))))))
 
 # poor
 #initial_ind = (; (IncreaseTraffic A) (; (DecreaseDimmer B) (; (DecreaseDimmer B) (DecreaseDimmer B))))
