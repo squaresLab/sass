@@ -114,7 +114,7 @@ public class OmnetProblemSingle extends GPProblem implements SimpleProblemForm {
 					}else{
 						
 						
-						fitnessValue = scenario.profitCoef * fitness.get("Profit") - scenario.latencyCoef * fitness.get("Latency");
+						fitnessValue = scenario.profitCoef * fitness.get("Profit") - scenario.latencyCoef * fitness.get("Latency") + scenario.latencyCoef*10000*scenario.getSYSTEM_DEMAND();
 					}					
 
 				}else{
