@@ -72,7 +72,7 @@ public class RepertoireBuilder {
 		int numTrials = 10;
 		int numScenarios = 1; // per trial that is
 		
-		String[] inits = {"trimmer"};
+		String[] inits = {"repertoire"};
 		
 		String plan = "scratch";
 		
@@ -82,7 +82,12 @@ public class RepertoireBuilder {
 			savePlans = true;
 			numTrials = 1;
 			inits = new String[1];
-			inits[0] = "scratch";
+			// for generating the repertoire
+			//inits[0] = "scratch";
+			
+			// for rijnards inferences
+			inits[0] = "repertoire";
+			
 			numScenarios = 1000;
 		}else if (args.length >  0) {
 			inits = new String[] {"deckard","scratch","repertoire","trimmer"};
@@ -107,7 +112,11 @@ public class RepertoireBuilder {
 		// used for making the repertoire
 		//int nonce = 54651;
 
-		int nonce = 8643;
+		// used for the eval
+		//int nonce = 8643;
+		
+		// used for rijnards inferences
+		int nonce = 148615;
 
 		// run multiple trials
 		for (int trial = 0; trial < numTrials; trial++){
@@ -121,8 +130,8 @@ public class RepertoireBuilder {
 		// for every scenario
 		//for (Scenario scenario : new Scenario[] {Scenario.fourserv,Scenario.requests,Scenario.requestsfourserv,Scenario.econ,Scenario.unreliable,Scenario.failc}){
 		for (int scenarios = 0; scenarios < numScenarios; scenarios++){
-		for (int mutations : new int[]{1,5,10}) {// num mutations fixed during evaluation
-		//for (int mutations = 0; mutations < rand.nextInt(5)+1; mutations++) {// num mutations fixed during evaluation
+		//for (int mutations : new int[]{1,5,10}) {// num mutations fixed during evaluation
+		for (int mutations = 0; mutations < rand.nextInt(5)+1; mutations++) {// num mutations fixed during evaluation
 		do {
 			scenario = ScenarioFactory.getDefault();
 			
