@@ -1,5 +1,6 @@
 package bullseye;
 
+import bullseye.attackerTypes.AttackerType;
 import bullseye.tactics.Tactic;
 
 public class System {
@@ -18,6 +19,52 @@ public class System {
 	
 	boolean camoflauge = false;
 	boolean throttle = false;
+	
+	public double instantaneousUtilityAttacker(AttackerType type) {
+		return 0;
+	}
+	
+	public double instantaneousUtilityDefender(AttackerType type) {
+		double util = 0;
+		
+		if (isWebDisrupted()) {
+			util -= 5;
+		}
+		
+		if (isPaymentServerDisrupted()) {
+			util -= 7;
+		}
+		
+		if (isPosDisrupted()) {
+			util -= 10;
+		}
+		
+		if (isCamoflauge()) {
+			util -= 1;
+		}
+		
+		if(isWebServerKeylogged()) {
+			util -= 2;
+		}
+		
+		if (isPaymentServerKeylogged()) {
+			util -= 3;
+		}
+		
+		if (isUploadingData()) {
+			if (isThrottle()) {
+				util -= 1;
+			}else {
+				util -= 3;
+			}
+		}
+		
+		if (isThrottle()) {
+			util -= 1;
+		}
+		
+		return util;
+	}
 	
 	public boolean isAttackerHasWebExploited() {
 		return attackerHasWebExploited;
@@ -136,4 +183,5 @@ public class System {
 			tactic.visit(this);
 		}
 	}
+
 }

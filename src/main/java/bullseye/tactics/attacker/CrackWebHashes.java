@@ -14,7 +14,7 @@ public class CrackWebHashes extends AttackerTactic {
 	
 	@Override
 	public void visit(System system) {
-		system.setAttackerHasWebPassword(true);
+		system.setAttackerHasPaymentPassword(true);
 	}
 
 	@Override
