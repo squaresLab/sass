@@ -1,7 +1,15 @@
 package bullseye;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import bullseye.attackerTypes.AttackerType;
+import bullseye.attackerTypes.Criminal;
+import bullseye.attackerTypes.Intelligence;
+import bullseye.attackerTypes.Terrorist;
 import bullseye.tactics.Tactic;
+import bullseye.tactics.attacker.AttackerTactic;
+import bullseye.tactics.defender.DefenderTactic;
 
 public class System {
 
@@ -20,8 +28,105 @@ public class System {
 	boolean camoflauge = false;
 	boolean throttle = false;
 	
+	boolean attackerDetected = false;
+	
+	
+	
+	public static double[] evaluate(ArrayList<DefenderTactic> defender, ArrayList<AttackerTactic> attacker, AttackerType type) {
+		double[] ans = new double[2];
+		
+		System sys = new System();
+		
+		int timestep = 0;
+		
+		while(!sys.getAttackerDetected() && (timestep < defender.size() || timestep < attacker.size())) {
+			
+			AttackerTactic a = null;
+			
+			if (timestep < attacker.size()) {
+				a = attacker.get(timestep);
+			}
+			
+			DefenderTactic d = null;
+			
+			if (timestep < defender.size()) {
+				d = defender.get(timestep);
+			}
+			
+			if (a != null) {
+				sys.acceptTactic(a);
+			}
+			
+			if (d != null) {
+				sys.acceptTactic(d);
+			}
+			
+			ans[0] += sys.instantaneousUtilityDefender(type);
+			ans[1] += sys.instantaneousUtilityAttacker(type);
+			
+			timestep++;
+			
+		}
+		
+		return ans;
+	}
+	
 	public double instantaneousUtilityAttacker(AttackerType type) {
-		return 0;
+		
+		double util = 0;
+		
+		if (type instanceof Terrorist) {
+			
+			if (isWebDisrupted()) {
+				util += 5;
+			}
+			
+			if (isPaymentServerDisrupted()) {
+				util += 7;
+			}
+			
+			if (isPosDisrupted()) {
+				util += 10;
+			}
+			
+		}else if (type instanceof Criminal) {
+			if (isPosFirmwareCompromised() && isUploadingData()) {
+				if (isThrottle()) {
+					util += 5;
+				}else {
+					util += 10;
+				}
+				
+			}
+		}else if (type instanceof Intelligence) {
+			
+			int sources = 0;
+			
+			if (isWebServerKeylogged()) {
+				sources += 1;
+			}
+			
+			if (isPaymentServerKeylogged()) {
+				sources += 1;
+			}
+			
+			if (isPosFirmwareCompromised()) {
+				sources += 1;
+			}
+			
+			if (isUploadingData()) {
+				
+				if (isThrottle()) {
+					util += sources * 5;
+				}else {
+					util += sources * 10;
+				}
+				
+			}
+			
+		}
+		
+		return util;
 	}
 	
 	public double instantaneousUtilityDefender(AttackerType type) {
@@ -181,7 +286,25 @@ public class System {
 	public void acceptTactic(Tactic tactic) {
 		if (tactic.isApplicable(this)) {
 			tactic.visit(this);
+			
+			if (tactic instanceof AttackerTactic) {
+				Random rand = new Random();
+				
+				double roll = rand.nextDouble();
+				
+				if (roll < ((AttackerTactic) tactic).getObs()) {
+					setAttackerDetected(true);
+				}
+			}
 		}
+	}
+
+	public void setAttackerDetected(boolean b) {
+		this.attackerDetected = b;
+	}
+	
+	public boolean getAttackerDetected() {
+		return this.attackerDetected;
 	}
 
 }

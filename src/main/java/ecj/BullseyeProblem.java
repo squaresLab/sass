@@ -2,6 +2,9 @@ package ecj;
 
 import java.util.ArrayList;
 
+import bullseye.attackerTypes.Intelligence;
+import bullseye.tactics.attacker.*;
+import bullseye.tactics.defender.*;
 import ec.*;
 import ec.coevolve.*;
 import ec.simple.SimpleFitness;
@@ -9,6 +12,12 @@ import ec.vector.IntegerVectorIndividual;
 
 public class BullseyeProblem extends Problem implements GroupedProblemForm{
 
+	
+	DefenderTactic[] defenderTactics = new DefenderTactic[] {new ChangePasswordPayment(),new ChangePasswordWeb(), new EnableCamoflauge(), new ReimagePayment(), new ReimagePOS(), new ReimageWeb(),new ThrottleConnection(), new Wait()};
+	// len 8
+	AttackerTactic[] attackerTactics = new AttackerTactic[] {new CrackWebHashes(), new DisruptPayment(), new DisruptPOS(), new DisruptWeb(), new ExfilData(), new InfectPos(), new KeylogPayment(), new KeylogWeb(), new PhishVendor(), new ZeroDayPayment(), new ZeroDayWeb()};
+	// len 11
+	
 	@Override
 	public void preprocessPopulation(EvolutionState state, Population pop, boolean[] prepareForAssessment, boolean countVictoriesOnly) {
 		for (int i = 0; i < pop.subpops.size(); i++) {
@@ -18,10 +27,31 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 					fit.trials = new ArrayList();
 				}
 			}
-		}
-		
+		}	
 	}
 
+	public double[] evalFitness(int[] defender, int[] attacker) {
+		
+		ArrayList<DefenderTactic> defenderList = new ArrayList<DefenderTactic>();
+		ArrayList<AttackerTactic> attackerList = new ArrayList<AttackerTactic>();
+		
+		for (int i = 0; i < defender.length; i++) {
+			int d = defender[i];
+			
+			defenderList.add(defenderTactics[d]);
+			
+		}
+		
+		for (int i = 0; i < attacker.length; i++) {
+			int a = attacker[i];
+			
+			attackerList.add(attackerTactics[a]);
+			
+		}
+		
+		return bullseye.System.evaluate(defenderList, attackerList, new Intelligence());
+	}
+	
 	@Override
     public void evaluate(final EvolutionState state,
             final Individual[] ind,  // the individuals to evaluate together
@@ -40,9 +70,12 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
                 state.output.fatal( "The individuals in the BullseyeProblem should be IntegerVectorIndividual." );
 
             // TODO the actual simulation and util calc here
-            double score0 = 0;
-            double score1 = 0;
-
+            
+            double util[] = evalFitness(((IntegerVectorIndividual) ind[0]).genome, ((IntegerVectorIndividual) ind[1]).genome);
+                   
+            double score0 = util[0];
+            double score1 = util[1];
+            
             if( updateFitness[0] )
                 {
                 SimpleFitness fit = ((SimpleFitness)(ind[0].fitness));
