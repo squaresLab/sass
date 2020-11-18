@@ -6,12 +6,8 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class KeylogPayment extends AttackerTactic {
+public class KeylogPayment implements AttackerTactic {
 
-	public KeylogPayment() {
-		obs = 0.05;
-	}
-	
 	@Override
 	public void visit(System system) {
 		system.setPaymentServerKeylogged(true);
@@ -35,6 +31,11 @@ public class KeylogPayment extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return system.isAttackerHasPaymentPresence();
+	}
+
+	@Override
+	public double getObs() {
+		return 0.05;
 	}
 
 }

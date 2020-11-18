@@ -5,11 +5,7 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class ExfilData extends AttackerTactic {
-
-	public ExfilData() {
-		obs = 0.25;
-	}
+public class ExfilData implements AttackerTactic {
 	
 	@Override
 	public void visit(System system) {
@@ -34,6 +30,11 @@ public class ExfilData extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return system.isPaymentServerKeylogged() || system.isWebServerKeylogged() || system.isPosFirmwareCompromised();
+	}
+
+	@Override
+	public double getObs() {
+		return 0.25;
 	}
 
 }

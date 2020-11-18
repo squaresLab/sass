@@ -6,12 +6,8 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class PhishVendor extends AttackerTactic {
+public class PhishVendor implements AttackerTactic {
 
-	public PhishVendor() {
-		obs = 0.1;
-	}
-	
 	@Override
 	public void visit(System system) {
 		system.setAttackerHasWebPassword(true);
@@ -35,6 +31,11 @@ public class PhishVendor extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return true;
+	}
+
+	@Override
+	public double getObs() {
+		return 0.1;
 	}
 	
 }

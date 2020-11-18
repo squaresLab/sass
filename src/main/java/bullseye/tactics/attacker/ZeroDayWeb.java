@@ -6,12 +6,8 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class ZeroDayWeb extends AttackerTactic {
+public class ZeroDayWeb implements AttackerTactic {
 
-	public ZeroDayWeb() {
-		obs = 0.05;
-	}
-	
 	@Override
 	public void visit(System system) {
 		system.setAttackerHasWebExploited(true);
@@ -35,6 +31,11 @@ public class ZeroDayWeb extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return true;
+	}
+
+	@Override
+	public double getObs() {
+		return 0.05;
 	}
 
 }

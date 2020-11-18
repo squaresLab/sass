@@ -7,6 +7,7 @@ import bullseye.tactics.attacker.*;
 import bullseye.tactics.defender.*;
 import ec.*;
 import ec.coevolve.*;
+import ec.gp.GPIndividual;
 import ec.simple.SimpleFitness;
 import ec.vector.IntegerVectorIndividual;
 
@@ -52,6 +53,11 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 		return bullseye.System.evaluate(defenderList, attackerList, new Intelligence());
 	}
 	
+	private double[] evalFitness(GPIndividual defender, GPIndividual attacker) {
+		return bullseye.System.evaluate(defender, attacker, new Intelligence());
+//		return new double[] {0,0};
+	}
+	
 	@Override
     public void evaluate(final EvolutionState state,
             final Individual[] ind,  // the individuals to evaluate together
@@ -63,16 +69,17 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             if( ind.length != 2 || updateFitness.length != 2 )
                 state.output.fatal( "The InternalSumProblem evaluates only two individuals at a time." );
 
-            if( ! ( ind[0] instanceof IntegerVectorIndividual ) )
-                state.output.fatal( "The individuals in the BullseyeProblem should be IntegerVectorIndividual." );
+            if( ! ( ind[0] instanceof GPIndividual ) )
+                state.output.fatal( "The individuals in the BullseyeProblem should be GPIndividual." );
 
-            if( ! ( ind[1] instanceof IntegerVectorIndividual ) )
-                state.output.fatal( "The individuals in the BullseyeProblem should be IntegerVectorIndividual." );
-
+            if( ! ( ind[1] instanceof GPIndividual ) )
+                state.output.fatal( "The individuals in the BullseyeProblem should be GPIndividual." );
+            
+            System.out.println(((GPIndividual) ind[1]).trees[0].child);
             // TODO the actual simulation and util calc here
             
-            double util[] = evalFitness(((IntegerVectorIndividual) ind[0]).genome, ((IntegerVectorIndividual) ind[1]).genome);
-                   
+            double util[] = evalFitness(((GPIndividual) ind[0]), ((GPIndividual) ind[1]));
+            //double util[] = {0,0};     
             double score0 = util[0];
             double score1 = util[1];
             
@@ -96,7 +103,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
                 fit.setFitness(state, score1, false);
                 }
             }
-	
+
 	@Override
 	public int postprocessPopulation(EvolutionState state, Population pop, boolean[] updateFitness, boolean countVictoriesOnly) {
 		  int total = 0;

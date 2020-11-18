@@ -10,6 +10,6 @@
 	<classpathentry kind="lib" path="libs/hamcrest-core-1.3-javadoc.jar"/>
 	<classpathentry kind="lib" path="libs/junit-4.12-javadoc.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="libs/ecj.25.jar" sourcepath="libs/ecj.25.jar"/>
+	<classpathentry kind="lib" path="libs/ecj.25.jar" sourcepath="/home/ckinneer/git/sass/ecjsource/ecj-25/ecj"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

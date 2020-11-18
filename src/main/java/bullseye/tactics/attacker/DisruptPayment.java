@@ -6,11 +6,7 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class DisruptPayment extends AttackerTactic {
-
-	public DisruptPayment() {
-		obs = 0.9;
-	}
+public class DisruptPayment implements AttackerTactic {
 	
 	@Override
 	public void visit(System system) {
@@ -35,6 +31,11 @@ public class DisruptPayment extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return system.isAttackerHasPaymentPresence();
+	}
+
+	@Override
+	public double getObs() {
+		return 0.9;
 	}
 
 }

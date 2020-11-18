@@ -1,0 +1,223 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = 				koza.params
+
+# We have two function set, one attacker, one defender
+gp.fs.size = 2
+gp.fs.0 = ec.gp.GPFunctionSet
+# We'll call the function set "f0".
+gp.fs.0.name = f0
+
+gp.fs.1 = ec.gp.GPFunctionSet
+gp.fs.1.name = f1
+
+# defenders fs
+gp.fs.0.size = 7
+gp.fs.0.func.0 = bullseye.actions.Randomize
+gp.fs.0.func.0.nc = nc1
+gp.fs.0.func.1 = bullseye.actions.ChangePasswords
+gp.fs.0.func.1.nc = nc0
+gp.fs.0.func.2 = bullseye.actions.FlashServers
+gp.fs.0.func.2.nc = nc0
+gp.fs.0.func.3 = bullseye.actions.Throttle
+gp.fs.0.func.3.nc = nc0
+gp.fs.0.func.4 = bullseye.actions.Wait
+gp.fs.0.func.4.nc = nc0
+gp.fs.0.func.5 = bullseye.actions.Probability
+gp.fs.0.func.5.nc = nc4
+gp.fs.0.func.6 = bullseye.actions.Sequence
+gp.fs.0.func.6.nc = nc5
+
+gp.fs.1.size = 12
+gp.fs.1.func.0 = bullseye.actions.Randomize
+gp.fs.1.func.0.nc = nc1
+gp.fs.1.func.1 = bullseye.actions.IfStatement
+gp.fs.1.func.1.nc = nc2
+gp.fs.1.func.2 = bullseye.actions.ExploitPay
+gp.fs.1.func.2.nc = nc0
+gp.fs.1.func.3 = bullseye.actions.ExploitPOS
+gp.fs.1.func.3.nc = nc0
+gp.fs.1.func.4 = bullseye.actions.ExploitWeb
+gp.fs.1.func.4.nc = nc0
+gp.fs.1.func.5 = bullseye.actions.IsPayCompromised
+gp.fs.1.func.5.nc = nc3
+gp.fs.1.func.6 = bullseye.actions.IsPOSCompromised
+gp.fs.1.func.6.nc = nc3
+gp.fs.1.func.7 = bullseye.actions.IsWebCompromised
+gp.fs.1.func.7.nc = nc3
+gp.fs.1.func.8 = bullseye.actions.PhishEmployee
+gp.fs.1.func.8.nc = nc0
+gp.fs.1.func.9 = bullseye.actions.PhishVendor
+gp.fs.1.func.9.nc = nc0
+gp.fs.1.func.10 = bullseye.actions.Probability
+gp.fs.1.func.10.nc = nc4
+gp.fs.1.func.11 = bullseye.actions.Sequence
+gp.fs.1.func.11.nc = nc5
+
+gp.nc.size = 6
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = nc0
+gp.nc.0.returns = tactic
+gp.nc.0.size = 0
+
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = nc1
+gp.nc.1.returns = plan
+gp.nc.1.size = 2
+gp.nc.1.child.0 = double
+gp.nc.1.child.1 = tactic-or-plan
+
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = nc2
+gp.nc.2.returns = plan
+gp.nc.2.size = 2
+gp.nc.2.child.0 = bool
+gp.nc.2.child.1 = tactic-or-plan
+
+gp.nc.3 = ec.gp.GPNodeConstraints
+gp.nc.3.name = nc3
+gp.nc.3.returns = bool
+gp.nc.3.size = 0
+
+gp.nc.4 = ec.gp.GPNodeConstraints
+gp.nc.4.name = nc4
+gp.nc.4.returns = double
+gp.nc.4.size = 0
+
+gp.nc.5 = ec.gp.GPNodeConstraints
+gp.nc.5.name = nc5
+gp.nc.5.returns = plan
+gp.nc.5.size = 2
+gp.nc.5.child.0 = tactic-or-plan
+gp.nc.5.child.1 = tactic-or-plan
+
+gp.type.a.size = 4
+gp.type.a.0.name = tactic
+gp.type.a.1.name = plan
+gp.type.a.2.name = bool
+gp.type.a.3.name = double
+
+gp.type.s.size = 1
+gp.type.s.0.name = tactic-or-plan
+gp.type.s.0.size = 2
+gp.type.s.0.member.0 = plan
+gp.type.s.0.member.1 = tactic
+
+gp.tc.size = 2
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+gp.tc.0.fset = f0
+gp.tc.0.returns = tactic-or-plan
+
+gp.tc.1 = ec.gp.GPTreeConstraints
+gp.tc.1.name = tc1
+gp.tc.1.fset = f1
+gp.tc.1.returns = tactic-or-plan
+
+
+generations =				1000
+quit-on-run-complete =			true
+eval =					ec.coevolve.MultiPopCoevolutionaryEvaluator
+
+eval.num-current = 4
+eval.select-current = ec.select.RandomSelection
+
+eval.subpop.0.select-current = ec.select.RandomSelection
+eval.subpop.1.select-current = ec.select.RandomSelection
+
+
+
+pop = 					ec.Population
+pop.subpops =				2
+pop.subpop.0 = 				ec.Subpopulation
+pop.subpop.0.size =			31
+pop.subpop.0.duplicate-retries =	2
+pop.subpop.0.species =     ec.gp.GPSpecies
+pop.subpop.0.species.ind = ec.gp.GPIndividual
+pop.subpop.0.species.ind.tree.0.tc = tc0
+pop.subpop.0.species.genome-size = 	50
+pop.subpop.0.species.chunk-size =	1
+pop.subpop.0.species.pipe = 		ec.breed.ForceBreedingPipeline
+pop.subpop.0.species.pipe.num-inds = 	2
+pop.subpop.0.species.pipe.source.0 = 	ec.gp.koza.MutationPipeline
+pop.subpop.0.species.pipe.source.0.source.0 =			ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0.source.0 = 		ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.0.source.0.size = 	3
+pop.subpop.0.species.pipe.source.0.source.0.source.1 = 	  	same
+pop.subpop.0.species.pipe.source.0.source.0.source.1.size = 	3
+
+pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
+#pop.subpop.0.species.ind =		ec.vector.IntegerVectorIndividual
+pop.subpop.0.species.mutation-prob = 	0.01
+pop.subpop.0.species.crossover-type = 	one
+pop.subpop.0.species.mutation-type =	reset
+
+pop.subpop.1 = 				ec.Subpopulation
+pop.subpop.1.size =			31
+pop.subpop.1.duplicate-retries =	2
+pop.subpop.1.species =     ec.gp.GPSpecies
+pop.subpop.1.species.ind = ec.gp.GPIndividual
+pop.subpop.1.species.ind.tree.0.tc = tc1
+pop.subpop.1.species.ind.numtrees = 1
+pop.subpop.1.species.ind.tree.0 = ec.gp.GPTree
+pop.subpop.1.species.genome-size = 	50
+pop.subpop.1.species.chunk-size =	1
+pop.subpop.1.species.pipe = 		ec.breed.ForceBreedingPipeline
+pop.subpop.1.species.pipe.num-inds = 	2
+pop.subpop.1.species.pipe.source.0 = 	ec.gp.koza.MutationPipeline
+pop.subpop.1.species.pipe.source.0.source.0 =			ec.gp.koza.CrossoverPipeline
+pop.subpop.1.species.pipe.source.0.source.0.source.0 = 		ec.select.TournamentSelection
+pop.subpop.1.species.pipe.source.0.source.0.source.0.size = 	3
+pop.subpop.1.species.pipe.source.0.source.0.source.1 = 	  	same
+pop.subpop.1.species.pipe.source.0.source.0.source.1.size = 	3
+
+pop.subpop.1.species.fitness =		ec.simple.SimpleFitness
+pop.subpop.1.species.mutation-prob = 	0.01
+pop.subpop.1.species.crossover-type = 	one
+pop.subpop.1.species.mutation-type =	reset
+
+stat.file				$out.stat
+
+select.tournament.size = 2
+
+eval.problem =				ecj.BullseyeProblem
+eval.problem.hist-size =		1
+
+# start params added due to errors
+eval.num-elites=1
+eval.num-shuffled=1
+eval.num-prev=0
+
+eval.select-prev=ec.select.TournamentSelection
+
+#vector.species.max-gene=10
+pop.subpop.0.species.max-gene = 7
+pop.subpop.1.species.max-gene = 10
+vector.species.min-gene=0
+# end added params
+
+stat.child.0.hist-size =		1
+stat.child.0.file =			compete.stat
+
+stat =					ec.simple.SimpleStatistics
+stat.num-children =			0
+
+breed.elite.0 =				1
+
+# for single elimination tournament
+#eval.style =				single-elim-tournament
+
+# for round robin
+#eval.style =				round-robin
+
+# for random one way tournament
+eval.style =				rand-1-way
+eval.group-size =			7
+
+# for random two way tournament
+#eval.style =				rand-2-way
+#eval.group-size =			7
+
+gp.tc.1.init = ec.gp.koza.HalfBuilder

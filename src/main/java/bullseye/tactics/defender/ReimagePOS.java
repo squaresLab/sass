@@ -2,7 +2,7 @@ package bullseye.tactics.defender;
 
 import bullseye.System;
 
-public class ReimagePOS extends DefenderTactic {
+public class ReimagePOS implements DefenderTactic {
 	
 	public double getCost() {;
 		return 3.0;

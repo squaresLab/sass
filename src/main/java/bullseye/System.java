@@ -10,6 +10,8 @@ import bullseye.attackerTypes.Terrorist;
 import bullseye.tactics.Tactic;
 import bullseye.tactics.attacker.AttackerTactic;
 import bullseye.tactics.defender.DefenderTactic;
+import ec.gp.GPIndividual;
+import ec.gp.GPNode;
 
 public class System {
 
@@ -283,9 +285,10 @@ public class System {
 		this.throttle = throttle;
 	}
 	
-	public void acceptTactic(Tactic tactic) {
+	public Tactic acceptTactic(Tactic tactic) {
+		Tactic next = null;
 		if (tactic.isApplicable(this)) {
-			tactic.visit(this);
+			next = tactic.visit(this);
 			
 			if (tactic instanceof AttackerTactic) {
 				Random rand = new Random();
@@ -305,6 +308,48 @@ public class System {
 	
 	public boolean getAttackerDetected() {
 		return this.attackerDetected;
+	}
+
+	public static double[] evaluate(GPIndividual defender, GPIndividual attacker, Intelligence type) {
+		GPNode defenderNode = defender.trees[0].child;
+		GPNode attackerNode = attacker.trees[0].child;
+		
+		
+		double[] ans = new double[2];
+		
+		System sys = new System();
+		
+		int timestep = 0;
+		
+		Random rand = new Random();
+		
+		boolean outOfTactics = false;
+		
+		while(!sys.getAttackerDetected() && !outOfTactics) {
+			
+			if (defenderNode instanceof Tactic) {
+			
+				sys.acceptTactic((Tactic) defenderNode);
+			
+			}
+			
+			if (attackerNode instanceof Tactic) {
+				
+				sys.acceptTactic((Tactic) defenderNode);
+			
+			}
+			
+			
+			
+			ans[0] += sys.instantaneousUtilityDefender(type);
+			ans[1] += sys.instantaneousUtilityAttacker(type);
+			
+			timestep++;
+			
+		}
+		
+		return ans;
+		
 	}
 
 }

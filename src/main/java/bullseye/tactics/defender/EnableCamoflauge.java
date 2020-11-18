@@ -2,7 +2,7 @@ package bullseye.tactics.defender;
 
 import bullseye.System;
 
-public class EnableCamoflauge extends DefenderTactic {
+public class EnableCamoflauge implements DefenderTactic {
 	
 	public double getCost() {;
 		return 0.5;

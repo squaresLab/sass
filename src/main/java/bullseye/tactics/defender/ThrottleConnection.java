@@ -2,7 +2,7 @@ package bullseye.tactics.defender;
 
 import bullseye.System;
 
-public class ThrottleConnection extends DefenderTactic {
+public class ThrottleConnection implements DefenderTactic {
 	
 	public double getCost() {;
 		return 0.5;

@@ -2,9 +2,9 @@ package bullseye.tactics;
 
 import bullseye.System;
 
-public abstract class Tactic {
+public interface Tactic {
 
-	public abstract void visit(System system);
-	public abstract boolean isApplicable(System system);
+	public Tactic visit(System system);
+	public boolean isApplicable(System system);
 
 }

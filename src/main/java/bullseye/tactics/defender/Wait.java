@@ -2,7 +2,7 @@ package bullseye.tactics.defender;
 
 import bullseye.System;
 
-public class Wait extends DefenderTactic {
+public class Wait implements DefenderTactic {
 	
 	public double getCost() {;
 		return 0.0;

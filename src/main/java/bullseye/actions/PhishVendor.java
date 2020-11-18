@@ -7,18 +7,18 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 
-public class Test extends GPNode {
-
-	@Override
-	public void eval(EvolutionState arg0, int arg1, GPData arg2, ADFStack arg3, GPIndividual arg4, Problem arg5) {
-		// TODO Auto-generated method stub
-		
-	}
+public class PhishVendor extends GPNode {
 
 	@Override
 	public String toString() {
+		return "PhishVendor";
+	}
+
+	@Override
+	public void eval(EvolutionState state, int thread, GPData input, ADFStack stack, GPIndividual individual,
+			Problem problem) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 }

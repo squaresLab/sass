@@ -6,12 +6,8 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class DisruptPOS extends AttackerTactic {
+public class DisruptPOS implements AttackerTactic {
 
-	public DisruptPOS() {
-		obs = 0.9;
-	}
-	
 	@Override
 	public void visit(System system) {
 		system.setPosDisrupted(true);
@@ -35,6 +31,11 @@ public class DisruptPOS extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return system.isPosFirmwareCompromised();
+	}
+
+	@Override
+	public double getObs() {
+		return 0.9;
 	}
 
 }

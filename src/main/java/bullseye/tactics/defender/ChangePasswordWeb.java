@@ -2,7 +2,7 @@ package bullseye.tactics.defender;
 
 import bullseye.System;
 
-public class ChangePasswordWeb extends DefenderTactic {
+public class ChangePasswordWeb implements DefenderTactic {
 	
 	public double getCost() {;
 		return 0.5;

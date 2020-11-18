@@ -2,9 +2,9 @@ package bullseye.tactics.defender;
 
 import bullseye.tactics.Tactic;
 
-public abstract class DefenderTactic extends Tactic {
+public interface DefenderTactic extends Tactic {
 	
-	public abstract double getCost();
+	public double getCost();
 
 
 }

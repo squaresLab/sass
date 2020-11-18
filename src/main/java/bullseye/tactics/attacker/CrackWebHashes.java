@@ -6,11 +6,7 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class CrackWebHashes extends AttackerTactic {
-
-	public CrackWebHashes() {
-		obs = 0.01;
-	}
+public class CrackWebHashes implements AttackerTactic {
 	
 	@Override
 	public void visit(System system) {
@@ -35,6 +31,11 @@ public class CrackWebHashes extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return system.isAttackerHasWebPresence();
+	}
+
+	@Override
+	public double getObs() {
+		return 0.01;
 	}
 
 }

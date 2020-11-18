@@ -6,12 +6,8 @@ import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.attackerTypes.Terrorist;
 
-public class ZeroDayPayment extends AttackerTactic {
+public class ZeroDayPayment implements AttackerTactic {
 
-	public ZeroDayPayment() {
-		obs = 0.05;
-	}
-	
 	@Override
 	public void visit(System system) {
 		system.setAttackerHasPaymentExploited(true);
@@ -35,6 +31,11 @@ public class ZeroDayPayment extends AttackerTactic {
 	@Override
 	public boolean isApplicable(System system) {
 		return true;
+	}
+
+	@Override
+	public double getObs() {
+		return 0.05;
 	}
 
 }
