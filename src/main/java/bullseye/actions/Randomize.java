@@ -15,7 +15,9 @@ public class Randomize extends GPNode implements Tactic{
 
 	@Override
 	public void eval(EvolutionState arg0, int arg1, GPData arg2, ADFStack arg3, GPIndividual arg4, Problem arg5) {
-		// TODO Auto-generated method stub
+		
+		children[1].eval(arg0, arg1, arg2, arg3, arg4, arg5);
+		children[2].eval(arg0, arg1, arg2, arg3, arg4, arg5);
 		
 	}
 

@@ -11,6 +11,8 @@ import ec.gp.GPNode;
 
 public class Sequence extends GPNode implements Tactic {
 
+	GPNode pointer = null;
+	
 	@Override
 	public String toString() {
 		return "(; "+children[0] + " "+children[1]+")";
@@ -19,26 +21,26 @@ public class Sequence extends GPNode implements Tactic {
 	@Override
 	public void eval(EvolutionState state, int thread, GPData input, ADFStack stack, GPIndividual individual,
 			Problem problem) {
-		// TODO Auto-generated method stub
+		
+		pointer = children[0];
+		
+		children[0].eval(state, thread, input, stack, individual, problem);
+		children[1].eval(state, thread, input, stack, individual, problem);
 		
 	}
 
 	@Override
 	public Tactic visit(System system) {
 		
-		Tactic t = ((Tactic) children[0]);
-		
-		if (t != null) {
-			t = t.visit(system);
-			if (t != null) {
-				children[0] = (GPNode) t;
-			}else {
-				children[0] = null;
-			}
+		if (pointer != null) {
+			Tactic t = ((Tactic) pointer);
+			
+			pointer = (GPNode) t.visit(system);
+			
 			return this;
-		}else {
-			t = ((Tactic) children[1]);
-			return t.visit(system);
+			
+		}else{
+			return ((Tactic) children[1]).visit(system);
 		}
 		
 	}

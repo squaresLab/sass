@@ -15,6 +15,8 @@ import ec.gp.GPNode;
 
 public class System {
 
+	private static final int TIMESTEP_LIMIT = 10;
+	
 	boolean attackerHasWebExploited= false;
 	boolean attackerHasPaymentExploited = false;
 	boolean attackerHasWebPassword = false;
@@ -300,6 +302,7 @@ public class System {
 				}
 			}
 		}
+		return next;
 	}
 
 	public void setAttackerDetected(boolean b) {
@@ -314,6 +317,8 @@ public class System {
 		GPNode defenderNode = defender.trees[0].child;
 		GPNode attackerNode = attacker.trees[0].child;
 		
+		Tactic defenderTactic = (Tactic) defenderNode;
+		Tactic attackertactic = (Tactic) attackerNode;
 		
 		double[] ans = new double[2];
 		
@@ -325,21 +330,19 @@ public class System {
 		
 		boolean outOfTactics = false;
 		
-		while(!sys.getAttackerDetected() && !outOfTactics) {
+		while(!sys.getAttackerDetected() && timestep < TIMESTEP_LIMIT) {
 			
-			if (defenderNode instanceof Tactic) {
-			
-				sys.acceptTactic((Tactic) defenderNode);
-			
+			if (attackertactic != null) {
+				attackertactic = sys.acceptTactic(attackertactic);
 			}
 			
-			if (attackerNode instanceof Tactic) {
-				
-				sys.acceptTactic((Tactic) defenderNode);
-			
+			if (defenderTactic != null) {
+				defenderTactic = sys.acceptTactic(defenderTactic);
 			}
 			
-			
+			if (attackertactic == null && defenderTactic == null) {
+				break;
+			}
 			
 			ans[0] += sys.instantaneousUtilityDefender(type);
 			ans[1] += sys.instantaneousUtilityAttacker(type);
