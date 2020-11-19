@@ -106,11 +106,11 @@ public class System {
 			
 			int sources = 0;
 			
-			if (isWebServerKeylogged()) {
+			if (isAttackerHasWebPassword() || isAttackerHasWebExploited()) {
 				sources += 1;
 			}
 			
-			if (isPaymentServerKeylogged()) {
+			if (isAttackerHasPaymentPassword() || isAttackerHasPaymentExploited()) {
 				sources += 1;
 			}
 			
@@ -118,7 +118,7 @@ public class System {
 				sources += 1;
 			}
 			
-			if (isUploadingData()) {
+			if (true) {
 				
 				if (isThrottle()) {
 					util += sources * 5;

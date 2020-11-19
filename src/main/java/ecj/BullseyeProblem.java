@@ -14,9 +14,9 @@ import ec.vector.IntegerVectorIndividual;
 public class BullseyeProblem extends Problem implements GroupedProblemForm{
 
 	
-	DefenderTactic[] defenderTactics = new DefenderTactic[] {new ChangePasswordPayment(),new ChangePasswordWeb(), new EnableCamoflauge(), new ReimagePayment(), new ReimagePOS(), new ReimageWeb(),new ThrottleConnection(), new Wait()};
+//	DefenderTactic[] defenderTactics = new DefenderTactic[] {new ChangePasswordPayment(),new ChangePasswordWeb(), new EnableCamoflauge(), new ReimagePayment(), new ReimagePOS(), new ReimageWeb(),new ThrottleConnection(), new Wait()};
 	// len 8
-	AttackerTactic[] attackerTactics = new AttackerTactic[] {new CrackWebHashes(), new DisruptPayment(), new DisruptPOS(), new DisruptWeb(), new ExfilData(), new InfectPos(), new KeylogPayment(), new KeylogWeb(), new PhishVendor(), new ZeroDayPayment(), new ZeroDayWeb()};
+//	AttackerTactic[] attackerTactics = new AttackerTactic[] {new CrackWebHashes(), new DisruptPayment(), new DisruptPOS(), new DisruptWeb(), new ExfilData(), new InfectPos(), new KeylogPayment(), new KeylogWeb(), new PhishVendor(), new ZeroDayPayment(), new ZeroDayWeb()};
 	// len 11
 	
 	@Override
@@ -31,27 +31,6 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 		}	
 	}
 
-	public double[] evalFitness(int[] defender, int[] attacker) {
-		
-		ArrayList<DefenderTactic> defenderList = new ArrayList<DefenderTactic>();
-		ArrayList<AttackerTactic> attackerList = new ArrayList<AttackerTactic>();
-		
-		for (int i = 0; i < defender.length; i++) {
-			int d = defender[i];
-			
-			defenderList.add(defenderTactics[d]);
-			
-		}
-		
-		for (int i = 0; i < attacker.length; i++) {
-			int a = attacker[i];
-			
-			attackerList.add(attackerTactics[a]);
-			
-		}
-		
-		return bullseye.System.evaluate(defenderList, attackerList, new Intelligence());
-	}
 	
 	private double[] evalFitness(GPIndividual defender, GPIndividual attacker) {
 		return bullseye.System.evaluate(defender, attacker, new Intelligence());
@@ -75,14 +54,18 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             if( ! ( ind[1] instanceof GPIndividual ) )
                 state.output.fatal( "The individuals in the BullseyeProblem should be GPIndividual." );
             
-            System.out.println(((GPIndividual) ind[1]).trees[0].child);
+            ((GPIndividual) ind[0]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[0], this);
+            ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
+            
+//            System.out.println(((GPIndividual) ind[1]).trees[0].child);
             // TODO the actual simulation and util calc here
             
             double util[] = evalFitness(((GPIndividual) ind[0]), ((GPIndividual) ind[1]));
             //double util[] = {0,0};     
             double score0 = util[0];
             double score1 = util[1];
-            
+            System.out.println(score0);
+            System.out.println(score1);
             if( updateFitness[0] )
                 {
                 SimpleFitness fit = ((SimpleFitness)(ind[0].fitness));
