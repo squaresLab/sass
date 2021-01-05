@@ -118,7 +118,7 @@ gp.tc.1.fset = f1
 gp.tc.1.returns = tactic-or-plan
 
 
-generations =				1000
+generations =				10000
 quit-on-run-complete =			true
 eval =					ec.coevolve.MultiPopCoevolutionaryEvaluator
 
@@ -128,6 +128,15 @@ eval.select-current = ec.select.RandomSelection
 eval.subpop.0.select-current = ec.select.RandomSelection
 eval.subpop.1.select-current = ec.select.RandomSelection
 
+eval.num-prev = 6
+eval.subpop.0.select = ec.select.TournamentSelection
+eval.subpop.0.select.size = 2
+eval.subpop.1.select = ec.select.TournamentSelection
+eval.subpop.1.select.size = 2
+
+eval.subpop.0.num-gurus = 5
+
+eval.num-shuffled = 4
 
 
 pop = 					ec.Population

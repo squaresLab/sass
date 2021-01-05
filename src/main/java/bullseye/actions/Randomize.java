@@ -37,10 +37,15 @@ public class Randomize extends GPNode implements Tactic{
 		
 		Tactic t = null;
 		
+//		java.lang.System.out.println(roll);
+//		java.lang.System.out.println(p.value);
+		
 		if (roll < p.value) {
 			t = ((Tactic) children[1]);
+//			java.lang.System.out.println("over");
 		}else {
 			t = ((Tactic) children[2]);
+//			java.lang.System.out.println("under");
 		}
 		
 		return t.visit(system);

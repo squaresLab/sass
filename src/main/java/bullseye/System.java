@@ -15,7 +15,7 @@ import ec.gp.GPNode;
 
 public class System {
 
-	private static final int TIMESTEP_LIMIT = 10;
+	private static final int TIMESTEP_LIMIT = 3;
 	
 	boolean attackerHasWebExploited= false;
 	boolean attackerHasPaymentExploited = false;
@@ -121,9 +121,9 @@ public class System {
 			if (true) {
 				
 				if (isThrottle()) {
-					util += sources * 5;
+					util += sources;
 				}else {
-					util += sources * 10;
+					util += sources * 2;
 				}
 				
 			}
@@ -134,6 +134,7 @@ public class System {
 	}
 	
 	public double instantaneousUtilityDefender(AttackerType type) {
+		
 		double util = 0;
 		
 		if (isWebDisrupted()) {
@@ -171,6 +172,8 @@ public class System {
 		if (isThrottle()) {
 			util -= 1;
 		}
+		
+		util = -1 * instantaneousUtilityAttacker(type);
 		
 		return util;
 	}
@@ -344,7 +347,7 @@ public class System {
 				break;
 			}
 			
-			ans[0] += sys.instantaneousUtilityDefender(type);
+			ans[0] -= sys.instantaneousUtilityAttacker(type);
 			ans[1] += sys.instantaneousUtilityAttacker(type);
 			
 			timestep++;
