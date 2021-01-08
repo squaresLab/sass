@@ -21,9 +21,14 @@ public class Randomize extends GPNode implements Tactic{
 		
 	}
 
+//	@Override
+//	public String toString() {
+//		return "(R "+children[0] + " "+children[1]+" "+children[2]+")";
+//	}
+	
 	@Override
 	public String toString() {
-		return "(R "+children[0] + " "+children[1]+" "+children[2]+")";
+		return "R";
 	}
 
 	@Override

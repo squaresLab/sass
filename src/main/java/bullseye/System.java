@@ -3,6 +3,7 @@ package bullseye;
 import java.util.ArrayList;
 import java.util.Random;
 
+import bullseye.actions.PhishEmployee;
 import bullseye.attackerTypes.AttackerType;
 import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
@@ -15,7 +16,7 @@ import ec.gp.GPNode;
 
 public class System {
 
-	private static final int TIMESTEP_LIMIT = 3;
+	private static final int TIMESTEP_LIMIT = 2;
 	
 	boolean attackerHasWebExploited= false;
 	boolean attackerHasPaymentExploited = false;
@@ -294,16 +295,6 @@ public class System {
 		Tactic next = null;
 		if (tactic.isApplicable(this)) {
 			next = tactic.visit(this);
-			
-			if (tactic instanceof AttackerTactic) {
-				Random rand = new Random();
-				
-				double roll = rand.nextDouble();
-				
-				if (roll < ((AttackerTactic) tactic).getObs()) {
-					setAttackerDetected(true);
-				}
-			}
 		}
 		return next;
 	}
@@ -343,7 +334,7 @@ public class System {
 				defenderTactic = sys.acceptTactic(defenderTactic);
 			}
 			
-			if (attackertactic == null && defenderTactic == null) {
+			if (sys.getAttackerDetected()) {
 				break;
 			}
 			
@@ -352,10 +343,24 @@ public class System {
 			
 			timestep++;
 			
+			if (attackertactic == null && defenderTactic == null) {
+				break;
+			}
+			
 		}
 		
 		return ans;
 		
+	}
+
+	public void rollObserved(AttackerTactic tactic) {
+		Random rand = new Random();
+		
+		double roll = rand.nextDouble();
+		
+		if (roll < tactic.getObs()) {
+			setAttackerDetected(true);
+		}
 	}
 
 }

@@ -13,9 +13,14 @@ public class Sequence extends GPNode implements Tactic {
 
 	GPNode pointer = null;
 	
+//	@Override
+//	public String toString() {
+//		return "(; "+children[0] + " "+children[1]+")";
+//	}
+	
 	@Override
 	public String toString() {
-		return "(; "+children[0] + " "+children[1]+")";
+		return ";";
 	}
 
 	@Override

@@ -21,6 +21,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	
 	@Override
 	public void preprocessPopulation(EvolutionState state, Population pop, boolean[] prepareForAssessment, boolean countVictoriesOnly) {
+		Object o = new bullseye.actions.ExploitWeb();
 		for (int i = 0; i < pop.subpops.size(); i++) {
 			if (prepareForAssessment[i]) {
 				for (int j = 0; j < pop.subpops.get(i).individuals.size(); j++) {
@@ -54,6 +55,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             if( ! ( ind[1] instanceof GPIndividual ) )
                 state.output.fatal( "The individuals in the BullseyeProblem should be GPIndividual." );
             
+//            ind[0].printIndividual(state, 0);
+            
             double[] util = new double[2];
             
             int trials = 10;
@@ -65,8 +68,14 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	            
 	            double[] curutil = evalFitness(((GPIndividual) ind[0]), ((GPIndividual) ind[1]));
 	            
-	            util[0] += curutil[0] - ind[0].size()*.1;
-	            util[1] += curutil[1] - ind[1].size()*.1;
+	            util[0] += curutil[0];// - ind[0].size()*.000001;
+	            util[1] += curutil[1];// - ind[1].size()*.000001;
+	            
+//	            ind[0].printIndividual(state, 0);
+//	            ind[1].printIndividual(state, 0);
+	            
+//                System.out.println(util[0]);
+//                System.out.println(util[1]);
 
             }
             
@@ -74,14 +83,14 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 //            System.out.println(((GPIndividual) ind[1]).trees[0].child);
             
             //double util[] = {0,0};     
-            double score0 = (util[0] / trials) - ((GPIndividual) ind[0]).size()*0.01;
-            double score1 = (util[1] / trials) - ((GPIndividual) ind[1]).size()*0.01;
+            double score0 = (util[0] / trials);
+            double score1 = (util[1] / trials);
 //            System.out.println(score0);
 //            System.out.println(score1);
             if( updateFitness[0] )
                 {
                 SimpleFitness fit = ((SimpleFitness)(ind[0].fitness));
-                fit.trials.add(new Double(score0));
+                fit.trials.add(score0);
                             
                 // set the fitness because if we're doing Single Elimination Tournament, the tournament
                 // needs to know who won this time around.  Don't bother declaring the ideal here.
@@ -91,7 +100,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             if( updateFitness[1] )
                 {
                 SimpleFitness fit = ((SimpleFitness)(ind[1].fitness));
-                fit.trials.add(new Double(score1));
+                fit.trials.add(score1);
 
                 // set the fitness because if we're doing Single Elimination Tournament, the tournament
                 // needs to know who won this time around.
@@ -114,6 +123,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	                    for(int l = 0; l < len; l++)
 	                        sum += ((Double)(fit.trials.get(l))).doubleValue();
 	                    sum /= len;
+	                    
+//	                    System.out.println(len);
 	                                                                        
 	                    // we'll not bother declaring the ideal
 	                    fit.setFitness(state, sum, false);

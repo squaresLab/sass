@@ -43,7 +43,8 @@ public class PhishEmployee extends GPNode implements AttackerTactic {
 	}
 
 	@Override
-	public Tactic visit(System system) {	
+	public Tactic visit(System system) {
+		system.rollObserved(this);
 		system.setAttackerHasPaymentPassword(true);
 		
 		return null;

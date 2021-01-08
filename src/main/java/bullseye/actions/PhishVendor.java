@@ -30,6 +30,7 @@ public class PhishVendor extends GPNode implements AttackerTactic {
 	@Override
 	public Tactic visit(System system) {
 		
+		system.rollObserved(this);
 		system.setAttackerHasWebPassword(true);
 		
 		return null;

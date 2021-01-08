@@ -12,9 +12,14 @@ import ec.gp.GPNode;
 
 public class IfStatement extends GPNode implements Tactic {
 
+//	@Override
+//	public String toString() {
+//		return "(I "+children[0]+" "+children[1]+")";
+//	}
+	
 	@Override
 	public String toString() {
-		return "(I "+children[0]+" "+children[1]+")";
+		return "I";
 	}
 
 	@Override
@@ -31,7 +36,7 @@ public class IfStatement extends GPNode implements Tactic {
 		if (cond.testCondition(system)) {
 			return ((Tactic) children[1]).visit(system);
 		}else {
-			return null;
+			return ((Tactic) children[2]).visit(system);
 		}
 
 	}
