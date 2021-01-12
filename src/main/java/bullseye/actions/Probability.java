@@ -8,6 +8,7 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 import ec.util.Code;
+import ec.util.DecodeReturn;
 
 public class Probability extends ERC {
 	
@@ -40,6 +41,23 @@ public class Probability extends ERC {
 	public String encode() {
 		return Code.encode(value);
 	}
+	
+	@Override
+	public boolean decode(final DecodeReturn dret)
+    {
+	
+		Code.decode(dret);
+		
+		if(dret.type == dret.T_DOUBLE){
+			
+			this.value = (double) dret.d;
+			
+			return true;
+		
+		}else{
+			return false;
+		}
+    }
 
 	@Override
 	public void eval(EvolutionState state, int thread, GPData input, ADFStack stack, GPIndividual individual,

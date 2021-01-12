@@ -119,74 +119,84 @@ gp.tc.1.fset = f1
 gp.tc.1.returns = tactic-or-plan
 
 
-generations =				1000
+generations =				100
 quit-on-run-complete =			true
 eval =					ec.coevolve.MultiPopCoevolutionaryEvaluator
 
-eval.num-current = 0
+eval.num-current = 10
 eval.select-current = ec.select.RandomSelection
 
-eval.num-prev = 0
+eval.num-prev = 10
 eval.subpop.0.select-prev = ec.select.TournamentSelection
 eval.subpop.1.select-prev = ec.select.TournamentSelection
 eval.subpop.0.select.size = 2
 eval.subpop.1.select.size = 2
 
-eval.subpop.0.num-gurus = 0
-eval.subpop.1.num-gurus = 0
-
-eval.num-elites = 20
+eval.num-gurus = 2
 
 eval.num-shuffled = 10
 
 pop = 					ec.Population
 pop.subpops =				2
 pop.subpop.0 = 				ec.Subpopulation
-pop.subpop.0.size =			250
+pop.subpop.0.size =			10
 pop.subpop.0.duplicate-retries =	2
 pop.subpop.0.species =     ec.gp.GPSpecies
 pop.subpop.0.species.ind = ec.gp.GPIndividual
 pop.subpop.0.species.ind.tree.0.tc = tc0
-pop.subpop.0.species.genome-size = 	50
 pop.subpop.0.species.chunk-size =	1
-pop.subpop.0.species.pipe = 		ec.breed.ForceBreedingPipeline
-pop.subpop.0.species.pipe.num-inds = 	2
-pop.subpop.0.species.pipe.source.0 = 	ec.gp.koza.MutationPipeline
-pop.subpop.0.species.pipe.source.0.source.0 =			ec.gp.koza.CrossoverPipeline
-pop.subpop.0.species.pipe.source.0.source.0.source.0 = 		ec.select.TournamentSelection
-pop.subpop.0.species.pipe.source.0.source.0.source.0.size = 	3
-pop.subpop.0.species.pipe.source.0.source.0.source.1 = 	  	same
-pop.subpop.0.species.pipe.source.0.source.0.source.1.size = 	3
+pop.subpop.0.species.pipe = ec.gp.breed.MutateERCPipeline
+pop.subpop.0.species.pipe.source.0 = ec.breed.MultiBreedingPipeline
+# Koza's decision here was odd...
+pop.subpop.0.species.pipe.generate-max = false
+# Subsidiary pipelines:
+pop.subpop.0.species.pipe.source.0.num-sources = 3
+pop.subpop.0.species.pipe.source.0.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0.prob = 0.4
+pop.subpop.0.species.pipe.source.0.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.0.species.pipe.source.0.source.1.prob = 0.3
+pop.subpop.0.species.pipe.source.0.source.2 = ec.gp.koza.MutationPipeline
+pop.subpop.0.species.pipe.source.0.source.2.prob = 0.3
+
+pop.subpop.0.species.pipe.source.0.source.3.tries = 100
+
+pop.subpop.0.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
 
 pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
-#pop.subpop.0.species.ind =		ec.vector.IntegerVectorIndividual
-pop.subpop.0.species.mutation-prob = 	0.01
-pop.subpop.0.species.crossover-type = 	one
-pop.subpop.0.species.mutation-type =	reset
+#pop.subpop.0.species.mutation-prob = 	0.01
+#pop.subpop.0.species.crossover-type = 	one
+#pop.subpop.0.species.mutation-type =	reset
 
 pop.subpop.1 = 				ec.Subpopulation
-pop.subpop.1.size =			250
+pop.subpop.1.size =			10
 pop.subpop.1.duplicate-retries =	2
 pop.subpop.1.species =     ec.gp.GPSpecies
 pop.subpop.1.species.ind = ec.gp.GPIndividual
 pop.subpop.1.species.ind.tree.0.tc = tc1
 pop.subpop.1.species.ind.numtrees = 1
 pop.subpop.1.species.ind.tree.0 = ec.gp.GPTree
-pop.subpop.1.species.genome-size = 	50
 pop.subpop.1.species.chunk-size =	1
-pop.subpop.1.species.pipe = 		ec.breed.ForceBreedingPipeline
-pop.subpop.1.species.pipe.num-inds = 	2
-pop.subpop.1.species.pipe.source.0 = 	ec.gp.koza.MutationPipeline
-pop.subpop.1.species.pipe.source.0.source.0 =			ec.gp.koza.CrossoverPipeline
-pop.subpop.1.species.pipe.source.0.source.0.source.0 = 		ec.select.TournamentSelection
-pop.subpop.1.species.pipe.source.0.source.0.source.0.size = 	3
-pop.subpop.1.species.pipe.source.0.source.0.source.1 = 	  	same
-pop.subpop.1.species.pipe.source.0.source.0.source.1.size = 	3
+pop.subpop.1.species.pipe = ec.gp.breed.MutateERCPipeline
+pop.subpop.1.species.pipe.source.0 = ec.breed.MultiBreedingPipeline
+# Koza's decision here was odd...
+pop.subpop.1.species.pipe.generate-max = false
+# Subsidiary pipelines:
+pop.subpop.1.species.pipe.source.0.num-sources = 3
+pop.subpop.1.species.pipe.source.0.source.0 = ec.gp.koza.CrossoverPipeline
+pop.subpop.1.species.pipe.source.0.source.0.prob = 0.6
+pop.subpop.1.species.pipe.source.0.source.1 = ec.breed.ReproductionPipeline
+pop.subpop.1.species.pipe.source.0.source.1.prob = 0.2
+pop.subpop.1.species.pipe.source.0.source.2 = ec.gp.koza.MutationPipeline
+pop.subpop.1.species.pipe.source.0.source.2.prob = 0.2
+
+pop.subpop.1.species.pipe.source.0.source.3.tries = 100
+
+pop.subpop.1.species.pipe.ns.0 = ec.gp.koza.KozaNodeSelector
 
 pop.subpop.1.species.fitness =		ec.simple.SimpleFitness
-pop.subpop.1.species.mutation-prob = 	0.01
-pop.subpop.1.species.crossover-type = 	one
-pop.subpop.1.species.mutation-type =	reset
+#pop.subpop.1.species.mutation-prob = 	0.01
+#pop.subpop.1.species.crossover-type = 	one
+#pop.subpop.1.species.mutation-type =	reset
 
 stat.file				$out.stat
 
@@ -212,7 +222,8 @@ stat.child.0.file =			compete.stat
 stat =					ec.simple.SimpleStatistics
 stat.num-children =			0
 
-breed.elite.0 =				1
+breed.elite.0 =				5
+breed.elite.1 =             5
 
 # for single elimination tournament
 #eval.style =				single-elim-tournament
@@ -228,11 +239,22 @@ breed.elite.0 =				1
 #eval.style =				rand-2-way
 #eval.group-size =			7
 
-gp.koza.xover.maxdepth = 2
-gp.koza.mutate.maxdepth = 3
+gp.koza.xover.maxdepth = 5
+gp.koza.mutate.maxdepth = 5
 gp.koza.grow.min-depth = 1
-gp.koza.grow.max-depth = 5
+gp.koza.grow.max-depth = 10
 gp.koza.half.min-depth = 1
-gp.koza.half.max-depth = 2
+gp.koza.half.max-depth = 10
+
+#gp.tc.0.init = ec.gp.koza.HalfBuilder
+gp.tc.0.init = ecj.MutationBuilder
+gp.tc.0.init.tries = 10
+gp.tc.0.init.maxdepth = 5
+gp.tc.0.init.build = ec.gp.koza.HalfBuilder
+
+build_prob = 1.0
+
+gp.tc.0.init.ns = ec.gp.koza.KozaNodeSelector
+initial_ind = (R ERC[d4581030860394171213|0.0186435554|] (; FlashServers (R ERC[d4602435381355194647|0.4864864865|] ChangePword FlashServers)) (; Throttle (R ERC[d4602204756053502270|0.4736842105|] ChangePword FlashServers)))
 
 gp.tc.1.init = ec.gp.koza.HalfBuilder

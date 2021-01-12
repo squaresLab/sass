@@ -59,7 +59,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             
             double[] util = new double[2];
             
-            int trials = 10;
+            int trials = 1000;
             
             for (int s = 0; s < trials; s++) {
             
@@ -67,7 +67,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	            ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
 	            
 	            double[] curutil = evalFitness(((GPIndividual) ind[0]), ((GPIndividual) ind[1]));
-	            
+//	            double[] curutil = new double[] {ind[0].size()-ind[1].size(), ind[1].size()-ind[0].size()}; 
+//	            double[] curutil = new double[] {ind[0].size(), ind[1].size()*-1};       
 	            util[0] += curutil[0];// - ind[0].size()*.000001;
 	            util[1] += curutil[1];// - ind[1].size()*.000001;
 	            
@@ -85,6 +86,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             //double util[] = {0,0};     
             double score0 = (util[0] / trials);
             double score1 = (util[1] / trials);
+            
+//            System.out.println(score0);
 //            System.out.println(score0);
 //            System.out.println(score1);
             if( updateFitness[0] )
@@ -124,13 +127,19 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	                        sum += ((Double)(fit.trials.get(l))).doubleValue();
 	                    sum /= len;
 	                    
+	                    if (sum == 0 && i == 0) {
+	                    	System.out.println("wtf? stupid as hell");
+	                    }
+	                    
 //	                    System.out.println(len);
+//	                    System.out.println(sum);
 	                                                                        
 	                    // we'll not bother declaring the ideal
 	                    fit.setFitness(state, sum, false);
 	                    pop.subpops.get(i).individuals.get(j).evaluated = true;
 	                    total++;
 	                    }
+	        MultiPopCoevolutionaryEvaluator eval = (MultiPopCoevolutionaryEvaluator) state.evaluator;
 	        return total;
 	}
 
