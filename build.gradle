@@ -55,6 +55,14 @@ task runParamSweeper(type: JavaExec){
 	maxHeapSize='10g'
 }
 
+task runCoev(type JavaExec){
+	classpath = sourceSets.main.runtimeClasspath
+	
+	main = 'bullseye.CoevRunner'
+	
+	maxHeapSize='10g'
+}
+
 task runAdaptor(type: JavaExec){
 	classpath = sourceSets.main.runtimeClasspath
 	
