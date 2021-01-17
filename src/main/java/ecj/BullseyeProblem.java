@@ -191,7 +191,10 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 		@Override
 	    public void run() {
 			
-			utilPointer = bullseye.System.evaluate((GPIndividual) i1.clone(), (GPIndividual) i2.clone(), new Intelligence());
+			double[] ans = bullseye.System.evaluate((GPIndividual) i1.clone(), (GPIndividual) i2.clone(), new Intelligence());
+			
+			utilPointer[0] = ans[0];
+			utilPointer[1] = ans[1];
 		}
 		
 	}
