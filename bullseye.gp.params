@@ -255,6 +255,40 @@ gp.tc.0.init.tries = 10
 gp.tc.0.init.maxdepth = 5
 gp.tc.0.init.build = ec.gp.koza.HalfBuilder
 
+breedthreads = 30
+evalthreads = 30
+
+seed.0 = 123456789
+seed.1 = 123456788
+seed.2 = 123456787
+seed.3 = 123456786
+seed.4 = 123456785
+seed.5 = 123456784
+seed.6 = 123456783
+seed.7 = 123456782
+seed.8 = 123456781
+seed.9 = 123456780
+seed.10 = 123456779
+seed.11 = 123456778
+seed.12 = 123456777
+seed.13 = 123456776
+seed.14 = 123456775
+seed.15 = 123456774
+seed.16 = 123456773
+seed.17 = 123456772
+seed.18 = 123456771
+seed.19 = 123456770
+seed.20 = 123456769
+seed.21 = 123456768
+seed.22 = 123456767
+seed.23 = 123456766
+seed.24 = 123456765
+seed.25 = 123456764
+seed.26 = 123456763
+seed.27 = 123456762
+seed.28 = 123456761
+seed.29 = 123456760
+
 build_prob = 0.9
 
 stat.exploitability-script-path = /home/ckinneer/PycharmProjects/bullseye/exploitability.py
