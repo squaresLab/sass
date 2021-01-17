@@ -61,49 +61,12 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             
 //            ind[0].printIndividual(state, 0);
             
-            double[] util = new double[2];
-            
             int trials = 1000;
             
-            ExecutorService pool = Executors.newFixedThreadPool(evalThreads);
+            double[] util = new double[2];
             
-            ((GPIndividual) ind[0]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[0], this);
-            ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
-            
-            double[][] results = new double[trials][2];
-            
-            for (int s = 0; s < trials; s++) {
-                
-                MonteEvalThread evalThread = new MonteEvalThread((GPIndividual) ind[0],(GPIndividual) ind[1],results[s]);
-                
-                pool.execute(evalThread);
-	            
-//	            double[] curutil = new double[] {ind[0].size()-ind[1].size(), ind[1].size()-ind[0].size()}; 
-//	            double[] curutil = new double[] {ind[0].size(), ind[1].size()*-1};       
-	            
-//	            ind[0].printIndividual(state, 0);
-//	            ind[1].printIndividual(state, 0);
-	            
-//                System.out.println(util[0]);
-//                System.out.println(util[1]);
-
-            }
-            
-            pool.shutdown();
-            
-            try {
-				pool.awaitTermination(1, TimeUnit.HOURS);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
-            for (int i = 0; i < trials; i++) {
-            	
-	            util[0] += results[i][0]- ind[0].size()*.00001;
-	            util[1] += results[i][1]- ind[1].size()*.00001;
-            	
-            }
+            util = monteMultithread(ind, state, 0);
+//            util = monteSingleThread(ind, state, 0);
             
 //            System.out.println(((GPIndividual) ind[0]).trees[0].child);
 //            System.out.println(((GPIndividual) ind[1]).trees[0].child);
@@ -135,6 +98,85 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
                 //fit.setFitness(state, score1, false);
                 }
             }
+
+	private double[] monteSingleThread(Individual[] ind, EvolutionState state, int threadnum) {
+        double[] util = new double[2];
+        
+        int trials = 1000;
+        
+        for (int s = 0; s < trials; s++) {
+            
+            ((GPIndividual) ind[0]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[0], this);
+            ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
+            
+            double[] ans = bullseye.System.evaluate((GPIndividual) ind[0], (GPIndividual) ind[1], new Intelligence());
+            
+//            double[] curutil = new double[] {ind[0].size()-ind[1].size(), ind[1].size()-ind[0].size()}; 
+//            double[] curutil = new double[] {ind[0].size(), ind[1].size()*-1};       
+            
+//            ind[0].printIndividual(state, 0);
+//            ind[1].printIndividual(state, 0);
+            
+//            System.out.println(util[0]);
+//            System.out.println(util[1]);
+
+        	
+            util[0] += ans[0]- ind[0].size()*.00001;
+            util[1] += ans[1]- ind[1].size()*.00001;
+        	
+        }
+        
+        return util;
+	}
+
+
+	private double[] monteMultithread(Individual[] ind, EvolutionState state, int threadnum) {
+        double[] util = new double[2];
+        
+        int trials = 1000;
+        
+        ExecutorService pool = Executors.newFixedThreadPool(evalThreads);
+        
+        ((GPIndividual) ind[0]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[0], this);
+        ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
+        
+        double[][] results = new double[trials][2];
+        
+        for (int s = 0; s < trials; s++) {
+            
+            MonteEvalThread evalThread = new MonteEvalThread((GPIndividual) ind[0],(GPIndividual) ind[1],results[s]);
+            
+            pool.execute(evalThread);
+            
+//            double[] curutil = new double[] {ind[0].size()-ind[1].size(), ind[1].size()-ind[0].size()}; 
+//            double[] curutil = new double[] {ind[0].size(), ind[1].size()*-1};       
+            
+//            ind[0].printIndividual(state, 0);
+//            ind[1].printIndividual(state, 0);
+            
+//            System.out.println(util[0]);
+//            System.out.println(util[1]);
+
+        }
+        
+        pool.shutdown();
+        
+        try {
+			pool.awaitTermination(1, TimeUnit.HOURS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        for (int i = 0; i < trials; i++) {
+        	
+            util[0] += results[i][0]- ind[0].size()*.00001;
+            util[1] += results[i][1]- ind[1].size()*.00001;
+        	
+        }
+		return util;
+	}
+
 
 	@Override
 	public int postprocessPopulation(EvolutionState state, Population pop, boolean[] updateFitness, boolean countVictoriesOnly) {
@@ -191,7 +233,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 		@Override
 	    public void run() {
 			
-			double[] ans = bullseye.System.evaluate((GPIndividual) i1.clone(), (GPIndividual) i2.clone(), new Intelligence());
+			double[] ans = bullseye.System.evaluate(i1, i2, new Intelligence());
 			
 			utilPointer[0] = ans[0];
 			utilPointer[1] = ans[1];
