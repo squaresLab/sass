@@ -89,6 +89,7 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
     public static final String P_DO_MESSAGE = "do-message";
     public static final String P_DO_DESCRIPTION = "do-description";
     public static final String P_DO_PER_GENERATION_DESCRIPTION = "do-per-generation-description";
+    public static final String P_EXPLOITABILITY_PATH = "exploitability-script-path";
 
     /** The Statistics' log */
     public int statisticslog = 0;  // stdout
@@ -106,6 +107,8 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
     
     private long cumulativeTime;
     private long evalStartTime;
+    
+    private String exploitPath;
 
     public void setup(final EvolutionState state, final Parameter base)
         {
@@ -121,6 +124,8 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
         doDescription = state.parameters.getBoolean(base.push(P_DO_DESCRIPTION),null,true);
         doPerGenerationDescription = state.parameters.getBoolean(base.push(P_DO_PER_GENERATION_DESCRIPTION),null,false);
 
+        exploitPath = state.parameters.getString(base.push(P_EXPLOITABILITY_PATH), null);
+        
         if (silentFile)
             {
             statisticslog = Output.NO_LOGS;
@@ -240,8 +245,8 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
 		double ans = Double.NEGATIVE_INFINITY;
 		
 		String indStringRep = MatchupTester.indToString(individual, state);
-		
-		ProcessBuilder processBuilder = new ProcessBuilder("python2", "/home/ckinneer/PycharmProjects/bullseye/exploitability.py", indStringRep);
+		//"/home/ckinneer/PycharmProjects/bullseye/exploitability.py"
+		ProcessBuilder processBuilder = new ProcessBuilder("python2", exploitPath, indStringRep);
 		processBuilder.redirectErrorStream(false);
 		
 		try {
