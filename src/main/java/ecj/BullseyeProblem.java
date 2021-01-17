@@ -59,7 +59,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             
             double[] util = new double[2];
             
-            int trials = 1000;
+            int trials = 100;
             
             for (int s = 0; s < trials; s++) {
             
@@ -69,8 +69,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	            double[] curutil = evalFitness(((GPIndividual) ind[0]), ((GPIndividual) ind[1]));
 //	            double[] curutil = new double[] {ind[0].size()-ind[1].size(), ind[1].size()-ind[0].size()}; 
 //	            double[] curutil = new double[] {ind[0].size(), ind[1].size()*-1};       
-	            util[0] += curutil[0];// - ind[0].size()*.000001;
-	            util[1] += curutil[1];// - ind[1].size()*.000001;
+	            util[0] += curutil[0]- ind[0].size()*.00001;
+	            util[1] += curutil[1]- ind[1].size()*.00001;
 	            
 //	            ind[0].printIndividual(state, 0);
 //	            ind[1].printIndividual(state, 0);
@@ -120,26 +120,32 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	                    {
 	                    SimpleFitness fit = ((SimpleFitness)(pop.subpops.get(i).individuals.get(j).fitness));
 
+	                    double worst = Double.POSITIVE_INFINITY;
+	                    
 	                    // average of the trials we got
 	                    int len = fit.trials.size();
 	                    double sum = 0;
-	                    for(int l = 0; l < len; l++)
+	                    for(int l = 0; l < len; l++) {
+	                    	worst = Math.min(worst, ((Double)(fit.trials.get(l))).doubleValue());
 	                        sum += ((Double)(fit.trials.get(l))).doubleValue();
+	                    }
 	                    sum /= len;
 	                    
 	                    if (sum == 0 && i == 0) {
-	                    	System.out.println("wtf? stupid as hell");
+//	                    	System.out.println("wtf? stupid as hell");
 	                    }
+	                    
+	                    double fitness = i == 0 ? worst : sum;
 	                    
 //	                    System.out.println(len);
 //	                    System.out.println(sum);
 	                                                                        
 	                    // we'll not bother declaring the ideal
-	                    fit.setFitness(state, sum, false);
+	                    fit.setFitness(state, fitness, false);
 	                    pop.subpops.get(i).individuals.get(j).evaluated = true;
 	                    total++;
 	                    }
-	        MultiPopCoevolutionaryEvaluator eval = (MultiPopCoevolutionaryEvaluator) state.evaluator;
+//	        MultiPopCoevolutionaryEvaluator eval = (MultiPopCoevolutionaryEvaluator) state.evaluator;
 	        return total;
 	}
 

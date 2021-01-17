@@ -94,6 +94,18 @@ public class MatchupTester {
 		
 	}
 	
+	public static String indToString(Individual ind, EvolutionState state) {
+		
+		StringWriter sw = new StringWriter();
+		
+		PrintWriter pw = new PrintWriter(sw);
+		
+		ind.printIndividual(state, pw);
+		
+		return sw.toString();
+		
+	}
+	
 	  public static GPIndividual loadInd(EvolutionState state, String indString, int subpop) {
 		  
 		  String startString = 

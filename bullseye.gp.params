@@ -119,27 +119,30 @@ gp.tc.1.fset = f1
 gp.tc.1.returns = tactic-or-plan
 
 
-generations =				100
+generations =				1000
 quit-on-run-complete =			true
-eval =					ec.coevolve.MultiPopCoevolutionaryEvaluator
+eval =					bullseye.CustMultiPopCoevolutionaryEvaluator
 
-eval.num-current = 10
+eval.num-current = 1
 eval.select-current = ec.select.RandomSelection
 
-eval.num-prev = 10
+eval.num-prev = 1
 eval.subpop.0.select-prev = ec.select.TournamentSelection
 eval.subpop.1.select-prev = ec.select.TournamentSelection
 eval.subpop.0.select.size = 2
 eval.subpop.1.select.size = 2
 
-eval.num-gurus = 2
+eval.num-gurus = 1
 
-eval.num-shuffled = 10
+eval.num-shuffled = 1
+
+eval.num-hall = 5
+eval.hall-size = 100
 
 pop = 					ec.Population
 pop.subpops =				2
 pop.subpop.0 = 				ec.Subpopulation
-pop.subpop.0.size =			10
+pop.subpop.0.size =			1000
 pop.subpop.0.duplicate-retries =	2
 pop.subpop.0.species =     ec.gp.GPSpecies
 pop.subpop.0.species.ind = ec.gp.GPIndividual
@@ -168,7 +171,7 @@ pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
 #pop.subpop.0.species.mutation-type =	reset
 
 pop.subpop.1 = 				ec.Subpopulation
-pop.subpop.1.size =			10
+pop.subpop.1.size =			1000
 pop.subpop.1.duplicate-retries =	2
 pop.subpop.1.species =     ec.gp.GPSpecies
 pop.subpop.1.species.ind = ec.gp.GPIndividual
@@ -252,7 +255,7 @@ gp.tc.0.init.tries = 10
 gp.tc.0.init.maxdepth = 5
 gp.tc.0.init.build = ec.gp.koza.HalfBuilder
 
-build_prob = 1.0
+build_prob = 0.9
 
 gp.tc.0.init.ns = ec.gp.koza.KozaNodeSelector
 initial_ind = (R ERC[d4581030860394171213|0.0186435554|] (; FlashServers (R ERC[d4602435381355194647|0.4864864865|] ChangePword FlashServers)) (; Throttle (R ERC[d4602204756053502270|0.4736842105|] ChangePword FlashServers)))
