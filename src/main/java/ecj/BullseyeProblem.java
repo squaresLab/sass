@@ -16,7 +16,7 @@ import ec.vector.IntegerVectorIndividual;
 
 public class BullseyeProblem extends Problem implements GroupedProblemForm{
 
-	public static final int evalThreads = 30;
+	public static final int evalThreads = 5;
 	
 //	DefenderTactic[] defenderTactics = new DefenderTactic[] {new ChangePasswordPayment(),new ChangePasswordWeb(), new EnableCamoflauge(), new ReimagePayment(), new ReimagePOS(), new ReimageWeb(),new ThrottleConnection(), new Wait()};
 	// len 8
@@ -61,12 +61,12 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             
 //            ind[0].printIndividual(state, 0);
             
-            int trials = 1000;
+            int trials = 10000;
             
             double[] util = new double[2];
             
-            util = monteMultithread(ind, state, 0);
-//            util = monteSingleThread(ind, state, 0);
+//            util = monteMultithread(ind, state, 0, trials);
+            util = monteSingleThread(ind, state, 0, trials);
             
 //            System.out.println(((GPIndividual) ind[0]).trees[0].child);
 //            System.out.println(((GPIndividual) ind[1]).trees[0].child);
@@ -99,10 +99,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
                 }
             }
 
-	private double[] monteSingleThread(Individual[] ind, EvolutionState state, int threadnum) {
+	private double[] monteSingleThread(Individual[] ind, EvolutionState state, int threadnum, int trials) {
         double[] util = new double[2];
-        
-        int trials = 1000;
         
         for (int s = 0; s < trials; s++) {
             
@@ -130,10 +128,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	}
 
 
-	private double[] monteMultithread(Individual[] ind, EvolutionState state, int threadnum) {
+	private double[] monteMultithread(Individual[] ind, EvolutionState state, int threadnum, int trials) {
         double[] util = new double[2];
-        
-        int trials = 1000;
         
         ExecutorService pool = Executors.newFixedThreadPool(evalThreads);
         
