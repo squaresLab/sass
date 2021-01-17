@@ -1,6 +1,9 @@
 package ecj;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import bullseye.attackerTypes.Intelligence;
 import bullseye.tactics.attacker.*;
@@ -13,6 +16,7 @@ import ec.vector.IntegerVectorIndividual;
 
 public class BullseyeProblem extends Problem implements GroupedProblemForm{
 
+	public static final int evalThreads = 30;
 	
 //	DefenderTactic[] defenderTactics = new DefenderTactic[] {new ChangePasswordPayment(),new ChangePasswordWeb(), new EnableCamoflauge(), new ReimagePayment(), new ReimagePOS(), new ReimageWeb(),new ThrottleConnection(), new Wait()};
 	// len 8
@@ -59,18 +63,23 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             
             double[] util = new double[2];
             
-            int trials = 100;
+            int trials = 1000;
+            
+            ExecutorService pool = Executors.newFixedThreadPool(evalThreads);
+            
+            ((GPIndividual) ind[0]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[0], this);
+            ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
+            
+            double[][] results = new double[trials][2];
             
             for (int s = 0; s < trials; s++) {
-            
-	            ((GPIndividual) ind[0]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[0], this);
-	            ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
+                
+                MonteEvalThread evalThread = new MonteEvalThread((GPIndividual) ind[0],(GPIndividual) ind[1],results[s]);
+                
+                pool.execute(evalThread);
 	            
-	            double[] curutil = evalFitness(((GPIndividual) ind[0]), ((GPIndividual) ind[1]));
 //	            double[] curutil = new double[] {ind[0].size()-ind[1].size(), ind[1].size()-ind[0].size()}; 
 //	            double[] curutil = new double[] {ind[0].size(), ind[1].size()*-1};       
-	            util[0] += curutil[0]- ind[0].size()*.00001;
-	            util[1] += curutil[1]- ind[1].size()*.00001;
 	            
 //	            ind[0].printIndividual(state, 0);
 //	            ind[1].printIndividual(state, 0);
@@ -78,6 +87,22 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 //                System.out.println(util[0]);
 //                System.out.println(util[1]);
 
+            }
+            
+            pool.shutdown();
+            
+            try {
+				pool.awaitTermination(1, TimeUnit.HOURS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+            for (int i = 0; i < trials; i++) {
+            	
+	            util[0] += results[i][0]- ind[0].size()*.00001;
+	            util[1] += results[i][1]- ind[1].size()*.00001;
+            	
             }
             
 //            System.out.println(((GPIndividual) ind[0]).trees[0].child);
@@ -135,7 +160,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 //	                    	System.out.println("wtf? stupid as hell");
 	                    }
 	                    
-	                    double fitness = i == 0 ? worst : sum;
+	                    double fitness = i >= 0 ? worst : sum;
 	                    
 //	                    System.out.println(len);
 //	                    System.out.println(sum);
@@ -149,5 +174,26 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 	        return total;
 	}
 
-
+	class MonteEvalThread extends Thread {
+		
+		GPIndividual i1;
+		GPIndividual i2;
+		
+		double[] utilPointer;
+		
+		public MonteEvalThread(GPIndividual i1, GPIndividual i2, double[] ans) {
+			this.i1 = i1;
+			this.i2 = i2;
+			
+			utilPointer = ans;
+		}
+		
+		@Override
+	    public void run() {
+			
+			utilPointer = bullseye.System.evaluate((GPIndividual) i1.clone(), (GPIndividual) i2.clone(), new Intelligence());
+		}
+		
+	}
+	
 }
