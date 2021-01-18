@@ -69,11 +69,11 @@ public class MatchupTester {
 		
 //		System.out.println(Code.encode(.019));
 		
-//		ind[0] = loadInd(state, gambit2timestepdef,0);
-//		ind[1] = loadInd(state, gambit2timestepattacker,1);
+		ind[0] = loadInd(state, gambit2timestepdef,0);
+		ind[1] = loadInd(state, gambit2timestepattacker,1);
 //		
-		ind[0] = loadInd(state, "(; ChangePword (; FlashServers Wait))",0);
-		ind[1] = loadInd(state,"(; PhishVendor (; ExploitWeb ExploitWeb))",1);
+//		ind[0] = loadInd(state, "(; ChangePword (; FlashServers Wait))",0);
+//		ind[1] = loadInd(state,"(; PhishVendor (; ExploitWeb ExploitWeb))",1);
 		
 		ind[0].fitness.trials = new ArrayList<Fitness>();
 		ind[1].fitness.trials = new ArrayList<Fitness>();
@@ -86,7 +86,7 @@ public class MatchupTester {
 		
 		PrintWriter pw = new PrintWriter(sw);
 		
-		ind[0].printIndividual(state, pw);
+		ind[1].printIndividual(state, pw);
 		
 		System.out.println(ind[0].fitness.trials);
 		System.out.println(ind[1].fitness.trials);

@@ -296,7 +296,7 @@ public class System {
 		if (tactic.isApplicable(this)) {
 			next = tactic.visit(this);
 		}
-		return (Tactic) shallowClone((GPNode) next);
+		return next;
 	}
 
 	public void setAttackerDetected(boolean b) {
@@ -323,8 +323,8 @@ public class System {
 	}
 
 	public static double[] evaluate(GPIndividual defender, GPIndividual attacker, Intelligence type) {
-		GPNode defenderNode = shallowClone((GPNode) defender.trees[0].child);
-		GPNode attackerNode = shallowClone((GPNode) attacker.trees[0].child);
+		GPNode defenderNode = (GPNode) defender.trees[0].child;
+		GPNode attackerNode = (GPNode) attacker.trees[0].child;
 		
 		Tactic defenderTactic = (Tactic) defenderNode;
 		Tactic attackertactic = (Tactic) attackerNode;

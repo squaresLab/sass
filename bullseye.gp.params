@@ -126,17 +126,17 @@ eval =					bullseye.CustMultiPopCoevolutionaryEvaluator
 eval.num-current = 1
 eval.select-current = ec.select.RandomSelection
 
-eval.num-prev = 2
+eval.num-prev = 1
 eval.subpop.0.select-prev = ec.select.TournamentSelection
 eval.subpop.1.select-prev = ec.select.TournamentSelection
 eval.subpop.0.select.size = 2
 eval.subpop.1.select.size = 2
 
-eval.num-gurus = 5
+eval.num-gurus = 2
 
-eval.num-shuffled = 1
+eval.num-shuffled = 0
 
-eval.num-hall = 5
+eval.num-hall = 10
 eval.hall-size = 1000
 
 pop = 					ec.Population
@@ -247,12 +247,12 @@ gp.koza.mutate.maxdepth = 5
 gp.koza.grow.min-depth = 1
 gp.koza.grow.max-depth = 10
 gp.koza.half.min-depth = 1
-gp.koza.half.max-depth = 10
+gp.koza.half.max-depth = 5
 
 #gp.tc.0.init = ec.gp.koza.HalfBuilder
 gp.tc.0.init = ecj.MutationBuilder
 gp.tc.0.init.tries = 10
-gp.tc.0.init.maxdepth = 5
+gp.tc.0.init.maxdepth = 2
 gp.tc.0.init.build = ec.gp.koza.HalfBuilder
 
 breedthreads = 30
@@ -294,6 +294,12 @@ build_prob = 1.0
 stat.exploitability-script-path = /home/ckinneer/PycharmProjects/bullseye/exploitability.py
 
 gp.tc.0.init.ns = ec.gp.koza.KozaNodeSelector
-initial_ind = (R ERC[d4581030860394171213|0.0186435554|] (; FlashServers (R ERC[d4602435381355194647|0.4864864865|] ChangePword FlashServers)) (; Throttle (R ERC[d4602204756053502270|0.4736842105|] ChangePword FlashServers)))
 
-gp.tc.1.init = ec.gp.koza.HalfBuilder
+gp.tc.0.init.initial_ind = (R ERC[d4581030860394171213|0.0186435554|] (; FlashServers (R ERC[d4602435381355194647|0.4864864865|] ChangePword FlashServers)) (; Throttle (R ERC[d4602204756053502270|0.4736842105|] ChangePword FlashServers)))
+gp.tc.1.init.initial_ind = (R ERC[d4599897597917536910|0.3456112063|] (; PhishVendor (I isWebHacked ExploitPay ExploitWeb)) (; ExploitWeb (I isWebHacked PhishVendor (R ERC[d4602800538081373044|0.5135135135|] PhishVendor ExploitWeb))))
+
+gp.tc.1.init = ecj.MutationBuilder
+gp.tc.1.init.tries = 10
+gp.tc.1.init.maxdepth = 2
+gp.tc.1.init.build = ec.gp.koza.HalfBuilder
+gp.tc.1.init.ns = ec.gp.koza.KozaNodeSelector

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 import coevutil.MatchupTester;
 import ec.util.*;
@@ -230,11 +231,14 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
             if (x == 0) {
             	long exploitStartTime = java.lang.System.currentTimeMillis();
             	double exploitability = getExploitability(best_i[x], state);
+            	double exploitabilityData[] = getPopAvgExploit(state);
+            	double exploitabilityAvg = exploitabilityData[0];
+            	double analyzed = exploitabilityData[1];
             	long exploitTime = java.lang.System.currentTimeMillis() - exploitStartTime;
             	
 //            	cumulativeTime -= exploitTime;
             	
-            	state.output.println(""+best_i[x].fitness.fitness()+","+ exploitability + ","+cumulativeTime,0);
+            	state.output.println(""+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+analyzed+","+cumulativeTime,0);
             }
             
             }
@@ -242,7 +246,7 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
         }
 
     private double getExploitability(Individual individual, EvolutionState state) {
-		double ans = Double.NEGATIVE_INFINITY;
+		double ans = 1;
 		
 		String indStringRep = MatchupTester.indToString(individual, state);
 		//"/home/ckinneer/PycharmProjects/bullseye/exploitability.py"
@@ -252,6 +256,11 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
 		try {
 			Process process = processBuilder.start();
 			InputStream is = process.getInputStream();
+			
+			if (!process.waitFor(1, TimeUnit.SECONDS)) {
+				process.destroyForcibly();
+				return 1;
+			}
 			
 			InputStreamReader isr = new InputStreamReader(is,
                     StandardCharsets.UTF_8);
@@ -265,10 +274,34 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return ans;
 	}
+    
+    private double[] getPopAvgExploit(EvolutionState state) {
+    	double sum = 0;
+    	double processed = 0;
+    	
+    	double numInds = state.population.subpops.get(0).individuals.size();
+    	
+    	for (int i = 0; i < numInds; i++) {
+    		double result = getExploitability(state.population.subpops.get(0).individuals.get(i), state);
+//    		java.lang.System.out.print(","+result);
+    		if (result <= 0) {
+    			sum += result;
+    			processed++;
+//    			java.lang.System.out.println("proced");
+    		}else{
+//    			java.lang.System.out.println("skiped");
+    		}
+    	}
+//    	java.lang.System.out.println();
+    	return new double[] {sum/processed, processed/numInds};
+    }
 
 	/** Allows MultiObjectiveStatistics etc. to call super.super.finalStatistics(...) without
         calling super.finalStatistics(...) */

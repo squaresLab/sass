@@ -47,7 +47,7 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
 	public static final String P_MAXDEPTH = "maxdepth";
 	public static final int NO_SIZE_LIMIT = -1;
 	
-	private static String initial = null;
+	private String initial = null;
 	
 	Parameter base;
 	
@@ -58,7 +58,9 @@ public class MutationBuilder extends ec.gp.GPNodeBuilder {
     public GPNodeBuilder builder;
     
     // the starting individual
-    public static GPIndividual ind = null;
+    public GPIndividual ind = null;
+    
+    String subpop = "0";
     
     int numTries;
     
@@ -123,14 +125,16 @@ private double buildprob;
                 p,d, GPNodeBuilder.class));
         builder.setup(state,p);
         
-        initial = state.parameters.getString(new Parameter("initial_ind"), null);
+        initial = state.parameters.getString(base.push("initial_ind"), null);
         
         buildprob = state.parameters.getDouble(new Parameter("build_prob"), null);
+        
+        subpop = base.pop().top();
         
         // mtf = new MersenneTwisterFast();
     }
 	
-	  public static GPIndividual loadStartInd(EvolutionState state) {
+	  public GPIndividual loadStartInd(EvolutionState state) {
 		  
 		  String indString = 
 					"Evaluated: F\n"+
@@ -164,7 +168,7 @@ private double buildprob;
 			
 			GPSpecies species = new GPSpecies();
 			
-			species.setup(state, new Parameter("pop.subpop.0.species"));
+			species.setup(state, new Parameter("pop.subpop."+subpop+".species"));
 			
 			GPIndividual ind = null;
 			
