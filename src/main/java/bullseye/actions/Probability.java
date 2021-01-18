@@ -25,7 +25,8 @@ public class Probability extends ERC {
 	public void mutateERC(EvolutionState state, int thread) {
 		double v;
 		do {
-			v = value + state.random[thread].nextGaussian()*.1;
+			v = value + state.random[thread].nextGaussian()*.01;
+//			state.random[thread].n
 		}while(v < 0 || v > 1.0);
 		
 		value = v;

@@ -1,5 +1,6 @@
 package bullseye.actions;
 
+import bullseye.BullseyeScenario;
 import bullseye.System;
 import bullseye.attackerTypes.Criminal;
 import bullseye.attackerTypes.Intelligence;
@@ -56,8 +57,8 @@ public class PhishEmployee extends GPNode implements AttackerTactic {
 	}
 
 	@Override
-	public double getObs() {
-		return 0.2;
+	public double getObs(BullseyeScenario scenario) {
+		return scenario.getPhishEmployeeObs();
 	}
 
 }

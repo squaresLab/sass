@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import coevutil.MatchupTester;
 import ec.util.*;
+import ecj.BullseyeProblem;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -110,6 +111,8 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
     private long evalStartTime;
     
     public static String exploitPath;
+    
+    private int generation = 0;
 
     public void setup(final EvolutionState state, final Parameter base)
         {
@@ -231,14 +234,22 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
             if (x == 0) {
             	long exploitStartTime = java.lang.System.currentTimeMillis();
             	double exploitability = getExploitability(best_i[x], state);
-            	double exploitabilityData[] = getPopAvgExploit(state);
-            	double exploitabilityAvg = exploitabilityData[0];
-            	double analyzed = exploitabilityData[1];
-            	long exploitTime = java.lang.System.currentTimeMillis() - exploitStartTime;
+//            	double exploitabilityData[] = getPopAvgExploit(state);
+//            	double exploitabilityAvg = exploitabilityData[0];
+//            	double analyzed = exploitabilityData[1];
             	
 //            	cumulativeTime -= exploitTime;
+            	CustMultiPopCoevolutionaryEvaluator eval = (CustMultiPopCoevolutionaryEvaluator) state.evaluator;
+            	Individual[] gurus = eval.guruIndividuals[0];
             	
-            	state.output.println(""+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+analyzed+","+cumulativeTime,0);
+            	double exploitabilityAvg = 0;
+            	for (Individual i : gurus) {
+            		exploitabilityAvg += getExploitability(i, state);
+            	}
+            	exploitabilityAvg /= gurus.length;
+            	
+            	long exploitTime = java.lang.System.currentTimeMillis() - exploitStartTime;
+            	state.output.println(generation++ + ","+BullseyeProblem.scenario+","+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+cumulativeTime,0);
             }
             
             }
@@ -249,8 +260,11 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
 		double ans = 1;
 		
 		String indStringRep = MatchupTester.indToString(individual, state);
+		
+		String scenarioStringRep = BullseyeProblem.scenario.toString();
+		
 		//"/home/ckinneer/PycharmProjects/bullseye/exploitability.py"
-		ProcessBuilder processBuilder = new ProcessBuilder("python2", exploitPath, indStringRep);
+		ProcessBuilder processBuilder = new ProcessBuilder("python2", exploitPath, indStringRep, scenarioStringRep);
 		processBuilder.redirectErrorStream(false);
 		
 		try {

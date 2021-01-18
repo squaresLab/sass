@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import bullseye.BullseyeScenario;
 import bullseye.attackerTypes.Intelligence;
 import bullseye.tactics.attacker.*;
 import bullseye.tactics.defender.*;
@@ -17,6 +18,8 @@ import ec.vector.IntegerVectorIndividual;
 public class BullseyeProblem extends Problem implements GroupedProblemForm{
 
 	public static final int evalThreads = 5;
+	
+	public static BullseyeScenario scenario;
 	
 //	DefenderTactic[] defenderTactics = new DefenderTactic[] {new ChangePasswordPayment(),new ChangePasswordWeb(), new EnableCamoflauge(), new ReimagePayment(), new ReimagePOS(), new ReimageWeb(),new ThrottleConnection(), new Wait()};
 	// len 8
@@ -38,7 +41,8 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 
 	
 	private double[] evalFitness(GPIndividual defender, GPIndividual attacker) {
-		return bullseye.System.evaluate(defender, attacker, new Intelligence());
+		bullseye.System system = new bullseye.System(scenario);
+		return system.evaluate(defender, attacker, new Intelligence());
 //		return new double[] {0,0};
 	}
 	
@@ -61,7 +65,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             
 //            ind[0].printIndividual(state, 0);
             
-            int trials = 10000;
+            int trials = 500;
             
             double[] util = new double[2];
             
@@ -107,7 +111,9 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             ((GPIndividual) ind[0]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[0], this);
             ((GPIndividual) ind[1]).trees[0].child.eval(state, threadnum, null, null, (GPIndividual) ind[1], this);
             
-            double[] ans = bullseye.System.evaluate((GPIndividual) ind[0], (GPIndividual) ind[1], new Intelligence());
+            bullseye.System system = new bullseye.System(scenario);
+            
+            double[] ans = system.evaluate((GPIndividual) ind[0], (GPIndividual) ind[1], new Intelligence());
             
 //            double[] curutil = new double[] {ind[0].size()-ind[1].size(), ind[1].size()-ind[0].size()}; 
 //            double[] curutil = new double[] {ind[0].size(), ind[1].size()*-1};       
@@ -229,7 +235,9 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 		@Override
 	    public void run() {
 			
-			double[] ans = bullseye.System.evaluate(i1, i2, new Intelligence());
+			bullseye.System system = new bullseye.System(scenario);
+			
+			double[] ans = system.evaluate(i1, i2, new Intelligence());
 			
 			utilPointer[0] = ans[0];
 			utilPointer[1] = ans[1];

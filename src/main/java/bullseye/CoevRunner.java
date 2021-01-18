@@ -11,6 +11,7 @@ import ec.simple.SimpleStatistics;
 import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
+import ecj.BullseyeProblem;
 import ecj.CustomStats;
 
 public class CoevRunner {
@@ -21,6 +22,13 @@ public class CoevRunner {
 		ParameterDatabase dbase;
 		
 		EvolutionState state = null;
+		
+		BullseyeScenario scenario = new BullseyeScenario();
+		
+		scenario.posPresenceVal = 10;
+		scenario.payPresenceVal = 4;
+		
+		BullseyeProblem.scenario = scenario;
 		
 		try {
 			dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});

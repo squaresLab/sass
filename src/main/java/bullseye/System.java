@@ -35,7 +35,15 @@ public class System {
 	
 	boolean attackerDetected = false;
 	
+	BullseyeScenario scenario;
 	
+	public System() {
+		scenario = new BullseyeScenario();
+	}
+	
+	public System(BullseyeScenario scenario) {
+		this.scenario = scenario;
+	}
 	
 	public static double[] evaluate(ArrayList<DefenderTactic> defender, ArrayList<AttackerTactic> attacker, AttackerType type) {
 		double[] ans = new double[2];
@@ -108,15 +116,15 @@ public class System {
 			int sources = 0;
 			
 			if (isAttackerHasWebPassword() || isAttackerHasWebExploited()) {
-				sources += 1;
+				sources += scenario.getWebPresenceVal();
 			}
 			
 			if (isAttackerHasPaymentPassword() || isAttackerHasPaymentExploited()) {
-				sources += 1;
+				sources += scenario.getPayPresenceVal();
 			}
 			
 			if (isPosFirmwareCompromised()) {
-				sources += 1;
+				sources += scenario.getPosPresenceVal();
 			}
 			
 			if (true) {
@@ -322,7 +330,7 @@ public class System {
 		return ans;
 	}
 
-	public static double[] evaluate(GPIndividual defender, GPIndividual attacker, Intelligence type) {
+	public double[] evaluate(GPIndividual defender, GPIndividual attacker, Intelligence type) {
 		GPNode defenderNode = (GPNode) defender.trees[0].child;
 		GPNode attackerNode = (GPNode) attacker.trees[0].child;
 		
@@ -331,30 +339,28 @@ public class System {
 		
 		double[] ans = new double[2];
 		
-		System sys = new System();
-		
 		int timestep = 0;
 		
 		Random rand = new Random();
 		
 		boolean outOfTactics = false;
 		
-		while(!sys.getAttackerDetected() && timestep < TIMESTEP_LIMIT) {
+		while(!getAttackerDetected() && timestep < TIMESTEP_LIMIT) {
 			
 			if (attackertactic != null) {
-				attackertactic = sys.acceptTactic(attackertactic);
+				attackertactic = acceptTactic(attackertactic);
 			}
 			
 			if (defenderTactic != null) {
-				defenderTactic = sys.acceptTactic(defenderTactic);
+				defenderTactic = acceptTactic(defenderTactic);
 			}
 			
-			if (sys.getAttackerDetected()) {
+			if (getAttackerDetected()) {
 				break;
 			}
 			
-			ans[0] -= sys.instantaneousUtilityAttacker(type);
-			ans[1] += sys.instantaneousUtilityAttacker(type);
+			ans[0] -= instantaneousUtilityAttacker(type);
+			ans[1] += instantaneousUtilityAttacker(type);
 			
 			timestep++;
 			
@@ -373,7 +379,7 @@ public class System {
 		
 		double roll = rand.nextDouble();
 		
-		if (roll < tactic.getObs()) {
+		if (roll < tactic.getObs(scenario)) {
 			setAttackerDetected(true);
 		}
 	}
