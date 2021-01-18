@@ -109,7 +109,7 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
     private long cumulativeTime;
     private long evalStartTime;
     
-    private String exploitPath;
+    public static String exploitPath;
 
     public void setup(final EvolutionState state, final Parameter base)
         {
@@ -245,7 +245,7 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
         
         }
 
-    private double getExploitability(Individual individual, EvolutionState state) {
+    public static double getExploitability(Individual individual, EvolutionState state) {
 		double ans = 1;
 		
 		String indStringRep = MatchupTester.indToString(individual, state);

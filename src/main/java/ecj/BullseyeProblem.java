@@ -61,7 +61,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
             
 //            ind[0].printIndividual(state, 0);
             
-            int trials = 1000;
+            int trials = 10000;
             
             double[] util = new double[2];
             
@@ -198,7 +198,7 @@ public class BullseyeProblem extends Problem implements GroupedProblemForm{
 //	                    	System.out.println("wtf? stupid as hell");
 	                    }
 	                    
-	                    double fitness = i >= 0 ? worst : sum;
+	                    double fitness = i == 0 ? worst : sum;
 	                    
 //	                    System.out.println(len);
 //	                    System.out.println(sum);

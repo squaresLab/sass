@@ -21,7 +21,7 @@ import ec.util.Output;
 import ec.util.Parameter;
 import ec.util.ParameterDatabase;
 import ecj.BullseyeProblem;
-
+import bullseye.SimpleCoevStatistics;
 import bullseye.actions.*;
 
 public class MatchupTester {
@@ -91,6 +91,10 @@ public class MatchupTester {
 		System.out.println(ind[0].fitness.trials);
 		System.out.println(ind[1].fitness.trials);
 		System.out.println(sw);
+		
+		SimpleCoevStatistics.exploitPath = "/home/ckinneer/PycharmProjects/bullseye/exploitability.py";
+		
+		System.out.println(SimpleCoevStatistics.getExploitability(ind[0], state));
 		
 	}
 	

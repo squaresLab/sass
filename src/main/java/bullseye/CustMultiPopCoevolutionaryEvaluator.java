@@ -488,8 +488,15 @@ public class CustMultiPopCoevolutionaryEvaluator extends Evaluator
         if( numGuru > 0 )
             {
             for(int i = 0; i < state.population.subpops.size(); i++)
-                if (shouldEvaluateSubpop(state, i, 0))          // only load gurus for subpopulations which are actually changing
-                    loadGurus( state, i );
+                if (shouldEvaluateSubpop(state, i, 0)) {// only load gurus for subpopulations which are actually changing
+                	if (i == 0) {
+                		for(int j = 0; j < guruIndividuals[0].length; j++) {
+                			java.lang.System.out.print(","+SimpleCoevStatistics.getExploitability(guruIndividuals[0][j], state));
+                		}
+                	}
+                	loadGurus( state, i );
+                }
+            java.lang.System.out.println();
             }
         
         if (numHall > 0) {

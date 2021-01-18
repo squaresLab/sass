@@ -132,11 +132,11 @@ eval.subpop.1.select-prev = ec.select.TournamentSelection
 eval.subpop.0.select.size = 2
 eval.subpop.1.select.size = 2
 
-eval.num-gurus = 2
+eval.num-gurus = 5
 
 eval.num-shuffled = 0
 
-eval.num-hall = 10
+eval.num-hall = 5
 eval.hall-size = 1000
 
 pop = 					ec.Population
@@ -242,12 +242,12 @@ breed.elite.1 =             5
 #eval.style =				rand-2-way
 #eval.group-size =			7
 
-gp.koza.xover.maxdepth = 5
-gp.koza.mutate.maxdepth = 5
+gp.koza.xover.maxdepth = 3
+gp.koza.mutate.maxdepth = 2
 gp.koza.grow.min-depth = 1
-gp.koza.grow.max-depth = 10
+gp.koza.grow.max-depth = 3
 gp.koza.half.min-depth = 1
-gp.koza.half.max-depth = 5
+gp.koza.half.max-depth = 2
 
 #gp.tc.0.init = ec.gp.koza.HalfBuilder
 gp.tc.0.init = ecj.MutationBuilder
@@ -289,7 +289,7 @@ seed.27 = 123456762
 seed.28 = 123456761
 seed.29 = 123456760
 
-build_prob = 1.0
+build_prob = 0.0
 
 stat.exploitability-script-path = /home/ckinneer/PycharmProjects/bullseye/exploitability.py
 
