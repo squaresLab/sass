@@ -116,6 +116,10 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
     public static String exploitPath;
     
     private int generation = 0;
+    
+    static boolean writePlansToDisk = false;
+
+	public static String runInfo = "";
 
     public void setup(final EvolutionState state, final Parameter base)
         {
@@ -252,11 +256,13 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
             	exploitabilityAvg /= gurus.length;
             	
             	long exploitTime = java.lang.System.currentTimeMillis() - exploitStartTime;
-            	state.output.println(generation++ + ","+BullseyeProblem.scenario+","+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+cumulativeTime,0);
+            	state.output.println(generation++ + "," + runInfo + BullseyeProblem.scenario+","+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+cumulativeTime,0);
             }
             
             // save best inds to repertoire
-            writeRep(best_i[x],state,x);
+            if (writePlansToDisk) {
+            	writeRep(best_i[x],state,x);
+            }
             
             }
         

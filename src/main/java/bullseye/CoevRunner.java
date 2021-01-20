@@ -28,11 +28,17 @@ public class CoevRunner {
 		
 		EvolutionState state = null;
 		
+		SimpleCoevStatistics.writePlansToDisk = false;
+		
 		long startSeed = 4563456l;
 		
 		int numScenarios = 10;
 		
-		int numMutations = 5;
+//		int numMutations = 5;
+		
+		for (int numMutations : new int[] {5,10,15}) {
+			
+			SimpleCoevStatistics.runInfo = numMutations+",";
 		
 		for (int scenarioIndex = 0; scenarioIndex < numScenarios; scenarioIndex++) {
 		
@@ -106,6 +112,7 @@ public class CoevRunner {
 				e.printStackTrace();
 			}
 		}
+	}
 	}
 
 }
