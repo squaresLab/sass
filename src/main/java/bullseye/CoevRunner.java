@@ -2,6 +2,8 @@ package bullseye;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import ec.EvolutionState;
 import ec.Evolve;
@@ -16,80 +18,93 @@ import ecj.CustomStats;
 
 public class CoevRunner {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args){
+		
+//		String runInfo = args[0];
+		
 		File parameterFile = new File( java.lang.System.getProperty("user.dir")+"/bullseye.gp.params");
 
 		ParameterDatabase dbase;
 		
 		EvolutionState state = null;
 		
-		BullseyeScenario scenario = new BullseyeScenario();
+		long startSeed = 4563456l;
 		
-		scenario.posPresenceVal = 10;
-		scenario.payPresenceVal = 4;
+		int numScenarios = 10;
 		
-		BullseyeProblem.scenario = scenario;
+		int numMutations = 5;
 		
-		try {
-			dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
+		for (int scenarioIndex = 0; scenarioIndex < numScenarios; scenarioIndex++) {
+		
+			BullseyeScenario scenario = new BullseyeScenario(startSeed + (1546 * scenarioIndex));
 			
-//			dbase.setProperty("gp.tc.0.init","ec.gp.koza.HalfBuilder");
-			dbase.set(new Parameter("stat"), "bullseye.SimpleCoevStatistics");
-			Output out = Evolve.buildOutput();
-
-			//disable output
-			out.getLog(0).silent = false;
-			out.getLog(1).silent = true;
+			for (int i = 0; i < numMutations; i++) {
+				scenario.mutate();
+			}
 			
-			int trial = 0;
+			BullseyeProblem.scenario = scenario;
 			
-			// run ECJ with the settings that I asked for
-			EvolutionState evaluatedState = Evolve.initialize(dbase,trial,out);
-			
-			evaluatedState.startFresh();
-			
-			int generation = 0;
-			
-			int result = EvolutionState.R_NOTDONE;
-			
-			long totaltime = 0;
-			
-			while( result == EvolutionState.R_NOTDONE ){
+			try {
+				dbase = new ParameterDatabase(parameterFile,new String[] {"-file",parameterFile.getCanonicalPath()});
 				
-				// do one generation
-				long starttime = java.lang.System.currentTimeMillis();
-				result = evaluatedState.evolve();
-				long runtime = java.lang.System.currentTimeMillis() - starttime;
+	//			dbase.setProperty("gp.tc.0.init","ec.gp.koza.HalfBuilder");
+				dbase.set(new Parameter("stat"), "bullseye.SimpleCoevStatistics");
+				Output out = Evolve.buildOutput();
+	
+				//disable output
+				out.getLog(0).silent = false;
+				out.getLog(1).silent = true;
 				
-				totaltime += runtime;
+				int trial = 0;
 				
-				// collect some stats
-				SimpleCoevStatistics stats = (SimpleCoevStatistics) evaluatedState.statistics;
-
-				GPIndividual best = (GPIndividual) stats.best_of_run[0];
-//				evaluatedState.
+				// run ECJ with the settings that I asked for
+				EvolutionState evaluatedState = Evolve.initialize(dbase,trial,out);
 				
-//				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
+				evaluatedState.startFresh();
 				
-				}
-			
-			SimpleCoevStatistics stats = (SimpleCoevStatistics) evaluatedState.statistics;
-
-			GPIndividual best = (GPIndividual) stats.best_of_run[0];
+				int generation = 0;
+				
+				int result = EvolutionState.R_NOTDONE;
+				
+				long totaltime = 0;
+				
+				while( result == EvolutionState.R_NOTDONE ){
 					
-			// We have to do this in order to fix a memory leak
-			// otherwise, ECJ will keep making threads forever until we run out of memory to track them all
-//			((SimpleEvaluator)evaluatedState.evaluator).pool.killAll();
-
-			Evolve.cleanup(evaluatedState);
-
-			// also fixes a resource leak
-			out.close();
-			
-			
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+					// do one generation
+					long starttime = java.lang.System.currentTimeMillis();
+					result = evaluatedState.evolve();
+					long runtime = java.lang.System.currentTimeMillis() - starttime;
+					
+					totaltime += runtime;
+					
+					// collect some stats
+					SimpleCoevStatistics stats = (SimpleCoevStatistics) evaluatedState.statistics;
+	
+					GPIndividual best = (GPIndividual) stats.best_of_run[0];
+	//				evaluatedState.
+					
+	//				System.out.println(trial+","+generation++ +","+size+","+runtime+","+profit+","+diff+","+sdiff+","+plan+"," + init+"," + window +","+ buildprob+","+ enableRuntimeKill+","+trimmerChance+","+scenario.toString()+","+avgSize);
+					
+					}
+				
+				SimpleCoevStatistics stats = (SimpleCoevStatistics) evaluatedState.statistics;
+	
+				GPIndividual best = (GPIndividual) stats.best_of_run[0];
+						
+				// We have to do this in order to fix a memory leak
+				// otherwise, ECJ will keep making threads forever until we run out of memory to track them all
+	//			((SimpleEvaluator)evaluatedState.evaluator).pool.killAll();
+	
+				Evolve.cleanup(evaluatedState);
+	
+				// also fixes a resource leak
+				out.close();
+				
+				
+			}catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

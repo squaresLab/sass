@@ -119,7 +119,7 @@ gp.tc.1.fset = f1
 gp.tc.1.returns = tactic-or-plan
 
 
-generations =				1000
+generations =				100
 quit-on-run-complete =			true
 eval =					bullseye.CustMultiPopCoevolutionaryEvaluator
 
@@ -289,7 +289,7 @@ seed.27 = 123456762
 seed.28 = 123456761
 seed.29 = 123456760
 
-build_prob = 0.9
+build_prob = 1.0
 
 stat.exploitability-script-path = /home/ckinneer/PycharmProjects/bullseye/exploitability.py
 

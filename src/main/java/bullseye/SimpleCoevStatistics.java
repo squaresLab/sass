@@ -12,7 +12,10 @@ import ec.steadystate.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import coevutil.MatchupTester;
@@ -252,11 +255,36 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
             	state.output.println(generation++ + ","+BullseyeProblem.scenario+","+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+cumulativeTime,0);
             }
             
+            // save best inds to repertoire
+            writeRep(best_i[x],state,x);
+            
             }
         
         }
 
-    public static double getExploitability(Individual individual, EvolutionState state) {
+    private void writeRep(Individual individual, EvolutionState state, int subpop) {
+    	
+		try {
+			Files.createDirectories(Paths.get("coevRepertoire/"+subpop));
+			
+			
+			String stringind = MatchupTester.indToString(individual, state);
+			PrintWriter out = new PrintWriter("coevRepertoire/"+subpop+"/Plan"+java.lang.System.currentTimeMillis()+".txt");
+			
+			out.println(stringind);
+			
+			out.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
+	public static double getExploitability(Individual individual, EvolutionState state) {
 		double ans = 1;
 		
 		String indStringRep = MatchupTester.indToString(individual, state);

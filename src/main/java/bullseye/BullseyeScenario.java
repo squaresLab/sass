@@ -1,5 +1,7 @@
 package bullseye;
 
+import java.util.Random;
+
 public class BullseyeScenario {
 
 	private static double[] defaultParams = new double[] {0.05, 0.10, 0.05, 0.10, 0.20, 1, 1, 1};
@@ -14,8 +16,33 @@ public class BullseyeScenario {
 	double payPresenceVal;
 	double posPresenceVal;
 	
+	Random rand;
+	
 	public BullseyeScenario() {
 		setParams(BullseyeScenario.defaultParams);
+		rand = new Random();
+	}
+	
+	public BullseyeScenario(long seed) {
+		this();
+		rand = new Random(seed);
+	}
+	
+	public void mutate() {
+		double[] params = toArray();
+		
+		int index = rand.nextInt(params.length);
+		
+		double delta = rand.nextGaussian() * .1;
+		
+		params[index] += delta;
+		
+		params[index] = Math.max(params[index], 0);
+		
+		if (index < 5) {
+			params[index] = Math.min(params[index], 1);
+		}
+		setParams(params);
 	}
 	
 	public void setParams(double[] params) {
