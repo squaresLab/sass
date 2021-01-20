@@ -113,7 +113,7 @@ public class System {
 			}
 		}else if (type instanceof Intelligence) {
 			
-			int sources = 0;
+			double sources = 0;
 			
 			if (isAttackerHasWebPassword() || isAttackerHasWebExploited()) {
 				sources += scenario.getWebPresenceVal();
