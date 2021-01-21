@@ -250,13 +250,20 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
             	Individual[] gurus = eval.guruIndividuals[0];
             	
             	double exploitabilityAvg = 0;
+            	double counted = 0;
             	for (Individual i : gurus) {
-            		exploitabilityAvg += getExploitability(i, state);
+            		double exploit = getExploitability(i, state);
+            		if (exploit <= 0) {
+            			exploitabilityAvg += exploit;
+            			counted++;
+            		}
             	}
-            	exploitabilityAvg /= gurus.length;
+            	exploitabilityAvg /= counted;
+            	
+            	int missed = (int) (gurus.length - counted);
             	
             	long exploitTime = java.lang.System.currentTimeMillis() - exploitStartTime;
-            	state.output.println(generation++ + "," + runInfo + BullseyeProblem.scenario+","+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+cumulativeTime,0);
+            	state.output.println(generation++ + "," + runInfo + BullseyeProblem.scenario+","+best_i[x].fitness.fitness()+","+ exploitability + ","+exploitabilityAvg+","+cumulativeTime+","+missed,0);
             }
             
             // save best inds to repertoire
@@ -305,7 +312,7 @@ public class SimpleCoevStatistics extends Statistics implements SteadyStateStati
 			Process process = processBuilder.start();
 			InputStream is = process.getInputStream();
 			
-			if (!process.waitFor(1, TimeUnit.SECONDS)) {
+			if (!process.waitFor(10, TimeUnit.MINUTES)) {
 				process.destroyForcibly();
 				return 1;
 			}
